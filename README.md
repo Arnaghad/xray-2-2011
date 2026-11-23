@@ -1,6 +1,6 @@
-# X-Ray Engine 2.0 — Modern C++26, Vulkan 1.4, .NET 10 SDK & Blender 5.3 Pipeline
+# X-Ray Engine 2.0 — Modern C++26, Vulkan 1.4, .NET 11 SDK & Blender 5.3 Pipeline
 
-Модернізований рушій, редакторський SDK та DCC-конвеєр **X-Ray Engine 2.0** (кодова база *S.T.A.L.K.E.R. 2* зразка 2011 року), перенесені зі спадкового 32/64-бітного стека Visual Studio 2008/2010 + DirectX 9/10/11 + .NET Framework 3.5 + Maya 2011 C++ `.mll` на сучасну архітектуру **C++26 (GCC 16 / MinGW-w64 + CMake + Ninja)**, **Vulkan 1.4 RHI (HLSL → SPIR-V через DXC)**, **.NET 10 (`net10.0-windows` WinForms/WPF)** та **Blender 5.3 / Maya 2027 (`xray-dcc-exchange/v2`)**.
+Модернізований рушій, редакторський SDK та DCC-конвеєр **X-Ray Engine 2.0** (кодова база *S.T.A.L.K.E.R. 2* зразка 2011 року), перенесені зі спадкового 32/64-бітного стека Visual Studio 2008/2010 + DirectX 9/10/11 + .NET Framework 3.5 + Maya 2011 C++ `.mll` на сучасну архітектуру **C++26 (GCC 16 / MinGW-w64 + CMake + Ninja)**, **Vulkan 1.4 RHI (HLSL → SPIR-V через DXC)**, **.NET 11 (`net11.0-windows` WinForms/WPF)** та **Blender 5.3 / Maya 2027 (`xray-dcc-exchange/v2`)**.
 
 ---
 
@@ -14,7 +14,7 @@
 | **Текстури та матеріали** | Фіксовані слоти DX10/11, одностадійні обмеження в ранніх портах | **Vulkan 1.2 Bindless (`VK_EXT_descriptor_indexing`)** (`Texture2D[1024]`, `TextureCube[128]`), багатостадійні (`multi-stage`) матеріали |
 | **Освітлення та поверхні** | Legacy Light Pre-Pass у DX10/11 | **2-Pass Light Pre-Pass / Deferred Material** у Vulkan: анізотропний BRDF, **Pre-Integrated Skin/Organic SSS**, POM, Triplanar, Soft Particles, Cubemap Reflections, Burning Wood |
 | **Скінінг та LOD** | CPU-скінінг / DX константні буфери, жорсткий ліміт **80 кісток** (`79 + 1`), без runtime LOD у Vulkan | **GPU Compute Skinning (`skinning.comp.hlsl`)** на SSBO, ліміт **128 кісток** (`127 + object_movement`), автоматичне перемикання **Runtime LOD (`LOD0..LOD2`)** за екранним AABB |
-| **Редакторський SDK** | C++/CLI + .NET Framework 3.5 (`AvalonAdapter`, старий WinForms/WPF) | **.NET 10 (`net10.0-windows`)**, нативний C ABI міст (`host_bridge.h`), відновлена оболонка **`WindowIde`** та **40/40** родин редакторів (SDK-0 — SDK-12), `PerMonitorV2` DPI |
+| **Редакторський SDK** | C++/CLI + .NET Framework 3.5 (`AvalonAdapter`, старий WinForms/WPF) | **.NET 11 (`net11.0-windows`)**, нативний C ABI міст (`host_bridge.h`), відновлена оболонка **`WindowIde`** та **40/40** родин редакторів (SDK-0 — SDK-12), `PerMonitorV2` DPI |
 | **DCC-інструменти (3D/Анімація)** | Тільки Autodesk Maya 2011 (32/64-bit C++ `.mll` плагін + пропрієтарний SISL) | **Blender 5.3** як основний DCC (`xray_blender` v0.3.3) + **Maya 2022–2027 Python API 2.0** (`xray_maya_plugin.py` v2.1), спільний формат **`xray-dcc-exchange/v2`** |
 | **Кукер асетів та математика кривих** | Прив’язаний до Maya runtime (`xray/maya_animation` + SISL + Win32) | Автономний портативний **C++26 `xray_asset_cook_cli`** та header-only бібліотека **`xray_animation_math`** (кубічний B-spline фітер без Maya/SISL) |
 | **Міграція спадкового контенту** | Ручний експорт із Maya 2011 | Автоматичний конвеєр **`migrate_legacy.py`**: декомпіляція `.model`/`.skeleton`/`.skinned_model`/`.clip`/`.physics` без Maya, парсер `.ma` (включно з Trax `clipLibrary`), batch-міграція `.mb` |
