@@ -1,0 +1,291 @@
+{
+  "schema": "xray-blender-b8-acceptance/v1",
+  "date": "2026-11-15",
+  "recorded_utc": "2026-11-15T15:50:18.405978+00:00",
+  "stage": "B8",
+  "status": "accepted_local",
+  "scope": [
+    "Packaged artist guide and first-export/SDK handoff workflow",
+    "Rig, units, materials, locators, Actions/NLA/additive and exact/fit key conventions",
+    "Maintainer packaging, migration/resume, output review and failure diagnostics",
+    "Current installed Blender 5.3 commands; Maya supported as alternative",
+    "Updated pipeline, SDK plan and DCC function matrix"
+  ],
+  "documentation": {
+    "documents": 11,
+    "local_links": 95,
+    "command_entry_points": 8,
+    "evidence": [
+      {
+        "path": "build/blender-b8/document-check.json",
+        "bytes": 13112,
+        "sha256": "f7ad4d15c41e07d12bfe7f9ba11eb1a208f7c49133422504eb84e2362d7ae08a"
+      },
+      {
+        "path": "build/blender-b8/command-help/result.json",
+        "bytes": 681,
+        "sha256": "8edd50e8676a2bf0c41dac9b7292578db58266baef7169e5f3d802566814da61"
+      }
+    ]
+  },
+  "package": {
+    "status": "PASS",
+    "version": "0.3.2",
+    "zip_sha256": "f2e4fa7ddd952f3b70b33cf61624b0d79e6565a4a33f6d5ad0e0b79d52baa082",
+    "reproducible": true,
+    "changed_members": [
+      "README.md",
+      "blender_manifest.toml"
+    ],
+    "runtime_python_members_identical": true,
+    "python_members": 16,
+    "previous_package_unchanged": true,
+    "packaged_artist_guide_matches_source": true,
+    "archive": {
+      "path": "build/blender/extension/xray_blender-0.3.2.zip",
+      "bytes": 77644,
+      "sha256": "f2e4fa7ddd952f3b70b33cf61624b0d79e6565a4a33f6d5ad0e0b79d52baa082"
+    },
+    "provenance": {
+      "path": "build/blender/extension/xray_blender-0.3.2.zip.json",
+      "bytes": 2007,
+      "sha256": "59cc3bb90420db531967f8281d7b7db1a0673e1ec34c292a076ea8977a137149"
+    },
+    "verification": {
+      "path": "build/blender-b8/package-check/result.json",
+      "bytes": 394,
+      "sha256": "5ec79a2911663d65c1f29496f33a66744bff0190fe9b8bcfc7d7fab24c067cfa"
+    }
+  },
+  "final_ci": {
+    "status": "PASS",
+    "tests": 22,
+    "automatic_retries": 0,
+    "host": {
+      "executable": "C:\\Program Files\\Blender Foundation\\Blender 5.3\\blender.exe",
+      "sha256": "739a8167f81fc3dbcabaa448bb5335923b04c91f9a2408fd979c778e14d3d642",
+      "version": "5.3.0"
+    },
+    "maya": {
+      "mode": "auto",
+      "status": "scheduled",
+      "executable": "C:/Program Files/Autodesk/Maya2027/bin/mayapy.exe",
+      "sha256": "5b4fcb5bf3c46c360eca750bd9ddb945d864424ff4b77f8d3e395573ddca4acb"
+    },
+    "groups": {
+      "t1": {
+        "status": "PASS",
+        "tests": 12
+      },
+      "blender": {
+        "status": "PASS",
+        "tests": 6
+      },
+      "no-maya": {
+        "status": "PASS",
+        "tests": 1
+      },
+      "maya": {
+        "status": "PASS",
+        "tests": 3
+      }
+    },
+    "all_receipt_hashes_verified": true,
+    "evidence": {
+      "path": "build/blender-b8/ci-release-final/result.json",
+      "bytes": 43099,
+      "sha256": "153118f561ca436a7f6ff14bd3e37ba465243a256405d13fe6b08df11557660d"
+    }
+  },
+  "native_sdk": {
+    "result": {
+      "status": "PASS",
+      "modelBefore": 1.25,
+      "modelAfter": 3.75,
+      "animationDelta": 0.74999994,
+      "sdkRestart": false,
+      "liveGpuReadback": {
+        "mean_absolute_channel_error": 0.005382366889606907,
+        "changed_pixels": 335,
+        "changed_fraction": 0.0005567965747869214,
+        "maximum_channel_error": 12
+      },
+      "fixtureUnchanged": true,
+      "validationErrors": 0
+    },
+    "request_extension_paths": [
+      "C:\\Backup\\Source\\xray-2-2011-main\\build\\blender\\extension\\xray_blender-0.3.2.zip"
+    ],
+    "evidence": [
+      {
+        "path": "build/blender-b8/sdk-release-final/result.json",
+        "bytes": 382,
+        "sha256": "a8e287edb830e3d5ab7f60291b23ab947965f9a3feb6c293f812ffc82390a45b"
+      },
+      {
+        "path": "build/blender-b8/sdk-release-final/source/create.log",
+        "bytes": 348,
+        "sha256": "36483ab24dda2fbf16d4020b294d01f22c7828d5771fca494478903c246d5cce"
+      },
+      {
+        "path": "build/blender-b8-sdk-release-final.log",
+        "bytes": 284,
+        "sha256": "912999701c67b8eddabf160162a17dc89f21c225574783d309e7bc92a4f1ab28"
+      }
+    ]
+  },
+  "installer_incident": {
+    "status": "intermittent_host_failure_documented_not_fixed",
+    "observed_error": "Blender package installer WinError 5 while renaming xray_blender@ to xray_blender",
+    "blocking_process": "unknown",
+    "original_b7_failure_same_cause": "not_proven",
+    "initial_ci": {
+      "status": "FAIL",
+      "failed_test": "xray_blender_no_maya",
+      "evidence": {
+        "path": "build/blender-b8/ci-release/result.json",
+        "bytes": 43133,
+        "sha256": "791550d0b5b6f7789e26dcfe5f71a458131d7a75ab89f54c2886666afeafdd26"
+      }
+    },
+    "initial_sdk_attempts": [
+      {
+        "path": "build/blender-b8/sdk-release/source/create.log",
+        "bytes": 1063,
+        "sha256": "57ec453dc1ed3f89ead9024e233fa37bca3641acafcc672eb9da0d0cf9547a7a"
+      },
+      {
+        "path": "build/blender-b8/sdk-release-diagnostic/source/create.log",
+        "bytes": 1085,
+        "sha256": "7c6d75fa9d5daec29eb90996b06bf13be055b541c8b140db05a601d153ba36fe"
+      },
+      {
+        "path": "build/blender-b8/sdk-release-isolation/source/create.log",
+        "bytes": 1083,
+        "sha256": "376d8c47bd09b3b673ef71a3c3a2be33f85d111613a6b61e47602dbe5897f469"
+      }
+    ],
+    "outside_sandbox_probe": "same rename failure; not resolved by execution isolation",
+    "old_package_control": {
+      "status": "PASS",
+      "evidence": {
+        "path": "build/blender-b8-sdk-control031.log",
+        "bytes": 35,
+        "sha256": "56202c72328da277edf301f7b81a8667a3bf8a4312e5d0eb5afc7737ce920666"
+      }
+    },
+    "filesystem_probe": {
+      "all_four_renames_succeeded": true,
+      "one_transient_denial_recovered_after_100ms": true,
+      "no_package_or_acl_changes": true,
+      "evidence": {
+        "path": "build/blender-b8/rename-probe/result.json",
+        "bytes": 843,
+        "sha256": "97ef9be14d8cf3c3f793aa07c2874c702d5ef4df150efa4c123fa9d467dc82d5"
+      }
+    },
+    "failed_runs_preserved": true,
+    "automatic_ci_retries": 0
+  },
+  "preserved_checkpoints": [
+    {
+      "path": "build/blender/extension/xray_blender-0.3.1.zip",
+      "bytes": 73781,
+      "sha256": "7fad0d09e5da24ab3c4782588f6523e8b613ad6284bc3108c08e67d905b788c6"
+    },
+    {
+      "path": "sources/tools/blender/b7-acceptance.json",
+      "bytes": 11365,
+      "sha256": "2ef5d9423db27ce48d7b0895b9da6bcacb9242a970f7c73cf7c53b617496524b"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/dcc/acceptance.json",
+      "bytes": 13596,
+      "sha256": "ca09cf9f0e0dfad51684fdefc08a8d70b5e627a9c61170acc10e23b417dc8fba"
+    }
+  ],
+  "corpus_policy": {
+    "zero_root_clips": 23,
+    "status": "failed",
+    "repair_performed": false,
+    "original_corpus_and_b5_migration_not_rerun_or_edited": true
+  },
+  "source_snapshot": [
+    {
+      "path": "sources/tools/blender/README.md",
+      "bytes": 11050,
+      "sha256": "69e399390d7b057cd740b263d541d98b308e8f2b6e39777797b59c51fc39ab08"
+    },
+    {
+      "path": "sources/tools/blender/xray_blender/README.md",
+      "bytes": 19129,
+      "sha256": "1801de169bd07b3017f34f5a6782bffd86bb613e3aabefbf7a3809d13d61749b"
+    },
+    {
+      "path": "sources/tools/blender/MAINTAINER.md",
+      "bytes": 11806,
+      "sha256": "c24320d51553ff538142915924be4dbe104c8a973fbeb701fad33de7f06ea037"
+    },
+    {
+      "path": "sources/tools/blender/CHANGELOG.md",
+      "bytes": 1597,
+      "sha256": "c849e1ff31195e886bb1b6e1c133d94719fa2999edae9fe0f5565a84dd5c0e2b"
+    },
+    {
+      "path": "sources/tools/blender/IMPORT.md",
+      "bytes": 8375,
+      "sha256": "e4af8dbe9651ecabc537976c167b4424b2c1c5bed4ad6254b27deb1442e64b4b"
+    },
+    {
+      "path": "sources/tools/blender/MIGRATION.md",
+      "bytes": 13085,
+      "sha256": "0cf778b2625e2d548fb40a80da6cb47e7a6d7101ddad5769a193d02bd4617f30"
+    },
+    {
+      "path": "sources/tools/blender/SDK.md",
+      "bytes": 7766,
+      "sha256": "5671eec4a29c06ac2ebe0776a842935a51e2f53dbd13922455e5f7479a95f7fe"
+    },
+    {
+      "path": "sources/tools/blender/CI.md",
+      "bytes": 8594,
+      "sha256": "8c5ccea9a0872e4a75ea995fc82f89253ed1a5568a7df898de9e1b9505c5c56d"
+    },
+    {
+      "path": "sources/tools/maya/README.md",
+      "bytes": 9246,
+      "sha256": "6d99ee2f5e491842725181d24850b9aa91897f93e7ac125ace89c43b9e9e8ce0"
+    },
+    {
+      "path": "sources/tools/blender/xray_blender/blender_manifest.toml",
+      "bytes": 398,
+      "sha256": "fe6d4b9e04c953a725d1d4019981346fde86a4b9f13055c813b8279fa8b0046c"
+    },
+    {
+      "path": "sources/tools/sdk/test-sdk-dcc.ps1",
+      "bytes": 1170,
+      "sha256": "1e2e3f17844df1a86c942a957e921fba7b645cc788dfa86d35c697b19725e9a0"
+    },
+    {
+      "path": "blender_pipeline_plan.md",
+      "bytes": 52543,
+      "sha256": "22e399f655e16078d28d90ea65a812e4963eb6698fd029f7fae4f159c6500a27"
+    },
+    {
+      "path": "sdk_migration_plan.md",
+      "bytes": 91719,
+      "sha256": "b5c0d1f8c72333cf5a51476395046a3f203d51ec30e7256084380b292fe46c8f"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk0/function-matrix.json",
+      "bytes": 733940,
+      "sha256": "3838e1c1efbf4e0b9fc3aedbdcfabc40c85535526e93ffc951dc0932874c13ff"
+    }
+  ],
+  "remaining": [
+    "Intermittent Windows Blender installer rename failure; blocking process unidentified",
+    "GitHub remote/runner setup and remote workflow execution",
+    "Full SDK8 animation graph, retargeting and actor integration; full physics authoring UI",
+    "Linux live acceptance"
+  ]
+}

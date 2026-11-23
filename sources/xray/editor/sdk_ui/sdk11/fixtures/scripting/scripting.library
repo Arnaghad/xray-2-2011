@@ -1,0 +1,28 @@
+library = {
+
+	["69F839EB-6F8D-44d7-A99B-D8CE2A953014"] = {
+		lib_name	= "base:scene",
+		name		= "scene",
+		position	= float3( 0, 0, 0 ),
+		rotation	= float3( 0, 0, 0 ),
+		scale		= float3( 1, 1, 1 ),		
+	}, -- 69F839EB-6F8D-44d7-A99B-D8CE2A953014	
+	
+	["A7E4917A-2485-49aa-A6DA-FCEEB69732AA"] = {
+		lib_name	= "base:npc",
+		name		= "npc",
+		position	= float3( 0, 0, 0 ),
+		rotation	= float3( 0, 0, 0 ),
+		scale		= float3( 1, 1, 1 ),		
+	}, -- A7E4917A-2485-49aa-A6DA-FCEEB69732AA
+
+	["C1F5EACA-CCA2-4c0d-B784-5216CBF3F1B4"] = {
+		lib_name	= "base:job",
+		name		= "job",
+		position	= float3( 0, 0, 0 ),
+		rotation	= float3( 0, 0, 0 ),
+		scale		= float3( 1, 1, 1 ),		
+	}, -- C1F5EACA-CCA2-4c0d-B784-5216CBF3F1B4
+	
+} -- library
+

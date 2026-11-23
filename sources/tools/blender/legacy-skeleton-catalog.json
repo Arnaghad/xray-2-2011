@@ -1,0 +1,3323 @@
+{
+  "schema": "xray-skeleton-catalog/v1",
+  "corpus_sha256": "ce5c2dfc5fff9da7dc797e31df3e65ea682354930392e37bf08cd5a1e9d2d9e9",
+  "clip_count": 347,
+  "provenance": {
+    "source": "Read-only B5 native Maya DAG and original skeleton configs",
+    "maya_extractor_sha256": "f53231df95ea3cff3052f64c046a2e67a4662dc6e3c2f3b1d43f6747d7af2736"
+  },
+  "families": [
+    {
+      "id": "375459db29d2ef3e4ef1b81752c4685b53801d4a6edb53d67107e85faa119bcf",
+      "root": {
+        "name": "object_movement",
+        "children": [
+          {
+            "name": "Root",
+            "children": [
+              {
+                "name": "Hips",
+                "children": [
+                  {
+                    "name": "LeftUpLeg",
+                    "children": [
+                      {
+                        "name": "LeftLeg",
+                        "children": [
+                          {
+                            "name": "LeftFoot",
+                            "children": [
+                              {
+                                "name": "LeftToe",
+                                "children": []
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "name": "LeftUpLegRoll",
+                        "children": []
+                      }
+                    ]
+                  },
+                  {
+                    "name": "RightUpLeg",
+                    "children": [
+                      {
+                        "name": "RightLeg",
+                        "children": [
+                          {
+                            "name": "RightFoot",
+                            "children": [
+                              {
+                                "name": "RightToe",
+                                "children": []
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "name": "RightUpLegRoll",
+                        "children": []
+                      }
+                    ]
+                  },
+                  {
+                    "name": "Spine",
+                    "children": [
+                      {
+                        "name": "Spine1",
+                        "children": [
+                          {
+                            "name": "Spine_2",
+                            "children": [
+                              {
+                                "name": "LeftCollar",
+                                "children": [
+                                  {
+                                    "name": "LeftArm",
+                                    "children": [
+                                      {
+                                        "name": "LeftForeArm",
+                                        "children": [
+                                          {
+                                            "name": "LeftHand",
+                                            "children": [
+                                              {
+                                                "name": "LeftHandIndex_1",
+                                                "children": [
+                                                  {
+                                                    "name": "LeftHandIndex_2",
+                                                    "children": [
+                                                      {
+                                                        "name": "LeftHandIndex_3",
+                                                        "children": []
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              },
+                                              {
+                                                "name": "LeftHandMiddle_1",
+                                                "children": [
+                                                  {
+                                                    "name": "LeftHandMiddle_2",
+                                                    "children": [
+                                                      {
+                                                        "name": "LeftHandMiddle_3",
+                                                        "children": []
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              },
+                                              {
+                                                "name": "LeftHandPink_1",
+                                                "children": [
+                                                  {
+                                                    "name": "LeftHandPink_2",
+                                                    "children": [
+                                                      {
+                                                        "name": "LeftHandPink_3",
+                                                        "children": []
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              },
+                                              {
+                                                "name": "LeftHandRing_1",
+                                                "children": [
+                                                  {
+                                                    "name": "LeftHandRing_2",
+                                                    "children": [
+                                                      {
+                                                        "name": "LeftHandRing_3",
+                                                        "children": []
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              },
+                                              {
+                                                "name": "LeftHandThumb_1",
+                                                "children": [
+                                                  {
+                                                    "name": "LeftHandThumb_2",
+                                                    "children": [
+                                                      {
+                                                        "name": "LeftHandThumb_3",
+                                                        "children": []
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          },
+                                          {
+                                            "name": "LeftHandRoll",
+                                            "children": []
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "name": "LeftSholderRoll",
+                                        "children": []
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "name": "Neck",
+                                "children": [
+                                  {
+                                    "name": "Head",
+                                    "children": []
+                                  }
+                                ]
+                              },
+                              {
+                                "name": "RightCollar",
+                                "children": [
+                                  {
+                                    "name": "RightArm",
+                                    "children": [
+                                      {
+                                        "name": "RightForeArm",
+                                        "children": [
+                                          {
+                                            "name": "RightHand",
+                                            "children": [
+                                              {
+                                                "name": "RightHandIndex_1",
+                                                "children": [
+                                                  {
+                                                    "name": "RightHandIndex_2",
+                                                    "children": [
+                                                      {
+                                                        "name": "RightHandIndex_3",
+                                                        "children": []
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              },
+                                              {
+                                                "name": "RightHandMiddle_1",
+                                                "children": [
+                                                  {
+                                                    "name": "RightHandMiddle_2",
+                                                    "children": [
+                                                      {
+                                                        "name": "RightHandMiddle_3",
+                                                        "children": []
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              },
+                                              {
+                                                "name": "RightHandPink_1",
+                                                "children": [
+                                                  {
+                                                    "name": "RightHandPink_2",
+                                                    "children": [
+                                                      {
+                                                        "name": "RightHandPink_3",
+                                                        "children": []
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              },
+                                              {
+                                                "name": "RightHandRing_1",
+                                                "children": [
+                                                  {
+                                                    "name": "RightHandRing_2",
+                                                    "children": [
+                                                      {
+                                                        "name": "RightHandRing_3",
+                                                        "children": []
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              },
+                                              {
+                                                "name": "RightHandThumb_1",
+                                                "children": [
+                                                  {
+                                                    "name": "RightHandThumb_2",
+                                                    "children": [
+                                                      {
+                                                        "name": "RightHandThumb_3",
+                                                        "children": []
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          },
+                                          {
+                                            "name": "RightHandRoll",
+                                            "children": []
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "name": "RightSholderRoll",
+                                        "children": []
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "Pistol",
+                "children": []
+              },
+              {
+                "name": "Weapon",
+                "children": []
+              },
+              {
+                "name": "item",
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      "evidence": "xr2-dsgn/resources/exported/animations/skeletons/neutral_01.skeleton",
+      "evidence_sources": [
+        {
+          "path": "xr2-dsgn/resources/exported/animations/skeletons/neutral_01.skeleton",
+          "sha256": "f6a25280b15926c1e6e28d350e332802969fbdfd911a71872591e97feeb84a7e"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/sit_high_guitar_idle.mb",
+          "sha256": "702f25964e57a9f2a45d4aff74480ba1e64046cad38dc5da3397c7bab8007cc2"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/sit_high_guitar_in.mb",
+          "sha256": "1c56111c324d37f90a27ba1a2bfe06241b15fc6e552606e51000ca19b3b11750"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/sit_high_guitaro_out.mb",
+          "sha256": "845a992c148c53c8d17f1bd0eb72bff0b191e9cd04c0e5108aa88dafda35f5a8"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/sit_high_guitaro_play_1.mb",
+          "sha256": "8a8e5b21688f7b658e5aa97f2fe8a15fc23c986deb3ed6ae03574515d7fef180"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/sit_high_guitaro_play_2.mb",
+          "sha256": "42191abf3df535bd06c2d980030f09066ab31dfc5cc19be5aa07043e0ce0769e"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/temp/sit_high_guitaro_out_2.mb",
+          "sha256": "6b0462c83aa2c20abb2a9c4094bd2f17b584d30a67f82604beaa6dfbf2defff2"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/bandit/bandit_01/bandit_01_skin.mb",
+          "sha256": "c185d6b32ea2ee2ca725eff18a81abbb5239425ef68ff6e2761545c3eca893c7"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/bandit/bandit_01/temp/bandit_01_skin_DQ.mb",
+          "sha256": "74735dde083cc6dc37c5860bc30a7ff18380a43c2d329635e092a102d59c241f"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/bandit/bandit_01/temp/bandit_01_skin_sample.mb",
+          "sha256": "552ffc0b40e1fdf9ac457854cddd1d00bb8872d7408e39ad7a4cd13bb266d393"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/dolg/dolg_exo_skin.mb",
+          "sha256": "c9e8ae59c45e6fa914dd70134e4c1e1879b78ae45a810d789a8d42cc5feff1ad"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/dolg/temp/dolg_exo_rigging_02.mb",
+          "sha256": "3c5c380bdd195fd37b1fcb9ef8fd686ec47dfe2be51bcf27c1ab87b884b46afa"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/dolg/temp/dolg_exo_skin_sample.mb",
+          "sha256": "886ee0187796281f525cb050b417f93fc46a93a61801fea1c2f7c9d310aa13bc"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/human_joint.mb",
+          "sha256": "f6ae96217813f304520b156ee3a0dd42f43aeffa229102ea3fd045609041c226"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/neutral/neutral_01/neutral_01_skin.mb",
+          "sha256": "4bc805416c025f0f9e12621ceed68ad48e273ae7cc2cc4b2c5657fa3cc8f5c1d"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/neutral/neutral_01/temp/neutral_01_rigging_02.mb",
+          "sha256": "75cd9c3959c3c7cf1ac96a5b2dc2fc1e1dca774aa32d145ea7476183161091ef"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/neutral/neutral_01/temp/neutral_01_skin_sample.mb",
+          "sha256": "a68a28c77e065c3ad20205572b0d1ead6fb43ea07856ba62509a55d6bd92365e"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/neutral/neutral_01_novice/neutral_01_novice_skin.mb",
+          "sha256": "6178bbc64f350c7616422a8c82aa2ffb2f0a2f7acd89fcdd167deaba2024e256"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/neutral/neutral_01_novice/temp/neutral_01_novice_skin_DQ.mb",
+          "sha256": "f07d713cb4086a2532e1593924431433e807b70cf410d06f1a5f9b32fd0c6411"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/neutral/neutral_01_novice/temp/neutral_01_novice_skin_sample.mb",
+          "sha256": "0fa8abbe39d21a4f9d1c8e9093061529bcafa11d3a60355bec07e90205e3a562"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/skeleton_man.mb",
+          "sha256": "23e9820af8b516a265085fc6c0c96a5b0768ac467976c54838b894ab492da2d3"
+        }
+      ]
+    },
+    {
+      "id": "716d09c8da66b8894349286a8bf5639ee661982711eec7d11dc13425c552b431",
+      "root": {
+        "name": "object_movement",
+        "children": [
+          {
+            "name": "animaxis1",
+            "children": [
+              {
+                "name": "animaxis2",
+                "children": [
+                  {
+                    "name": "animaxis3",
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "evidence": "xr2-dsgn/resources/exported/animations/skeletons/animaxis.skeleton",
+      "evidence_sources": [
+        {
+          "path": "xr2-dsgn/resources/exported/animations/skeletons/animaxis.skeleton",
+          "sha256": "93d866f9b54bca266af1e98d352ecac481b78ec4864b83056b2290087bbd55d1"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/test/animaxis.mb",
+          "sha256": "7e997161e0f0b21b9cc1292ce2d5b0c8c281b0d078971b77a4bcdf903baa89b2"
+        }
+      ]
+    },
+    {
+      "id": "7af684e0b2c187d4de86253849d9a2bf80d65869ed42a3aa7152553da99de1d7",
+      "root": {
+        "name": "object_movement",
+        "children": [
+          {
+            "name": "Root",
+            "children": [
+              {
+                "name": "RootEnd",
+                "children": [
+                  {
+                    "name": "Hips",
+                    "children": [
+                      {
+                        "name": "Spine",
+                        "children": [
+                          {
+                            "name": "Spine_1",
+                            "children": [
+                              {
+                                "name": "Spine_2",
+                                "children": [
+                                  {
+                                    "name": "Neck",
+                                    "children": [
+                                      {
+                                        "name": "Head",
+                                        "children": []
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "name": "LeftCollar",
+                                    "children": [
+                                      {
+                                        "name": "LeftArm",
+                                        "children": [
+                                          {
+                                            "name": "LeftForeArm",
+                                            "children": [
+                                              {
+                                                "name": "LeftHandRoll",
+                                                "children": []
+                                              },
+                                              {
+                                                "name": "LeftHand",
+                                                "children": [
+                                                  {
+                                                    "name": "LeftHandThumb_1",
+                                                    "children": [
+                                                      {
+                                                        "name": "LeftHandThumb_2",
+                                                        "children": [
+                                                          {
+                                                            "name": "LeftHandThumb_3",
+                                                            "children": []
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  },
+                                                  {
+                                                    "name": "LeftHandIndex_1",
+                                                    "children": [
+                                                      {
+                                                        "name": "LeftHandIndex_2",
+                                                        "children": [
+                                                          {
+                                                            "name": "LeftHandIndex_3",
+                                                            "children": []
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  },
+                                                  {
+                                                    "name": "LeftHandMiddle_1",
+                                                    "children": [
+                                                      {
+                                                        "name": "LeftHandMiddle_2",
+                                                        "children": [
+                                                          {
+                                                            "name": "LeftHandMiddle_3",
+                                                            "children": []
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  },
+                                                  {
+                                                    "name": "LeftHandRing_1",
+                                                    "children": [
+                                                      {
+                                                        "name": "LeftHandRing_2",
+                                                        "children": [
+                                                          {
+                                                            "name": "LeftHandRing_3",
+                                                            "children": []
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  },
+                                                  {
+                                                    "name": "LeftHandPink_1",
+                                                    "children": [
+                                                      {
+                                                        "name": "LeftHandPink_2",
+                                                        "children": [
+                                                          {
+                                                            "name": "LeftHandPink_3",
+                                                            "children": []
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          },
+                                          {
+                                            "name": "LeftSholderRoll",
+                                            "children": []
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "name": "RightCollar",
+                                    "children": [
+                                      {
+                                        "name": "RightArm",
+                                        "children": [
+                                          {
+                                            "name": "RightForeArm",
+                                            "children": [
+                                              {
+                                                "name": "RightHandRoll",
+                                                "children": []
+                                              },
+                                              {
+                                                "name": "RightHand",
+                                                "children": [
+                                                  {
+                                                    "name": "RightHandThumb_1",
+                                                    "children": [
+                                                      {
+                                                        "name": "RightHandThumb_2",
+                                                        "children": [
+                                                          {
+                                                            "name": "RightHandThumb_3",
+                                                            "children": []
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  },
+                                                  {
+                                                    "name": "RightHandIndex_1",
+                                                    "children": [
+                                                      {
+                                                        "name": "RightHandIndex_2",
+                                                        "children": [
+                                                          {
+                                                            "name": "RightHandIndex_3",
+                                                            "children": []
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  },
+                                                  {
+                                                    "name": "RightHandMiddle_1",
+                                                    "children": [
+                                                      {
+                                                        "name": "RightHandMiddle_2",
+                                                        "children": [
+                                                          {
+                                                            "name": "RightHandMiddle_3",
+                                                            "children": []
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  },
+                                                  {
+                                                    "name": "RightHandRing_1",
+                                                    "children": [
+                                                      {
+                                                        "name": "RightHandRing_2",
+                                                        "children": [
+                                                          {
+                                                            "name": "RightHandRing_3",
+                                                            "children": []
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  },
+                                                  {
+                                                    "name": "RightHandPink_1",
+                                                    "children": [
+                                                      {
+                                                        "name": "RightHandPink_2",
+                                                        "children": [
+                                                          {
+                                                            "name": "RightHandPink_3",
+                                                            "children": []
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          },
+                                          {
+                                            "name": "RightSholderRoll",
+                                            "children": []
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "name": "LeftUpLeg",
+                        "children": [
+                          {
+                            "name": "LeftUpLegRoll",
+                            "children": []
+                          },
+                          {
+                            "name": "LeftLeg",
+                            "children": [
+                              {
+                                "name": "LeftFoot",
+                                "children": [
+                                  {
+                                    "name": "LeftToe",
+                                    "children": []
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "name": "RightUpLeg",
+                        "children": [
+                          {
+                            "name": "RightUpLegRoll",
+                            "children": []
+                          },
+                          {
+                            "name": "RightLeg",
+                            "children": [
+                              {
+                                "name": "RightFoot",
+                                "children": [
+                                  {
+                                    "name": "RightToe",
+                                    "children": []
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "evidence": "s2_2011_documentation/STA2-docarts/docarts/characters/neutral/neutra2_brief/skeleton.mb",
+      "evidence_sources": [
+        {
+          "path": "s2_2011_documentation/STA2-docarts/docarts/characters/neutral/neutra2_brief/skeleton.mb",
+          "sha256": "d7416068baf80a37adc0e63ca7b57c5c698ec198bbc075b71f373a1eea387391"
+        }
+      ]
+    },
+    {
+      "id": "a9b186c90930c5f3a54162071e840a63cc0ebbfcabfd6f44a3ff57a49967657d",
+      "root": {
+        "name": "object_movement",
+        "children": [
+          {
+            "name": "ak74_wpn_body",
+            "children": [
+              {
+                "name": "wpn_ak74",
+                "children": [
+                  {
+                    "name": "wpn_trigger",
+                    "children": []
+                  },
+                  {
+                    "name": "wpn_zatvor",
+                    "children": []
+                  },
+                  {
+                    "name": "wpn_lock",
+                    "children": []
+                  },
+                  {
+                    "name": "wpn_item",
+                    "children": []
+                  },
+                  {
+                    "name": "fuse",
+                    "children": []
+                  },
+                  {
+                    "name": "handle",
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "evidence": "xr2-dsgn/resources/sources/scenes/character/human/animation/hud/test_wpn.mb",
+      "evidence_sources": [
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/hud/test_wpn.mb",
+          "sha256": "53a2948c2bbf08677b916b77fc293777a9eb4ea639675e5a4a08d1be8fbb82e8"
+        }
+      ]
+    },
+    {
+      "id": "c67b8f5680fa9736b8ff27ce4792e05777de301646351c5bd16b98e31e1524f9",
+      "root": {
+        "name": "object_movement",
+        "children": [
+          {
+            "name": "Root",
+            "children": [
+              {
+                "name": "Hips",
+                "children": [
+                  {
+                    "name": "LeftUpLeg",
+                    "children": [
+                      {
+                        "name": "LeftLeg",
+                        "children": [
+                          {
+                            "name": "LeftFoot",
+                            "children": [
+                              {
+                                "name": "LeftToe",
+                                "children": []
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "name": "LeftUpLegRoll",
+                        "children": []
+                      }
+                    ]
+                  },
+                  {
+                    "name": "RightUpLeg",
+                    "children": [
+                      {
+                        "name": "RightLeg",
+                        "children": [
+                          {
+                            "name": "RightFoot",
+                            "children": [
+                              {
+                                "name": "RightToe",
+                                "children": []
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "name": "RightUpLegRoll",
+                        "children": []
+                      }
+                    ]
+                  },
+                  {
+                    "name": "Spine",
+                    "children": [
+                      {
+                        "name": "Spine1",
+                        "children": [
+                          {
+                            "name": "Spine_2",
+                            "children": [
+                              {
+                                "name": "Neck",
+                                "children": [
+                                  {
+                                    "name": "Head",
+                                    "children": []
+                                  }
+                                ]
+                              },
+                              {
+                                "name": "LeftCollar",
+                                "children": [
+                                  {
+                                    "name": "LeftArm",
+                                    "children": [
+                                      {
+                                        "name": "LeftForeArm",
+                                        "children": [
+                                          {
+                                            "name": "LeftHand",
+                                            "children": [
+                                              {
+                                                "name": "LeftHandThumb_1",
+                                                "children": [
+                                                  {
+                                                    "name": "LeftHandThumb_2",
+                                                    "children": [
+                                                      {
+                                                        "name": "LeftHandThumb_3",
+                                                        "children": []
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              },
+                                              {
+                                                "name": "LeftHandIndex_1",
+                                                "children": [
+                                                  {
+                                                    "name": "LeftHandIndex_2",
+                                                    "children": [
+                                                      {
+                                                        "name": "LeftHandIndex_3",
+                                                        "children": []
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              },
+                                              {
+                                                "name": "LeftHandMiddle_1",
+                                                "children": [
+                                                  {
+                                                    "name": "LeftHandMiddle_2",
+                                                    "children": [
+                                                      {
+                                                        "name": "LeftHandMiddle_3",
+                                                        "children": []
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              },
+                                              {
+                                                "name": "LeftHandPink_1",
+                                                "children": [
+                                                  {
+                                                    "name": "LeftHandPink_2",
+                                                    "children": [
+                                                      {
+                                                        "name": "LeftHandPink_3",
+                                                        "children": []
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              },
+                                              {
+                                                "name": "LeftHandRing_1",
+                                                "children": [
+                                                  {
+                                                    "name": "LeftHandRing_2",
+                                                    "children": [
+                                                      {
+                                                        "name": "LeftHandRing_3",
+                                                        "children": []
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          },
+                                          {
+                                            "name": "LeftHandRoll",
+                                            "children": []
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "name": "LeftSholderRoll",
+                                        "children": []
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "name": "RightCollar",
+                                "children": [
+                                  {
+                                    "name": "RightArm",
+                                    "children": [
+                                      {
+                                        "name": "RightForeArm",
+                                        "children": [
+                                          {
+                                            "name": "RightHand",
+                                            "children": [
+                                              {
+                                                "name": "RightHandThumb_1",
+                                                "children": [
+                                                  {
+                                                    "name": "RightHandThumb_2",
+                                                    "children": [
+                                                      {
+                                                        "name": "RightHandThumb_3",
+                                                        "children": []
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              },
+                                              {
+                                                "name": "RightHandIndex_1",
+                                                "children": [
+                                                  {
+                                                    "name": "RightHandIndex_2",
+                                                    "children": [
+                                                      {
+                                                        "name": "RightHandIndex_3",
+                                                        "children": []
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              },
+                                              {
+                                                "name": "RightHandMiddle_1",
+                                                "children": [
+                                                  {
+                                                    "name": "RightHandMiddle_2",
+                                                    "children": [
+                                                      {
+                                                        "name": "RightHandMiddle_3",
+                                                        "children": []
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              },
+                                              {
+                                                "name": "RightHandPink_1",
+                                                "children": [
+                                                  {
+                                                    "name": "RightHandPink_2",
+                                                    "children": [
+                                                      {
+                                                        "name": "RightHandPink_3",
+                                                        "children": []
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              },
+                                              {
+                                                "name": "RightHandRing_1",
+                                                "children": [
+                                                  {
+                                                    "name": "RightHandRing_2",
+                                                    "children": [
+                                                      {
+                                                        "name": "RightHandRing_3",
+                                                        "children": []
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          },
+                                          {
+                                            "name": "RightHandRoll",
+                                            "children": []
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "name": "RightSholderRoll",
+                                        "children": []
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "Weapon",
+                "children": []
+              },
+              {
+                "name": "Pistol",
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      "evidence": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/guard_idle.mb",
+      "evidence_sources": [
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/guard_idle.mb",
+          "sha256": "1aee2f2a1bec66c213aaf8602283e74db764a91201f25ca3afb39236fdd364e1"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/guard_rnd_1.mb",
+          "sha256": "2ff49dbbe62ff9903847d11beccb0ccb0262f968c965c95bf585fc0fda517f0c"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/guard_rnd_2.mb",
+          "sha256": "371e59978d0dd831e0609c81d6c104a23d9430a4c360e80c847e7e04b9f31b7a"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/inspect_high_idle.mb",
+          "sha256": "2dc08e400a5132a423b987037d0220a4f95e500d7fa7d4df943963069ce6becf"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/inspect_high_in.mb",
+          "sha256": "f1e7ecd36125f92bd1f3030a667d059146fa5d4c449f98f5cff941b49c4a37bf"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/inspect_high_out.mb",
+          "sha256": "809acfda8cea8eb79883c98285621ccb83b6ec4403a3ddd771040ceb5ec28329"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/inspect_high_rnd_1.mb",
+          "sha256": "36832f08f6a9d41386b755a124ba0723b633f8779b3aa4d054e37b22733f2823"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/inspect_rnd_1.mb",
+          "sha256": "d379cbdf26daae8ec93e04b8ee5e91db400fae6e190d22ef2aeea4b1a38f4b5e"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/sit_ground_ass_idle.mb",
+          "sha256": "7f8e1910abe6ca34d0c04f39ae2a7119ae675d1b8bf5989f903bfac6b4a96a93"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/sit_ground_foot_idle.mb",
+          "sha256": "e63ed89f6e2e750950b20380145afb1718c0250b49f83cdc366d151e2abbe75c"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/sit_ground_foot_in.mb",
+          "sha256": "6523776109ab9beaf24531ad7c478b4cb4a51426bcaf88bbdf563829270536c4"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/sit_ground_foot_out.mb",
+          "sha256": "70b54b1c9088224f9cfa5373d7c3a38b15e57cffc888fe87d7218f5edc975fca"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/sit_high_floor_idle.mb",
+          "sha256": "6925fe73b11a79faf6554002d0e9738175b6d6ae0ae69835a98e0e28b06f92c1"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/sit_high_floor_in.mb",
+          "sha256": "6094deddb561a902e1f256098b303280191f67af4ba268f5a54723b83f090e6d"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/sit_high_floor_out.mb",
+          "sha256": "19787c71534984651c0f3c4415dc8685ee01a0924b6b1091d028c745b8d9f117"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/sit_high_floor_rnd_1.mb",
+          "sha256": "1497de722a53e92a45f7826a30946a1bebab09c32f858c121ae71f53f00c5d65"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/sit_high_floor_rnd_2.mb",
+          "sha256": "bdead29e532bf0b1dc3478615783dd5b06c156c8d3fe7ea637e78686bf398870"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/sit_high_guitar_idle.mb",
+          "sha256": "702f25964e57a9f2a45d4aff74480ba1e64046cad38dc5da3397c7bab8007cc2"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/sit_high_guitar_in.mb",
+          "sha256": "1c56111c324d37f90a27ba1a2bfe06241b15fc6e552606e51000ca19b3b11750"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/sit_high_guitaro_out.mb",
+          "sha256": "845a992c148c53c8d17f1bd0eb72bff0b191e9cd04c0e5108aa88dafda35f5a8"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/sit_high_guitaro_play_1.mb",
+          "sha256": "8a8e5b21688f7b658e5aa97f2fe8a15fc23c986deb3ed6ae03574515d7fef180"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/sit_high_guitaro_play_2.mb",
+          "sha256": "42191abf3df535bd06c2d980030f09066ab31dfc5cc19be5aa07043e0ce0769e"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/sit_high_noweap_idle.mb",
+          "sha256": "e9e5f2dc71eb8935bbc7e94d9599022f01024801cc25a2813ac3034ee4e814c8"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/sit_high_noweap_in.mb",
+          "sha256": "61bd96cc59efb1e610ed784293c1701ff17e88aa1c87b9e6cae475895a0f613e"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/sit_high_noweap_out.mb",
+          "sha256": "6e9280020af2001248fec8df384bed2e3dacecf00ccfeb5a13faef793552b403"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/sit_high_noweap_rnd_1.mb",
+          "sha256": "f95d51bb066bf4b354e473d83e25dc8542857cb81def6e4aad0645cfeac95a16"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/sit_high_noweap_rnd_2.mb",
+          "sha256": "54bf87fe347af4a83793d91310dceb8e73ad5c6d3fbab23ad1c58824d790665e"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/sit_high_weap_in.mb",
+          "sha256": "650a639a09bcd8f0e6bb95d8b65916fd9eb4a0dc23138bf9e2c56545bd78d67b"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/sit_high_weap_rnd_1.mb",
+          "sha256": "33680c5daf9a4ce02d2f4ada6a397328ffe9d3d6422893f9b3ca33dc087b0c34"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/sit_low_noweap_idle.mb",
+          "sha256": "04ca034158d836aeaf5f67ea7a9a8f2b9535f8759c9d8ca927ec9017333ace73"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/sit_low_noweap_rnd_2.mb",
+          "sha256": "bcbd609c8085af3f402899a6fc38d2cacfce50497da586d40131b3e732cf7450"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/sit_low_weap_idle.mb",
+          "sha256": "8bc08e795ccd45f621244027811788f4f4dccb60a21885b93012b1d3c7f9261a"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/sit_low_weap_in.mb",
+          "sha256": "547038e439a6d40c31a9ff093abc0fa5289355f4671ed9fa3b5688e0ed4f73c8"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/sit_middle_noweap_idle.mb",
+          "sha256": "70cc9a5d32a978f3129d104689ea3a754cbe823a32c5593115fde2962b186071"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/sit_middle_noweap_in.mb",
+          "sha256": "55c11ee3ad9c1bc8acd3e0500b7e6915f15189eb9a82119411a0981e6796f997"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/sit_middle_noweap_out.mb",
+          "sha256": "4fe40113475ce49f5313aa60a28df38026e7706c533e320f4a70e61a38cd24c5"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/sit_middle_noweap_rnd_1.mb",
+          "sha256": "330c2288fdd2c716f63eb59be6490f33f9453a1d0f003ec8fceb85442828648d"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/sit_middle_noweap_rnd_2.mb",
+          "sha256": "8a13e70d7eb75286795ddcc393622b61bc4a49420ebf8e95a131883f5b4993a2"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/sit_middle_weap_idle.mb",
+          "sha256": "0cd65e3df5ad4e7faef724fe4b596a44a2ac2093b1091a9e85e3e8913e484684"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/sit_middle_weap_rnd_1.mb",
+          "sha256": "ec7a20d62e86432b00a6dbc2c747531cc3870e571dc6e2fe8f46e08c9b1f2637"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/sit_vhigh_noweap_idle.mb",
+          "sha256": "0962204159398ba4c3298db0d12c2ee3f8caeee8a34055c42ee6e802b3c2eb1a"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/sit_vhigh_noweap_in.mb",
+          "sha256": "9558a41b20378e9b3a2f0af44821c50d11fc9e743eba57e55a8ff8844b3966e4"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/sit_vhigh_noweap_out.mb",
+          "sha256": "fd07131453d338560525cdd1a36d7a7d868457a5abdb8cde6630f3c9ca24d1b7"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/sit_vhigh_noweap_rnd_1.mb",
+          "sha256": "f03eb256d699069ae2934f4bd70829ea75b277896bda92f5ba80110ae6e6920f"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/sit_vhigh_noweap_rnd_2.mb",
+          "sha256": "54faf75f75e7b2af5fa3069808c754931d9a662fae0610c3f8ba55ce8f46eebc"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/temp/barrel_idle_2.mb",
+          "sha256": "8acc5aa1769f5ce519b3128ed39e3a8a5db8b1fcd49b02824db2cb6a9c307b76"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/temp/barrel_idle_2_random_1.mb",
+          "sha256": "c3c324fe9d6351cd6f4f94856e95448f4c7792bfab0115116d7af1352188d932"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/temp/barrel_idle_2_random_2.mb",
+          "sha256": "5ed1388892792bd7bbb6d758e7258648d5773b0983879a5c954c610db0d227b0"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/temp/barrel_wpn_1.mb",
+          "sha256": "6dded2f62967ba0d67545ea35a39e1f809ef749dd9d5296f2c00aa5f1f381a2b"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/temp/barrel_wpn_1_random_1.mb",
+          "sha256": "4adc2c32cde2fc288a354ae217e5611dd231152bf94d87c7eda8d03b01c84c62"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/temp/brick_idle_01.mb",
+          "sha256": "2823269de213cc81f5082ae0e58ba858129846c4d87cd202eb1feaf198daef04"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/temp/brick_idle_01_random_1.mb",
+          "sha256": "1460bdf06207026ff4316ba688798e492ffcb95e156a42bb4316ad45eccd5390"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/temp/brick_idle_2.mb",
+          "sha256": "60528277f087be3dab2a4961358ba8d663f6d1a3f452e2431e73fb565de9b319"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/temp/brick_idle_2_random_2.mb",
+          "sha256": "4e1765b461efe5c9079f9a14393107b9dac09e376bea30aa2a972743caa20166"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/temp/brick_wpn_01.mb",
+          "sha256": "7427c73ec4e6cd25ba04de2676950b5a4f31cf1b169f87f7a87acc6411e51e96"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/temp/brick_wpn_1_sit_down_1.mb",
+          "sha256": "f4a045c64a3ad1ac559696337a0bf9281d9cd269eaab760592af7400cbf26ff4"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/temp/ground_idle_1.mb",
+          "sha256": "ea361f196931464c6ffffe6654b341692efbcccdfd5332d19ce9b6cec9302a22"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/temp/ground_idle_1_sit_down_1.mb",
+          "sha256": "a357461dc161e50b5b2f32ebd9f49cd9258bcca010b0b457c6c04c5375754e79"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/temp/ground_idle_1_stand_up_1.mb",
+          "sha256": "ba9385d5a896e157ab74a1d4841fa2012361362f7c440a286958d51b7b04eb97"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/temp/ground_idle_2.mb",
+          "sha256": "eb72858021898522afadcb0132cffb57b963d8dc8c944f83817fb37a4f096a29"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/temp/ground_wpn_1.mb",
+          "sha256": "f005c658af1962af0717ab91f2102e21c2cf0e68c108dc307eb7937763c4f3f4"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/temp/ground_wpn_2.mb",
+          "sha256": "fb9a7c914838e4668e66501d3ac50235ef84bb77cd9f5cb9021e0332e41e7842"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/temp/ground_wpn_2_sit_down_1.mb",
+          "sha256": "b24887f6971bd3a5e884a4e912e2512d5273c60a1526dd8d5d846109caefbeaa"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/temp/ground_wpn_2_stand_up_1.mb",
+          "sha256": "1d36ee1cc9a46df2c7edccfb56f67d67073b6f832cfa7a1ea39d5562d171fe44"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/temp/sit_2_high_noweap_rnd_1.mb",
+          "sha256": "1478d49c5428377e83d5eba9db3f35992375aa6e84f33353503776706123bbce"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/temp/sit_2_high_noweap_rnd_2.mb",
+          "sha256": "87c0a3ec05c750e611a0d5e4712d4012b5ac2ce377bc7e3eebe401b2e9c68f71"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/temp/sit_high_guitaro_out_2.mb",
+          "sha256": "6b0462c83aa2c20abb2a9c4094bd2f17b584d30a67f82604beaa6dfbf2defff2"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/temp/sit_high_noweap_idle_2.mb",
+          "sha256": "888abacb4767e7a8cc7f9dd1ceb0a776080c6b61beaf4b5049f69dc6b8a82001"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/temp/sit_low_noweap_2_idle_1.mb",
+          "sha256": "f6d1cf1f08cd5b8c87329576c4147c13470e1fde59fe81bed5e48d8817bdec4c"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/temp/sit_low_noweap_2_rnd_2.mb",
+          "sha256": "d32cf16e29adb252ca4a499e94fd76eb4ba1e4acf7d609ac117e8d4d6e5e37ef"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/temp/stool_idle_1.mb",
+          "sha256": "537af4dd317f33468480bcf3ff462ea41f34e7adbcfbadf8141ae6a1cb57ae58"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/temp/stool_idle_1_random_1.mb",
+          "sha256": "16e0453d4b12af799a45679873736257cc0e7171e0a6a924eee4cef5e8ca897f"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/temp/stool_idle_1_random_2.mb",
+          "sha256": "b156541c75aea595c0ec34816b569e60983e4cd328f0d2809fddb8a9d2b90a3e"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/temp/stool_idle_1_sit_down_1.mb",
+          "sha256": "6556c145047f6581adf16343598afd756a1fa78d10396013a9c9d3f1318346b8"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/temp/stool_idle_1_stand_up_1.mb",
+          "sha256": "8e455e5b9fca853217fdd685c4f7d1f34c4391c1458f78a061a6453c0b264c44"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/temp/stool_idle_2.mb",
+          "sha256": "d4bacb60508bbe4aaa0f2936017dfbba43ea87c683020ec104a4ea976fc9f9d5"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/temp/stool_idle_2_random_1.mb",
+          "sha256": "8c59cc414c2d26ef0b6e5c0199d2e98d9260bc6617248d23a30b9e186ada2257"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/temp/stool_idle_2_random_2.mb",
+          "sha256": "41dab8747221c3336f37f73ad5a67162dee313b938a8b29482bac3c2e69dc5f1"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/temp/stool_wpn_1.mb",
+          "sha256": "fb0bb404627dad3c5c65ac177d575e9207d735eba6557fa03558356186bad662"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/temp/stool_wpn_1_random_1.mb",
+          "sha256": "3260f6d3f3efafb511e34e70746db0c0441d1a7415771a27902b25ed505facc4"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/temp/table_wpn_1.mb",
+          "sha256": "c06e51598ad4075f74979198b8e651e120cc8a34cc9a6d8b61ef0e5a7f402111"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/temp/table_wpn_1_random_1.mb",
+          "sha256": "4feb9bf06bacc2f1da32579d8fa0f14508328d1532e6fb541a6dcd4a036b259c"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/temp/wall_back_idle_1.mb",
+          "sha256": "cb3adfc99f29df0da06c8a9fe498b7cf8bc0d6868bc42a3b86433ed78b9eb96c"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/temp/wall_back_idle_1_random.mb",
+          "sha256": "1a0d7a4f1d1ca7204ed61d8b25b8281a3d44bdda46f3d0ac0781722e24563f31"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/temp/wall_back_idle_1_random_fix.mb",
+          "sha256": "3fb54bcc775cf85d23fca938c82fd822b8c00993fffffb97827b9e3b026d63ac"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/temp/wall_back_in_idle_1.mb",
+          "sha256": "c362dee7a6170e1ffecaef16c14cffb36b1fc01b7588d6466c32fe8f0aaa1fb5"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/temp/wall_back_in_idle_1_fix.mb",
+          "sha256": "4827736381e55618475e6c2dd0046fe9b0c9c0c2737564b9815607a3d3d1c1bb"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/temp/wall_back_out_idle_1.mb",
+          "sha256": "49fdaf575671bea5d2a5dcde337aa1483209199b9fe50e8a04ca0bf59033729d"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/temp/wall_left_idle_1.mb",
+          "sha256": "a40f6e233d1c8cbc1fc0312b19b782e4581a53b7c5c4ef4959734ca8de4eb49c"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/temp/wall_left_idle_1_random_1.mb",
+          "sha256": "d18f578ceeb14d825acb09f7e0fbeafd2c82717b9f1c86a815279ecae81bf6c1"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/temp/wall_left_in_idle_1.mb",
+          "sha256": "a08c77f28692127b10f08fd75f9b054163e3098b592a18b47124c4b984f2871f"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/temp/wall_left_in_idle_2.mb",
+          "sha256": "5553e851def64ea4f294edee3d36f970349f6071e1d504e3269827b354191c12"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/temp/wall_left_out_idle_1.mb",
+          "sha256": "7a543cc84d517d96790c62115a92f9529d24f03bc39b2d253e5094bfb2a92d34"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/temp/wall_left_out_idle_2.mb",
+          "sha256": "23f877e6ffca46c02b5292a554b2797bfc64013f797cf67db991e70660b19826"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/temp/wall_right_1_random_1.mb",
+          "sha256": "81cb7d6030384b4da53ab6740e5ee83a858d21ae2332dc7c58b7c1842e3d06ce"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/temp/wall_right_idle_1.mb",
+          "sha256": "febf2e5e7e48b78f89b21dd3e099002e569759a320933db1c76d3fdd457d3e20"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/temp/wall_right_in_idle_1.mb",
+          "sha256": "01ccef48fc27ddf854d17f74ee4ce185da0094746d0e19efe82f6a6119dc79ef"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/temp/wall_right_in_idle_2.mb",
+          "sha256": "33b3ac37eb162ca82b8908327296995f10eb00ba7ed333a87d3dd0a3d8e459f4"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/temp/wall_right_out_idle_1.mb",
+          "sha256": "4d9cfaf235279ad243b1c6710ab0b8633a32f69d5e9e0a75bd6eafe44aae9338"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/temp/wall_right_out_idle_2.mb",
+          "sha256": "e9b4720809d0231e75a2cb1f0714716ef0f28d42568de4b4688ebe63bae31325"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/temp/wheel_idle_01.mb",
+          "sha256": "4ed8bf296278a2dc6bc4cc7f0a1e1c3c65f72ae5730ae3546b6a13607d181067"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/temp/wheel_idle_02.mb",
+          "sha256": "a1e7e3bcacc1ac799fbe9719bc800baf1b6858586fe46f77751c09bca0e9ffc1"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/temp/wheel_wpn_1_random_2.mb",
+          "sha256": "8b994a9d7a4498367e2f23a6a7e95acf2e08ba8f5dee28db1820e953f6788cee"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/temp/wheel_wpn_1_sit_down_1.mb",
+          "sha256": "cabf2447a98431f53c7a25dee41244b584b8520e34412d5855c071b45fcedb7a"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/wait_idle.mb",
+          "sha256": "7971aca08a89642a16008001d1fc068670437809cb99c1fb94cc950d5bf2866f"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/camp/wait_rnd_1.mb",
+          "sha256": "956012d8bbb79f04610b60735d8245c922885306587263b2f87affad57e52711"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/danger/crouch_on_site_still_aim_1.mb",
+          "sha256": "b5f4d473b5f9df8919817a0772ac470af49b88b499bfee24ee1f63ccfc5fd3b6"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/danger/crouch_on_site_still_pistol_draw_1.mb",
+          "sha256": "df112cc29b75d4e1321b4bfad34f026128cc26ebf5b0d4c31878a7811deec811"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/danger/crouch_on_site_still_pistol_hide_1.mb",
+          "sha256": "8aa58708faa7b5430fc8382b858a0443630d375758a212c92135a7b6155793f9"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/danger/crouch_on_site_turn_left_180_aim_1.mb",
+          "sha256": "a21c211ac068b1285ff37579b0838b3e66cd383fd71f68bafc032115e9c6bde3"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/danger/crouch_on_site_turn_left_45_aim_1.mb",
+          "sha256": "1715e315f0934d7fb31f0111ed6a1d1acb786452e75c5346ea9e6bdbb03f5485"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/danger/crouch_on_site_turn_left_90_aim_1.mb",
+          "sha256": "d55392fda1243b8cce7c1ddfc73908c64b82f746e6611cdf26db9d149e5a9a5e"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/danger/crouch_on_site_turn_right_180_aim_1.mb",
+          "sha256": "0109eceb152b77cf8077ea17d041693c651778faccbc3ae9ad36502ce4b95b59"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/danger/crouch_on_site_turn_right_45_aim_1.mb",
+          "sha256": "bf4dcd2919f5cddaefe5f1ccbd174b2f07c71b90d4965a170f7e188fb0ca0ebf"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/danger/crouch_on_site_turn_right_90_aim_1.mb",
+          "sha256": "12e3db518664484723b925a633ef8ae6da195e1fa1657439bb00c8274cebdebe"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/danger/crouch_walk_arc_back_left_aim_1.mb",
+          "sha256": "a2bfedbb720a7e665faa6acb1de81895228229f994278550a5d3c5e406f644d8"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/danger/crouch_walk_arc_back_right_aim_1.mb",
+          "sha256": "fb6e9588c5b3286c9c759e1098cf1a70ebf4fe2782234ac5a645f58531e5a709"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/danger/crouch_walk_arc_fwd_left_aim_1.mb",
+          "sha256": "44f083084abf27821c9ad9bc7c73d560cabe45b6cf8486e9eb184b16a747ee8d"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/danger/crouch_walk_arc_fwd_right_aim_1.mb",
+          "sha256": "4f7bfa43babfaa7865df0dbbb18b69efce0b71d46356119d5600ff650d29720d"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/danger/crouch_walk_move_back_aim_1.mb",
+          "sha256": "f60a3b4ebb9f2b10e129cb031608af3f2aca4a709c61f0c4cfe2f73f6bf2aec0"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/danger/crouch_walk_move_back_left_aim_1.mb",
+          "sha256": "14bd204ee2744cec860a3cafb54a6316f18e5a1ae5a15cfe1d115be1aa3f6436"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/danger/crouch_walk_move_back_right_aim_1.mb",
+          "sha256": "2d6b2ae78a1b8679b268ea3871de3983d4c6c1954c42ecbc9ccf306a6a4a88a7"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/danger/crouch_walk_move_fwd_aim_1.mb",
+          "sha256": "df3a1448e061c6b88060e687204556a3d56a80f86fe13520b51032a661de8f9e"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/danger/crouch_walk_move_fwd_left_aim_1.mb",
+          "sha256": "2758889f083b3b74e424c501178e2d99973007d137557302ecb00dd477d701cf"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/danger/crouch_walk_move_fwd_right_aim_1.mb",
+          "sha256": "0c93322ad3cbd345268b5d63f8e07e5c3b6ef30378506717434a51138d56c89e"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/danger/on_site_still_aim_1.mb",
+          "sha256": "1cde82d713f302cc8c7b8f4e59beb985d67e4eab2ff1cab27fd025e52431f3ad"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/danger/on_site_still_pistol_draw_1.mb",
+          "sha256": "34f07ce19da4becab8aa6886518c2cc4a0101bfbd5d881f50e4b780466b20369"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/danger/on_site_still_pistol_hide_1.mb",
+          "sha256": "5cef0b67c277937e13f3efded646692b26cf89595d5fe178ce6882ef3141ef72"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/danger/on_site_turn_left_180_aim_1.mb",
+          "sha256": "7ff2298a8c5aa0f8c4f03abbc52e9a1d82a69e9483f8fbf085a065c3b0818bb7"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/danger/on_site_turn_left_45_aim_1.mb",
+          "sha256": "c11915b97502b7e9a25f5e97335d1c26b2ff88363e7760576e93d61f92ed86b3"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/danger/on_site_turn_left_90_aim_1.mb",
+          "sha256": "1b65df52acf22eb063ca161a922c6ab7b846167781b77e5ef5bc2c30f5834271"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/danger/on_site_turn_right_180_aim_1.mb",
+          "sha256": "2ae9931c9acc59d421834e4dee35360ce89ecb7f6007a7536790ffe0d3c5bb8b"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/danger/on_site_turn_right_45_aim_1.mb",
+          "sha256": "fb9336b0d8bff1e2f3fd4c9b435e211930651ded052681f1b7ab861b06e2780a"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/danger/on_site_turn_right_90_aim_1.mb",
+          "sha256": "f154facf5e5bc50855c52b13f83ce9ab7914ca583b599ea003a677018bcd0afe"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/danger/run_arc_left_aim_1.mb",
+          "sha256": "a1aeef18e17b6e8369287a6bf480718ac762c85729c52ac303c015d9b8d874e5"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/danger/run_arc_right_aim_1.mb",
+          "sha256": "5de6094f3e771755f382b0048d49211d51931aa87469218c84a6c6af2a4a9da9"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/danger/run_move_fwd_aim_1.mb",
+          "sha256": "cacfd6c227cac317e91d04f7bb25162b9c9a7b89941e2e1d99e25f2fa30fde30"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/danger/walk_arc_back_left_aim_1.mb",
+          "sha256": "ce118a87407857afca83c0edca499e6f70051b69d0e9fcc3e89baf0253aa6cf0"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/danger/walk_arc_back_right_aim_1.mb",
+          "sha256": "bd870270c212d63fc731947f8b5e629d609946670d6ccafbe8edf2824fbfbfef"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/danger/walk_arc_fwd_left_aim_1.mb",
+          "sha256": "f47ff8db970fcc2143e3bf4f6172e4295fc9ad28d148f2fe2bf3b6adcdac953a"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/danger/walk_arc_fwd_right_aim_1.mb",
+          "sha256": "e912fd34da5a2d8a5b00aa41f5f5be0354af3388d3048377d4ac652b64aa43ca"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/danger/walk_move_back_aim_1.mb",
+          "sha256": "296eb5361afda1ecec36e0229aff4fa9d7b24fb16761449952fe01843bbd1475"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/danger/walk_move_back_left_aim_1.mb",
+          "sha256": "55e6e54b69479ece14107ab0262200964cf48049e42a39edeafff1b819c1caf5"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/danger/walk_move_back_right_aim_1.mb",
+          "sha256": "e37dc695b0ead7c9e9d659b69b1dcdbfd3c4b55af6bbbd74a63c5afc55e60ef6"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/danger/walk_move_fwd_aim_1.mb",
+          "sha256": "515b0324f326ebf23dd50f49b05de4da5d10a2d72f3a338cfdc5465eca7c8988"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/danger/walk_move_fwd_left_aim_1.mb",
+          "sha256": "0bc4b13eee5e5adea64512367b137df487cfc59b6b4f5450c5daf7626a71d917"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/danger/walk_move_fwd_right_aim_1.mb",
+          "sha256": "353b43ac170bd1402a53ec605cad198c35afa159066dc848f2a714a7e4e8f07b"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/free/fast_walk_arc_back_left_aim_1.mb",
+          "sha256": "b34daa4d9c3528e328ecbbe4157c1ff010a2dbd377f1c05f73aacd224102b520"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/free/fast_walk_arc_back_right_aim_1.mb",
+          "sha256": "1a0a77a8fc8bb0cadd7c3acf3c162fbe8859b1a8d76334e28543296504dcaa82"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/free/fast_walk_arc_fwd_left_aim_1.mb",
+          "sha256": "ff0ec4d816c0411a97a2e3782d301c63ca6e8453f3c8460d0f914366ca79fad0"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/free/fast_walk_arc_fwd_right_aim_1.mb",
+          "sha256": "b3b0a1a00e00ce277976a704d91a8302fd65248a68b385c48628e5d9e62d5d4b"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/free/fast_walk_move_back_aim_1.mb",
+          "sha256": "2ede142249ae54ece9e33cbe572f1e1b932e7b64425d80883ac0287aa1ddee65"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/free/fast_walk_move_back_left_aim_1.mb",
+          "sha256": "e47248545c36eadaf67e7644f26c85cfa649135ef304a0ab7df9e86364a030d0"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/free/fast_walk_move_back_right_aim_1.mb",
+          "sha256": "5b6e0fde29ea81ec0f6f46d34b127a25c7a2629d9ad68e1b8c1bb0f044f61426"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/free/fast_walk_move_fwd_aim_1.mb",
+          "sha256": "501f9f34f1ceda741492eab4db9fda2ef7fae7d6e53aa2e5e09ca319bd79c4a8"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/free/fast_walk_move_fwd_left_aim_1.mb",
+          "sha256": "699619383fec58233543118c14ca4339563e71d457c86f7f8f582f9a5bfb726e"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/free/fast_walk_move_fwd_right_aim_1.mb",
+          "sha256": "da34de67eeb9e2fe6726cf815b2442fdb508290b2bed3ced121433497849f7b9"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/free/on_site_turn_left_180_aim_1.mb",
+          "sha256": "4f05a15e050ebee210161720368344aeb5a8875e85bcc5398bc6fafe59f08e0e"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/free/on_site_turn_left_45_aim_1.mb",
+          "sha256": "67407bb93a754109e0c38acdb04f5db4ce1917ea5c9f76d69f39a31e9130cd96"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/free/on_site_turn_left_90_aim_1.mb",
+          "sha256": "1f87be288dc35661c3cc68e0557dd9c085079a2051b99fb2e0139c227f98c407"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/free/on_site_turn_right_180_aim_1.mb",
+          "sha256": "7f2d45f13e7dbc1537d2a778d43249049c2d9001797ad9787eef26de102ac75f"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/free/on_site_turn_right_45_aim_1.mb",
+          "sha256": "23817f002f2f999d7e916192830c2ca36fa71285955afec9280a12a3f11bbd52"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/free/on_site_turn_right_90_aim_1.mb",
+          "sha256": "4435a159a1945ddf9e2550ae2237dc6ff8f6197a58c15ee33d31adfb4f2650f5"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/free/run_arc_left_aim_1.mb",
+          "sha256": "d8c9d1457a338e7f98876f749d0981774a926fa522671f4fceae2889b26d34a2"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/free/run_arc_right_aim_1.mb",
+          "sha256": "09982f4dd3e9e2035b2f806f49a70b2cf699d251f7bb18dce44b390eee87e425"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/free/run_move_fwd_aim_1.mb",
+          "sha256": "7c948d77beff50e00e3359aa0a53ee2b509f528cff511e446ab72e35d6777659"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/free/temp/on_site_still_idle_1.mb",
+          "sha256": "3dfb385c1a4d2f7def777b610e430d9a849e33e700122dc3767b595a52575f95"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/free/temp/on_site_still_rifle_draw_1.mb",
+          "sha256": "90d7d67c464f60795bcc6d867352219df6f1dd6aaa7651bf5dc454da41284efa"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/free/temp/on_site_still_rifle_hide_1.mb",
+          "sha256": "b7ae87c462f82518e8035752901108226721b01459b1693f1de60e2738778fef"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/free/temp/walk_move_back_left_idle_1.mb",
+          "sha256": "f62f23aabfbbd79e725a763cb52f601c1ee9cd349abde1d3cef76016fc205f75"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/free/temp/walk_move_back_right_idle_1.mb",
+          "sha256": "f680130151cb367da59117314c6194b9fd56cd58c397a8f816c4edf6fc0572bd"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/free/temp/walk_move_fwd_left_idle_1.mb",
+          "sha256": "714b1c59ec5e2cdf3edd910d15fc77aef03a12ecbda27a6bb82b970b5a792b3f"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/free/walk_arc_back_left_aim_1.mb",
+          "sha256": "d593aef657e751d476e804e40bf22d957a8fb90ea7bfc215b6aa2316a79b8a61"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/free/walk_arc_back_right_aim_1.mb",
+          "sha256": "4013a21ed613a846a2d5d6078afcdb8603df5d0045c557cf82be2931369b9025"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/free/walk_arc_fwd_left_aim_1.mb",
+          "sha256": "033450a9f7bd797aca0c299e235f2fefe482294140eb68ec0206ea9654395cc8"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/free/walk_arc_fwd_right_aim_1.mb",
+          "sha256": "c87e4da20ab699401742613ee69bafc6900f2abb0908fe49f1c7bad5a29e411b"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/free/walk_move_back_aim_1.mb",
+          "sha256": "6e3c4db6f884a33851a92458d278c5a88480464e9b88730290846cb4aadcfd45"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/free/walk_move_back_left_aim_1.mb",
+          "sha256": "2a6d31970998e5950d165f2067d508e6ddb3dff126187a913c210846339a8852"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/free/walk_move_back_right_aim_1.mb",
+          "sha256": "a41499e923a374b36c447f4464fce639f19251194f82e65764b7febbf0dd950e"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/free/walk_move_fwd_aim_1.mb",
+          "sha256": "e53749b5f07342f7e4d3e8b439392c0258ca973e81d70d87b72c998ac6bf7707"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/free/walk_move_fwd_left_aim_1.mb",
+          "sha256": "3eaeb978e8eb067c519ea03ee900b550a9b80d788cf80e82fbea0a10ee9fab13"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_1/free/walk_move_fwd_right_aim_1.mb",
+          "sha256": "8a9dae39e6d646abf13c3f0caca94f9be0402f8ae30433dddae737dd3636ede5"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/crouch_on_site_still_idle_1.mb",
+          "sha256": "47b3a4bc9af33164d8c0bc3a9d24eec5e2952d58a3c42151bfd30d83d09e4fed"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/crouch_on_site_still_pistol_draw_1.mb",
+          "sha256": "33e9b1d2405b4c9a2801ea15c7ffb68a2f66aaa5ad811adc814b2e1c9fbf6104"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/crouch_on_site_still_pistol_hide_1.mb",
+          "sha256": "bf901777aafbdaf0d9851930ee3980eafcccb6fa8f5dfb0743ee9783bb9af2b8"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/crouch_on_site_still_rifle_draw_1.mb",
+          "sha256": "d8015d22fe5e489ef521dddbb4e083aa23ae50d9b11416a1d75dde14ac0454da"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/crouch_on_site_still_rifle_hide_1.mb",
+          "sha256": "02d3456a6b5d0b86c5ca16ddf218ed29cd9372cb1cd0ec2688fd94066ae44c40"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/crouch_on_site_turn_left_180_idle_1.mb",
+          "sha256": "d521acb0c9af0d3b13c325b7ccfa16c3372e674569124d3d483496f934041d88"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/crouch_on_site_turn_left_45_aim_1.mb",
+          "sha256": "fbd9ff19d8d39d4098f314c43c665302a6811c0e69990310aebf7756f09637b7"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/crouch_on_site_turn_left_45_idle_1.mb",
+          "sha256": "3ef70bad22c9eb0ecd908e0f453ad69f901cc4a630249a70a85f488fe576ab66"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/crouch_on_site_turn_left_90_aim_1.mb",
+          "sha256": "427e1ed84754603d63305d052cf97f0dba7e2b58adb8056bdfeb47731ea911a3"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/crouch_on_site_turn_left_90_idle_1.mb",
+          "sha256": "b5c6a5dcd9cb8420b974e8e9754356566da213467501a1380d5c05539a4d30d5"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/crouch_on_site_turn_right_45_aim_1.mb",
+          "sha256": "93736a928198029c58c1b18295fbca002a1badb2b14e2132148125c789103e04"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/crouch_on_site_turn_right_45_idle_1.mb",
+          "sha256": "c77d477c8e4c75401c8cf56b6fbd876e250a42ccb80c99f0504a3f67acde818c"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/crouch_on_site_turn_right_90_aim_1.mb",
+          "sha256": "d6a9ffb97652df0dc98823bd26b2974660c03e2eb3a052befe1471f20fd6fdbb"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/crouch_on_site_turn_right_90_idle_1.mb",
+          "sha256": "0ca7208457817a4a1ed5aee91de21bd282ba2b47c237f7729d9cac9c7d40cbb9"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/crouch_walk_arc_back_left_aim_1.mb",
+          "sha256": "7ee160ac077e861c90364b38bb55e2f05577dfe65784ca0cccb9ba1221f5834b"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/crouch_walk_arc_back_left_idle_1.mb",
+          "sha256": "01395c8d398725c106a1ac84624dd4ad1daa94a54ac735f84835927738098a2b"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/crouch_walk_arc_back_right_aim_1.mb",
+          "sha256": "2bc846aa90df826d6642d15a934ac53e414a33d8a8fe57aa0946f32c8018d597"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/crouch_walk_arc_back_right_idle_1.mb",
+          "sha256": "1bfb3121bf7a2fc750e6939d138f9c5c88e00a6b783804ad98d6a79403fba8bd"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/crouch_walk_arc_fwd_left_aim_1.mb",
+          "sha256": "ce310b5673d49dd2757f4558b9dfbca95486cd1c11f852985335053b7bb5e2d8"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/crouch_walk_arc_fwd_left_idle_1.mb",
+          "sha256": "efafbc083034db7181232a10767fef883bcf2dcf0c6ac52bb5ee2524efdaf6a9"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/crouch_walk_arc_fwd_right_aim_1.mb",
+          "sha256": "93335b5646583df85d8d0fde6ef610dade6aed8d934c91dbaaed2ddfb580a3dd"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/crouch_walk_arc_fwd_right_idle_1.mb",
+          "sha256": "21befd15c0ce49a6d2d8381a66cca896701b4134fae55ef57416bbf2aada9e24"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/crouch_walk_move_back_aim_1.mb",
+          "sha256": "40dc34ad3107c9091080709295fcc3cffa89b58570cbb19c78c3811d20b22f11"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/crouch_walk_move_back_idle_1.mb",
+          "sha256": "e5cfca034a8edbf3a116861afdb23dc87b4a7c7a51204e1ca96241a191054a3f"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/crouch_walk_move_back_left_idle_1.mb",
+          "sha256": "599bb5486612c3703ca8a37af2271c7ca3d7f69218db36e3f57208852a269721"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/crouch_walk_move_back_right_idle_1.mb",
+          "sha256": "a68baf8787ac5259017d197f0db8cf558197ccc1e95ec6e08e94ca73251c8779"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/crouch_walk_move_fwd_aim_1.mb",
+          "sha256": "5c175534543eb679d299eacfcdb6aa5a6b0bbcf7c0e0f5073ef96d7d8d525807"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/crouch_walk_move_fwd_idle_1.mb",
+          "sha256": "fa468a82050fda248ce4699b909cf28cfdd236a65088f5b852b56843275fa2c3"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/crouch_walk_move_fwd_left_idle_1.mb",
+          "sha256": "9e374a4fe52dac2e47ee1448936e9fd1201543fbf027ef5ebff3d8cb5c31b61a"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/crouch_walk_move_fwd_right_idle_1.mb",
+          "sha256": "6087008aec0c0cae8b461dd10b263a4dbfeee3a0245c69d2de6dee93e1a1c9e8"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/on_site_still_aim_1.mb",
+          "sha256": "2409c7a94ace666d55fffd50c80eee38dec138c03380c2a96517c3b45aef32a4"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/on_site_still_idle_1.mb",
+          "sha256": "2e25afcde58f0d2c89d20cc5129e8458e35982b84d0bd91020e219e538c4b170"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/on_site_still_pistol_draw_1.mb",
+          "sha256": "e15dc923687957530954a1678c8cd82042d08f91ab3049f8fcc07c8cc8ba657c"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/on_site_still_pistol_hide_1.mb",
+          "sha256": "390075a8cfedbe564cb86de2b30ebf091e95e8b393badd6585c448bb760c7820"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/on_site_still_rifle_draw_1.mb",
+          "sha256": "9f030a92cb7b3feefdf4ee6dc73a9ba189b28c177fc6948c03b17eb24c90d5e6"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/on_site_still_rifle_hide_1.mb",
+          "sha256": "3025959fad895a927bb4555765def1a7f392dc8a1c1e46ef7f12da0d5c6a208f"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/on_site_turn_left_180_aim_1.mb",
+          "sha256": "857008ff3e72c62277e16a4bce15f0e0e8c060120ed6df08d4a8846fda1a1e2f"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/on_site_turn_left_180_idle_1.mb",
+          "sha256": "c885ee4943b41afe733793b838c1f935a77659c5c6aafc92d6bb80ef9fbbf575"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/on_site_turn_left_45_aim_1.mb",
+          "sha256": "b297416df98a21b41dd553c8effd0bfebcbde94b4ebfb0e5735f830ae2fa1754"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/on_site_turn_left_45_idle_1.mb",
+          "sha256": "969175be9330a81fdaafa1da51d189125a1ce7838a519f8d16a3aec90d52729b"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/on_site_turn_left_90_aim_1.mb",
+          "sha256": "e08ed6642f66137214b23c2ef7e61274f842f66909f58793c938008af0a685de"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/on_site_turn_left_90_idle_1.mb",
+          "sha256": "0992246c7cdbbc1d8abe081c206f9714d3a1b27b07429f10e5a21348ee0cb08d"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/on_site_turn_right_180_aim_1.mb",
+          "sha256": "1d176b4a437a2a2c2677b0b328f87b7e7e6de842d4a4ba0e7d003a54e560e938"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/on_site_turn_right_180_idle_1.mb",
+          "sha256": "010fbb6d7f829561a933d406eeba1a72010a6c69821611093807fbe90127feec"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/on_site_turn_right_45_aim_1.mb",
+          "sha256": "7ea28d7484cf0e4878c9213a4668fb3390de352a98276be2a282cdb8928edbbd"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/on_site_turn_right_45_idle_1.mb",
+          "sha256": "ce31c6a10a7ab5eaf847098782772e22e3ee6d505cd9d4d05d9caf681c6cbdb0"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/on_site_turn_right_90_aim_1.mb",
+          "sha256": "8cbc5d98e87071cffa9eb48c298a0867b4a0c7f79d2b2c0bdd633e973107ddce"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/on_site_turn_right_90_idle_1.mb",
+          "sha256": "9cc0dfe6dcb78eca699d67e28d34d82c17a785310d359989a9a5649b13f92956"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/prone_on_site_still_aim_1.mb",
+          "sha256": "ed76a50a765a968be532fadf8283820ea8d865c362daeaff4dfc0bb90715e31f"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/prone_on_site_still_idle_1.mb",
+          "sha256": "84a4260f23e610e57d7728f4a643031b2e5dbcb17b30a0480d966be6b63e349f"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/prone_on_site_still_rifle_draw_1.mb",
+          "sha256": "3d808ea7851d3cb90d7643d1ef3f3495ba790136983db4792bf70f42b8c957e9"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/prone_on_site_turn_left_15_idle_1.mb",
+          "sha256": "b58e0e79fc9783d741adf60000a43521d5dcbbea74110fa06d22c6e25f0055e1"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/prone_on_site_turn_left_30_idle_1.mb",
+          "sha256": "1e99f3671448c017fcaebd981eeb7cbb57783b0fe28b69950771fd98514c4f48"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/prone_on_site_turn_left_30_idle_2.mb",
+          "sha256": "ac6f6f1bf27dedd099a80d81a9f53044a7aab417e4008d20b83aac692df37193"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/prone_on_site_turn_left_90_idle_1.mb",
+          "sha256": "117db91171a0d5c13e97c31b32b8ebe482f332ab585c99ea753b91edb557ab80"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/prone_on_site_turn_right_15_idle_1.mb",
+          "sha256": "436fd755a2069a09726aa3bb6ee46c49c44045e6375bfd1352bbc176f09a707c"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/prone_on_site_turn_right_30_idle_2.mb",
+          "sha256": "c22e09915048d72e192bdd8afc66f34cafcd77d64cd3f7ea3581da0efbec3529"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/prone_on_site_turn_right_90_idle_1.mb",
+          "sha256": "5e6fe8b3fa036b87b3547ecf46b5331139f523c67718a89212f8eb06de78e2d8"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/run_arc_left_aim_1.mb",
+          "sha256": "5003c694f3b8f0f04338db03903f96b00a42b03a99a5003b965f4dedaaaa7f4c"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/run_arc_left_idle_1.mb",
+          "sha256": "4708a9dbe82b67de8889680f486e5bd7f8c00a14bb4671e4b23fc10657c8fa1a"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/run_arc_right_aim_1.mb",
+          "sha256": "0d2e2191bf64d5030eaf286d00be89c06adff1495656dc89cbc134aef028c44a"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/run_arc_right_idle_1.mb",
+          "sha256": "96db37fe7931dcc06ee9a6c8f8ae2ffa680f1e48e939bab718be020ed1e28d89"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/run_move_fwd_aim_1.mb",
+          "sha256": "f8640107cdac0853d7f278d23bfd6c1b1e3195b7f414bd153cfe57c32ab158d8"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/run_move_fwd_idle_1.mb",
+          "sha256": "f209af35d8111e1196c371befe660fe0a135234a8c7764983bd68fb910aacb21"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/bandit_neutral_novice.mb",
+          "sha256": "be2995bba4a87cb71bae2831932e2c3b7796a7be6058250b33153ac63274ea4e"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/camera_test.mb",
+          "sha256": "eafeb84a08467b8c1006ec64f4cad6af212707a77581d3b0b2f854afd7372d6b"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/camera_test_slope.mb",
+          "sha256": "32a430008ef17a86c00a4bc78f7e9643897350e77d99875c20f46d492d24946a"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/crouch_fast_walk_arc_back_left_aim_1.mb",
+          "sha256": "f22687185a2455e60b55f3d12ebfd34cb2361c488b66088c7d183429baa6f312"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/crouch_fast_walk_arc_back_left_idle_1.mb",
+          "sha256": "3b61883d103dfbdb51cb829b9c629855a21dca3fae72832c4c355931f2759508"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/crouch_fast_walk_arc_back_right_aim_1.mb",
+          "sha256": "29b13887d56febac25967b4fecd12bfede750bf66a439a4ca13f38f446213bab"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/crouch_fast_walk_arc_back_right_idle_1.mb",
+          "sha256": "49ab50b90283cdb0cf6505d2b0a6eca9ab245b4e0c99bcf4e3ed8a415a7a2076"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/crouch_fast_walk_arc_fwd_left_aim_1.mb",
+          "sha256": "1147cb9a8e7a9ba5e9507d8cf49c04640ac56f56874729da8b7966f70c903dc3"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/crouch_fast_walk_arc_fwd_left_idle_1.mb",
+          "sha256": "3eb1f6065c051c44dd148a6eb9adbaedc3bc347daac89c3df57dfa4f877cd2fb"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/crouch_fast_walk_arc_fwd_right_aim_1.mb",
+          "sha256": "b8d8f1e9e8ab33246c1a1d9b649c41962ec6afbf8c818e51f8dc93c0dd82fc82"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/crouch_fast_walk_arc_fwd_right_idle_1.mb",
+          "sha256": "512c759d683901f0942bae0f71f38c2064bf64bda16a9549655b70227324e923"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/crouch_fast_walk_move_back_aim_1.mb",
+          "sha256": "99250362f0eeb57b59c402f36ccefa9ec19f62648572cda3ab60d1bc46b09f28"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/crouch_fast_walk_move_back_idle_1.mb",
+          "sha256": "41e8c17b6c554451f1b671e677b7dd4df5a87a7d7cbb0932b209d65cdca14d60"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/crouch_fast_walk_move_fwd_aim_1.mb",
+          "sha256": "9a34497478ef003b4ecfc9c4bd2c3e30dde55067c1b6a301f844b6020f5204b2"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/crouch_fast_walk_move_fwd_idle_1.mb",
+          "sha256": "d25b20563d7a957860ad038c4bbcef1763f480970d22b76c20ac8a8e2a6177f2"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/crouch_walk_move_back_left_aim_1.mb",
+          "sha256": "300a8b3ef4e291dce9299b2f11539049586ea7e279a13016ed17977f352d015d"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/crouch_walk_move_back_right_aim_1.mb",
+          "sha256": "d70dd43e43add4c8729a36cd73fa6b18088f05f6a411dab6ae34d783324dbeaf"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/crouch_walk_move_fwd_left_aim_1.mb",
+          "sha256": "1390aac5c8ec6eb37f5f6a6088ee0c6f60d22f9ba1f4b6426d8715ff3cbd21a8"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/crouch_walk_move_fwd_right_aim_1.mb",
+          "sha256": "36bd55faf8a931895b6c3359e55a949d62a758d7b3bb8e7e62bda5698ddc66b5"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/crouch_walk_trans_back_left_to_fwd_aim_1.mb",
+          "sha256": "979886143ef571348af4ef110083646bc51d3559d5dc1c02b0e05b7fedb3de3f"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/crouch_walk_trans_back_left_to_fwd_idle_1.mb",
+          "sha256": "6d3d87331570f289fb70dd60c78d8ff0ce5c8b4d17f7735b55d8c493cb6858bc"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/crouch_walk_trans_back_right_to_fwd_aim_1.mb",
+          "sha256": "fb4813ebbd7ad2474ae312a488e03de3893b091b0dddb85c38dce7ffba8d4551"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/crouch_walk_trans_back_right_to_fwd_idle_1.mb",
+          "sha256": "8110bcd530cfec04c68eddae76968ad3f69345596e46d5fdf95fbf2eb1b1d1bb"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/crouch_walk_trans_fwd_left_to_back_aim_1.mb",
+          "sha256": "637818d943757a4bf400c77f2a94815448a99a94ff06bef57c058d32f97e178c"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/crouch_walk_trans_fwd_left_to_back_idle_1.mb",
+          "sha256": "afd8c028c6cb68c72be5c1d75e151f2e5e2a00234d503a3e6741675a12f22fc4"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/crouch_walk_trans_fwd_right_to_back_aim_1.mb",
+          "sha256": "158e748d89624e9aa9962eca2193e5a315ca421961c004e0ab3595cdb71bb4c9"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/crouch_walk_trans_fwd_right_to_back_idle_1.mb",
+          "sha256": "c50af8a2eaa645214bc75f9e9b78d9879226aea09b7c06a87c5c226471064e2f"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/fast_run_arc_left_idle_1.mb",
+          "sha256": "13d5c8b0510ca870bb405919ba2b6c6df8c9185a73f72c7aac6e25db08455d59"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/fast_run_arc_right_idle_1.mb",
+          "sha256": "123a74f6eff1e19c138783329b4aa894400515ade3b73c62dd4b8653ddc7ac9a"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/fast_run_move_fwd_idle_1.mb",
+          "sha256": "bc9630edd9b228d6fa23ea53cbb3d12bbd1ccf0c3cba76de60d4c9b6b074f86a"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/fast_walk_arc_back_left_aim_1.mb",
+          "sha256": "1674f9340a7717d8cfbebcdb10ab18d974975730d61baf8a14c3347f10deecd3"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/fast_walk_arc_back_left_idle_1.mb",
+          "sha256": "10a7b088aa34132684ba7f36bec0ccd6ebb725001d8c2b7e11fc93af62e6762b"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/fast_walk_arc_back_right_aim_1.mb",
+          "sha256": "a4ea1baf5aa1fa6cd57bdd7531f52e88b39a66baf1cf37aa92f4a5fc33f72f05"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/fast_walk_arc_back_right_idle_1.mb",
+          "sha256": "9aff4ac47178fddc59041e2ac88071683a61b4542727e7f494e80f7bfc08e855"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/fast_walk_arc_left_aim_1.mb",
+          "sha256": "5d52df0ada22e693e21190096f594bbadc8db43054ec1dd4a392e170c8d34d9c"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/fast_walk_arc_left_idle_1.mb",
+          "sha256": "f4873c33fcdb333aadf7b11e2ef925653e54b42bb75149bf1d3d23ab00375461"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/fast_walk_arc_right_aim_1.mb",
+          "sha256": "2e2334dbfa70aa0ac9ede00c131649505db403d8858e3951303ddd4038c5710c"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/fast_walk_arc_right_idle_1.mb",
+          "sha256": "4aaaae43d1333f46768f12bac4471ee13d70da720d0369c5464d093905cb43d0"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/fast_walk_move_back_aim_1.mb",
+          "sha256": "3bb104a5f2221ea8a34c0e5b650aa152769b27d7f9515f322ab484dcee62772a"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/fast_walk_move_back_idle_1.mb",
+          "sha256": "d496c8c63f74504a3bd209a76cbf0bee6e6e091a18f82a1b49286a679929c135"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/fast_walk_move_fwd_aim_1.mb",
+          "sha256": "aef9920718e7f579f95a00a1bc27194b8546e94bb7ebbf08a181204c831a7cbf"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/fast_walk_move_fwd_idle_1.mb",
+          "sha256": "28bc5d074b36e653d9bfe6df879083745eabe4e383b5b6378a87fc301f5eaa50"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/on_site_aim_low_foots/on_site_still_aim_1.mb",
+          "sha256": "d513cebc3f1577528271231beef2c4e77ddee8d9654f8ffb049f3161eb1f22a4"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/on_site_aim_low_foots/on_site_still_rifle_draw_1.mb",
+          "sha256": "3ae471e6bbd5147fe2af72ec24505b24c8d26e71583ab4fbbaa30cf3d7a22025"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/on_site_aim_low_foots/on_site_still_rifle_hide_1.mb",
+          "sha256": "2da84be155c523cf1439d10bd6f5bfebcf57f478afaa7886af76349e8aa65be0"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/on_site_aim_low_foots/on_site_turn_left_180_aim_1.mb",
+          "sha256": "b83c674a5bc1b28b6c786b0e98cb5da9562a368e6697ea0214c98c8ad06c3cc0"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/on_site_aim_low_foots/on_site_turn_left_45_aim_1.mb",
+          "sha256": "18aeac1eddb9a5daf749da7ef3a362e44e179378b2a82357ec31b67a48962c6a"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/on_site_aim_low_foots/on_site_turn_left_90_aim_1.mb",
+          "sha256": "f1f39e0197016c324d59cac24b1685bdf856dc7d764b09d8ee93d53372b7d686"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/on_site_aim_low_foots/on_site_turn_right_180_aim_1.mb",
+          "sha256": "154b246dc5bc745845bc8dba7b4f85971b5c5cd44cf05868cd3d44d2288233db"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/on_site_aim_low_foots/on_site_turn_right_45_aim_1.mb",
+          "sha256": "6b26fff1e0adcf905f6027372953600039f2750f94a17afa79546781d5aea9eb"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/on_site_aim_low_foots/on_site_turn_right_90_aim_1.mb",
+          "sha256": "48813d63e784f539e47bf97c2f29e5eed32854d022ba8232512fb67cd66d6842"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/on_site_turn_left_180_aim_1.mb",
+          "sha256": "4e46012a10d542f246dd7013a84b7b0b1cad58c2d6736f04919d6d657c60383d"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/on_site_turn_left_180_aim_1_foots.mb",
+          "sha256": "008083674378a546aa7f1d29a1abb500db3ade8e529b6209f56e194ad6c43f6e"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/on_site_turn_left_45_aim_1.mb",
+          "sha256": "ffe214f59ffbc0dc69867a2a9084f909361cc3b58a7b70acf84ce7bc2c03c0d2"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/on_site_turn_left_45_aim_1_foots.mb",
+          "sha256": "86404d48266190324864a216c6767a8e255cbc80c7d6ee21cbd244b807ea6c42"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/on_site_turn_left_45_idle_2.mb",
+          "sha256": "693ff8c6bf4c65c4507bf4955559939775065ed6ee0ad954a76fc866b0f17edf"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/on_site_turn_left_90_aim_1.mb",
+          "sha256": "d06f852e3502d1346d6587d636afa6af844015689b472b49713eecfe3f5cdb3a"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/on_site_turn_left_90_aim_1_foots.mb",
+          "sha256": "2c348473510b2a920710b5ecb25d11cd520501d8df376d56361af2ddf2c4455f"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/on_site_turn_right_180_aim_1.mb",
+          "sha256": "63a5f1b29f48cd8ad67fab9ab4c3ef52913a7b8403741175ee6b7686c5ff8399"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/on_site_turn_right_180_aim_1_foots.mb",
+          "sha256": "50ad6d6dbd868bb94f8bc13c9f2ef662014a42b7a50f28a783d447b798193916"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/on_site_turn_right_45_aim_1.mb",
+          "sha256": "27345d99adc90c055e7d5a5d6ea93f2c388655090e1590fc0128727e8dbcd907"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/on_site_turn_right_45_aim_1_foots.mb",
+          "sha256": "3a6ba5bfd90f43c4ba6d99d37cc149039d213f79d9949fe8e8e6472e1334e4ad"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/on_site_turn_right_90_aim_1.mb",
+          "sha256": "66048593cc2b52cca93043d01d87f922f3a7b6e783adb1b6150aafc67a0b6c0b"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/on_site_turn_right_90_aim_1_foots.mb",
+          "sha256": "9b3cecdb64f6fa9119d9a11bcfc130a7cb3d7f52a56f223bca7e3201ff0fe3a9"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/run_arc_left_aim_1.mb",
+          "sha256": "697f4c8189113e029f3abd67ad262de5f09df77efaab988148869c7404ac2934"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/run_arc_left_idle_1.mb",
+          "sha256": "09bdf4dcb927f613684aa3fd273cbc054e47b68af9ea368dd4d34c5bd421f67d"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/run_arc_right_aim_1.mb",
+          "sha256": "c39a1f1c0e859f132035d83e2d3535f5be6223cd04ec0b7c54cfba64a86d459f"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/run_arc_right_idle_1.mb",
+          "sha256": "ee4c3f0ffa1b0ee17723c83a7289db57a622812d32c1b6ae3c9156f44cc026e3"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/run_move_fwd_aim_1.mb",
+          "sha256": "04ec700ff1bf8f0c4126a152d1f9d33358dd0806ea8c87a368e69cc780362ce8"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/run_move_fwd_aim_1_fix (2).mb",
+          "sha256": "fd732a09e0d2e8617552b53906f041d6760c5721497ec65cd6cd2058f2499345"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/run_move_fwd_aim_1_fix.mb",
+          "sha256": "fd732a09e0d2e8617552b53906f041d6760c5721497ec65cd6cd2058f2499345"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/run_move_fwd_aim_1_pistol.mb",
+          "sha256": "e7ad7b70c9bee0cc25c391ffdedba44c6c24f0bc7d0efe9fabd7020502c4007c"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/run_move_fwd_aim_1_pistol_2.mb",
+          "sha256": "50ab8a4fa32e7c81c934309aa09707a3660b29d18c2f15da46fc5408cff3fec4"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/run_move_fwd_aim_2 (2).mb",
+          "sha256": "cf71135dbff4c4666313077d69f4bd5bcc65b57478f13f2d4e0f28bec52be78a"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/run_move_fwd_aim_2.mb",
+          "sha256": "cf71135dbff4c4666313077d69f4bd5bcc65b57478f13f2d4e0f28bec52be78a"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/run_move_fwd_idle_1.mb",
+          "sha256": "1bc551b57b716b7cd2ee748c9dac058bf630f393bd082bbfda9f571ff9d13186"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/run_move_fwd_idle_1_fix (2).mb",
+          "sha256": "92f36eccfe0315e3f559df7b32498d62bd83a53a1ec0983cf38becbaa65f1d2b"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/run_move_fwd_idle_1_fix.mb",
+          "sha256": "92f36eccfe0315e3f559df7b32498d62bd83a53a1ec0983cf38becbaa65f1d2b"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/run_move_fwd_idle_1_test.mb",
+          "sha256": "4ab1dbf2fea5b81ab71a93962470a36a00d7cbc6cc0953e45449b88503cb7463"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/temp.mb",
+          "sha256": "4a18b29b5c709ecaf2ed05237f9967fcff26d3e1be7b02cd39f234b1a430ef7f"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/temp_01.mb",
+          "sha256": "61c4501a6570efbd359e8ddb36420f45405bdf20c4b4aef6c986b3164e026dab"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/walk_move_back_aim_left_1.mb",
+          "sha256": "02dc636eaa312969e66c7e9fc1a09908ad116a5802eda9f4fd45ffea7ed94d8e"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/walk_move_back_aim_right_1.mb",
+          "sha256": "9ef02d77cbf1be165cb0734020b490b2f793714423f3b68b3f593dc115dbcf48"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/walk_move_back_idle_1_aim.mb",
+          "sha256": "f6a3b712516e8b4d7d68f8781a0ef375fc8a50418a0b9805e153d8cf2962cb43"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/walk_move_back_idle_1_help.mb",
+          "sha256": "ffd91fc8aa11fedc33845a25ef5ea4a3ff5ee6b9c21dc838504dfb4103c75d23"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/walk_move_fwd_aim_left_1.mb",
+          "sha256": "d6d9b20495dd4ddc6d9187a168858037013c7a6fa2184590dcd8bef5ce806429"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/walk_move_fwd_aim_right_1.mb",
+          "sha256": "65c5bddf1f23771745c3fa06a879d4445a6b27d0526fd8ee21237a5c66cf50eb"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/walk_move_fwd_idle_1.mb",
+          "sha256": "f2c4e0b1959cd6194e944065041d6f0285c9cf4604ff888ce34595cd0aee25df"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/walk_move_fwd_idle_aim_1.mb",
+          "sha256": "c49b1dc1a5cb8c7f3b9e492d83119beb892cece3ba4943f89ec49337cf3ce9b7"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/walk_move_left_aim_1_arc_back.mb",
+          "sha256": "9c2a9dafbc7f3770db9a739f04bd1857f8fa1d6c96766d2b8781c4fce7c6e9e4"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/walk_move_left_aim_1_arc_fwd.mb",
+          "sha256": "903bc037bf0f0c1ccf20b9d41703dabd341924672ce630f097a414103f77b408"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/walk_move_left_aim_1_back.mb",
+          "sha256": "cc7583360764ca285a7ea35ca9ce0bce9e26ed60c53abe7721ed35a487b3234b"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/walk_move_left_aim_1_fwd.mb",
+          "sha256": "53eb5b132d6651e0d6a547068687a25e94cac76cc3290df1978916401c687f75"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/walk_move_left_aim_2.ma",
+          "sha256": "29f36bd0d2b3767c28e8a863990300b88bdd2d843e26719d635ad74d45038a1c"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/walk_move_left_aim_2.mb",
+          "sha256": "6a3aa39b346bc31b533a29124d283e9e216289101cf13adc1460582a190dece8"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/walk_move_left_aim_left_1.mb",
+          "sha256": "10af6ff8b2df130216edc4905c396e35848561cf362eac4efb5ee410ad99d33b"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/walk_move_left_aim_right_1.mb",
+          "sha256": "2fd71c980e5f0937c9bd196cb3e6abcbc8e9a47807fcef8be594b33f21965468"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/walk_move_left_idle_1.mb",
+          "sha256": "5bef0debad4d72836c924ec08f6e4b58b5c8cd5ce1d0704ca0df4d766e611bab"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/walk_move_left_idle_1_aim.mb",
+          "sha256": "281edaca0a069e6a17fd037a4bbb27758194fd746ca5fb7a6599f4560416bb2f"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/walk_move_right_aim_1_arc_back.mb",
+          "sha256": "a4d6455306f57ef65d4c5d7d81af0caa58745fa4486532407178386cca37f786"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/walk_move_right_aim_1_arc_fwd.mb",
+          "sha256": "b28a74eda21c38bb4fe5e4295f942aa3955ac3d9318442c8f5f49f22c19428ae"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/walk_move_right_aim_1_back.mb",
+          "sha256": "647d2ef09e6fc8501d59d3b7258a633f32f5870eeb0b098b50686daf133fbb03"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/walk_move_right_aim_1_fwd.mb",
+          "sha256": "54f0cbec4af335e40b01e60ae0ed35cd0b326286b4d980a93167ae5470ef4ed6"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/walk_move_right_aim_2.mb",
+          "sha256": "64ac50284a97e1988fe0a495177b4b31ed8ef7bd96c21ad00288ea4e0446d576"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/walk_move_right_aim_left_1.mb",
+          "sha256": "a62feba19b5c69e8dcd7ddb75e88d1a23548a52ededa22228e8aa629ac736c61"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/walk_move_right_aim_right_1.mb",
+          "sha256": "b501208afa9153a1c520446a96c8992c9ce8aa8d77d3b8abd7cc975e4fc4b78e"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/walk_move_right_idle_1.mb",
+          "sha256": "fee8c40882eed91deba082c6f0db49b4679dff4763a77c1f8c1cb24b165853bd"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/walk_move_right_idle_1_aim.mb",
+          "sha256": "3c8b6558fab3b8d7c158980a894f319aae203e71a5a60683b52489fa062c8944"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/temp/walk_trans_back_left_to_fwd_aim_1.mb",
+          "sha256": "a19ca79b512f28a080d0a012128c3951d0c46b0483a903bf66519caf983aee78"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/walk_arc_back_left_aim_1.mb",
+          "sha256": "d3051c234d4abf6efcfab965a311895f30c48b7b58e7ad41efc0cf3d27d5ccd2"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/walk_arc_back_left_idle_1.mb",
+          "sha256": "848f98130498893f8c7381434f016a8b36ea73c6f71522b65188a30577c931ad"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/walk_arc_back_right_aim_1.mb",
+          "sha256": "f565f885b3ad23703d71f653cf09367dbb6ac5e09ae3b03bc5127ab8191da035"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/walk_arc_back_right_idle_1.mb",
+          "sha256": "585ff4bd6c8f72a0f77ab5556640185ce8728b9c41db31482a4ee052050b4467"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/walk_arc_fwd_left_aim_1.mb",
+          "sha256": "dcff86498cbb1ad6c9c28d9b4b7efbb7167e0ee3d149e6b8beeeb5acc11c2b9a"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/walk_arc_fwd_left_idle_1.mb",
+          "sha256": "a67586fb6b79f0ab6985f496e53cce3a8299c50a2e76b851999b04cc2bc5f54f"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/walk_arc_fwd_right_aim_1.mb",
+          "sha256": "71f52510bae1d76d42cc598812b93b54c82d0fa4785b9e93b5d8c85e21f7f101"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/walk_arc_fwd_right_idle_1.mb",
+          "sha256": "ee5cd705f9fb495259800e56948a29dbac981cfd7361cf24a7d69eb7de48ff3e"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/walk_move_back_aim_1.mb",
+          "sha256": "b6187d69c22bee66e0afbb2ea1844b02b400ca222bbfeb67138e9c71383e13de"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/walk_move_back_idle_1.mb",
+          "sha256": "2fdebe136cb4c42205e7101fb05526ce3a7ce9add26bd7d59bbca7cc6ee74aba"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/walk_move_back_left_aim_1.mb",
+          "sha256": "aa45c24b350ac8ddbfb0ab7c96af90ac5edbdcee21c2110d8e9980fe585e2960"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/walk_move_back_left_idle_1.mb",
+          "sha256": "0c0fd5f7507927fb51d656b73e78ef8c62dbfbb5e9fef792b94f50259afb9286"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/walk_move_back_right_aim_1.mb",
+          "sha256": "936abdcd59799d8958ed10b0bd81b7e6913f0096ec585c13314699ec9f76a492"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/walk_move_back_right_idle_1.mb",
+          "sha256": "b2e3b43500eb20cffe4b803f8e5226fc846cf65d7b1eaeec6307d08e8b0a2c90"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/walk_move_fwd_aim_1.mb",
+          "sha256": "220691e4073cad4629af3fa355df98b9a4cc86f3ecb89cd948d28de13ea65a08"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/walk_move_fwd_idle_1.mb",
+          "sha256": "889647954958cde0af9dd38baa0f49df8e0ad6c915c5005bd31aca3fa2da6a25"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/walk_move_fwd_idle_1_fix.mb",
+          "sha256": "7a7f3a5001b8beacbf673666b6b187e03d128bd3a49acd4084ab1b4e1e740919"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/walk_move_fwd_left_aim_1.mb",
+          "sha256": "a9be80504051472cdceb25c9373e1369844cea90d0cca9d6a058b99eb2a4857d"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/walk_move_fwd_left_idle_1.mb",
+          "sha256": "c20db7bc60da8cefdcc13b9e364d23580bc163236d2854fe7f17541ba3b31e3c"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/walk_move_fwd_right_aim_1.mb",
+          "sha256": "c5b4fdb0422898560b4ce2535035578b36163111ea9beeae45e25212a8e648b1"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/danger/walk_move_fwd_right_idle_1.mb",
+          "sha256": "bd7be8fc22d02ecb7b4b6ef404bbec899a44d8c3a2da8490606c223b31dbc3ce"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/fast_walk_arc_back_left_aim_1.mb",
+          "sha256": "a4737657f55f7df77727e0571d22f6e122f1662241ce61f2986a8013fb1d15d9"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/fast_walk_arc_back_left_idle_1.mb",
+          "sha256": "5b15e5283c2837f612a5d7725c717c82b5d83f2a5e1ffecd01b49e02c7284192"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/fast_walk_arc_back_right_aim_1.mb",
+          "sha256": "cc833a3d39fe9e4864b52837eb44104545669d70693db69bff86dfb0af20d12c"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/fast_walk_arc_back_right_idle_1.mb",
+          "sha256": "3bc573d9dfa38e96260d0e3d855109bc1c1c8363e0d0defb97c8a2163c1829e2"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/fast_walk_arc_fwd_left_aim_1.mb",
+          "sha256": "4b80806c6e51d36e3801a100b5c3dfe80f903d1a7079a8828371ea5d35952244"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/fast_walk_arc_fwd_left_idle_1.mb",
+          "sha256": "4127f911d0f6f6c8a3a4c49c29b85603892278e0fd5ef1a22137e0f8f2f9bb1c"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/fast_walk_arc_fwd_right_aim_1.mb",
+          "sha256": "46d786e7f86d800db89eab4a7b1ee6e50655852b6fc131b2e10b63c2e8038d87"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/fast_walk_arc_fwd_right_idle_1.mb",
+          "sha256": "3d70bcf9deb6d94c59a024ec03a294b19aaeab8f13c930e145f6584796793ee9"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/fast_walk_move_back_aim_1.mb",
+          "sha256": "1798c1adaf1cf46a86de17380a808d2b7d03d2d87d393bdd36645e3b5ef36fd7"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/fast_walk_move_back_idle_1.mb",
+          "sha256": "eeb15c9c54628928674caf402872a2ad3c72abb5b0a0d2a2deac7ef0244d4760"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/fast_walk_move_back_left_aim_1.mb",
+          "sha256": "94270e0df0b29e93c2caa9ebd58a2dad9066afac86e512b80738bb9f662c3927"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/fast_walk_move_back_left_idle_1.mb",
+          "sha256": "3316ac0a43112f31b0cecce430daaef4ecba590fcb2b5b36a1f1d636784e7779"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/fast_walk_move_back_right_aim_1.mb",
+          "sha256": "59b6efd516f6c19322904d2b70e19827e00447035d0b51d7b0fd5c9585db1e8e"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/fast_walk_move_back_right_idle_1.mb",
+          "sha256": "0c9298d3923f0b5c8b915b36734ecb3a56f344835bd296bae7275df282842946"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/fast_walk_move_fwd_aim_1.mb",
+          "sha256": "fa7eab936af25c811e51954c1d28746eaeae2dad15d52acfca2389e353277540"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/fast_walk_move_fwd_aim_1_fix.mb",
+          "sha256": "bd519258fbcfac52917e7ce48a87f1a8dec2232ee1f2cfef39773e26ba58ac1d"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/fast_walk_move_fwd_aim_1_not_uniform.mb",
+          "sha256": "aebcddc47f8bd1d715adafc6004250e92e7363e9dcc4cf292988e3185185b5e1"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/fast_walk_move_fwd_idle_1.mb",
+          "sha256": "658ff78b9ce302c2301cee026f28b14d8c1fedbb424174161224ba6593e41e49"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/fast_walk_move_fwd_idle_1_fix.mb",
+          "sha256": "2e9d9e74c9ff2929541a829b65eebe5e4c1ef491ef64667d08054c33212483d9"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/fast_walk_move_fwd_left_aim_1.mb",
+          "sha256": "f13c88bfbcf374abfb95a224b3b289287c8d4fe3bf28f2ecb39eb1717c654863"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/fast_walk_move_fwd_left_idle_1.mb",
+          "sha256": "629b6c5626a40336be65e3eb905b54231aea6e24e1afc0d88f1c32c23607834d"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/fast_walk_move_fwd_right_aim_1.mb",
+          "sha256": "2dd0ee031f49ca52071c359c05772292f4daf3b504bb92b4106b89cb8c078b57"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/fast_walk_move_fwd_right_idle_1.mb",
+          "sha256": "7204665dbfc8cb3b73b6796b9655213e0b47af87868e04c128ae61739479386b"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/on_site_still_aim_1.mb",
+          "sha256": "4249aa73e5336a5eda79fa4360fc429786c673c36dfd3a59568d2ae34d0a631b"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/on_site_still_idle_1.mb",
+          "sha256": "d052fe5bb5a9940f517f4d0fbe1fababd4df40c265ac05a5967456495fef8672"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/on_site_still_pistol_draw_1.mb",
+          "sha256": "3eccf53846973ff5fcd3cab7f5922200564d4a8072a0171b19d1d99ef469de9c"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/on_site_still_pistol_hide_1.mb",
+          "sha256": "c2574d6b578d5bd205df9a8a7f12ba1888a9cb1827e2c0c90a3de7f3d7064a00"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/on_site_still_rifle_draw_1.mb",
+          "sha256": "9b23ac3cd19dcf5730e2d66e03dba87a6a9b3b23e2e22aaa68245bd211b36940"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/on_site_still_rifle_hide_1.mb",
+          "sha256": "b43bc0cb3564433b863178ea221477a48a74b2dc4f65ceacd7f8f583a69e32a9"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/on_site_turn_left_180_aim_1.mb",
+          "sha256": "a1865d18cdc08ba9000966c2bea2b33d319680b6c4f82f984bc72cf2e395c1f1"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/on_site_turn_left_180_idle_1.mb",
+          "sha256": "65502baa4bd3df8be1135578f7a33c757918f923bebd336edc8a77b30e749199"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/on_site_turn_left_45_aim_1.mb",
+          "sha256": "f4e4c800735bf9c247a456691ad24eb03724efe8ef1962b942f815327adb3368"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/on_site_turn_left_45_idle_1.mb",
+          "sha256": "c96bc3d9e59ea75374014c6eacd494ef8749a8ac519a5ebfb28d05692a6800a9"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/on_site_turn_left_90_aim_1.mb",
+          "sha256": "11c5e9c65525617263a1e9bc72d689eec1ae5b1efda64c6cfa4ef4a6b8684be7"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/on_site_turn_left_90_idle_1.mb",
+          "sha256": "44ca203fcf66823cac1c1d6e844ebeea9dc48cecd19cdca0afebcfc27e348fd0"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/on_site_turn_right_180_aim_1.mb",
+          "sha256": "b308c5559d47a32d771aee15ea25b2bc0eef32adb46d1a9a44612714f0001aaa"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/on_site_turn_right_180_idle_1.mb",
+          "sha256": "e5e3245d68808e32714bfdd1360b7efbfe0b26c45ba68f6cd24f18c0f3aa8cf8"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/on_site_turn_right_45_aim_1.mb",
+          "sha256": "5b3e0b02f746a425fbbe1db8669b443c1bddf13a9d8b5368b6d585efbb1eda38"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/on_site_turn_right_45_idle_1.mb",
+          "sha256": "059eec93e7d83402b0d89b0bba81af7f587fc6fdf2b21a6d3f144c1dedcb7b00"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/on_site_turn_right_90_aim_1.mb",
+          "sha256": "2660bb4c17c74fb97e3fdef4047c857d56b01d85b7262bb8da89435da77b0725"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/on_site_turn_right_90_idle_1.mb",
+          "sha256": "5f9c6c299479c8fc3463a011499f2e72ff2906ef0d29e14b6d16abf2f1e855dc"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/run_arc_left_aim_1.mb",
+          "sha256": "8ee437d43d2a97b87779c540d13f2fab01b593d8955b201d985262774d94c59f"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/run_arc_left_idle_1.mb",
+          "sha256": "89d5bb20e32ad47e483392c4e29246c160fcb31781198852f1e685885f16dfa1"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/run_arc_right_aim_1.mb",
+          "sha256": "3d580122bb9869a38f801b583c122dffe09b0827e0e51d39c27a69888e019eca"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/run_arc_right_idle_1.mb",
+          "sha256": "fd78b3c46c79be07bbf7e26d028342bbff267e3b3c040feb104c9048a1013772"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/run_move_fwd_aim_1.mb",
+          "sha256": "0ea48052369139494d438af9767ff7b7dd0f2ae0abeec0a395d00ab966c23d5e"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/run_move_fwd_idle_1.mb",
+          "sha256": "95a567138f95804e4294d3941680ad3d20dce510f27e87721ca7249638e45189"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/2/fast_move_left_idle_1.mb",
+          "sha256": "dcb7ffa4233e326a9e470dc77fb6a90fa72e738ad9e74893c805f622f99870e1"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/2/fast_walk_move_back_aim_1.mb",
+          "sha256": "6e4ad8b96625543406aeffd9b65bb01ad370e0023705e14d4523a5bffaf13971"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/2/fast_walk_move_back_idle_1.mb",
+          "sha256": "177afe3e1953dea6a53f492e79ed7fb171992cf93834395b8e7b5ffcd8717dc8"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/2/fast_walk_move_fwd_aim_1.mb",
+          "sha256": "e4c61fa3ccd2c9d4e00edbde3707ae37f7001b27a338d66d5fb4d95290c671a1"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/2/fast_walk_move_fwd_idle_1.mb",
+          "sha256": "2b73269dbcd668abfbf2dd98c885ef4a43ebb75b97579816bdc851a9bba77547"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/2/walk_move_back_aim_1.mb",
+          "sha256": "4357ce0a3c355f177f0cd3e8cde0b93d205dc0bb2b94b9d85676793543b45cf4"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/2/walk_move_back_idle_1.mb",
+          "sha256": "c87862486390fab6d74eafb28615e21c2801a1bc1588a902783cecb95c7feb1a"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/2/walk_move_fwd_aim_1.mb",
+          "sha256": "7ff8b8a20b535fd5cadb6334a14723192c9f0dde2e9291eba2e2bc38fd78446c"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/2/walk_move_left_idle_1.mb",
+          "sha256": "76049648d2e3f49f3aa5123761e5d5f9a7ae544b91dcebc0e7211ae358870f68"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/2/walk_move_right_aim_1.mb",
+          "sha256": "1b952a9692e41789a15c5fa1bf7c39523bcc574159513db5a9552cc2459a6a1b"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/2/walk_move_right_idle_1.mb",
+          "sha256": "5b32ce9927ef1471eb02434bb06bbf0f5b54b4174081bb0b66488231240d477f"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/fast_move_left_idle_1.mb",
+          "sha256": "dcb7ffa4233e326a9e470dc77fb6a90fa72e738ad9e74893c805f622f99870e1"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/fast_run_arc_left_idle_1.mb",
+          "sha256": "9b026c24fbb91e5c3e8cc04bb2a0dfd2cc6ce2bba654025dcd9ff27c87f5ceb7"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/fast_run_arc_right_idle_1.mb",
+          "sha256": "d3f4747ac45e8636a137c431940cd49bb301633cb6a243f464782f3da68227b9"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/fast_run_move_fwd_idle_1.mb",
+          "sha256": "311de5b0fab8c253b6108daa5af23db5a82bad030cc07a11b7336cc92f37ee14"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/fast_run_move_fwd_idle_1_temp.mb",
+          "sha256": "ec1d99e476599fac8a411fd28fa1d0d5e26102ad2e0f51ff0bedbd44913cf72c"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/fast_walk_arc_back_left_aim_1.mb",
+          "sha256": "a21652741b8e109b73c91a0f54d9017ccab737a46ab0873b08404cf0d191089a"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/fast_walk_arc_back_left_idle_1.mb",
+          "sha256": "af5980a30f8def40c93a0ce5320871e68e92c0b1a82acbdf7791a0d31cf79896"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/fast_walk_arc_back_right_aim_1.mb",
+          "sha256": "b937b84a6101e0b05f74f7f7dadc53ffbd4ed06386bf68ea9b09b24c0ba4aaa1"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/fast_walk_arc_back_right_idle_1.mb",
+          "sha256": "3e40a9f64b82b9c239eb131d76717ad17448182bf6603e60263a2fe1d60dc317"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/fast_walk_arc_fwd_left_aim_1.mb",
+          "sha256": "33047231b79628d024f0e34f40292dca94ba434f949aebfb61b22e52c88c405d"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/fast_walk_arc_fwd_left_idle_1.mb",
+          "sha256": "85f0b2b6bd1b29b68fa2bc2d6ba0949517e74323f13d34c5e3a758829bf7bd05"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/fast_walk_arc_fwd_right_aim_1.mb",
+          "sha256": "989c1cd0e3b4bb16c12d84d6216d63146b6a509661d44d81834472daa0ff4de4"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/fast_walk_arc_fwd_right_idle_1.mb",
+          "sha256": "2482f6665570b87da974f6ec45339bb27e23b28dba9bba567f6c4e60147a9109"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/fast_walk_move_back_aim_1.mb",
+          "sha256": "210ebe67e0acb63614515009eea5f2ce25c657dc1fcd63752a28414f4e08ff70"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/fast_walk_move_back_idle_1.mb",
+          "sha256": "f25ad29b0a4c07c2bc8621cbea0fef1c871f8bb45f3f70c512a03e04c2f8ab8b"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/fast_walk_move_fwd_idle_1_temp.mb",
+          "sha256": "973f5e2d7e47c2d113b96d39571cf5928a636c987649a939e79202622808d2ae"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/fast_walk_move_fwd_idle_2.mb",
+          "sha256": "484c075517e2702704e7d367a30d83e516cef42a636e201a5af5f6f59b639199"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/fast_walk_move_left_idle_1.mb",
+          "sha256": "673a972b58106a1250e41835c73aa378749a85f07534c5074e2313b6ea35c01d"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/fast_walk_move_right_idle_1.mb",
+          "sha256": "c3b6e42ea163f2e9efad7b9c7752f0803c94916f9ba461819d5729c8a6fc8bbe"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/fast_walk_move_right_idle_2.mb",
+          "sha256": "22ecd7294a3e16f4e9aed0da148350c2be9704ba570500f941794efa00690ea5"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/on_site_still_aim_1.mb",
+          "sha256": "799931ca38100cfbfd271cdfc56e7f1b082bb1c6b4e8e08ef12e5f65b3106e0f"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/on_site_still_aim_2.mb",
+          "sha256": "42e93c1df9201707205f65e2bd7a464930995dc1f88c14ec636d2476922b6c9f"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/on_site_still_idle_1.mb",
+          "sha256": "a713632cb3613f63fd1d4a60f44e8d8bd357fe0c3c66a6838f00ce38485f86cf"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/on_site_still_idle_2.mb",
+          "sha256": "b2ae46a0e67743cdccb755149293e983c5973fb13518c74342a3c681fdfd6a40"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/on_site_still_pistol_draw_1.mb",
+          "sha256": "73a29fff8cd0a336ac625cb33af5a2a3af2d8bfc882281c980ba97efec3eddfa"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/on_site_still_pistol_hide_1.mb",
+          "sha256": "2fcbafb0316a6835303608c48c0982481ece171f50a3d68223bf1e72d10cd55c"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/on_site_still_rifle_draw_1.mb",
+          "sha256": "a6fc4153c1ecf1cccfe0bad5b0a86e6a726c4051335018edd2cdc4884b4f4072"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/on_site_still_rifle_draw_2.mb",
+          "sha256": "9b819ae1390d0b2cd7d0449f1be4f2418ddad287f5eabb46d0bf06ecf5e79d5a"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/on_site_still_rifle_hide_1.mb",
+          "sha256": "e3cad789ac595104cb733c22d15bb0c54c85a4b7fb699474b9c69169428428ac"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/on_site_turn_left_180_aim_1.mb",
+          "sha256": "ab56ef01379533d0380932170de6511f3b7b50b0bc044337d3e6d87ea8a2015f"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/on_site_turn_left_180_idle_1.mb",
+          "sha256": "e6eaf606270430fed5abd90d3ace50115c615c7388989dc114e4bad534113068"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/on_site_turn_left_45_aim_1.mb",
+          "sha256": "098b325d2ccea638ee07011cd6744b8cd428abcc20a59668feb8c0e1a1c9f49e"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/on_site_turn_left_45_idle_1.mb",
+          "sha256": "480faf1713c5fb1e9d53369b0be6a9f87f07f016c60c7168fc729429bef0ddc9"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/on_site_turn_left_90_aim_1.mb",
+          "sha256": "4d8a4ce924bef4fc34398b48f7b5c665b0886eabc0948ee5341405cab3d0beea"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/on_site_turn_left_90_idle_1.mb",
+          "sha256": "d0b241c33449b1bd96c4edfa94024d06b997f24bfb7e9c5a24fe39ae3b03b108"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/on_site_turn_right_180_aim_1.mb",
+          "sha256": "a8f93672e0cc84ed0f2307335bcad937ca86bfc295b6fdf849902729538f1896"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/on_site_turn_right_180_idle_1.mb",
+          "sha256": "63682d62364fef0d2a765906981932e5b69761c6e106c23db98cf7f60aa1dca7"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/on_site_turn_right_45_aim_1.mb",
+          "sha256": "d154bcc5197bde0b09d469e98dce816d1293199c91445c026dbf506e89cd5440"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/on_site_turn_right_45_idle_1.mb",
+          "sha256": "c9b273f322f0de0f43aa6502780ffd02f7cac21e6308eeec5bdce2efc8647d4a"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/on_site_turn_right_90_aim_1.mb",
+          "sha256": "58e92c83faf435e9e785479e67e9bf3eb6d4798327a5600112cce2dce251f726"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/on_site_turn_right_90_idle_1.mb",
+          "sha256": "8c96314bba94115884eb9cadf9194047c223389134ee19a49c502d9b23d4eb82"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/run_arc_left_idle_1.mb",
+          "sha256": "6184d44f8e817dd315485d0afd70e19621b5be3c0b736d329a666f9151196c53"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/run_arc_right_idle_1.mb",
+          "sha256": "529f5e54fe60f97d4919fbfe6c9cd5ea119631e282c847ce907911d00073ce9a"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/run_move_fwd_idle_1.mb",
+          "sha256": "8cf8fe2c54c8caf50ce2f3397e88b07d5afd77a17214c5363ea8f5893245f539"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/run_move_fwd_idle_temp.mb",
+          "sha256": "367ffac6061f24761d7eadacfbf2dcd7cd6f3693a79833d01e449bfb1e73198b"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/walk_arc_back_left_aim_1.mb",
+          "sha256": "18321b735709f917a7c9715dd8585f2cdf9982c174c388900b33a54f96694efd"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/walk_arc_back_left_idle_1.mb",
+          "sha256": "80567312244e0d253e7f685c71e5d13c0d65d841d9bd568cf8b16b3999d4a822"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/walk_arc_back_right_aim_1.mb",
+          "sha256": "ecccd85404fee84b54d01731cebf8ff8d23cc48f4c5562b40414c839d321c1e9"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/walk_arc_back_right_idle_1.mb",
+          "sha256": "600a73233e6cffe5e90ce69f96b996326f75bdf107ae728aaec85332cc8763c2"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/walk_arc_fwd_left_aim_1.mb",
+          "sha256": "7d288bf9ba007a3323e8797087b3d60347ab6356483204d77be39b62706b16e8"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/walk_arc_fwd_left_idle_1.mb",
+          "sha256": "571d3ce03e7699984bf201baa790204b98d44efb85de75bb025d80407c52863a"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/walk_arc_fwd_right_aim_1.mb",
+          "sha256": "ccea394678a21d9759f8029e6cb501eb0e7c8ee15a5a18e0a8d92681d03bcd0a"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/walk_arc_fwd_right_idle_1.mb",
+          "sha256": "fdb22f4e3ab3f96ea62994dbafd8a13b04c6be76ca78d8a6ba85269a23102bf0"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/walk_move_back_aim_1.mb",
+          "sha256": "102edc232815379a42d80bf2caa9195fdbba666826ca1b9e8c483f8980017269"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/walk_move_back_idle_1.mb",
+          "sha256": "ffd91fc8aa11fedc33845a25ef5ea4a3ff5ee6b9c21dc838504dfb4103c75d23"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/walk_move_back_idle_1_aim.mb",
+          "sha256": "f6a3b712516e8b4d7d68f8781a0ef375fc8a50418a0b9805e153d8cf2962cb43"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/walk_move_back_left_idle_2.mb",
+          "sha256": "26b93e454bf6b3ef20c2c61f1c9eaea974eb65488a52690cc7652c8dff15128d"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/walk_move_fwd_aim_1.mb",
+          "sha256": "082ef64e12f4ba5863b3e645eb33e0a2fa76a3567f0488b6273e9503eff30cc8"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/walk_move_fwd_idle_1.mb",
+          "sha256": "f2c4e0b1959cd6194e944065041d6f0285c9cf4604ff888ce34595cd0aee25df"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/walk_move_fwd_idle_2.mb",
+          "sha256": "a749b99b5645c991fc5f2d64db5aa8ae98dab0eb12887a8f07956902c211c63b"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/walk_move_fwd_idle_aim_1.mb",
+          "sha256": "c49b1dc1a5cb8c7f3b9e492d83119beb892cece3ba4943f89ec49337cf3ce9b7"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/walk_move_left_aim_1.mb",
+          "sha256": "cc78248853a7a6b91c5c0a75354e3c8f8a14319fd92ceee0feb9fb50d79e3f6f"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/walk_move_left_idle_1.mb",
+          "sha256": "5bef0debad4d72836c924ec08f6e4b58b5c8cd5ce1d0704ca0df4d766e611bab"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/walk_move_left_idle_1_aim.mb",
+          "sha256": "281edaca0a069e6a17fd037a4bbb27758194fd746ca5fb7a6599f4560416bb2f"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/walk_move_left_idle_1_temp.mb",
+          "sha256": "d53e483f22151350a384d69c1e422af198592746ba470d9d58421dd4da57f824"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/walk_move_left_idle_2.mb",
+          "sha256": "37009483db20060db4e845c0b56a3eb6b183eae9201867be6aba8640ba44e7dd"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/walk_move_left_idle_3.mb",
+          "sha256": "47195fa549fe9de361bf3565641b4b51fa2ff4e4801acafd8e5c0111a3e0f4c8"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/walk_move_right_aim_1.mb",
+          "sha256": "690b48117de9d48804f26b79576d0b1bbc30c00e3b492f8b2845b7ae7c41f21b"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/walk_move_right_idle_1.mb",
+          "sha256": "fee8c40882eed91deba082c6f0db49b4679dff4763a77c1f8c1cb24b165853bd"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/walk_move_right_idle_1_aim.mb",
+          "sha256": "3c8b6558fab3b8d7c158980a894f319aae203e71a5a60683b52489fa062c8944"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/walk_move_right_idle_2.mb",
+          "sha256": "c5d8708048cc13704e6238161d08d5fda56512eee8df39bb55914f88ea28879d"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/temp/walk_move_right_idle_3.mb",
+          "sha256": "37c03e4b2a3547aee39b359528d8ca5a22019b9ff78f8833366df6f1f55d2fc6"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/walk_arc_back_left_aim_1.mb",
+          "sha256": "375be96ec96482a388d812f2affe329686cd1374413b103e9fca5abae0321506"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/walk_arc_back_left_idle_1.mb",
+          "sha256": "8a0b8609e933dc143167af202b87218381f3a4cdbee6c54188640dddbfc86a23"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/walk_arc_back_right_aim_1.mb",
+          "sha256": "0ecc2e5a55ca80c7ce9c0dafdf89f9b7a2ed50cb1fa749e0c1d8cf3608e31419"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/walk_arc_back_right_idle_1.mb",
+          "sha256": "4f1a6fded5a482cb303d025b9a26dc09f3695ab1ba10aba3ed03edfb77366288"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/walk_arc_fwd_left_aim_1.mb",
+          "sha256": "cf75e84747e6f144c681993c30d3813375eb70640c96fe39b718cbdece98437f"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/walk_arc_fwd_left_idle_1.mb",
+          "sha256": "193e384e07c8456caa7f6649a19dbc92bf0f81438436b0200e93e14d10d2898f"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/walk_arc_fwd_right_aim_1.mb",
+          "sha256": "b5577f2fd7436c222a441fedb4681343e0da2b8487f2496bd45400c94f27bacf"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/walk_arc_fwd_right_idle_1.mb",
+          "sha256": "154b0877f65c309af15a9f12b668b6f1c62b3c9d5b92b0fb4a1660365df65f23"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/walk_move_back_aim_1.mb",
+          "sha256": "59cf7e35e012ddb025b330a0c7c6cea801879534437274c336dd651a179f9f70"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/walk_move_back_idle_1.mb",
+          "sha256": "ca7f82a8f1721c4c2c0514eace7d3c2612e67e45f0a12abeea10a2ce5f16a2e5"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/walk_move_back_left_aim_1.mb",
+          "sha256": "d78bf06eb486c8396f8af42eb1bf1faa746ec0fb310c02c06f836cdb2180d19c"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/walk_move_back_left_idle_1.mb",
+          "sha256": "5e09b55b787aec2ed414e88c918d1b2cb526b8bd4618c229845723bfbb42f96d"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/walk_move_back_right_aim_1.mb",
+          "sha256": "7b89029162c5e2e638f499b1db73ff0b1dd1711a90a24a3d719c3ce7408bbd76"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/walk_move_back_right_idle_1.mb",
+          "sha256": "8adc03a28ce600e88aa2594d4088ec96b2da81b99fd1ca66ea6185e9e9e44502"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/walk_move_fwd_aim_1.mb",
+          "sha256": "7ea0f7aac67ce0a897c0478d72386e1e70b5154a632fd4f481d49dbde2eb684f"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/walk_move_fwd_idle_1.mb",
+          "sha256": "705d860e7f0c87260e68fb7bc484cfa5bfd43269697e7914b936adb3e52927d7"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/walk_move_fwd_left_aim_1.mb",
+          "sha256": "62748787a9be916b731aa8c79b19fede70e0e3a3e1a12883d9ff06373013f66b"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/walk_move_fwd_left_idle_1.mb",
+          "sha256": "b51e9bcf3af21252813dede28dd7bf176d7f7bb4b1e26b4ecc1eecb4e4c3140f"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/walk_move_fwd_right_aim_1.mb",
+          "sha256": "4d28c6bfee02b089b6894dc392b6b68855d4165960ee2c043e45ba4ddf2dd9e7"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/common_anim_slot_3/free/walk_move_fwd_right_idle_1.mb",
+          "sha256": "5028f4a721c19bd7b6c619841d99dcd328ff513f3be7a72f331cdaccc920d155"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/hud/test_hud.mb",
+          "sha256": "c470eb41e1e00c5edd96157509766f5c9e441cf8b8f5a3bcce08915afa99f3af"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/hud/test_wpn.mb",
+          "sha256": "53a2948c2bbf08677b916b77fc293777a9eb4ea639675e5a4a08d1be8fbb82e8"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/hud/walk_move_fwd_aim_1.mb",
+          "sha256": "19d713c913cb6eea97616a2e5260a744f0b5f0e99f411112bd720c2bd36895f4"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/temp/barrel_idle_01.mb",
+          "sha256": "3770d5d7959ac9cb5d107f37d07548ad0fcbe7336de0c832be39ff7ecc21e2dd"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/temp/barrel_idle_01a.mb",
+          "sha256": "6bbdba33e8f18c1886ea2df616c4d3200f14924095dac80fba38c6cadce2f10a"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/temp/barrel_idle_02.mb",
+          "sha256": "aa287568ecc833509a46b8a9ffb6b3ea4ef46d27fc75b7c75d8de776ab39f26a"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/temp/barrel_idle_03.mb",
+          "sha256": "426b02c69fcf031135b257c00a1d97b6f511357482875892b80a58bc2562ba22"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/temp/barrel_idle_04.mb",
+          "sha256": "20e873dac1ac320ec75785b18b54ae28f52111034c48570b467d85752f4f4a7d"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/temp/barrel_idle_05.mb",
+          "sha256": "934ab957054c32a82c3e850583d6a36b9f953793946d0ca1aad5286b6a0b3454"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/temp/box_idle_01.mb",
+          "sha256": "ac755a56ef578f7e80ac6e4168efa8c5a5f829f575f6e7eb71d7100f2a70be61"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/temp/ground_idle_01.mb",
+          "sha256": "e2e561d9670e48e22d0a9a46f11c3cf0e549744aa89ca7f6bef8851f1ad72ff0"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/temp/ground_idle_02.mb",
+          "sha256": "eab65a27d14423da319a3db05c2b80e72dff0e1cc391dd40249ebd5da30fcb21"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/temp/ground_idle_03.mb",
+          "sha256": "824395f66ac030ceac75b2003314e288edf3f170457121934036c6a8b615cbbd"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/temp/stool_idle_1.mb",
+          "sha256": "66802c06759fdf31c9e80072558be2a337b3d937aec9aa95d67e6e9a1364e3bd"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/temp/table_idle_01.mb",
+          "sha256": "b591e1c08cb7b363dcccf86caea42a1a785976468f54ca97a80f05d90111c1af"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/temp/table_idle_02.mb",
+          "sha256": "2b86f5e53fb64eb0ab86bc24f3a6e2a964d1867bbd65e966939f30f80377f034"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/temp/table_idle_03.mb",
+          "sha256": "53a2b0f7674ec0e2b37ad0b948c9a43193c4f3b52eaf5bbb428ec1092c0a4122"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/temp/table_idle_04.mb",
+          "sha256": "1a8f47995bfb2ec1ac457c6656ba35db14d3ce494d70b5432dc3db00db4814b4"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/temp/table_idle_1_stand_up_1a.mb",
+          "sha256": "3dceabfd83a5978dea7e1d194e75cba49ee95450479b55209177bd712e1df650"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/temp/temp_exzo.mb",
+          "sha256": "8980c273a83e23e1c2a237f8e122a59c4a6eac73fe1d1935d61af000a8e7d17b"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/animation/temp/wheel_idle_01.mb",
+          "sha256": "5b4f8868264db6c9fb8580e732a0d40904d34497c597e89a7c0fd70c12fbb52b"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/bandit/bandit_01/bandit_01_skin.mb",
+          "sha256": "c185d6b32ea2ee2ca725eff18a81abbb5239425ef68ff6e2761545c3eca893c7"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/bandit/bandit_01/temp/bandit_01_skin_DQ.mb",
+          "sha256": "74735dde083cc6dc37c5860bc30a7ff18380a43c2d329635e092a102d59c241f"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/bandit/bandit_01/temp/bandit_01_skin_sample.mb",
+          "sha256": "552ffc0b40e1fdf9ac457854cddd1d00bb8872d7408e39ad7a4cd13bb266d393"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/dolg/dolg_exo_skin.mb",
+          "sha256": "c9e8ae59c45e6fa914dd70134e4c1e1879b78ae45a810d789a8d42cc5feff1ad"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/dolg/temp/dolg_exo_rigging_02.mb",
+          "sha256": "3c5c380bdd195fd37b1fcb9ef8fd686ec47dfe2be51bcf27c1ab87b884b46afa"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/dolg/temp/dolg_exo_skin_sample.mb",
+          "sha256": "886ee0187796281f525cb050b417f93fc46a93a61801fea1c2f7c9d310aa13bc"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/human_joint.mb",
+          "sha256": "f6ae96217813f304520b156ee3a0dd42f43aeffa229102ea3fd045609041c226"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/neutral/neutral_01/neutral_01_skin.mb",
+          "sha256": "4bc805416c025f0f9e12621ceed68ad48e273ae7cc2cc4b2c5657fa3cc8f5c1d"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/neutral/neutral_01/temp/neutral_01_rigging_01.mb",
+          "sha256": "aeb2fd57eda4a1bc8a3748cca6b04d94b45e49984c92caf1d652c904be2ef423"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/neutral/neutral_01/temp/neutral_01_rigging_02.mb",
+          "sha256": "75cd9c3959c3c7cf1ac96a5b2dc2fc1e1dca774aa32d145ea7476183161091ef"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/neutral/neutral_01/temp/neutral_01_skin_sample.mb",
+          "sha256": "a68a28c77e065c3ad20205572b0d1ead6fb43ea07856ba62509a55d6bd92365e"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/neutral/neutral_01_novice/neutral_01_novice_skin.mb",
+          "sha256": "6178bbc64f350c7616422a8c82aa2ffb2f0a2f7acd89fcdd167deaba2024e256"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/neutral/neutral_01_novice/temp/neutral_01_novice_skin_DQ.mb",
+          "sha256": "f07d713cb4086a2532e1593924431433e807b70cf410d06f1a5f9b32fd0c6411"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/neutral/neutral_01_novice/temp/neutral_01_novice_skin_sample.mb",
+          "sha256": "0fa8abbe39d21a4f9d1c8e9093061529bcafa11d3a60355bec07e90205e3a562"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/human/skeleton_man.mb",
+          "sha256": "23e9820af8b516a265085fc6c0c96a5b0768ac467976c54838b894ab492da2d3"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/monster/animation/krovosos_transf_eat_to_stand_2.mb",
+          "sha256": "ae1bdc4e5095088e2ba384608f07d170c379e5f7b64eecd0e52e5b2d00b9bd48"
+        },
+        {
+          "path": "xr2-dsgn/resources/sources/scenes/character/monster/krovosos/zhertva.mb",
+          "sha256": "af25da1efc758e61405e6226eac5cdd95a100582a9921369e3f86a8a819a17ca"
+        }
+      ]
+    }
+  ]
+}

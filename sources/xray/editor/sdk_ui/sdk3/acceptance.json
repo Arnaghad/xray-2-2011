@@ -1,0 +1,250 @@
+{
+  "schemaVersion": 1,
+  "stage": "SDK-3",
+  "accepted": true,
+  "date": "2026-11-10",
+  "scope": "Project persistence, document lifecycle, VFS/dependencies, native resource sessions and cache/cancellation; scene authoring and domain editors remain later stages",
+  "evidenceRoot": "build/sdk3-implementation-20261110",
+  "checks": [
+    {
+      "configuration": "debug",
+      "ctest": {
+        "path": "build/sdk3-implementation-20261110/ctest-debug-final.log",
+        "sha256": "db0230fe79c3526476855d4e42a29820df70602649a1edc33f84a067eb730c10"
+      },
+      "managed": {
+        "path": "build/sdk3-implementation-20261110/compatibility-final-debug/result.json",
+        "sha256": "a679f71ba4fd202694af43764e634f4f83ac3ae96c68ac42cea4700996f491c6",
+        "groups": 11,
+        "runtime": "10.0.13"
+      }
+    },
+    {
+      "configuration": "release",
+      "ctest": {
+        "path": "build/sdk3-implementation-20261110/ctest-release-final.log",
+        "sha256": "1a50a48c335c399cf51b4a5d8e32b56b7f078e948fbace049c1197afa5b656c4"
+      },
+      "managed": {
+        "path": "build/sdk3-implementation-20261110/compatibility-final-release/result.json",
+        "sha256": "a679f71ba4fd202694af43764e634f4f83ac3ae96c68ac42cea4700996f491c6",
+        "groups": 11,
+        "runtime": "10.0.13"
+      }
+    }
+  ],
+  "nativeRuns": [
+    {
+      "mode": "gpu",
+      "configuration": "debug",
+      "status": "passed",
+      "validationErrors": 0,
+      "validationWarnings": 0,
+      "evidence": [
+        {
+          "path": "build/sdk3-implementation-20261110/gpu-final-debug/runtime-result.json",
+          "sha256": "48cece7a15fbb033b0e002e8500c825d98107ecc0b1322427b99d8031f02ada3"
+        },
+        {
+          "path": "build/sdk3-implementation-20261110/gpu-final-debug/launch.json",
+          "sha256": "573954211415a9c249f8aca4e9f83a11557aaac3f4212e6b06e6b9be94660c5b"
+        },
+        {
+          "path": "build/sdk3-implementation-20261110/gpu-final-debug/stderr.log",
+          "sha256": "a43eae77e0768e6b13c80fdfba715850c766f25baec018b232af2c2ff9e52c06"
+        },
+        {
+          "path": "build/sdk3-implementation-20261110/gpu-final-debug/capture-result.json",
+          "sha256": "9707b5e2b010c9458d4c7c2b926fb5b14939fb4a6636520fca787c5eec1a66e6"
+        }
+      ]
+    },
+    {
+      "mode": "gpu",
+      "configuration": "release",
+      "status": "passed",
+      "validationErrors": 0,
+      "validationWarnings": 0,
+      "evidence": [
+        {
+          "path": "build/sdk3-implementation-20261110/gpu-final-release/runtime-result.json",
+          "sha256": "e7a1ad38cc23d0ae64e033496d514fe65ccdec6ee15deb4075d59e5538222f08"
+        },
+        {
+          "path": "build/sdk3-implementation-20261110/gpu-final-release/launch.json",
+          "sha256": "9912fd07378370d4ac442bc3c564354527edebbbbe2b765f678876701be8b783"
+        },
+        {
+          "path": "build/sdk3-implementation-20261110/gpu-final-release/stderr.log",
+          "sha256": "2ae56b2305ff9b05b8924702a742dad750503b83f8fba4c44d0447f7ace8e426"
+        },
+        {
+          "path": "build/sdk3-implementation-20261110/gpu-final-release/capture-result.json",
+          "sha256": "9707b5e2b010c9458d4c7c2b926fb5b14939fb4a6636520fca787c5eec1a66e6"
+        }
+      ]
+    },
+    {
+      "mode": "legacy",
+      "configuration": "debug",
+      "status": "passed",
+      "validationErrors": 0,
+      "validationWarnings": 0,
+      "evidence": [
+        {
+          "path": "build/sdk3-implementation-20261110/legacy-final-debug/runtime-result.json",
+          "sha256": "a92da57beb385dfb93307d7c51c3d5987e9d96235c54b90d3bc83ffbf74db722"
+        },
+        {
+          "path": "build/sdk3-implementation-20261110/legacy-final-debug/launch.json",
+          "sha256": "84b946b206af5425a14a5a8270901cc489e55825513bfd6f001efacbafedffb9"
+        },
+        {
+          "path": "build/sdk3-implementation-20261110/legacy-final-debug/stderr.log",
+          "sha256": "fa084d4b809a3bb8d839c872cf801b5f2d3f9f0a77b6a611f97ea32a38c1b2df"
+        },
+        {
+          "path": "build/sdk3-implementation-20261110/legacy-final-debug/captures/game.bmp",
+          "sha256": "42998866793f892c57383c758ddd6bf5916fb3b97152e8b14234d7723a88d76f"
+        }
+      ]
+    },
+    {
+      "mode": "legacy",
+      "configuration": "release",
+      "status": "passed",
+      "validationErrors": 0,
+      "validationWarnings": 0,
+      "evidence": [
+        {
+          "path": "build/sdk3-implementation-20261110/legacy-final-release/runtime-result.json",
+          "sha256": "a3b9021a68ccdd3ff5a410bc10c71c9bedab283162cd398e32f714276a487d44"
+        },
+        {
+          "path": "build/sdk3-implementation-20261110/legacy-final-release/launch.json",
+          "sha256": "c77c403b193cd9d74b4b93691d2788306de817b58c4a2ece95dd6b0a859dd258"
+        },
+        {
+          "path": "build/sdk3-implementation-20261110/legacy-final-release/stderr.log",
+          "sha256": "02ca658bdfd625e179e9e6354bf883a855cc0c90f5f3b5d17ac2c554bd1e9e50"
+        },
+        {
+          "path": "build/sdk3-implementation-20261110/legacy-final-release/captures/game.bmp",
+          "sha256": "42998866793f892c57383c758ddd6bf5916fb3b97152e8b14234d7723a88d76f"
+        }
+      ]
+    }
+  ],
+  "referenceProvenance": {
+    "path": "build/sdk3-implementation-20261110/prepared-source-provenance.json",
+    "sha256": "5283928fbe990b580586998222a68d12ae8cd584d33172009939a42a0e55b8fa",
+    "matchedFiles": 25,
+    "configs": 15,
+    "projects": 2,
+    "terrainTiles": 8
+  },
+  "addedFixtures": {
+    "path": "build/sdk3-implementation-20261110/fixture-additions.json",
+    "sha256": "6374d5c1a88dc797ffe7c9b1c07e99455be8c1c9240f01e8793015b207e83d32"
+  },
+  "implementation": [
+    {
+      "path": "sources/xray/editor/base/LuaConfig.cs",
+      "sha256": "b697e15d066ac0d0d5183ac7e182e8aa7dce269503e6884372148a8ac7b0ab1d"
+    },
+    {
+      "path": "sources/xray/editor/base/ObjectsLibrary.cs",
+      "sha256": "572676146b5ad9ad60c3583b6390d8f31b2349557765716f1d429b21c780db83"
+    },
+    {
+      "path": "sources/xray/editor/base/Project.cs",
+      "sha256": "56080230ea89d644b1cb17d2a7ae9a9c2eca4fd208b23a354d041eb846b4a512"
+    },
+    {
+      "path": "sources/xray/editor/base/ProjectItems.cs",
+      "sha256": "340d133b38c506ff8431bcb56b583bff21b450c2d63e7271a4d2eb46c47e9f18"
+    },
+    {
+      "path": "sources/xray/editor/base/ProjectBrowserDialog.cs",
+      "sha256": "c2893d65ef62e70a28a3533def8c4953e21972405b29e540df193f16d79f4eec"
+    },
+    {
+      "path": "sources/xray/editor/base/ProjectTab.cs",
+      "sha256": "846a148fa6db99eb2c80eb309997dc51b327c2703b3cdd9fb73a8aa10816011f"
+    },
+    {
+      "path": "sources/xray/editor/base/WindowIde.cs",
+      "sha256": "ce3c11f26d680ed2c35e077dbe9364d47f2db5c2dfc1d21be8c8be9b0f7af246"
+    },
+    {
+      "path": "sources/xray/editor/base/WindowIde.Projects.cs",
+      "sha256": "ad76e564d63de449226d56695be99b58da4b9495f14627cf984d8b17549e9389"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkResourcePipeline.cs",
+      "sha256": "8a0151bd676ec703762f9dc82e7a8dc6b242cb030c4901e19d3a77b5408f6ceb"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkResourceBrowser.cs",
+      "sha256": "f94e7f202c6d65dbc5aeaa2bb374a657d3f9ee084b7570cf329e6a338f71bb7b"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkNativeResources.cs",
+      "sha256": "ea1a90ddfd48987bfdee76b94259188960128cc877052e7e124215fd4efa0b82"
+    },
+    {
+      "path": "sources/xray/editor/base/EditorWorld.cs",
+      "sha256": "157dfe6da4d89ccefd5e812a5d6a6cd59a48e2efe20c9b887686a7d8b7730a38"
+    },
+    {
+      "path": "sources/xray/editor/base/EditorWorld.Sdk.cs",
+      "sha256": "c793129ff291b78e7a2d1c2417187c40054dac08ff3beca7c4eca665ff4388a3"
+    },
+    {
+      "path": "sources/xray/editor/world/sdk_resource_bridge.h",
+      "sha256": "391d9ef6e45b700a92d74cf22482e109e3d6e2cbbb68a7cd089bda646f262a21"
+    },
+    {
+      "path": "sources/xray/editor/world/sources/sdk_resources.h",
+      "sha256": "2dc3720c0f07c8ca697843b779bbaf1c16763d7f609e82df38c1ebab03c9054d"
+    },
+    {
+      "path": "sources/xray/editor/world/sources/managed_host.cpp",
+      "sha256": "40c768aa9be324177250a37e1588beff810732e8d6d03b4eac62f56c3c1b75f7"
+    },
+    {
+      "path": "sources/xray/editor/world/sources/managed_host.h",
+      "sha256": "0c72a5daae6c930917b92f2deba0b95de882b45251c0cd19946142c88e7fb2c1"
+    },
+    {
+      "path": "sources/xray/editor/world/sources/editor_entry_point.cpp",
+      "sha256": "30b76c9cff0251916711031d99ed83b8db7574b424ae2971a8298d07ceeab1c7"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/SdkProjectChecks.cs",
+      "sha256": "8d13a002f1d26fce976186a0751c951cd55d01542aa85aa34baadc885a0ad705"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/SdkContractChecks.cs",
+      "sha256": "529051ecca0ee5e9de3875d605747f8fa0ac57ff4661853c4e1f5ba8636135c2"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/Program.cs",
+      "sha256": "06fb1af3c136dfba9208100f804e7604d70f44449635884e2b6dcba1bc2e8632"
+    }
+  ],
+  "interactive": {
+    "run": "interactive/desktop-05",
+    "accepted": [
+      "Open alex: 7 objects",
+      "Save As Cancel",
+      "clean native teardown"
+    ],
+    "limitation": "Sky cannot target the owned tool-window edit via indexed/keyboard input; physical Cyrillic typing is not claimed. Real ShowDialog with Cyrillic name, disabled owner, paused IDE input, save and reopen is covered by the managed test."
+  },
+  "limitations": [
+    "Project objects are preserved managed authoring data; full native scene editing/rendering belongs to SDK-4/5.",
+    "Native model proof is the prepared woodbox case plus authored raw VFS refresh; universal asset import/material/texture editing requires SDK-6 and later domain acceptance.",
+    "Original C++/CLI source inventory build flags remain historical; current implementation sources are recorded separately."
+  ]
+}

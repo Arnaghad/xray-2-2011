@@ -1,0 +1,968 @@
+{
+  "sourceRepo": "https://github.com/tsnest/xray-2-2011",
+  "commit": "1795aa33a51fdde2ff5ea10627fc6d0b2b755c56",
+  "upstreamNotice": "Wild Magic 4 Foundation containment/math subset recovered verbatim by Git blob hash",
+  "fileCount": 120,
+  "files": [
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/Approximation/Wm4ApprGaussPointsFit2.cpp",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/Approximation/Wm4ApprGaussPointsFit2.cpp",
+      "size": 2513,
+      "gitBlobSha1": "a3f5e1f2affe8f6983c8572280b481d231dedc8f",
+      "sha256": "54c79d58aa58c28241fdf4b2714d6c9f5fbf047fbc2543f543ac5733d0ac7348",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/Approximation/Wm4ApprGaussPointsFit2.h",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/Approximation/Wm4ApprGaussPointsFit2.h",
+      "size": 1169,
+      "gitBlobSha1": "c853539c29edb272d2fa2a88b01aa0cf37813333",
+      "sha256": "890135777e7f27b3e3474c17cbe8deff01e8c0515645422ee30a432e4123f7fe",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/Approximation/Wm4ApprGaussPointsFit3.cpp",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/Approximation/Wm4ApprGaussPointsFit3.cpp",
+      "size": 2939,
+      "gitBlobSha1": "b8f2959a23b851f01347e6e4579ba54e652eeaf9",
+      "sha256": "f03d6d2d9dcfdd438ed9fb16d07dcf232b171b86d00cef7fac3301e2cd2ba716",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/Approximation/Wm4ApprGaussPointsFit3.h",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/Approximation/Wm4ApprGaussPointsFit3.h",
+      "size": 1169,
+      "gitBlobSha1": "174c4c2d6fac6a9475fbace1c091a27e2910a818",
+      "sha256": "03fb5aaee29df3617cd1e34240b0244b2cf1b1ddd5411ad8aae0597d408f7c24",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/ComputationalGeometry/Wm4ConvexHull.cpp",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/ComputationalGeometry/Wm4ConvexHull.cpp",
+      "size": 4855,
+      "gitBlobSha1": "2998a672e14b89893c0b09d6a82244d464ec366a",
+      "sha256": "50225353cce9a5981bd9e95d3f9a84c8d68b96517bfd72cb71087780baabcd54",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/ComputationalGeometry/Wm4ConvexHull.h",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/ComputationalGeometry/Wm4ConvexHull.h",
+      "size": 3421,
+      "gitBlobSha1": "67aa50bbaa890717debfafb533b208fa773b780d",
+      "sha256": "5047bfb5761814687a42a701ceb5958511cce4c3c8741382c1f9ed4d3a06b99d",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/ComputationalGeometry/Wm4ConvexHull1.cpp",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/ComputationalGeometry/Wm4ConvexHull1.cpp",
+      "size": 4045,
+      "gitBlobSha1": "a14b4c4ada27605b5ac65aa5b31989373abee2e0",
+      "sha256": "95f556190bdde2dd8ff5d4ee93073634b95de5166b098a79a380f7453e20a336",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/ComputationalGeometry/Wm4ConvexHull1.h",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/ComputationalGeometry/Wm4ConvexHull1.h",
+      "size": 2508,
+      "gitBlobSha1": "c9cc1580c871b24b2b113425bd59eea79bfa3e69",
+      "sha256": "7ff62b9dd2690be03602f321c368ed74a5b978be84c76ae7d2860cbc18dc9fd4",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/ComputationalGeometry/Wm4ConvexHull2.cpp",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/ComputationalGeometry/Wm4ConvexHull2.cpp",
+      "size": 11571,
+      "gitBlobSha1": "17be76d7488f3ef69e1dc79b08178f1b858ac416",
+      "sha256": "d5dae53da6e9d9cf2dbdf805e960e73dd47f717b5e52fa3a4c2ece583416a177",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/ComputationalGeometry/Wm4ConvexHull2.h",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/ComputationalGeometry/Wm4ConvexHull2.h",
+      "size": 2922,
+      "gitBlobSha1": "d59ebbd67d19c00027569612f39562d3dd283c78",
+      "sha256": "eda0b67d761f18ea4e924b8285428be9d7077ffb4602efb9c036b8843d9d8e5b",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/ComputationalGeometry/Wm4ConvexHull3.cpp",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/ComputationalGeometry/Wm4ConvexHull3.cpp",
+      "size": 17263,
+      "gitBlobSha1": "3c4c36a84180c238860ba81b9378d2899f6c7e24",
+      "sha256": "3ad42c24fff31a9d5ca74d06540a215c100c9c872fbb1233c330cf96e471464b",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/ComputationalGeometry/Wm4ConvexHull3.h",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/ComputationalGeometry/Wm4ConvexHull3.h",
+      "size": 3895,
+      "gitBlobSha1": "971298e1da456681d6c9c1d6e3173ac3173213c3",
+      "sha256": "98ca7267a6aadf5dd4c29f682d241e497de652d88d30c4773ec8dcf13489c266",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/ComputationalGeometry/Wm4HullEdge2.cpp",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/ComputationalGeometry/Wm4HullEdge2.cpp",
+      "size": 3208,
+      "gitBlobSha1": "be01e1049be22c7dec4e509f70bf49d5cc7ffad6",
+      "sha256": "39eaec4e1dbb3815d58e10a79a2990f58bf567128606f9835bcdf7b96f4c7204",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/ComputationalGeometry/Wm4HullEdge2.h",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/ComputationalGeometry/Wm4HullEdge2.h",
+      "size": 1096,
+      "gitBlobSha1": "beef9f040e6b6e8b298485c9e9c09606ea494d75",
+      "sha256": "b821262f72c843f313122faafe653712576dc24e801227b5a30ad26a334f26c1",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/ComputationalGeometry/Wm4HullTriangle3.cpp",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/ComputationalGeometry/Wm4HullTriangle3.cpp",
+      "size": 2492,
+      "gitBlobSha1": "0297f8c607e115d0f9a6b44616fb6936abf78d4f",
+      "sha256": "4da9a854d1744d00332d0d847e100d19db0c686155d23ef7a6fc0d5efa6614f3",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/ComputationalGeometry/Wm4HullTriangle3.h",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/ComputationalGeometry/Wm4HullTriangle3.h",
+      "size": 1133,
+      "gitBlobSha1": "544cae2b15f137c8b3184292ade502cac101ea4e",
+      "sha256": "4436ca62b85ada658d870e28f84068a3f4ffa56637eecf87c83f73b7bfde11dd",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/ComputationalGeometry/Wm4Query.cpp",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/ComputationalGeometry/Wm4Query.cpp",
+      "size": 6345,
+      "gitBlobSha1": "cfe1805476d600e18001e5a30341ffc988ceea62",
+      "sha256": "bc5cd354bda5a08e28e4dcdc6f9ee5ce923df25010b46261d625f06b4fa5d50e",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/ComputationalGeometry/Wm4Query.h",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/ComputationalGeometry/Wm4Query.h",
+      "size": 1850,
+      "gitBlobSha1": "66f77acf8369ff3ed9885a5cb8ccacfa9009923c",
+      "sha256": "30c668403f3631599b7f1935395de9337d6c886ecb563147fab6e7481b256ae2",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/ComputationalGeometry/Wm4Query2.h",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/ComputationalGeometry/Wm4Query2.h",
+      "size": 2426,
+      "gitBlobSha1": "f35043bef783d21511799587d958ac8f7774cbd8",
+      "sha256": "facdc5f71ead9aeaa9a8f682ca1a02a7483cc160dcb7481a58fc7d68576404c6",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/ComputationalGeometry/Wm4Query2.inl",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/ComputationalGeometry/Wm4Query2.inl",
+      "size": 5256,
+      "gitBlobSha1": "0d5dc76885589a8505dbabe1ea87be7b3e1e1694",
+      "sha256": "bace8e4c88aee0c628b71c06603bc2be6df41bbb36acf8086652b8b870517a15",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/ComputationalGeometry/Wm4Query2Filtered.h",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/ComputationalGeometry/Wm4Query2Filtered.h",
+      "size": 2163,
+      "gitBlobSha1": "e3ddad54b23f0ada0b4ad3af5cee37c507236037",
+      "sha256": "fc37b7d27233767ac959b3f4decf7bf05609698a10606da930ed78a32412f51b",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/ComputationalGeometry/Wm4Query2Filtered.inl",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/ComputationalGeometry/Wm4Query2Filtered.inl",
+      "size": 3614,
+      "gitBlobSha1": "d37eb9101dc4a16fec2d8df741e306e8fdec79a5",
+      "sha256": "1520634e4eafbfb17d068b8514d72d73a44f4471a662ef3fecc8aff6a6e8406f",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/ComputationalGeometry/Wm4Query2Int64.h",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/ComputationalGeometry/Wm4Query2Int64.h",
+      "size": 1920,
+      "gitBlobSha1": "bcd7bff6cdbb77e90aad10f1447c5c61676dd7d5",
+      "sha256": "f978ac32089ab0046bf779d8e709d337f132089627637540ae9c1e955fcac54b",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/ComputationalGeometry/Wm4Query2Int64.inl",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/ComputationalGeometry/Wm4Query2Int64.inl",
+      "size": 3955,
+      "gitBlobSha1": "edc04161c45c2bcddb0d74412d4ffd1fed67ee2f",
+      "sha256": "c45a76f2da792bed9dc28b57234edfba85e253e5fd620a17324886a4604ec675",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/ComputationalGeometry/Wm4Query2TInteger.h",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/ComputationalGeometry/Wm4Query2TInteger.h",
+      "size": 2178,
+      "gitBlobSha1": "bc9edca5494f47e051e676aa54e434c85df1ec1b",
+      "sha256": "63e87c1488f94c7f9f2b1b74f1ff26968225e3ce7aa0cce4a1cfab3723ecfa95",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/ComputationalGeometry/Wm4Query2TInteger.inl",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/ComputationalGeometry/Wm4Query2TInteger.inl",
+      "size": 3998,
+      "gitBlobSha1": "ff98b9443eab2ae028b0974611444ba1e7bf7686",
+      "sha256": "988297dc78e526c3c9a2b5bc809d0db27773d75d6128a22db4c70b7eb99c1277",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/ComputationalGeometry/Wm4Query2TRational.h",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/ComputationalGeometry/Wm4Query2TRational.h",
+      "size": 2895,
+      "gitBlobSha1": "c5a82078d1473d71824d4f9ff41a212c9917deb5",
+      "sha256": "32afa00c43c740004b64d32ad11462481b4c50ababd5534c0dc39c032b9facd1",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/ComputationalGeometry/Wm4Query2TRational.inl",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/ComputationalGeometry/Wm4Query2TRational.inl",
+      "size": 7113,
+      "gitBlobSha1": "56734873a1dcd5e096011129f7ab5ef620c6139b",
+      "sha256": "4fe517556a71ca45b91cd4ddfd841803b8f7f6de0689812d9c4c28c36322d2f3",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/ComputationalGeometry/Wm4Query3.h",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/ComputationalGeometry/Wm4Query3.h",
+      "size": 2713,
+      "gitBlobSha1": "f70f8727bd0d51378a2e427d931d5d1219badf88",
+      "sha256": "e9274477558ce0c704ca272516d6b125207b93c3ed6cda8f21e15961791b11c0",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/ComputationalGeometry/Wm4Query3.inl",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/ComputationalGeometry/Wm4Query3.inl",
+      "size": 6898,
+      "gitBlobSha1": "608ce5e66ff2626ce3675bce1185d051cb2de381",
+      "sha256": "298a6ff380b4e6f60d4562b609507d0f4509bee3e171dc8d1e06c014182041aa",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/ComputationalGeometry/Wm4Query3Filtered.h",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/ComputationalGeometry/Wm4Query3Filtered.h",
+      "size": 2190,
+      "gitBlobSha1": "625e6d966f322293730021f0586388494127c8a0",
+      "sha256": "4e757994de0095fa2d457ea306f6876c0afb52bc98061eaf898bb19810043823",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/ComputationalGeometry/Wm4Query3Filtered.inl",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/ComputationalGeometry/Wm4Query3Filtered.inl",
+      "size": 4655,
+      "gitBlobSha1": "80e53ecebc7e37be7c27a528e1dc63de98862403",
+      "sha256": "8e1e092e8467490895bfa59f4ed538fcdc4a5eebb332625605bfcfb003b5178d",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/ComputationalGeometry/Wm4Query3Int64.h",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/ComputationalGeometry/Wm4Query3Int64.h",
+      "size": 2181,
+      "gitBlobSha1": "f3c13b29d1571adc92c5d0fce5e2b18056bc1a05",
+      "sha256": "b50da480318116b7d56e3ae3a5d9ccd4faaaaaa6c107e38e35375896ba9ad07f",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/ComputationalGeometry/Wm4Query3Int64.inl",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/ComputationalGeometry/Wm4Query3Int64.inl",
+      "size": 5932,
+      "gitBlobSha1": "7fb0f70fc3411320005f0ace5b8a93eab2d503d5",
+      "sha256": "53a41d987351dbc1e59fd6544dd314e5c1af000171824fe9d7718284ba9806fb",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/ComputationalGeometry/Wm4Query3TInteger.h",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/ComputationalGeometry/Wm4Query3TInteger.h",
+      "size": 2511,
+      "gitBlobSha1": "4e9329455a3cdcb948bff36437a665932949f068",
+      "sha256": "9bb11eae796b5e2077997678ca5492b05d47dfbe6cf7a64674265ff5db87257e",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/ComputationalGeometry/Wm4Query3TInteger.inl",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/ComputationalGeometry/Wm4Query3TInteger.inl",
+      "size": 5984,
+      "gitBlobSha1": "283fb771230534e54e25ea8851584c03870c60b6",
+      "sha256": "cf94aa71dd66a911075bb534e31ca64819c18ad31adb51be3dd7d1af51d41c6a",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/ComputationalGeometry/Wm4Query3TRational.h",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/ComputationalGeometry/Wm4Query3TRational.h",
+      "size": 3276,
+      "gitBlobSha1": "8cab96bc6b4f17d92579f27bc364eaacc2993f15",
+      "sha256": "8e17d7b5a5ac6b76d7db21957b943b86629eb9a6ab4451041a8652e5c188e515",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/ComputationalGeometry/Wm4Query3TRational.inl",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/ComputationalGeometry/Wm4Query3TRational.inl",
+      "size": 9295,
+      "gitBlobSha1": "10ef8fd4de1bbbcd4c1f2e3f57160d222107b6c9",
+      "sha256": "a3a75e514eea7cd0831d3ab553722fe732ba5e67b7e0b24cdc1fa67819ac33ca",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/ComputationalGeometry/Wm4RVector2.h",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/ComputationalGeometry/Wm4RVector2.h",
+      "size": 3520,
+      "gitBlobSha1": "ce87fb90db58ce5d0790abde2917e0201e76da9f",
+      "sha256": "efa4af247a0f358d24f301dddc5079d54fc9ba7321f50f399c3f5dd32d1248e6",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/ComputationalGeometry/Wm4RVector2.inl",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/ComputationalGeometry/Wm4RVector2.inl",
+      "size": 3468,
+      "gitBlobSha1": "b2be28f1ecdbfaa435db121f7d2aa5ddaacd90f2",
+      "sha256": "d01549efd9e15b60fd6b3b2616e80635dd64699c90231efef1623a77844eb997",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/ComputationalGeometry/Wm4RVector3.h",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/ComputationalGeometry/Wm4RVector3.h",
+      "size": 3719,
+      "gitBlobSha1": "4c8f085564292907bfc83ae9e78ddccdb74d3022",
+      "sha256": "83e3fd05922cb75eed34daf243b3b95672fe349051e201d13852201ce99212a9",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/ComputationalGeometry/Wm4RVector3.inl",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/ComputationalGeometry/Wm4RVector3.inl",
+      "size": 4226,
+      "gitBlobSha1": "eb86e4b0bfbdcf6483c6bb538cded5a86f68f707",
+      "sha256": "a5ee29242d095b8c5829c263d2981a5f7df9dc873e5d327e855b5012ae8c352c",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/ComputationalGeometry/Wm4TInteger.h",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/ComputationalGeometry/Wm4TInteger.h",
+      "size": 3667,
+      "gitBlobSha1": "db24b0d2b19f9c1563d9ccf8c937cf364f2bf0c6",
+      "sha256": "5bd33da0a50b22f4c74fabb523b66a488e18007edc78e5e33e85e50de3d0d02e",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/ComputationalGeometry/Wm4TInteger.inl",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/ComputationalGeometry/Wm4TInteger.inl",
+      "size": 32189,
+      "gitBlobSha1": "e59a1aacd90c04f2783244487aba2e16e00d346d",
+      "sha256": "f229d78508e1f03cab8863aafd8f874f783945e2dd8c5087c546fc958d205363",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/ComputationalGeometry/Wm4TRVector.h",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/ComputationalGeometry/Wm4TRVector.h",
+      "size": 2363,
+      "gitBlobSha1": "fdd9c75090e61aeb177c00447ce21e94e456c55f",
+      "sha256": "39e3c98551c34ba0245a614094a1d3e1c4563db5914a8cbfe0d32c7cc8fb70d1",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/ComputationalGeometry/Wm4TRVector.inl",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/ComputationalGeometry/Wm4TRVector.inl",
+      "size": 8207,
+      "gitBlobSha1": "47991c55c4733018f6fe70305c02f6bfe95c633e",
+      "sha256": "5bb822e6128c3512951b7e0ec14bf5f97a5dd14cf175b7c935101e04529f09ae",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/ComputationalGeometry/Wm4TRational.h",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/ComputationalGeometry/Wm4TRational.h",
+      "size": 3391,
+      "gitBlobSha1": "d54f767479fbdac9dd24a43973230498d4d6829e",
+      "sha256": "fff97039314816b29f882c697057d9c71ac9e33407b67d5e1c946beed14c3307",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/ComputationalGeometry/Wm4TRational.inl",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/ComputationalGeometry/Wm4TRational.inl",
+      "size": 28124,
+      "gitBlobSha1": "e40998e63e549514dc960227966ae308d085c268",
+      "sha256": "b94b63655e8b517b1ed9358377d198aae3715636b769d18f087f575bf479a2b2",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/Containment/Wm4ContBox2.cpp",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/Containment/Wm4ContBox2.cpp",
+      "size": 17393,
+      "gitBlobSha1": "d301ee135871e3f4c094e9a28edd0114f79b3a7c",
+      "sha256": "7a0d2b0bc517a827411c9707eb15101dee4ec80fc46f368caba990fe254e06e5",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/Containment/Wm4ContBox2.h",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/Containment/Wm4ContBox2.h",
+      "size": 2202,
+      "gitBlobSha1": "f923db332bbeeec73716b4cf20d59270d9cc22f2",
+      "sha256": "3c9bef85550a3002001f9429fdfdfd58c7a9686dcb402ea24dec9fbf8f79f13f",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/Containment/Wm4ContBox3.cpp",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/Containment/Wm4ContBox3.cpp",
+      "size": 18975,
+      "gitBlobSha1": "c03fad7d88befd242ef868305944de86ecf3d5a5",
+      "sha256": "d6cc1f81685ed98587dab2c5e0923dc83fdc54fb83ff7087ddcb8b61b51238e5",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/Containment/Wm4ContBox3.h",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/Containment/Wm4ContBox3.h",
+      "size": 2035,
+      "gitBlobSha1": "bf2a8138599c7cb0e3184bf7c70183ca2fad6606",
+      "sha256": "8022de83c3483de2b0f23e76255251dd6633c7fdc9e3a7e9358ee238bac25b66",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/Containment/Wm4ContSphere3.cpp",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/Containment/Wm4ContSphere3.cpp",
+      "size": 22681,
+      "gitBlobSha1": "4193a923d150b2e121bc925642d3336239ecd124",
+      "sha256": "e28853a85b730af213941b199f8abc82feb1db3c457a144e1f167383c5dc8a41",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/Containment/Wm4ContSphere3.h",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/Containment/Wm4ContSphere3.h",
+      "size": 3792,
+      "gitBlobSha1": "eb7da60715a48b8b945ee784dd53ddc624b5336a",
+      "sha256": "0b2f22b6154cb653c30397736c6c82dfd23dd03a5f0a57ba0c3cedb9443085b7",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/Mathematics/Wm4Box2.h",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/Mathematics/Wm4Box2.h",
+      "size": 1582,
+      "gitBlobSha1": "c40f03e39c449de2bfe6ce455a5eda94be6e7d58",
+      "sha256": "fbc19c0f53d8d76eb71c3445e8b46fda08b8d741478d18de4a3778a60a6536b5",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/Mathematics/Wm4Box2.inl",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/Mathematics/Wm4Box2.inl",
+      "size": 1999,
+      "gitBlobSha1": "456a354fb5bc655589f3367d319a758847388af9",
+      "sha256": "e6e4fa7093f63d05a97492f55b7a65a820e05c50ddb92bdd96953ddead810da3",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/Mathematics/Wm4Box3.h",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/Mathematics/Wm4Box3.h",
+      "size": 1657,
+      "gitBlobSha1": "a2a06e69a7e9a2ff54ecf96ad9e76a2bfcfc0cf9",
+      "sha256": "e5939a17e7f7d7cccf3e89af79bdb8b1093624452e52af956ce43fb7016adc76",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/Mathematics/Wm4Box3.inl",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/Mathematics/Wm4Box3.inl",
+      "size": 2436,
+      "gitBlobSha1": "fdad363cb07a973a42d591b72f17dd2761bdb722",
+      "sha256": "fd84b6960d44693d490422b1376af7e19b65a2742f7d3e3c290118a4e2e26bff",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/Mathematics/Wm4GMatrix.h",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/Mathematics/Wm4GMatrix.h",
+      "size": 5081,
+      "gitBlobSha1": "88cf6c0cb29a717e5929692ebb0ae2ea49f0b5bf",
+      "sha256": "44c5d5236c5c8e9791f0f554269bb33cacf894a720cabf647afaa7b4bad1e998",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/Mathematics/Wm4GMatrix.inl",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/Mathematics/Wm4GMatrix.inl",
+      "size": 21079,
+      "gitBlobSha1": "dbbf341f8e788be2091afa9c400ee727e11b9be2",
+      "sha256": "096bab1390b20ee4d5aa461151e926f419ae45c7a013e207bff323085a5b58cd",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/Mathematics/Wm4GVector.h",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/Mathematics/Wm4GVector.h",
+      "size": 2389,
+      "gitBlobSha1": "1f42587b168947d1ee04a095aebd7b06e8d00079",
+      "sha256": "b460193b1ab30473d6cf6a2814ad441e7c24751523bf1d8055cfd479de5f5d8b",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/Mathematics/Wm4GVector.inl",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/Mathematics/Wm4GVector.inl",
+      "size": 10260,
+      "gitBlobSha1": "b98ea10e5fcf7cdbb7e39170dd34d52797f0811f",
+      "sha256": "116d83a5c66b87e7d6f7295b7f82ce67eaa5828d28677d7de52d5c9e13917c3c",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/Mathematics/Wm4Mapper2.h",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/Mathematics/Wm4Mapper2.h",
+      "size": 3710,
+      "gitBlobSha1": "7f8b79dc521f86210f0a786ad4571920721561a8",
+      "sha256": "165f26977fd8d6c9c94d4e1eb7495ae328e5369f2f7986f3c6d29f42ed0a154a",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/Mathematics/Wm4Mapper2.inl",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/Mathematics/Wm4Mapper2.inl",
+      "size": 4769,
+      "gitBlobSha1": "e3c663f4cee966e11d12306f2e32f65155e24444",
+      "sha256": "c8942855ac55eb75cd404bae6e49353a6b417acf2bc2d90592dd97327c72be96",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/Mathematics/Wm4Mapper3.h",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/Mathematics/Wm4Mapper3.h",
+      "size": 4213,
+      "gitBlobSha1": "404bb474e129328ef36ed16287a0a6d8c9b8d68a",
+      "sha256": "de86051d956720e9093cf14a006d0a73c6b6381542d509dafc9f76bd9ac9345b",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/Mathematics/Wm4Mapper3.inl",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/Mathematics/Wm4Mapper3.inl",
+      "size": 5962,
+      "gitBlobSha1": "8c4132f93e4a6c5234aa463ca5bec24f4e39943b",
+      "sha256": "08aff92f9b4775578da1b7b914972fa8736d66d3ce1cc94fc499f69c8be895dd",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/Mathematics/Wm4Math.cpp",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/Mathematics/Wm4Math.cpp",
+      "size": 3423,
+      "gitBlobSha1": "88adfc8bfe38484a0c41cc66706b222d7d2a4f16",
+      "sha256": "cd07fa54e51815f22e08b031931dfa7c931965894714ea25d62a277c8fbce8c0",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/Mathematics/Wm4Math.h",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/Mathematics/Wm4Math.h",
+      "size": 5768,
+      "gitBlobSha1": "7652d589fee6e0d7336d9b4f6a1b79ed902091a7",
+      "sha256": "88346f2236d5a2b9c46652933a738f1e1fc88b8165d2f7d787cbc7a8d889eab0",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/Mathematics/Wm4Math.inl",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/Mathematics/Wm4Math.inl",
+      "size": 14436,
+      "gitBlobSha1": "a4853f04246beb35edf47336cc12e2c22b602131",
+      "sha256": "17541f5204d3ad0b3ba98934354621a2c678d64eb0b83fc4cdda5019db8fd53d",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/Mathematics/Wm4MathMCR.h",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/Mathematics/Wm4MathMCR.h",
+      "size": 1336,
+      "gitBlobSha1": "38d1e98e8263fefd0890c1b23eb003fb59a8b17a",
+      "sha256": "b3d68e592eb00ad4eea241b3180c2487aa676ee3e761ba82bafd73d8023b4bc3",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/Mathematics/Wm4Matrix2.cpp",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/Mathematics/Wm4Matrix2.cpp",
+      "size": 1002,
+      "gitBlobSha1": "40258d5755f551b46eb37216a8193687522bb238",
+      "sha256": "43d8e1d65cd8e6521db0a1cfb332410cee85b2315f61f28c28148e231e45cd3f",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/Mathematics/Wm4Matrix2.h",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/Mathematics/Wm4Matrix2.h",
+      "size": 6788,
+      "gitBlobSha1": "ba5690f88b77eb0d0a40e4fc3312b405a5c31dd7",
+      "sha256": "5ecf5d277550e88f687db4eb2934aedf26a853ab5072952fac25e3ffb6b5f901",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/Mathematics/Wm4Matrix2.inl",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/Mathematics/Wm4Matrix2.inl",
+      "size": 18912,
+      "gitBlobSha1": "37a8b7b3d573618f0389e7e03505a97d94414a9f",
+      "sha256": "ac05d61145e02b33a2d70023132c378d6966872e5e971e2fb0300ef530a38b0b",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/Mathematics/Wm4Matrix3.cpp",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/Mathematics/Wm4Matrix3.cpp",
+      "size": 1112,
+      "gitBlobSha1": "818abd466dde09ac4587068e6a22e60f9b6a01eb",
+      "sha256": "7cff214608efc255753356f1eef9f2e3ee74e7da68f31171527af373e5beb569",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/Mathematics/Wm4Matrix3.h",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/Mathematics/Wm4Matrix3.h",
+      "size": 16154,
+      "gitBlobSha1": "5f00f972f1e48edc0fb57f089a1bee391fbbfc86",
+      "sha256": "d947ff474ef778fc50b08b55b25e30814bbcb64c79b5eb5cf49ab1d45b6af9af",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/Mathematics/Wm4Matrix3.inl",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/Mathematics/Wm4Matrix3.inl",
+      "size": 86798,
+      "gitBlobSha1": "8fd4f05651a01b4236afe710554b9115c673e317",
+      "sha256": "59f83259559eb3def1b7df4cba3fa2a9658b3d7af115674ae8d932974e43c299",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/Mathematics/Wm4Matrix4.cpp",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/Mathematics/Wm4Matrix4.cpp",
+      "size": 1258,
+      "gitBlobSha1": "8925bfaca14878b3d0170f90114754fec7d1f6d8",
+      "sha256": "08efa23f907bfb3215ec2d6336a1f47978c6ff0cd33d18e3be697bacc57963a6",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/Mathematics/Wm4Matrix4.h",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/Mathematics/Wm4Matrix4.h",
+      "size": 5940,
+      "gitBlobSha1": "97ab9416ad369bd0e1f067b963f7de6131d95bcf",
+      "sha256": "5c0ea00954aedd7e62156a8869a4df7cae7a97b26e240aa69e86cd602185f322",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/Mathematics/Wm4Matrix4.inl",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/Mathematics/Wm4Matrix4.inl",
+      "size": 41152,
+      "gitBlobSha1": "e0d59c70455407c69825ce927260fe3bb05097e6",
+      "sha256": "0f3447d85196c29f193905c972c2570c26b6b563d0e7829181993b0d68b1fa37",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/Mathematics/Wm4Plane3.h",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/Mathematics/Wm4Plane3.h",
+      "size": 2414,
+      "gitBlobSha1": "f9c7ab9a7d8a2a99f962c2079a2d15758ed09df6",
+      "sha256": "17216eabc4c235cf708cbc5c921a00aae06ddd3de77b6357f84051de6b1133b2",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/Mathematics/Wm4Plane3.inl",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/Mathematics/Wm4Plane3.inl",
+      "size": 2661,
+      "gitBlobSha1": "eab043eb36c4ddf5de1a55bdc601180b0ba4b5a3",
+      "sha256": "bbff00069df0c9f90ea6a60e30679d6e289d7a6434832222d95816f80c8ad6fd",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/Mathematics/Wm4Quaternion.cpp",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/Mathematics/Wm4Quaternion.cpp",
+      "size": 1510,
+      "gitBlobSha1": "df2dcef2e73b499d3090ab78550c1b513356f69b",
+      "sha256": "eae2724b966c2dffb174528e965978e9d066ecd174afa881b2ce432dccf92646",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/Mathematics/Wm4Quaternion.h",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/Mathematics/Wm4Quaternion.h",
+      "size": 12527,
+      "gitBlobSha1": "dac86b1cbe278641569bf49fe943b78f20dbf5c3",
+      "sha256": "3a8e778a42780eee870eeeda30f962aff4c24fb138ff26e4af721f2313c3045f",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/Mathematics/Wm4Quaternion.inl",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/Mathematics/Wm4Quaternion.inl",
+      "size": 59085,
+      "gitBlobSha1": "13952a5d90a2f48e87d36c6e2a8b595446ec9e68",
+      "sha256": "33c4282f2c2e8fb150c2b3e5b454c4641240e813d1c05fce2c3a6e4e8ae3b356",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/Mathematics/Wm4Sphere3.h",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/Mathematics/Wm4Sphere3.h",
+      "size": 1193,
+      "gitBlobSha1": "095b78e701bffbf99981d3c8dc7f58a8fe8195a8",
+      "sha256": "7d2cfaffc3320621109890cd1d5ac388f42bd1cc6fa34c949418e3d44c35e7b2",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/Mathematics/Wm4Sphere3.inl",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/Mathematics/Wm4Sphere3.inl",
+      "size": 1500,
+      "gitBlobSha1": "3f1eba714f0272b8dccd94be732112f583795243",
+      "sha256": "9bffad22088e355c7f04b2904124e7df6cb9c6a1912df8cffc83034de315e86f",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/Mathematics/Wm4Vector2.cpp",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/Mathematics/Wm4Vector2.cpp",
+      "size": 1184,
+      "gitBlobSha1": "fdd5089a3442d33644585a942d2c719f3a75a1a4",
+      "sha256": "0dccf4ade04056afecb620d32880eb96684b90232aba25ad45a9089fa8a33463",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/Mathematics/Wm4Vector2.h",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/Mathematics/Wm4Vector2.h",
+      "size": 4144,
+      "gitBlobSha1": "70b05552d8dd2560925afc2c53b668f332bc213d",
+      "sha256": "cd7509bdcdf1420dd06a20b6c713f77fd753b6808461ce5cba1d598ff139a60d",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/Mathematics/Wm4Vector2.inl",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/Mathematics/Wm4Vector2.inl",
+      "size": 14770,
+      "gitBlobSha1": "379d83e2907f202f9abb29714bb4fedb4dc2263f",
+      "sha256": "2d6ace7cf25b53bbfa6970d34a7ca9f568ac97d787e81e68d7e26110fc6595be",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/Mathematics/Wm4Vector3.cpp",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/Mathematics/Wm4Vector3.cpp",
+      "size": 1363,
+      "gitBlobSha1": "84121747c0019b4ee955b6d2375b6d8bf9badea7",
+      "sha256": "932071930bb64dcf432517bb1de95a7c9d4b02d1c44b3499a00bad193db8c7ad",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/Mathematics/Wm4Vector3.h",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/Mathematics/Wm4Vector3.h",
+      "size": 4939,
+      "gitBlobSha1": "1b48b4aabf6c9039486a837e27460c7ece56c708",
+      "sha256": "6f69946051536633cf37de0f5536587a54343e63f83b34cc2851509fafa4e897",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/Mathematics/Wm4Vector3.inl",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/Mathematics/Wm4Vector3.inl",
+      "size": 23555,
+      "gitBlobSha1": "cd3f53a2fb4016937c33fd8e0d907c51448e8622",
+      "sha256": "9c62e206be70092f2a53b90826c18351c177e28693cf749cf23f8f5fa45d72d1",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/Mathematics/Wm4Vector4.cpp",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/Mathematics/Wm4Vector4.cpp",
+      "size": 1560,
+      "gitBlobSha1": "5c8306b72ca1d0ab1d8a0da116c9d333b9b5974f",
+      "sha256": "fc5b2c7466e2628a0c61392178fc1ffcf2f16648763714e24b5aca2897fce5ae",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/Mathematics/Wm4Vector4.h",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/Mathematics/Wm4Vector4.h",
+      "size": 3230,
+      "gitBlobSha1": "e25a647ddc20c151bbaf4d97f967e79eec8eb0e7",
+      "sha256": "c2fd3ba0259c736e2823af6e534b1aba593add680ecaa2774614cce7426538b7",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/Mathematics/Wm4Vector4.inl",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/Mathematics/Wm4Vector4.inl",
+      "size": 11287,
+      "gitBlobSha1": "ed95f813c67b93ce6c4ee480e3012a9dca1792b6",
+      "sha256": "03ce7015f127a319ee02b40d59630d96409d16f6333c28435d2e3e20422aa1bd",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/Meshes/Wm4EdgeKey.h",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/Meshes/Wm4EdgeKey.h",
+      "size": 915,
+      "gitBlobSha1": "59c7923ad733c54dd858acaf590c30ced1802c5b",
+      "sha256": "f1a00aadd2340126f9def81572f6a27f389297f3c694018dba88662f03640bfa",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/Meshes/Wm4EdgeKey.inl",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/Meshes/Wm4EdgeKey.inl",
+      "size": 1420,
+      "gitBlobSha1": "33fbc9b257efe4cb69d3776d3c0541213e0aba09",
+      "sha256": "0d35239a8e2228a4b80d46549435e7ba25bf89bf6112feb1f1ad38c4450cc659",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/NumericalAnalysis/Wm4Eigen.cpp",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/NumericalAnalysis/Wm4Eigen.cpp",
+      "size": 18753,
+      "gitBlobSha1": "0ec14d98bedcb97363e453ad7dadfbb45c7ce001",
+      "sha256": "7b0f15d5a8567c854970443ded3a1f1d1aa2cf4c9ddb68081b3f5da542ff7b78",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/NumericalAnalysis/Wm4Eigen.h",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/NumericalAnalysis/Wm4Eigen.h",
+      "size": 3772,
+      "gitBlobSha1": "fb65c35210995a5a80a02c52484e4b0bc1e86609",
+      "sha256": "8f66c85912fc3dbfbce7e3ed2518c3dda99008c89b67377ada941db942930fbe",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/System/Wm4Memory.cpp",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/System/Wm4Memory.cpp",
+      "size": 10704,
+      "gitBlobSha1": "29d777531b071b9b6ae85b7d88a8926b3b56f86c",
+      "sha256": "d134b464b9dc7ca6d5233d5da52bc9064e93a4272fcaa740dbc1f96a6fafaa97",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/System/Wm4Memory.h",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/System/Wm4Memory.h",
+      "size": 4479,
+      "gitBlobSha1": "a2aa77a7794d5cc55c4b00e41a7f68ae541773bb",
+      "sha256": "c6590d2356bd7e28a961c7e9d097accf51c2c0fbfd53b3249788f401a2258929",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/System/Wm4Memory.inl",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/System/Wm4Memory.inl",
+      "size": 2404,
+      "gitBlobSha1": "accd6ce9b4542ca39ec1743e5a7315c85e3bec68",
+      "sha256": "4e75d31d6e4a2b8471a0c2643c545ead16a216f21c792e7ded1fb0dd8aeb9017",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/System/Wm4Platforms.h",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/System/Wm4Platforms.h",
+      "size": 4316,
+      "gitBlobSha1": "8e0fcd2bb821064479a4d6e1cde0fe38ea7b866a",
+      "sha256": "30cea407c248b40ab86d8e9a4fcb08c5216cc865796fec2c73ac2726665919df",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/System/Wm4System.cpp",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/System/Wm4System.cpp",
+      "size": 29689,
+      "gitBlobSha1": "2c87c2592bcf47bb32edb997ecb0827ef43f692b",
+      "sha256": "edc30475a4afbe989d112a7ad411f5be962ad5ff35f36ab6f275e29ddd24812e",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/System/Wm4System.h",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/System/Wm4System.h",
+      "size": 8977,
+      "gitBlobSha1": "db61aaafe69856ce811a56a77087d76e584bf901",
+      "sha256": "b16ce5c70e94267946eff66c3b1d8de750f030a61094161c0d9229ff8f3dab08",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/System/Wm4System.inl",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/System/Wm4System.inl",
+      "size": 2165,
+      "gitBlobSha1": "c8ee15d5a2880400cbb4d3e66cdc1a20058ce9b0",
+      "sha256": "377317b231d80fcb8699e0fe5655f9ad0e033a952cbff7ac6f38c6229a25f7a7",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/System/Wm4THashSet.h",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/System/Wm4THashSet.h",
+      "size": 2599,
+      "gitBlobSha1": "4bdd1f3c24b52f1945fd58ccea29311f7c676368",
+      "sha256": "95691d30f6fe97a310c069b52783b3f7bd4fe02e1fa4a964f49fdbfdf0ad63ea",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/System/Wm4THashSet.inl",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/System/Wm4THashSet.inl",
+      "size": 5847,
+      "gitBlobSha1": "ae35f2f1b928ba4633d48f0cc89b6fd55979483c",
+      "sha256": "d77a32c89c2a9787990f176dc1442948f89799d4868485601fd9735687a81daf",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/System/Wm4THashTable.h",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/System/Wm4THashTable.h",
+      "size": 2662,
+      "gitBlobSha1": "dd44c2d768f50a6520a081ba7f80aad992d0969d",
+      "sha256": "f2a91d1a3f5dcfe4ea1d42cfd486a22e5a5565feaa0394c6d79eeb2f3cd373a5",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/System/Wm4THashTable.inl",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/System/Wm4THashTable.inl",
+      "size": 6280,
+      "gitBlobSha1": "28bf2f7ce92b49dea6e12b13a6ffb50ff4cdbbcf",
+      "sha256": "634baf5c947ace1b12988dfb33f408ed9dce03e4387a54874d895388275453ff",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/System/Wm4TMinHeap.h",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/System/Wm4TMinHeap.h",
+      "size": 2930,
+      "gitBlobSha1": "8d778a8b2952cd820c8d141a49606012bcc166ad",
+      "sha256": "d20158cb36247eec68c5fe1f6d1f74d47d413f17fe643f02d432dfaf0f8f678b",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/System/Wm4TMinHeap.inl",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/System/Wm4TMinHeap.inl",
+      "size": 12677,
+      "gitBlobSha1": "12838688a9fa54570dcb4abeda13ee469fb2d02a",
+      "sha256": "775c8418a0358c29c81f906fb18c09112a2caf38a715b331d57cd6c103a3801e",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/System/Wm4TSmallUnorderedSet.h",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/System/Wm4TSmallUnorderedSet.h",
+      "size": 2336,
+      "gitBlobSha1": "650010190bf8a897e8ba0a61a8a4d23e0902f352",
+      "sha256": "59ffb480a02eee911df10a8ee9378b54e60c89c363e1994f4122dc6f817974ed",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/System/Wm4TSmallUnorderedSet.inl",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/System/Wm4TSmallUnorderedSet.inl",
+      "size": 7095,
+      "gitBlobSha1": "a0683be5e992bfc1909477ccf2cd90db96df7d6b",
+      "sha256": "21a3714b46f35e61b22f9ebe38c756bee55bd2ae98eaa0c611d2fc47150d6b22",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/System/Wm4TStringHashTable.h",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/System/Wm4TStringHashTable.h",
+      "size": 2089,
+      "gitBlobSha1": "027855c49e2650c5605d2ad7fb62ac35e9f9b743",
+      "sha256": "0903c78b3c1dfeb9202a4a215616884edb022d9ed0c74e8fe94266eed02e7241",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/System/Wm4TStringHashTable.inl",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/System/Wm4TStringHashTable.inl",
+      "size": 6083,
+      "gitBlobSha1": "88422aa030d19a41b714945ca04a962a79bfec5b",
+      "sha256": "7e05b9164646b8ffab377190a39bc6963267afa4759ebce99d797106b337af9d",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/System/Wm4TTuple.h",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/System/Wm4TTuple.h",
+      "size": 1971,
+      "gitBlobSha1": "402b1563d22aa4349c3b7a568e859acd5c8144fb",
+      "sha256": "6727c85b9da38f7e411cc69b271e3f8fd673e3146e3b9bc849a7de389829e4d0",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/System/Wm4TTuple.inl",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/System/Wm4TTuple.inl",
+      "size": 4274,
+      "gitBlobSha1": "8bf1a6366dfbeb6da719eecd98d26bf1141db9bc",
+      "sha256": "c6cefea772cf064e2886d5851df3684766bdfb3500541bd45a5bb1e41f66efa5",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/Wm4FoundationLIB.h",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/Wm4FoundationLIB.h",
+      "size": 953,
+      "gitBlobSha1": "4362661a02158c601388099ed22027f3731946c0",
+      "sha256": "1cad4e02feb3deaa712ae6f90178e3cd0802ac84a73600ca107677b3ab052f4f",
+      "status": "downloaded"
+    },
+    {
+      "upstreamPath": "sources/WildMagic/LibFoundation/Wm4FoundationPCH.h",
+      "localPath": "sources/third_party/wildmagic4/LibFoundation/Wm4FoundationPCH.h",
+      "size": 714,
+      "gitBlobSha1": "4923ecc71183fbf7b9923257230e54367c4d17aa",
+      "sha256": "a13e4a7b3ee0188d23d2307cfbf39323caf88cba5ff1d4ff318820299c6b3638",
+      "status": "downloaded"
+    }
+  ]
+}

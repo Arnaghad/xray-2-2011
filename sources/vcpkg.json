@@ -1,0 +1,34 @@
+{
+  "name": "xray-engine-2",
+  "version": "2.0.0",
+  "description": "X-Ray Engine 2.0 ported to modern C++26, GCC, and Vulkan.",
+  "dependencies": [
+    {
+      "name": "boost-filesystem"
+    },
+    {
+      "name": "boost-system"
+    },
+    {
+      "name": "boost-thread"
+    },
+    {
+      "name": "sol2"
+    },
+    {
+      "name": "sdl2"
+    },
+    {
+      "name": "vulkan-headers"
+    },
+    {
+      "name": "glm"
+    },
+    {
+      "name": "freeimage"
+    },
+    {
+      "name": "zlib"
+    }
+  ]
+}

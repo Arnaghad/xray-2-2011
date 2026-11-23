@@ -1,0 +1,65 @@
+{
+  "version": 1,
+  "id": "vulkan-m8-editor-outputs-v1",
+  "date": "2026-10-19",
+  "scope": "M8-OUTPUTS combined native managed main/model-preview workflow; M8-AUDIT remains separate",
+  "base_preview_contract": "sources/xray/render/vulkan/m8_editor_preview.json",
+  "base_preview_contract_sha256": "4713409be07442a3872854a450f036939e2cfc2dcc2694418dd1663cc924f128",
+  "abi": {
+    "version": 2,
+    "callbacks_bytes": 80,
+    "world_bridge_bytes": 112
+  },
+  "launcher_flags": [
+    "--editor",
+    "--outputs"
+  ],
+  "environment": {
+    "XRAY_M8_EDITOR_OUTPUT_WORKFLOW": "1",
+    "XRAY_M8_EDITOR_OPEN_PREVIEW": "0",
+    "XRAY_M8_EDITOR_CANCEL_STARTUP": "0"
+  },
+  "windows": {
+    "main_client": [
+      960,
+      640
+    ],
+    "preview_client": [
+      640,
+      480
+    ],
+    "resize_client": [
+      1102,
+      673
+    ],
+    "automation": "hidden or minimized with layered alpha zero, nonactivating and input-transparent; no foreground/focus/capture acquisition"
+  },
+  "capture_protocol": "16 editor-owner actions, render-owner fenced readback and exact frame token acknowledgement before the next action; 28 BMP images",
+  "sequence": [
+    "baseline",
+    "preview_resized",
+    "preview_restored",
+    "main_resized",
+    "main_restored",
+    "preview_minimized",
+    "preview_resumed",
+    "main_minimized",
+    "main_resumed",
+    "preview_closed",
+    "preview_reopened",
+    "preview_hidden",
+    "preview_visible",
+    "main_props_hidden",
+    "main_props_restored",
+    "shutdown_ready"
+  ],
+  "content_phase": "after 16 main content warmup frames, hold actor time at 240 ms and pause particles for exact accepted inspection comparisons; main still presents during preview cooks",
+  "oracles": {
+    "main": "accepted inspection and props-hidden hashes; resized extent and scene color coverage; exact replay in a second process",
+    "preview": "accepted woodbox hash at 640x480, independent original-bounds CPU projection at both extents, exact clear while hidden; main props do not affect shared-asset preview",
+    "clocks": "only the minimized view stops presenting; restored views advance; reopened preview starts at presented frame 1",
+    "ownership": "one logical device, distinct HWND/surface/swapchain/scene/view/instance/targets; GPU acknowledgement precedes managed preview disposal"
+  },
+  "shutdown": "close preview after another uncaptured paired frame; reopen and hold one scene/view/output resource batch across host WM_CLOSE and render-session close; reject that batch on the editor owner, drain to zero while both HWNDs live, dispose managed bridge after Vulkan teardown",
+  "validation": "0 errors / 0 warnings through teardown; preserve accepted images, immutable pack and original inputs"
+}

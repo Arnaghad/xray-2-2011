@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "id": "vulkan-m8-editor-host-v1",
+  "date": "2026-10-19",
+  "scope": "M8-EDITOR main view; independent preview remains M8-OUTPUTS",
+  "base_manifest": "sources/xray/render/vulkan/m8_acceptance_manifest.json",
+  "base_manifest_sha256": "b9cf3b00202857e7a170f1807438ec4b4a8268b17129f9507c03ba92992fd21a",
+  "configuration": {
+    "platform": "Windows x64",
+    "cpp": "GCC/MinGW-w64 + Ninja, Debug",
+    "managed_target": "net10.0-windows",
+    "managed_framework": "Microsoft.WindowsDesktop.App 10.0, LatestPatch",
+    "verified_sdk": "10.0.203",
+    "verified_runtime": "10.0.7",
+    "dependencies": "system .NET SDK, x64 hosting pack and Windows Desktop runtime; offline restore with no NuGet package sources"
+  },
+  "deployment": {
+    "directory": "binaries",
+    "native": ["xray_editor_world.dll", "libxray_editor_base.dll", "libxray_engine.dll", "libxray_render_vulkan.dll"],
+    "native_exports": ["create_world", "destroy_world", "set_memory_allocator"],
+    "managed": ["xray.editor.base.dll", "xray.editor.base.runtimeconfig.json", "xray.editor.base.deps.json"],
+    "factory": {"loader": "system hostfxr load_assembly_and_get_function_pointer", "type": "xray.editor_base.Bridge, xray.editor.base", "method": "CreateWorld", "unmanaged_entry_annotation": "xray_editor_create_world"},
+    "path_policy": "native and managed artifacts resolve beside the executable; configured system hostfxr path is recorded in CMakeCache"
+  },
+  "abi": {"version": 1, "callbacks_bytes": 72, "world_bridge_bytes": 96, "handles": "uintptr_t/nuint", "context": "native-width opaque token", "bool": "int32", "matrix": "pointer to sixteen finite float32 values, copied before callback", "calling_convention": "C x64"},
+  "lifetime": "editor STA owns windows, native level and callbacks; renderer/session/channels ready before the first level query; native handles/cooks drain after render close; HWNDs and callbacks survive Vulkan teardown; managed context disposed before native module unload; CoreCLR/hostfxr are process-owned",
+  "launch": {"executable": "binaries/stalker2.exe", "arguments": ["-editor", "-level=vulkan_m8_control", "-render_assets=build/m8-control/assets"], "workflow_flag": "-m8_editor_workflow", "startup_cancel_environment": {"XRAY_M8_EDITOR_CANCEL_STARTUP":"1"}, "automated_window": "hidden, nonactivating, input-transparent, explicitly opted into fenced readback"},
+  "toolbar_commands": {"1": "toggle opaque props", "2": "translate/restore opaque props by (2,0,0)", "3": "add unused alias layer to isolated bar cell", "4": "remove added alias layer", "5": "exchange dominant bar terrain texture across scene", "6": "restore original per-cell slot tables", "7": "toggle copied UI quad and depth-disabled debug triangle", "8": "isolate bar cell / restore both cells"},
+  "terrain_edit_budget": {"bar_cell_mib": 256, "extended_cell_mib": 384, "view_mib": 576, "rule": "isolate bar before adding a slot; remove the extra slot before restoring both cells; original authored cells/geometry/weights/files stay unchanged"},
+  "verification": {
+    "shots": 49,
+    "independent_processes": 2,
+    "restored_inspection_images_per_run": 22,
+    "unused_layer_add_remove": "both images exactly equal isolated-cell image; committed binding/query statistics required",
+    "common_game_images": "all original 37 shots must match current game and frozen accepted game captures byte-for-byte",
+    "overlay_oracle": {"ui_rectangle": [16,16,160,52], "ui_rgb": [64,128,192], "debug_triangle_world": [[24,3,-23],[26,3,-23],[25,5,-23]], "debug_linear_input": "(0,85/255,0); Reinhard maps green to 1/4 before sRGB", "debug_rgb": [0,137,0], "rgb_tolerance": 0, "outside_region_changes": 0},
+    "validation": "0 errors / 0 warnings through teardown",
+    "exclusions": ["independent model preview", "unported legacy managed panels", "particle graph editor", "GI/LPV", "legacy xprj/cooked parity"]
+  }
+}

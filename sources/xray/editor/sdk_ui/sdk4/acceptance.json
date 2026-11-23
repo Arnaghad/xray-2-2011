@@ -1,0 +1,565 @@
+{
+  "schemaVersion": 1,
+  "stage": "SDK-4",
+  "stageComplete": true,
+  "status": "accepted",
+  "date": "2026-11-10",
+  "evidenceRoot": "build/sdk4-native-20261110",
+  "scope": "Basic authored static-model/point-light scene editing, native picking/snap/control calculation and shared command history; viewport/domain completion retains later stages.",
+  "checks": [
+    {
+      "configuration": "debug",
+      "ctest": {
+        "path": "build/sdk4-native-20261110/ctest-debug.log",
+        "sha256": "f7b0e659836ab004469ca4bb6f86fc511438959d163644ada7ac916e1dcaa8d4",
+        "passed": 5,
+        "total": 5
+      },
+      "compatibility": {
+        "path": "build/sdk4-native-20261110/compatibility-debug/result.json",
+        "sha256": "ea8fce12b6213edcf79dc58db3fc7945294c23d287736a805b4531d95449c584",
+        "groups": 14,
+        "runtime": "10.0.13"
+      },
+      "build": {
+        "path": "build/sdk4-native-20261110/build-debug.log",
+        "sha256": "3a5f51d8a55705e1c6a2317df20390336550a50a9691b88a0d42d43621c710fd"
+      }
+    },
+    {
+      "configuration": "release",
+      "ctest": {
+        "path": "build/sdk4-native-20261110/ctest-release.log",
+        "sha256": "b1c3fdb0b5d05eec062a2d252d5b500289b7fa5fd3b7ae80e0bb2e88ced10aa0",
+        "passed": 5,
+        "total": 5
+      },
+      "compatibility": {
+        "path": "build/sdk4-native-20261110/compatibility-release/result.json",
+        "sha256": "ea8fce12b6213edcf79dc58db3fc7945294c23d287736a805b4531d95449c584",
+        "groups": 14,
+        "runtime": "10.0.13"
+      },
+      "build": {
+        "path": "build/sdk4-native-20261110/build-release.log",
+        "sha256": "39ef6fff9eea6df17a0f87aa63bf9225d68dc65a441213582490e9333ecd9fdb"
+      }
+    }
+  ],
+  "native": [
+    {
+      "configuration": "debug",
+      "workflow": "scene",
+      "validationErrors": 0,
+      "validationWarnings": 0,
+      "runtime": {
+        "path": "build/sdk4-native-20261110/scene-accepted-v2-debug/runtime-result.json",
+        "sha256": "bd6db96fec0090de7c805af7e04064b8cac519d15a9fbf1083fe5c4e4c0cc8ac"
+      },
+      "log": {
+        "path": "build/sdk4-native-20261110/scene-accepted-v2-debug/stderr.log",
+        "sha256": "751b01141617e052af4e8d33aac5c9911ea7b125d138c0ef34bd481d2646f70f"
+      },
+      "launch": {
+        "path": "build/sdk4-native-20261110/scene-accepted-v2-debug/launch.json",
+        "sha256": "dc03c1fbd5b90677c6e1eb55fcd1fb430f6a7a723135bce5e93da2476406261a"
+      },
+      "readbacks": {
+        "path": "build/sdk4-native-20261110/scene-accepted-v2-debug/capture-result.json",
+        "sha256": "b5f6cd730e26898446fe70fe5e283ebfa4fef19b58238fed708f1cf25eb21e6f"
+      },
+      "images": [
+        {
+          "path": "build/sdk4-native-20261110/scene-accepted-v2-debug/captures/sdk_layout_edited.bmp",
+          "sha256": "922d0339cc041fc49665fecc6d1fc0a8e2548592bffa398d6b66af565cf550f6"
+        },
+        {
+          "path": "build/sdk4-native-20261110/scene-accepted-v2-debug/captures/sdk_layout_redo.bmp",
+          "sha256": "922d0339cc041fc49665fecc6d1fc0a8e2548592bffa398d6b66af565cf550f6"
+        },
+        {
+          "path": "build/sdk4-native-20261110/scene-accepted-v2-debug/captures/sdk_layout_restored.bmp",
+          "sha256": "922d0339cc041fc49665fecc6d1fc0a8e2548592bffa398d6b66af565cf550f6"
+        },
+        {
+          "path": "build/sdk4-native-20261110/scene-accepted-v2-debug/captures/sdk_layout_undo.bmp",
+          "sha256": "9af0c8a9f63ab2769f2060a1d498b4cccc30dd0eeae233fa388bba163599e1f2"
+        },
+        {
+          "path": "build/sdk4-native-20261110/scene-accepted-v2-debug/captures/sdk_property_baseline.bmp",
+          "sha256": "04fbae8593faf30e74623fc4959b5b2d56e914d4aed6f72fa05bed324ffde6c6"
+        },
+        {
+          "path": "build/sdk4-native-20261110/scene-accepted-v2-debug/captures/sdk_property_edited.bmp",
+          "sha256": "f6a48bffd00262435226abdf946f8b17e7144b7f8a35f6b726457d523aee4298"
+        },
+        {
+          "path": "build/sdk4-native-20261110/scene-accepted-v2-debug/captures/sdk_property_redo.bmp",
+          "sha256": "f6a48bffd00262435226abdf946f8b17e7144b7f8a35f6b726457d523aee4298"
+        },
+        {
+          "path": "build/sdk4-native-20261110/scene-accepted-v2-debug/captures/sdk_property_restored.bmp",
+          "sha256": "f6a48bffd00262435226abdf946f8b17e7144b7f8a35f6b726457d523aee4298"
+        },
+        {
+          "path": "build/sdk4-native-20261110/scene-accepted-v2-debug/captures/sdk_property_undo.bmp",
+          "sha256": "04fbae8593faf30e74623fc4959b5b2d56e914d4aed6f72fa05bed324ffde6c6"
+        }
+      ]
+    },
+    {
+      "configuration": "debug",
+      "workflow": "property",
+      "validationErrors": 0,
+      "validationWarnings": 0,
+      "runtime": {
+        "path": "build/sdk4-native-20261110/property-accepted-v2-debug/runtime-result.json",
+        "sha256": "f4e13e30797a05212672aa325e0310b4ae2cbec45f086d3d7d59b50fff1917bd"
+      },
+      "log": {
+        "path": "build/sdk4-native-20261110/property-accepted-v2-debug/stderr.log",
+        "sha256": "a5d09c4730c96ef4683d7e34a18436b2c6a814e58dee50bda2336575e4adfc0e"
+      },
+      "launch": {
+        "path": "build/sdk4-native-20261110/property-accepted-v2-debug/launch.json",
+        "sha256": "faafd5dbf75e7cb1c7c7cb5b3dbc08cb49e8676d724aac14e897adb4f2de8b91"
+      },
+      "readbacks": {
+        "path": "build/sdk4-native-20261110/property-accepted-v2-debug/capture-result.json",
+        "sha256": "9707b5e2b010c9458d4c7c2b926fb5b14939fb4a6636520fca787c5eec1a66e6"
+      },
+      "images": [
+        {
+          "path": "build/sdk4-native-20261110/property-accepted-v2-debug/captures/sdk_layout_edited.bmp",
+          "sha256": "75880822bf6b7af49310bbd6d3540f76c35b7133c3ddb41f8e1783f8b16353e7"
+        },
+        {
+          "path": "build/sdk4-native-20261110/property-accepted-v2-debug/captures/sdk_layout_redo.bmp",
+          "sha256": "75880822bf6b7af49310bbd6d3540f76c35b7133c3ddb41f8e1783f8b16353e7"
+        },
+        {
+          "path": "build/sdk4-native-20261110/property-accepted-v2-debug/captures/sdk_layout_restored.bmp",
+          "sha256": "5ac2344137e0f7a6e703ef2f418909742094dac355ec3aa7435a074a0acadae9"
+        },
+        {
+          "path": "build/sdk4-native-20261110/property-accepted-v2-debug/captures/sdk_layout_undo.bmp",
+          "sha256": "5ac2344137e0f7a6e703ef2f418909742094dac355ec3aa7435a074a0acadae9"
+        },
+        {
+          "path": "build/sdk4-native-20261110/property-accepted-v2-debug/captures/sdk_property_baseline.bmp",
+          "sha256": "5ac2344137e0f7a6e703ef2f418909742094dac355ec3aa7435a074a0acadae9"
+        },
+        {
+          "path": "build/sdk4-native-20261110/property-accepted-v2-debug/captures/sdk_property_edited.bmp",
+          "sha256": "75880822bf6b7af49310bbd6d3540f76c35b7133c3ddb41f8e1783f8b16353e7"
+        },
+        {
+          "path": "build/sdk4-native-20261110/property-accepted-v2-debug/captures/sdk_property_redo.bmp",
+          "sha256": "75880822bf6b7af49310bbd6d3540f76c35b7133c3ddb41f8e1783f8b16353e7"
+        },
+        {
+          "path": "build/sdk4-native-20261110/property-accepted-v2-debug/captures/sdk_property_restored.bmp",
+          "sha256": "5ac2344137e0f7a6e703ef2f418909742094dac355ec3aa7435a074a0acadae9"
+        },
+        {
+          "path": "build/sdk4-native-20261110/property-accepted-v2-debug/captures/sdk_property_undo.bmp",
+          "sha256": "5ac2344137e0f7a6e703ef2f418909742094dac355ec3aa7435a074a0acadae9"
+        }
+      ]
+    },
+    {
+      "configuration": "debug",
+      "workflow": "legacy",
+      "validationErrors": 0,
+      "validationWarnings": 0,
+      "runtime": {
+        "path": "build/sdk4-native-20261110/legacy-accepted-v2-debug/runtime-result.json",
+        "sha256": "30da7bf9cbe03ecf1ddb29ef129fb7aa69d71815c68bd611ae0f084c5ffc22de"
+      },
+      "log": {
+        "path": "build/sdk4-native-20261110/legacy-accepted-v2-debug/stderr.log",
+        "sha256": "f543d1532994348e6fdcd8401e56eeb1609b5178ed7e4e964ef70f173aec3100"
+      },
+      "launch": {
+        "path": "build/sdk4-native-20261110/legacy-accepted-v2-debug/launch.json",
+        "sha256": "e3f7571e7c70002072e65c60a362d42cd9022911f864cf39fd3eff43a1fe5831"
+      },
+      "images": [
+        {
+          "path": "build/sdk4-native-20261110/legacy-accepted-v2-debug/captures/game.bmp",
+          "sha256": "42998866793f892c57383c758ddd6bf5916fb3b97152e8b14234d7723a88d76f"
+        }
+      ]
+    },
+    {
+      "configuration": "release",
+      "workflow": "scene",
+      "validationErrors": 0,
+      "validationWarnings": 0,
+      "runtime": {
+        "path": "build/sdk4-native-20261110/scene-accepted-v2-release/runtime-result.json",
+        "sha256": "bd6db96fec0090de7c805af7e04064b8cac519d15a9fbf1083fe5c4e4c0cc8ac"
+      },
+      "log": {
+        "path": "build/sdk4-native-20261110/scene-accepted-v2-release/stderr.log",
+        "sha256": "77f5b3f6130ff82c27cf2feb0011957e1414f9b254adf09849e7bbb52387f98e"
+      },
+      "launch": {
+        "path": "build/sdk4-native-20261110/scene-accepted-v2-release/launch.json",
+        "sha256": "7bfd70e4e74056a71ccd814675f3e0b70293fcf351a770a5b799657f56cd5117"
+      },
+      "readbacks": {
+        "path": "build/sdk4-native-20261110/scene-accepted-v2-release/capture-result.json",
+        "sha256": "3f8b91b3898a554b14e13dd2df842b7f5179e4362d29b394c869f93c12cbeb22"
+      },
+      "images": [
+        {
+          "path": "build/sdk4-native-20261110/scene-accepted-v2-release/captures/sdk_layout_edited.bmp",
+          "sha256": "434722f3e1f389d877017e2b9fecd580c4c716327f5bf7d8092582bbc26a4c1c"
+        },
+        {
+          "path": "build/sdk4-native-20261110/scene-accepted-v2-release/captures/sdk_layout_redo.bmp",
+          "sha256": "434722f3e1f389d877017e2b9fecd580c4c716327f5bf7d8092582bbc26a4c1c"
+        },
+        {
+          "path": "build/sdk4-native-20261110/scene-accepted-v2-release/captures/sdk_layout_restored.bmp",
+          "sha256": "434722f3e1f389d877017e2b9fecd580c4c716327f5bf7d8092582bbc26a4c1c"
+        },
+        {
+          "path": "build/sdk4-native-20261110/scene-accepted-v2-release/captures/sdk_layout_undo.bmp",
+          "sha256": "9af0c8a9f63ab2769f2060a1d498b4cccc30dd0eeae233fa388bba163599e1f2"
+        },
+        {
+          "path": "build/sdk4-native-20261110/scene-accepted-v2-release/captures/sdk_property_baseline.bmp",
+          "sha256": "04fbae8593faf30e74623fc4959b5b2d56e914d4aed6f72fa05bed324ffde6c6"
+        },
+        {
+          "path": "build/sdk4-native-20261110/scene-accepted-v2-release/captures/sdk_property_edited.bmp",
+          "sha256": "f6a48bffd00262435226abdf946f8b17e7144b7f8a35f6b726457d523aee4298"
+        },
+        {
+          "path": "build/sdk4-native-20261110/scene-accepted-v2-release/captures/sdk_property_redo.bmp",
+          "sha256": "f6a48bffd00262435226abdf946f8b17e7144b7f8a35f6b726457d523aee4298"
+        },
+        {
+          "path": "build/sdk4-native-20261110/scene-accepted-v2-release/captures/sdk_property_restored.bmp",
+          "sha256": "f6a48bffd00262435226abdf946f8b17e7144b7f8a35f6b726457d523aee4298"
+        },
+        {
+          "path": "build/sdk4-native-20261110/scene-accepted-v2-release/captures/sdk_property_undo.bmp",
+          "sha256": "04fbae8593faf30e74623fc4959b5b2d56e914d4aed6f72fa05bed324ffde6c6"
+        }
+      ]
+    },
+    {
+      "configuration": "release",
+      "workflow": "property",
+      "validationErrors": 0,
+      "validationWarnings": 0,
+      "runtime": {
+        "path": "build/sdk4-native-20261110/property-accepted-v2-release/runtime-result.json",
+        "sha256": "f4e13e30797a05212672aa325e0310b4ae2cbec45f086d3d7d59b50fff1917bd"
+      },
+      "log": {
+        "path": "build/sdk4-native-20261110/property-accepted-v2-release/stderr.log",
+        "sha256": "4ab9683f73789715b05297d4ba91d5f759b0e65443cdfad5302ac91267a6c1db"
+      },
+      "launch": {
+        "path": "build/sdk4-native-20261110/property-accepted-v2-release/launch.json",
+        "sha256": "b0db4d06e8dd4b366b536579dd829712977938a89819a3ac0ab143fa1bb3e37b"
+      },
+      "readbacks": {
+        "path": "build/sdk4-native-20261110/property-accepted-v2-release/capture-result.json",
+        "sha256": "9707b5e2b010c9458d4c7c2b926fb5b14939fb4a6636520fca787c5eec1a66e6"
+      },
+      "images": [
+        {
+          "path": "build/sdk4-native-20261110/property-accepted-v2-release/captures/sdk_layout_edited.bmp",
+          "sha256": "75880822bf6b7af49310bbd6d3540f76c35b7133c3ddb41f8e1783f8b16353e7"
+        },
+        {
+          "path": "build/sdk4-native-20261110/property-accepted-v2-release/captures/sdk_layout_redo.bmp",
+          "sha256": "75880822bf6b7af49310bbd6d3540f76c35b7133c3ddb41f8e1783f8b16353e7"
+        },
+        {
+          "path": "build/sdk4-native-20261110/property-accepted-v2-release/captures/sdk_layout_restored.bmp",
+          "sha256": "5ac2344137e0f7a6e703ef2f418909742094dac355ec3aa7435a074a0acadae9"
+        },
+        {
+          "path": "build/sdk4-native-20261110/property-accepted-v2-release/captures/sdk_layout_undo.bmp",
+          "sha256": "5ac2344137e0f7a6e703ef2f418909742094dac355ec3aa7435a074a0acadae9"
+        },
+        {
+          "path": "build/sdk4-native-20261110/property-accepted-v2-release/captures/sdk_property_baseline.bmp",
+          "sha256": "5ac2344137e0f7a6e703ef2f418909742094dac355ec3aa7435a074a0acadae9"
+        },
+        {
+          "path": "build/sdk4-native-20261110/property-accepted-v2-release/captures/sdk_property_edited.bmp",
+          "sha256": "75880822bf6b7af49310bbd6d3540f76c35b7133c3ddb41f8e1783f8b16353e7"
+        },
+        {
+          "path": "build/sdk4-native-20261110/property-accepted-v2-release/captures/sdk_property_redo.bmp",
+          "sha256": "75880822bf6b7af49310bbd6d3540f76c35b7133c3ddb41f8e1783f8b16353e7"
+        },
+        {
+          "path": "build/sdk4-native-20261110/property-accepted-v2-release/captures/sdk_property_restored.bmp",
+          "sha256": "5ac2344137e0f7a6e703ef2f418909742094dac355ec3aa7435a074a0acadae9"
+        },
+        {
+          "path": "build/sdk4-native-20261110/property-accepted-v2-release/captures/sdk_property_undo.bmp",
+          "sha256": "5ac2344137e0f7a6e703ef2f418909742094dac355ec3aa7435a074a0acadae9"
+        }
+      ]
+    },
+    {
+      "configuration": "release",
+      "workflow": "legacy",
+      "validationErrors": 0,
+      "validationWarnings": 0,
+      "runtime": {
+        "path": "build/sdk4-native-20261110/legacy-accepted-v2-release/runtime-result.json",
+        "sha256": "30da7bf9cbe03ecf1ddb29ef129fb7aa69d71815c68bd611ae0f084c5ffc22de"
+      },
+      "log": {
+        "path": "build/sdk4-native-20261110/legacy-accepted-v2-release/stderr.log",
+        "sha256": "d8465727189f8228e4108627b5e5b453c7fba767cf8cf59595813ad8871ba8ec"
+      },
+      "launch": {
+        "path": "build/sdk4-native-20261110/legacy-accepted-v2-release/launch.json",
+        "sha256": "12041633183a45486e3745c3c5688df5ffc090bfcf323cce3bcfbe9c06f5b438"
+      },
+      "images": [
+        {
+          "path": "build/sdk4-native-20261110/legacy-accepted-v2-release/captures/game.bmp",
+          "sha256": "42998866793f892c57383c758ddd6bf5916fb3b97152e8b14234d7723a88d76f"
+        }
+      ]
+    }
+  ],
+  "implementation": [
+    {
+      "path": "sources/xray/editor/base/Command.cs",
+      "sha256": "3538095cfb0707feae733ed0e722f64b9d7dd76c75aa2f3c185390029d0181cd"
+    },
+    {
+      "path": "sources/xray/editor/base/CommandEngine.cs",
+      "sha256": "01dfd1526886ecef63c40af7e0d9f2b81e61391f27c13a49ab7cdba854c1535d"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkProperties.cs",
+      "sha256": "24e888332fd557bdd0482e1e8765701bdd5304e8ae3d4a2125d343959dfda85d"
+    },
+    {
+      "path": "sources/xray/editor/base/Project.cs",
+      "sha256": "f9a11c09515a631b4575fee9f2f2d1bc56f198019f67cab7a8509f8d03353ebb"
+    },
+    {
+      "path": "sources/xray/editor/base/ProjectItems.cs",
+      "sha256": "a03c3cda0c86a65d593f73364bdebe250ee5cffd7c0ecc4eb7ea8ca0c9007cfb"
+    },
+    {
+      "path": "sources/xray/editor/base/ProjectEditing.cs",
+      "sha256": "5c808a8e24cb52e9f2f42d8ea2acdccf9e076568fa2615afefee256d35b4ab57"
+    },
+    {
+      "path": "sources/xray/editor/base/ProjectClipboard.cs",
+      "sha256": "62647445ecef846dbf5985be36b616ada26d8b6ca20e822954947074d9093737"
+    },
+    {
+      "path": "sources/xray/editor/base/ProjectPropertyAdapters.cs",
+      "sha256": "6011d1aa6fc59f2c922d9faa2e154f46fb9f623a807340e75794fbed548bca7a"
+    },
+    {
+      "path": "sources/xray/editor/base/ProjectViewportEditing.cs",
+      "sha256": "836778e1733102dba157229a3b3cf4a49a6bc6a6860337264c5295f05c64d704"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkScene.cs",
+      "sha256": "3fefee30595c6dc490849947e929c566e68422c6a7b94fa5bdaf2aa2fa0a4630"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkIdePanels.cs",
+      "sha256": "af13fe774a547ec5106bc38559bd0a52ff7d7cbe5c5eba7b2ecc4294279123d5"
+    },
+    {
+      "path": "sources/xray/editor/base/ProjectTab.cs",
+      "sha256": "a027d6b232d9186d2aa9980e957c13afff765fb147a5eff6aa6ce386cbb0f8e5"
+    },
+    {
+      "path": "sources/xray/editor/base/WindowIde.cs",
+      "sha256": "278730135e94a7cfd7bd208d1c9f0f7e871e36c098462ba681132e0c35720d6b"
+    },
+    {
+      "path": "sources/xray/editor/base/WindowIde.Editing.cs",
+      "sha256": "0d36411b7311b854a9685783957fe578f0167f1eca8fe184bc9b993d41fed20b"
+    },
+    {
+      "path": "sources/xray/editor/base/WindowIde.Projects.cs",
+      "sha256": "363a16b20fcf540e8bca808dd2ecd0b3e9664847d1e447bb1cdf04958746e2ba"
+    },
+    {
+      "path": "sources/xray/editor/base/EditorWorld.cs",
+      "sha256": "518d7830b60931de7b5d86b5756960ea3fc2937614596a1ccf89e6224eb1d55b"
+    },
+    {
+      "path": "sources/xray/editor/base/EditorWorld.Sdk.cs",
+      "sha256": "61ca9e9149301b9c5a49fbae0605a0729d4927a7baffe965e9823db3c3443e73"
+    },
+    {
+      "path": "sources/xray/editor/base/EditorWorld.SceneChecks.cs",
+      "sha256": "3c1c2c6cbf6785ff7199252f18d3a010dbec010d8f2a80fbf248bcafc2fd0d64"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkNativeResources.cs",
+      "sha256": "ea1a90ddfd48987bfdee76b94259188960128cc877052e7e124215fd4efa0b82"
+    },
+    {
+      "path": "sources/xray/editor/base/EditorHost.csproj.in",
+      "sha256": "4b219a4a8223689c7d4bbd376eed69632456f79d549cc097b8f6ce9e68f595cc"
+    },
+    {
+      "path": "sources/xray/editor/base/CMakeLists.txt",
+      "sha256": "1326eca02edff45897d96d8037060ce2c2a475f270e9b578686326b9979db1f7"
+    },
+    {
+      "path": "sources/xray/editor/base/sdk_transform.h",
+      "sha256": "7dcc4ca11d0fe22ac8505780a9e90b997b4a84c2ffe12aeb393630a257842eb2"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/sdk_transform.cpp",
+      "sha256": "71b188615a5362a80d412cc7ab38d1d89679545f5b5a66432d387b4de081dbd5"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/transform_control_translation.cpp",
+      "sha256": "0f17fa392af42d1f79736e24ab06487c7c0e1e893ef387fb65266a3f286ebdb0"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/transform_control_scaling.cpp",
+      "sha256": "0aa311727ac84d5a91cbb82571dac87ffdc9ce850ceab9060098def5fc77067d"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/transform_control_rotation.cpp",
+      "sha256": "cf5e047ec7d6c5e4c30c96b2822446c60f777ddddb566bc66151bf81c96b76eb"
+    },
+    {
+      "path": "sources/xray/editor/world/sdk_scene_bridge.h",
+      "sha256": "d952d3705ca1ea5036eca877f81ef121bdb6dc99d2e66d5bc631084698337e6f"
+    },
+    {
+      "path": "sources/xray/editor/world/sources/sdk_scene.h",
+      "sha256": "cb8584a7cfc82f76ff91074c010bdb86091dc8b68057551e2ef09def29480759"
+    },
+    {
+      "path": "sources/xray/editor/world/sources/editor_entry_point.cpp",
+      "sha256": "2a21b7a0dcf1836562448fb8bed4292c74cd47eac3b7367d89fc93aa2dc2be65"
+    },
+    {
+      "path": "sources/xray/editor/world/sources/managed_host.cpp",
+      "sha256": "bbbbeaf17a891b904a5ee545e4762451840b6b91a080eb4e61cea14a44f1d173"
+    },
+    {
+      "path": "sources/xray/editor/world/sources/managed_host.h",
+      "sha256": "f1c766838d092907f12859108c1a7e62f53ad4681f30b0633aab56cc3c12a6c3"
+    },
+    {
+      "path": "sources/xray/render/facade/control_level.h",
+      "sha256": "5ed3a72f507255034d2d8ae961a222d4a7f73ecf7afa6ad525cf43a456c235e4"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/SDKUI.Compatibility.csproj",
+      "sha256": "3d9da6df52e6820d3571087d8543dbe4af3e49cb961170c905ba28647cb189e5"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/Program.cs",
+      "sha256": "aa4796a3b00c8ca353c226e64514bf4f234af94c78385475209b11a7ff3d905c"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/SdkCommandChecks.cs",
+      "sha256": "1bef42491c410e3a7b71b1f9d8bd140f539a9699306874a3434c4fc2aa90054d"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/SdkProjectCommandChecks.cs",
+      "sha256": "36f557ffad4d4091c86d270ea62b84bccff0ef73fa4b49898dc6c7522467b2cf"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/SdkSceneCommandChecks.cs",
+      "sha256": "0d6987afb677efd9ed2d08f69d00065dcf505defd798416b09b700d4ecc5f21f"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/SdkContractChecks.cs",
+      "sha256": "567c1c9372ba40333f660059b0822b99182741e03d8959578fbe66d67d431eac"
+    },
+    {
+      "path": "sources/tools/sdk/test-sdk-property.ps1",
+      "sha256": "c8fd7a48e07f71ff3da223541c86438f1d8303ace65343ebb1cbbeb2b7cc5a7c"
+    },
+    {
+      "path": "sources/tools/sdk/verify-sdk-property.py",
+      "sha256": "7d021bdcd69cd889d13b10a90325b44f16a14deaefc682b859cb8f744a19cc1c"
+    },
+    {
+      "path": "sources/tools/sdk/verify-sdk-scene.py",
+      "sha256": "9587eea6ccd68b111746aa93fe51c9a98fced1e3ae917fcde02f22dea08fa8cf"
+    }
+  ],
+  "previousCheckpoints": [
+    "sources/xray/editor/sdk_ui/sdk4/command-foundation.json",
+    "sources/xray/editor/sdk_ui/sdk4/project-commands.json"
+  ],
+  "limitations": [
+    "Mouse/key events are exercised through real in-process WinForms handlers on hidden HWNDs; physical desktop/manual smoke is not claimed.",
+    "SDK-5 owns full native gizmo geometry/draw/axis picking, viewport navigation/outlines/grid/overlays/render modes, preview docking/reload and large-scene performance.",
+    "Missing models and specialized tool/light objects use selectable locators; protected terrain/root scene and terrain snapping retain domain-stage acceptance.",
+    "World-axis scale that introduces nonrepresentable shear rejects atomically; Local/uniform scale and signed scale/pivots are supported.",
+    "Candidate scene/instances are rebuilt for atomic synchronization, sharing immutable asset data. History stores per-command affected-item data, not whole-scene snapshots.",
+    "Original SDK runtime/UI parity is not claimed beyond the pinned-source fallback accepted in SDK-0."
+  ],
+  "resolvedFailedRuns": [
+    {
+      "path": "scene-debug-1",
+      "reason": "Diagnostic undid a group after a no-op reparent; corrected the target folder."
+    },
+    {
+      "path": "scene-debug-2",
+      "reason": "Hidden-window Enter/context setup and fixed M8 diagnostic camera masked authored scene input/rendering; bound the project camera and normal Enter route."
+    },
+    {
+      "path": "scene-final-debug",
+      "reason": "Pivot/mirrored-scale probe exposed opposite Euler sign in managed System.Numerics math; corrected parity with X-Ray."
+    },
+    {
+      "path": "scene-accepted-debug",
+      "reason": "Cyrillic reopen retained exact object state but coplanar draw order followed runtime IDs (37 differing pixels); switched submission, picking ties and debug draw to persistent GUID order."
+    },
+    {
+      "path": "scene-final-debug-2",
+      "reason": "Pending preview readiness check rejected projection and scene detach; permitted cook-free projection/detach operations during drain."
+    }
+  ],
+  "documentation": [
+    {
+      "path": "sdk_migration_plan.md",
+      "sha256": "35ef37b6b55d4bf8d65991fd6240e5504247986ca348defdf7827cc1b8fabda0"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/README.md",
+      "sha256": "0ad180f973cb866188c9bd8ff261a252137dc670187e750f034067f2882d97da"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk4/README.md",
+      "sha256": "56d3e55d20e62b27596c50982d939479cdd4a459a7f5736cc23f605e97086dd9"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk4/acceptance.md",
+      "sha256": "92cfd63073c2f85c2f158607b382d020fae3f61c4d0b65c8beb488eaf2ecfbf4"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk0/function-matrix.json",
+      "sha256": "7be829dc35c08371b376875dc56bb88799d94bd6d164cbc91f6c6598318d9747"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk0/review-findings.md",
+      "sha256": "69bf6178ef9629a01712db880a6cdf620f2012ea288cb1df6bf82032ec169212"
+    }
+  ]
+}

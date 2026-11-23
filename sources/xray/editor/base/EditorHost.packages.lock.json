@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "dependencies": {
+    "net11.0-windows7.0": {
+      "DockPanelSuite": {
+        "type": "Direct",
+        "requested": "[3.1.1, )",
+        "resolved": "3.1.1",
+        "contentHash": "goYuIMrAHyzPfwqqW5MHXk9mWVI4oyILqC1TRlNS0pzXY7ku/fxoY1j0JuDJnwboqpIxvAatOT9ONrheCMo3/Q=="
+      },
+      "DockPanelSuite.ThemeVS2015": {
+        "type": "Direct",
+        "requested": "[3.1.1, )",
+        "resolved": "3.1.1",
+        "contentHash": "5ZrBaRcCoW9FMDmWD5nY5YzGIIBmMHzTMZHs6ScZsEAISfJYKopUPo8e1T+hRKe2aKYVkAfnLAW5lgpKNMvMug==",
+        "dependencies": {
+          "DockPanelSuite": "3.1.1"
+        }
+      },
+      "Extended.Wpf.Toolkit": {
+        "type": "Transitive",
+        "resolved": "5.1.2",
+        "contentHash": "xjnylqPScjYRJq5pULiSqNf7RiqOG9fgcpji83qbB2i0JSthK4i52JRYpKvDSVW4BDDVeHMjB4JQlIUcpIqGcA=="
+      },
+      "wpf_controls": {
+        "type": "Project",
+        "dependencies": {
+          "Extended.Wpf.Toolkit": "[5.1.2, )"
+        }
+      }
+    }
+  }
+}

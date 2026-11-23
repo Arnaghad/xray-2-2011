@@ -1,0 +1,370 @@
+{
+  "schema": "xray-sdk-dcc-acceptance/v1",
+  "date": "2026-11-15",
+  "stage": "B6",
+  "status": "accepted",
+  "scope": [
+    "Blender default, Maya optional; persisted DCC options",
+    "Working source copy, exact B5 association and legacy import",
+    "Open source with installed Blender extension",
+    "Transactional manual/watched recook with failure/cancellation/race retention",
+    "Live native model update, fresh queries and open model document refresh",
+    "Engine cubic-animation sampling and skeleton playback preview",
+    "Cache restore without DCC export or SDK restart"
+  ],
+  "remaining": [
+    "B7 CI and comprehensive DCC matrix",
+    "B8 artist documentation",
+    "Full SDK6 editor acceptance",
+    "SDK8 animation graph, retargeting and actor integration",
+    "Full physics authoring UI"
+  ],
+  "nativeRuns": [
+    {
+      "configuration": "Release",
+      "result": {
+        "status": "PASS",
+        "modelBefore": 1.25,
+        "modelAfter": 3.75,
+        "animationDelta": 0.74999994,
+        "sdkRestart": false,
+        "liveGpuReadback": {
+          "mean_absolute_channel_error": 0.016147100668820722,
+          "changed_pixels": 335,
+          "changed_fraction": 0.0005567965747869214,
+          "maximum_channel_error": 45
+        },
+        "fixtureUnchanged": true,
+        "validationErrors": 0
+      },
+      "evidence": [
+        {
+          "path": "build/blender-b6/acceptance-release-final/result.json",
+          "bytes": 382,
+          "sha256": "9c2a9222f901e1ed96897e73ecb531e9275288ac562681951369d0af4b49dab1"
+        },
+        {
+          "path": "build/blender-b6/acceptance-release-final/native/launch.json",
+          "bytes": 9052,
+          "sha256": "6aefb08d559a96b62577b08187bfd074a3a63b91599eb0902c067e4ecae56258"
+        },
+        {
+          "path": "build/blender-b6/acceptance-release-final/native/stderr.log",
+          "bytes": 4159,
+          "sha256": "89530c3bb3a08be00028de606f366872db6cf97535fa6db710e4306e73e13dd3"
+        },
+        {
+          "path": "build/blender-b6/acceptance-release-final/source/fixture.sha256",
+          "bytes": 64,
+          "sha256": "a65c063f28d02d2d59f25f0b50f578b2b86f558a27fea3d8e9b6a9fe31058fe9"
+        }
+      ]
+    },
+    {
+      "configuration": "Debug",
+      "result": {
+        "status": "PASS",
+        "modelBefore": 1.25,
+        "modelAfter": 3.75,
+        "animationDelta": 0.74999994,
+        "sdkRestart": false,
+        "liveGpuReadback": {
+          "mean_absolute_channel_error": 0.0103935360626892,
+          "changed_pixels": 335,
+          "changed_fraction": 0.0005567965747869214,
+          "maximum_channel_error": 26
+        },
+        "fixtureUnchanged": true,
+        "validationErrors": 0
+      },
+      "evidence": [
+        {
+          "path": "build/blender-b6/acceptance-debug-2/result.json",
+          "bytes": 380,
+          "sha256": "dd4c5b2407c223b01377a520c8fb5b7874618a89188a460852b710750402e304"
+        },
+        {
+          "path": "build/blender-b6/acceptance-debug-2/native/launch.json",
+          "bytes": 9011,
+          "sha256": "1a0571134edd24ab47c4395fdd863a3eecf1add2091f0da3a57d0c54a93fa999"
+        },
+        {
+          "path": "build/blender-b6/acceptance-debug-2/native/stderr.log",
+          "bytes": 4159,
+          "sha256": "7543f3889c047bc16b36fa104876cba830cc0919af5414a50771caffd0e45298"
+        },
+        {
+          "path": "build/blender-b6/acceptance-debug-2/source/fixture.sha256",
+          "bytes": 64,
+          "sha256": "524c6b0ee823058bb3a62b3f534160d9c58f8e3edfa38ef85bb6b4a1a7011bae"
+        }
+      ]
+    }
+  ],
+  "regressions": [
+    {
+      "path": "build/blender-b6/ctest-release.log",
+      "bytes": 3179,
+      "sha256": "6749f69b78b8d82d19f541b6a790305fa0cfe65f773efb71767501a379e8f339"
+    },
+    {
+      "path": "build/blender-b6/ctest-debug.log",
+      "bytes": 3177,
+      "sha256": "ac10349d989fec4272a9cfb294f1d9a68f48ce44b17a037aa7d7025e95e429eb"
+    }
+  ],
+  "additionalEvidence": [
+    {
+      "path": "build/blender-b6/compatibility-release-final.log",
+      "bytes": 356,
+      "sha256": "8cadb0e361d8447be331d34a1a80effa3b35589db305aaaf51d4d2af5570c95d"
+    },
+    {
+      "path": "build/blender-b6/compatibility-debug-final.log",
+      "bytes": 354,
+      "sha256": "e3f3ae50a6e543d94ac53bf08009b4dbb3d3c81db6b31b2e0bd270f40af48adb"
+    },
+    {
+      "path": "build/blender-b6/legacy-contract/host.log",
+      "bytes": 108,
+      "sha256": "5a50f7757be3860685b5cc1d5e21fc0f5011633f3de88c27b3d57f413d161dcf"
+    },
+    {
+      "path": "build/blender-b6/legacy-contract/output/result.json",
+      "bytes": 294,
+      "sha256": "2ca2027d8dd4daf04efa401d23efcb2e2c1b1df13dc8e102077be2fa2404cf79"
+    },
+    {
+      "path": "build/blender-b6/maya-static/host-2.log",
+      "bytes": 84,
+      "sha256": "9ba87d0cb692b628e55b6a8d4b9ce162c6a34678ec8995c887cdc3cb2f123558"
+    },
+    {
+      "path": "build/blender-b6/maya-static/result.json",
+      "bytes": 278,
+      "sha256": "ada6f152cbc98f1d21ac968101883c84308780a63aeaafb38aa70e2ac9b606d4"
+    },
+    {
+      "path": "build/blender-b6/document-recovery.json",
+      "bytes": 679,
+      "sha256": "035366af89259ac66292771b56ba0a832a7746bad0eadab5b042a80e7c1af2a6"
+    }
+  ],
+  "extension": {
+    "path": "build/blender/extension/xray_blender-0.3.1.zip",
+    "bytes": 73781,
+    "sha256": "7fad0d09e5da24ab3c4782588f6523e8b613ad6284bc3108c08e67d905b788c6"
+  },
+  "sources": [
+    {
+      "path": "sources/tools/blender/sdk_bridge.py",
+      "bytes": 5704,
+      "sha256": "b42e932f2f34b7f496933d199fd57be4317b3ec79badc379768ef0d8dd9ed8f7"
+    },
+    {
+      "path": "sources/tools/blender/sdk_open_source.py",
+      "bytes": 556,
+      "sha256": "91d5d6bf9087cbac3f409bf50c68e1353feb9f91a7410a049ebd0543011fa2fe"
+    },
+    {
+      "path": "sources/tools/blender/prepare_sdk_test.py",
+      "bytes": 2660,
+      "sha256": "f5cfc274d8b140299b599865dd177e5d9b768e01d6e0d7c6c86eb1ae183fd004"
+    },
+    {
+      "path": "sources/tools/blender/verify_sdk_source.py",
+      "bytes": 2335,
+      "sha256": "cb49c9ec6c8ae902e860d0356159818fd01b6008897ab3decfba6d5fbb98c5fe"
+    },
+    {
+      "path": "sources/tools/blender/SDK.md",
+      "bytes": 6157,
+      "sha256": "e1f35eed458c7b8f6cf578197ad7fcb98980f554ea555dd56afb49410e7442bc"
+    },
+    {
+      "path": "sources/tools/maya/plugin/sdk_bridge.py",
+      "bytes": 3389,
+      "sha256": "2691013040795fa51d19f6a102b497bf242f3312df6fdc1731beb4a5eaa2ea01"
+    },
+    {
+      "path": "sources/tools/sdk/test-sdk-dcc.ps1",
+      "bytes": 1155,
+      "sha256": "31751256a4810262a8ec92011727a54049dc05ed286327705d7a9530ecbe811b"
+    },
+    {
+      "path": "sources/tools/sdk/verify-sdk-dcc.py",
+      "bytes": 1509,
+      "sha256": "f886dde9067fe4debcd3d120d08ead28b637a62f1fd7527ca7c39bdae860f110"
+    },
+    {
+      "path": "sources/tools/sdk/test-sdk-property.ps1",
+      "bytes": 20614,
+      "sha256": "e118bdd28b467854f9c6a91265fbde84f4343495d67fc31e881d977e09c766b5"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkDcc.cs",
+      "bytes": 17782,
+      "sha256": "5d78c8aebf82718666b58d97ca1f9242d0f65301cbf96b8c9f1d7b43433206d0"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkDccResources.cs",
+      "bytes": 4035,
+      "sha256": "944070ddc7343e4784d36e8da1363273457a366cb84f5500bbcf5e68daadfa73"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkDccPublisher.cs",
+      "bytes": 8581,
+      "sha256": "73f4ac677dea0a32abdfab0dbfab7fa297be4c3b290e5422e2db2008bad1e1a9"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkDccImport.cs",
+      "bytes": 5978,
+      "sha256": "ef88f4b1544b528d504dcdc44b1254e6ba0f1f9c5421fbfaf4e2d2aa5ae3e6a3"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkDccWindow.cs",
+      "bytes": 7599,
+      "sha256": "050303272e164be611767bc13b4f9cb2324eabaa33ca3b83fe92de78a55c8bd9"
+    },
+    {
+      "path": "sources/xray/editor/base/WindowIde.Dcc.cs",
+      "bytes": 2615,
+      "sha256": "2ce65f20d3b6a6b4073dc75915b459d43a10623d99562d712e77156e88683791"
+    },
+    {
+      "path": "sources/xray/editor/base/EditorWorld.DccChecks.cs",
+      "bytes": 6609,
+      "sha256": "0f77bc99cd5658bb315dbea27116cd2e94728064a9c25ac78da67b3c46b5ddfb"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkNativeResources.cs",
+      "bytes": 6084,
+      "sha256": "d286ae55ad18f8a35d70b86137de4bc50325387048ce1677effa2371652bb19e"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkResourcePipeline.cs",
+      "bytes": 45813,
+      "sha256": "8a69edb38073cfc5db82b1e930e308392011ec869e2ea98fefda99abbf9b8d1b"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkResourceBrowser.cs",
+      "bytes": 7404,
+      "sha256": "943b5508f16677e6fbd118d4ff3a70d681d0953b58d0b86e3b8cf3724b98bab6"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkModelEditor.cs",
+      "bytes": 4705,
+      "sha256": "c62337b0c8afe5467f041a2e1270a957fb992f23f113efda264e8ad21481d1c6"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkModelDocument.cs",
+      "bytes": 7287,
+      "sha256": "d40b1a376fce6fc336b20501f4bff9207a1d021ed95fcc291387a7d893d77bbc"
+    },
+    {
+      "path": "sources/xray/editor/base/WindowIde.Models.cs",
+      "bytes": 5346,
+      "sha256": "af376f28d105fac6894c5ef996f7c291599fc731606c5b042fe6606843da83a1"
+    },
+    {
+      "path": "sources/xray/editor/base/WindowIde.Projects.cs",
+      "bytes": 9153,
+      "sha256": "34333526334b8a2ab58b1d259d812419272207e1c77b6995760307abd1161ea9"
+    },
+    {
+      "path": "sources/xray/editor/base/WindowIde.Editing.cs",
+      "bytes": 11049,
+      "sha256": "705b605d2436af100c0d8a8d568cad60588216756f2596194750f0254d9bd674"
+    },
+    {
+      "path": "sources/xray/editor/base/WindowIde.cs",
+      "bytes": 65775,
+      "sha256": "e163fcfc9c17b2b285b4f29ddfe720d01065d8e3978254bcc3ec63f5d73911ee"
+    },
+    {
+      "path": "sources/xray/editor/base/EditorWorld.cs",
+      "bytes": 10288,
+      "sha256": "a5fccca203a614c43e5f53417eabea5f99ff6b85ca1ba1da317d40b4b6bbeab2"
+    },
+    {
+      "path": "sources/xray/editor/base/EditorWorld.Sdk.cs",
+      "bytes": 33384,
+      "sha256": "deb6916970fb54eaad20681fa382954d0b11c748ec8fbc744651f5cbe4be24a8"
+    },
+    {
+      "path": "sources/xray/editor/base/EditorHost.csproj.in",
+      "bytes": 7949,
+      "sha256": "b93d42c7c44b7647d6b35b71fc401b7133ddd4537ddf5659a6d9f3d9d2e4fd25"
+    },
+    {
+      "path": "sources/xray/editor/base/CMakeLists.txt",
+      "bytes": 6876,
+      "sha256": "ff7efcb21313c56e03d1164ba711e896b833e93243824902fad59aa89e36a6e0"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/SdkDccChecks.cs",
+      "bytes": 7654,
+      "sha256": "5dea2858f548e8cd1e665850851fba27df2ef2b607a41400b02d7cb450f4942a"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/Program.cs",
+      "bytes": 16397,
+      "sha256": "d3b84bf3da8b11cef010d47e8a96ec2939519bd27381c7720d4dd9710fdb21be"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/SDKUI.Compatibility.csproj",
+      "bytes": 8399,
+      "sha256": "7edb8663b5c9040b243e528f69dca8e6eddecc6b0952da93fa616d4f63026c61"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk0/function-matrix.json",
+      "bytes": 733252,
+      "sha256": "d6b57c89c052c3064f0311ab10394626a086fd171d58271eff41456ef40988e5"
+    },
+    {
+      "path": "sources/xray/editor/world/sdk_resource_bridge.h",
+      "bytes": 1587,
+      "sha256": "0a25695126462fea668c2906ddcb7507d44cbc4c2b8274472c4ca9717cf94210"
+    },
+    {
+      "path": "sources/xray/editor/world/sources/sdk_resources.h",
+      "bytes": 13288,
+      "sha256": "9156780d62cbcaa03557b9583bed73bfc2aec6c0f9c5546b02b566a0be54fff6"
+    },
+    {
+      "path": "sources/xray/editor/world/sources/sdk_scene.h",
+      "bytes": 31201,
+      "sha256": "b8a6c11e34420853b64dd1186d2741e3fcc518221dd8873b4957b47986aa9bf1"
+    },
+    {
+      "path": "sources/xray/render/vulkan/sources/vulkan_model_cook.cpp",
+      "bytes": 21491,
+      "sha256": "bac2296d7cea106ccabe36bdc7278459f216a5990c5c9632c7705eb7ca243624"
+    },
+    {
+      "path": "blender_pipeline_plan.md",
+      "bytes": 46663,
+      "sha256": "a6a18e3293866fa3298ad4896a34fc12d046d00eeb4a4765ef7894dbc7791622"
+    },
+    {
+      "path": "sdk_migration_plan.md",
+      "bytes": 90367,
+      "sha256": "3217dc62d0f40d3b4756d84029b60e22eb5495a8f8aa9bb92b7110b9a3e2f6b2"
+    }
+  ],
+  "implementationNotes": [
+    "Model publication op 45 accepts only prepared private DCC geometry; ordinary model edits keep same-source op 44 checks.",
+    "Animation ABI uses engine 30 fps cubic frames; source hierarchy is checked against cooked bone names.",
+    "Generated converted clip mtime exceeds raw by two seconds for the whole-second legacy config selector.",
+    "Only the known legacy closing-table comma comment is normalized for the strict model-settings parser.",
+    "No original zero-root clips were repaired; the accepted B5 failure policy is unchanged."
+  ],
+  "validation": {
+    "managedBuildWarnings": 0,
+    "managedBuildErrors": 0,
+    "releaseTests": 20,
+    "debugTests": 20,
+    "vulkanErrors": 0
+  },
+  "diagnosticCapture": "Window capture experiments are excluded; native model acceptance uses actual GPU readbacks and animation acceptance uses engine bone samples."
+}

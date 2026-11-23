@@ -1,0 +1,804 @@
+{
+  "version": 1,
+  "manifest_id": "vulkan-m8-control",
+  "inputs": {
+    "exported/animations/single/human/camp/sit_high_guitar_idle.clip": {
+      "bytes": 180942,
+      "sha256": "eda2a6aa24eb0f4a403b9438d388a8d218388ec24a41804e9992ad445ffbe84d"
+    },
+    "exported/animations/single/human/camp/sit_high_guitar_play_1.clip": {
+      "bytes": 269327,
+      "sha256": "66d367bab6a9dfb1c240acf3015d7e4690670a4dd49d398d3b6275d58284ec4c"
+    },
+    "exported/animations/skeletons/neutral_01.skeleton": {
+      "bytes": 3509,
+      "sha256": "f6a25280b15926c1e6e28d350e332802969fbdfd911a71872591e97feeb84a7e"
+    },
+    "exported/models/character/human/neutral/neutral_01/neutral_01.skinned_model": {
+      "bytes": 447832,
+      "sha256": "32420e65777c2ab9b3c9c07c531399b797476d50f32e1e428f92f48f78fa7854"
+    },
+    "exported/models/props/barrel/barrel_metal03_radiation.model": {
+      "bytes": 40253,
+      "sha256": "df34d90a13ed44382a50e0cfdd81f0a3b8a91580128dfa83307e1d0277522838"
+    },
+    "exported/models/props/box/woodbox_mil.model": {
+      "bytes": 47651,
+      "sha256": "b4be86e4895320be78ba8a78925c47cdd771412f9a6bc3d44eaaec9f30bc4d0c"
+    },
+    "sources/library/particle_configs/particle_source.library": {
+      "bytes": 103463,
+      "sha256": "fb73e9462c88606bea9b097ce21ee7ee30dff54c360e92bef3ba30d1ba158f40"
+    },
+    "sources/material_instances/characters/human/neutral_01/head.material": {
+      "bytes": 10025,
+      "sha256": "e5f5edea69a32038a1753269c2952c725f535553ddb80f1dfb7aca002378d9a3"
+    },
+    "sources/material_instances/characters/human/neutral_01/legs.material": {
+      "bytes": 8874,
+      "sha256": "dc1f339eb4c2548d83f4297938962cb82fdda6786cf05521d19a45fe7656ad79"
+    },
+    "sources/material_instances/characters/human/neutral_01/torso.material": {
+      "bytes": 9246,
+      "sha256": "f43c1ac0229521374f7d92aac27e8be5de2843ed46844c77a9a896b66885b709"
+    },
+    "sources/material_instances/decals/bullet_hit_concrete.material": {
+      "bytes": 2053,
+      "sha256": "ea8e91060e6885a92b9076473f299a98bd78915263e3f9215b6486805739c5b0"
+    },
+    "sources/material_instances/fx/pfx/candlelight.material": {
+      "bytes": 2271,
+      "sha256": "4a716eb01e89d68a956b73acece6f726435929703ef079af746d387949b63430"
+    },
+    "sources/material_instances/fx/pfx/distort_14_panner.material": {
+      "bytes": 1052,
+      "sha256": "e4410bc437ec0182b635e361c2eb5ce499bf62a31581b60dc0ade5c0b9625a6d"
+    },
+    "sources/material_instances/nature/eastern_white_pine/billboard.material": {
+      "bytes": 9467,
+      "sha256": "72e021237b4291b48d8254ca236830dcedd64153e371feb77dac1781f898cb05"
+    },
+    "sources/material_instances/nature/eastern_white_pine/branch.material": {
+      "bytes": 9598,
+      "sha256": "d0544f8e3c8c6bf93cd996359306bd3d242b8ad3eda3afb9d5e1aa57b66dad96"
+    },
+    "sources/material_instances/nature/eastern_white_pine/frond.material": {
+      "bytes": 9463,
+      "sha256": "8ca6ff3eddf4d5a0529aef36a4f7d3f540ddb35633eb248cf24c0ca9b6b28bef"
+    },
+    "sources/material_instances/nature/eastern_white_pine/leafcard.material": {
+      "bytes": 9463,
+      "sha256": "8ca6ff3eddf4d5a0529aef36a4f7d3f540ddb35633eb248cf24c0ca9b6b28bef"
+    },
+    "sources/material_instances/nature/eastern_white_pine/leafmesh.material": {
+      "bytes": 9463,
+      "sha256": "8ca6ff3eddf4d5a0529aef36a4f7d3f540ddb35633eb248cf24c0ca9b6b28bef"
+    },
+    "sources/material_instances/props/barrel/barrel_1_red_radiation.material": {
+      "bytes": 10028,
+      "sha256": "6e2302e0ce4adc2c3ada8dba193a84dd17819f548a31540ea63e9826d3fbbae1"
+    },
+    "sources/material_instances/props/box/wood_box.material": {
+      "bytes": 10464,
+      "sha256": "5a61faad99026219717e8b2e38fd3aa9c3d6e3f7b0cc0b894a012e9eaeec716f"
+    },
+    "sources/materials/actor_multimaterial.material": {
+      "bytes": 8263,
+      "sha256": "d34e9e5a00218dd4d5c67324e5918b0a122e7bbba01e09be368a88f1dcdcda92"
+    },
+    "sources/materials/decal_test.material": {
+      "bytes": 1238,
+      "sha256": "669e9f448ba7ae35e9ed488d56e3b54a4fa9394aba81b3124d1f664ddd0b9f9d"
+    },
+    "sources/materials/default_particle.material": {
+      "bytes": 1144,
+      "sha256": "4e2ed31a9bca64db5cc8b4d66dcb7ca4ee54dc3323b4dffefdb48db4ebccfba1"
+    },
+    "sources/materials/distortion_panner.material": {
+      "bytes": 653,
+      "sha256": "939ccef27f6416dcafb63e3e0676f51041ca78c672a0700505f734767d73aabb"
+    },
+    "sources/materials/metal_painted.material": {
+      "bytes": 8796,
+      "sha256": "b4a9ed1acee13adae69ac73e2db1358b6b5e2befc00d7fa2b4202deefc5ec441"
+    },
+    "sources/materials/speedtree_base.material": {
+      "bytes": 8269,
+      "sha256": "f66739c40b0e03427bbdd29a4921c6a764cfa65d0fca955716836b8a8fe05000"
+    },
+    "sources/materials/wood_painted_with_metal_parts.material": {
+      "bytes": 8225,
+      "sha256": "ce00307582042af428a2b68febb3e8ff13aff52beda386a59b33cc28e5112a22"
+    },
+    "sources/models/character/human/neutral/neutral_01/neutral_01.skinned_model/settings": {
+      "bytes": 1097,
+      "sha256": "95fae423a3c49dba483aae20e712f6e2e3b6ec06689ca6dcfda4d1527e48ab09"
+    },
+    "sources/models/props/barrel/barrel_metal03_radiation.model/settings": {
+      "bytes": 832,
+      "sha256": "0219e2e0f4e33898787b0e49483a16188bf4d3e764f114f73ae30c40092a8c88"
+    },
+    "sources/models/props/box/woodbox_mil.model/settings": {
+      "bytes": 780,
+      "sha256": "5a459697de4dcfcfa681660d29bb1f972543f1aea4e5dd22de20cd12ee29b1aa"
+    },
+    "sources/particles/candlelight_small.particle": {
+      "bytes": 48194,
+      "sha256": "1eda351a0c353f9588b4520e9637b5c05efc4829f36b1b4269e0301109884f8a"
+    },
+    "sources/projects/bar_shooting_gallery/terrain/0_0.terr": {
+      "bytes": 335,
+      "sha256": "810fdaf99f0312b29d31a0d581c7816f8265ab48695a1286a471f27d738e6b7d"
+    },
+    "sources/projects/chaz_mir_part/terrain/-1_-1.terr": {
+      "bytes": 27236,
+      "sha256": "124ad059c6c9cffe5cb4d9dd69f17321fe9fe0898b0f8385b566869b0b8d3a89"
+    },
+    "sources/projects/night_test/terrain/-1_-1.terr": {
+      "bytes": 5311,
+      "sha256": "49af3abebc057d6ba656deba7d5cab174e4a35eab1f0eb81f7637bbf77d4b0c7"
+    },
+    "sources/shaders/sm_4_0/apply_distortion.ps": {
+      "bytes": 1244,
+      "sha256": "903cfc88ce5e63516bb30da92c74ca4ba748531441a1d3c2e50813468a3cfe9b"
+    },
+    "sources/shaders/sm_4_0/apply_distortion.vs": {
+      "bytes": 590,
+      "sha256": "ab375695460e266a6c911b7bcf7e7707265f47c31ab5789152104bbdc6cdc594"
+    },
+    "sources/shaders/sm_4_0/common.h": {
+      "bytes": 406,
+      "sha256": "dd20ac04c02b63ca4d018026eff4ee056021f811f6c890014b2c7a5290a2b582"
+    },
+    "sources/shaders/sm_4_0/common_cbuffers.h": {
+      "bytes": 1832,
+      "sha256": "64ea0cf123db3c2bcb50bbf64ccbfa119ea8c65b28802a18a9fc4c33dade0512"
+    },
+    "sources/shaders/sm_4_0/common_defines.h": {
+      "bytes": 2385,
+      "sha256": "f7f510ed8ede66d57220e19d5ac3a288ce7b747cf11fe53f68a7ee2d9288e511"
+    },
+    "sources/shaders/sm_4_0/common_functions.h": {
+      "bytes": 12998,
+      "sha256": "989b3376e6e1cbbcb0bd9b1ceaf8859b177415a992c4f4aac9ae31a6b8b812fd"
+    },
+    "sources/shaders/sm_4_0/common_iostructs.h": {
+      "bytes": 10730,
+      "sha256": "9d1fa0e08ca24f32693ff36d37de8d57bf26677e81cdc94a7c078f35cf452229"
+    },
+    "sources/shaders/sm_4_0/common_policies.h": {
+      "bytes": 1278,
+      "sha256": "ad52428ded0a2ecb54599b5316016117ae5795d8fc9e92ae6e05e0fa938e4327"
+    },
+    "sources/shaders/sm_4_0/common_samplers.h": {
+      "bytes": 3132,
+      "sha256": "c73b1882ea52fabed23c0d25f40c2e83df9504a02826f54f29eaabf69887a7bb"
+    },
+    "sources/shaders/sm_4_0/distortion_base.ps": {
+      "bytes": 810,
+      "sha256": "7e1e33251c16935ffeb11ce6fc9f7a5f2e29922ae51824b5e5f894c9ff29b8a8"
+    },
+    "sources/shaders/sm_4_0/distortion_panner.ps": {
+      "bytes": 1288,
+      "sha256": "68fbcdb7459fecd159a2a5ecb547041cde31affa1c93725267d526737c6eb2a3"
+    },
+    "sources/shaders/sm_4_0/filters.h": {
+      "bytes": 6674,
+      "sha256": "11dc4c47c64137d2fa2b47a7c9ed28eaf10f08b71fe875f41ad12c4d2dabc69c"
+    },
+    "sources/shaders/sm_4_0/gbuffer.h": {
+      "bytes": 14985,
+      "sha256": "507ee0fd7138c11d88f5b08656279762d3c9c0b427dcd3ec18d46dfa98089a8b"
+    },
+    "sources/shaders/sm_4_0/material.h": {
+      "bytes": 2508,
+      "sha256": "ceeb17589d3d6d0439d22d087bfdf678c7c7f7d33463609530f48ac122d6fda1"
+    },
+    "sources/shaders/sm_4_0/post_process_distortion.ps": {
+      "bytes": 869,
+      "sha256": "4fd69be2b41f4682318114e524e72fa8298621fcc82eac05123fe8cb23d2986f"
+    },
+    "sources/shaders/sm_4_0/psf_tc_modifiers.h": {
+      "bytes": 1396,
+      "sha256": "5ff7eb7e266441d027abb6a3489b940f64175803b408ab116527a788a77df294"
+    },
+    "sources/shaders/sm_4_0/ssao_accumulation.ps": {
+      "bytes": 30875,
+      "sha256": "c8fdf84dbac2b0ce5f68627ff16f15c6be58adf0e6333088527615a08b284326"
+    },
+    "sources/shaders/sm_4_0/ssao_filter4x4.ps": {
+      "bytes": 2560,
+      "sha256": "238eefe9600c2c2a4aac11643d84e284d6dba2041af41acda9fcb4c381b19412"
+    },
+    "sources/shaders/sm_4_0/ssao_filter4x4_1.ps": {
+      "bytes": 1475,
+      "sha256": "d5d94a99698f103e90ce1f75be8be28f0fb9a9fd50e0b420989dc985ae14d6df"
+    },
+    "sources/shaders/sm_4_0/vertex_input.h": {
+      "bytes": 2311,
+      "sha256": "dd76ff906570f6dcb78eb7492210f869c6947e6342a66af0084c06e865360628"
+    },
+    "sources/shaders/sm_4_0/vsf_tangent_space_transform.h": {
+      "bytes": 462,
+      "sha256": "9cb7bae2002dc22d77dedbc841d0f8e47ae96fa0b10862284fe9a42c6afaed4e"
+    },
+    "sources/speedtree/eastern_white_pine.options": {
+      "bytes": 398,
+      "sha256": "7bd70d9a3b4a1f993033fc3038f5dc55c48d06e81608eb3b53718ada04124140"
+    },
+    "sources/speedtree/eastern_white_pine.srt": {
+      "bytes": 637209,
+      "sha256": "38e5eae095e6fd03d6934d92f35b2b411c130f92711121de73d14514370e2d91"
+    },
+    "sources/textures/character/human/neutral/neutral_01/neutral_head.TGA": {
+      "bytes": 3145772,
+      "sha256": "99230dae247d1fa67679869aa62aa0222ebfad757c0267240cb13ec715d90a4e"
+    },
+    "sources/textures/character/human/neutral/neutral_01/neutral_head.options": {
+      "bytes": 122,
+      "sha256": "56a402fc5e8ace26ab520d92b6c6385e6522eadf9f319dc8c6e1ae691d4654f3"
+    },
+    "sources/textures/character/human/neutral/neutral_01/neutral_head.tga": {
+      "bytes": 3145772,
+      "sha256": "99230dae247d1fa67679869aa62aa0222ebfad757c0267240cb13ec715d90a4e"
+    },
+    "sources/textures/character/human/neutral/neutral_01/neutral_head_nmap.options": {
+      "bytes": 128,
+      "sha256": "475119777011ef18795368fb75d9afb48ae61228400b65b9ae4611d98bab9656"
+    },
+    "sources/textures/character/human/neutral/neutral_01/neutral_head_nmap.tga": {
+      "bytes": 4194348,
+      "sha256": "85e96fd36d606b1ff432d3385087b81b30e8d91081ceba8557df72648c4a112b"
+    },
+    "sources/textures/character/human/neutral/neutral_01/neutral_head_spec.options": {
+      "bytes": 122,
+      "sha256": "56a402fc5e8ace26ab520d92b6c6385e6522eadf9f319dc8c6e1ae691d4654f3"
+    },
+    "sources/textures/character/human/neutral/neutral_01/neutral_head_spec.tga": {
+      "bytes": 3145772,
+      "sha256": "6d478a97d8553396c9a41e9b0552fa36e9caef2c314090d4c46eea141a80e6b9"
+    },
+    "sources/textures/character/human/neutral/neutral_01/neutral_legs.options": {
+      "bytes": 122,
+      "sha256": "56a402fc5e8ace26ab520d92b6c6385e6522eadf9f319dc8c6e1ae691d4654f3"
+    },
+    "sources/textures/character/human/neutral/neutral_01/neutral_legs.tga": {
+      "bytes": 16777260,
+      "sha256": "a1699522091b4116ea66f421db6c5f186accb0e1182e3782c29d18c67420f99b"
+    },
+    "sources/textures/character/human/neutral/neutral_01/neutral_legs_nmap.options": {
+      "bytes": 128,
+      "sha256": "475119777011ef18795368fb75d9afb48ae61228400b65b9ae4611d98bab9656"
+    },
+    "sources/textures/character/human/neutral/neutral_01/neutral_legs_nmap.tga": {
+      "bytes": 12582956,
+      "sha256": "4cfd1acf3471d17d5adbe0f772cc3f9e72d37441542ed66bee585ed5d0394341"
+    },
+    "sources/textures/character/human/neutral/neutral_01/neutral_legs_spec.options": {
+      "bytes": 122,
+      "sha256": "56a402fc5e8ace26ab520d92b6c6385e6522eadf9f319dc8c6e1ae691d4654f3"
+    },
+    "sources/textures/character/human/neutral/neutral_01/neutral_legs_spec.tga": {
+      "bytes": 16777260,
+      "sha256": "4af2057d7a385d2178e7d84e4f2b0b5ee3ad9f8ca191241abd63798dfb3fdb7e"
+    },
+    "sources/textures/character/human/neutral/neutral_01/neutral_torso.options": {
+      "bytes": 122,
+      "sha256": "56a402fc5e8ace26ab520d92b6c6385e6522eadf9f319dc8c6e1ae691d4654f3"
+    },
+    "sources/textures/character/human/neutral/neutral_01/neutral_torso.tga": {
+      "bytes": 12582956,
+      "sha256": "12b40626941f9b6c27ef0b683b1dca122c5f4b12829dbb301e5ae51dcb9db8e1"
+    },
+    "sources/textures/character/human/neutral/neutral_01/neutral_torso_nmap.options": {
+      "bytes": 128,
+      "sha256": "475119777011ef18795368fb75d9afb48ae61228400b65b9ae4611d98bab9656"
+    },
+    "sources/textures/character/human/neutral/neutral_01/neutral_torso_nmap.tga": {
+      "bytes": 12582956,
+      "sha256": "1b1f8f8b40ca55b76f024fdafc3351ce6d5011b474257b7148355bdbd3744cf0"
+    },
+    "sources/textures/character/human/neutral/neutral_01/neutral_torso_spec.options": {
+      "bytes": 122,
+      "sha256": "56a402fc5e8ace26ab520d92b6c6385e6522eadf9f319dc8c6e1ae691d4654f3"
+    },
+    "sources/textures/character/human/neutral/neutral_01/neutral_torso_spec.tga": {
+      "bytes": 12582956,
+      "sha256": "4a50b99272873c99ac5f3fce214da4960074cfa4b6f1645f00f61cbecc6a294e"
+    },
+    "sources/textures/decal/bullet_hit_concrete.options": {
+      "bytes": 139,
+      "sha256": "5d474e781e8f4302a0973882d1d724d7bdba415a3ed82e01b391083738978ffd"
+    },
+    "sources/textures/decal/bullet_hit_concrete.tga": {
+      "bytes": 262188,
+      "sha256": "50befabf2ccf4e9c344e3349747b427600c18f6da4e6e36cdd3f26d62439e6c0"
+    },
+    "sources/textures/decal/bullet_hit_concrete_nmap.options": {
+      "bytes": 145,
+      "sha256": "102892f86749a594a047de862312b5a5542898a55e981820bda4540ed1bb0036"
+    },
+    "sources/textures/decal/bullet_hit_concrete_nmap.tga": {
+      "bytes": 16777260,
+      "sha256": "90a4a8da4ea136586d180d10e2b18fbae638b6c9b3832b216b5b29977ae91f05"
+    },
+    "sources/textures/editor/default.options": {
+      "bytes": 122,
+      "sha256": "56a402fc5e8ace26ab520d92b6c6385e6522eadf9f319dc8c6e1ae691d4654f3"
+    },
+    "sources/textures/editor/default.tga": {
+      "bytes": 196652,
+      "sha256": "677acd833b1f76bdddfb3b2ce55ce92700178acc73c6dd20d6da979f78783db3"
+    },
+    "sources/textures/editor/default_bump.options": {
+      "bytes": 122,
+      "sha256": "56a402fc5e8ace26ab520d92b6c6385e6522eadf9f319dc8c6e1ae691d4654f3"
+    },
+    "sources/textures/editor/default_bump.tga": {
+      "bytes": 196652,
+      "sha256": "4015319bd1d9af9a34e8dbbcc64aba659da0f19617e9f026e8272c89a1720cbd"
+    },
+    "sources/textures/editor/default_nmap.options": {
+      "bytes": 128,
+      "sha256": "475119777011ef18795368fb75d9afb48ae61228400b65b9ae4611d98bab9656"
+    },
+    "sources/textures/editor/default_nmap.tga": {
+      "bytes": 196626,
+      "sha256": "37ec91ca4fde66319ae92180bd4d39db3a9fcf5985ae44b077a5ad67186945ef"
+    },
+    "sources/textures/editor/default_spec.options": {
+      "bytes": 122,
+      "sha256": "56a402fc5e8ace26ab520d92b6c6385e6522eadf9f319dc8c6e1ae691d4654f3"
+    },
+    "sources/textures/editor/default_spec.tga": {
+      "bytes": 196652,
+      "sha256": "d4e138a2b7a14d503c3c9f58113899d7c9c00ce323d021f124d08c9125f4c8d4"
+    },
+    "sources/textures/editor/editor_dummy_nmap.options": {
+      "bytes": 128,
+      "sha256": "475119777011ef18795368fb75d9afb48ae61228400b65b9ae4611d98bab9656"
+    },
+    "sources/textures/editor/editor_dummy_nmap.tga": {
+      "bytes": 3145772,
+      "sha256": "356c8c0593266072ea1cd2819a2c1e3cceafecffb20365b80e48f03a524aa7f1"
+    },
+    "sources/textures/fx/pfx/candlelight.options": {
+      "bytes": 122,
+      "sha256": "bd5e1d2211536954b885d5086f8009fc7325382edaa14944b3007aeefb137a1d"
+    },
+    "sources/textures/fx/pfx/candlelight.tga": {
+      "bytes": 786476,
+      "sha256": "90e3b182158ba0a9ad74544cd55b74530fb96e86a652783dd53564d72ef3b790"
+    },
+    "sources/textures/fx/pfx/distort_14.options": {
+      "bytes": 122,
+      "sha256": "bd5e1d2211536954b885d5086f8009fc7325382edaa14944b3007aeefb137a1d"
+    },
+    "sources/textures/fx/pfx/distort_14.tga": {
+      "bytes": 65580,
+      "sha256": "0ebb72875a3ff8ab7eca7e5790eeced6392a451c3676ba05e55da1e892dc9b9e"
+    },
+    "sources/textures/fx/pfx/test_trail.options": {
+      "bytes": 122,
+      "sha256": "bd5e1d2211536954b885d5086f8009fc7325382edaa14944b3007aeefb137a1d"
+    },
+    "sources/textures/fx/pfx/test_trail.tga": {
+      "bytes": 11363,
+      "sha256": "a2dd4d0696bbffb15e2a058baac13921f9162394e56411cce74f9d6c5b325813"
+    },
+    "sources/textures/props/barrel/barrel_1_nmap.options": {
+      "bytes": 128,
+      "sha256": "475119777011ef18795368fb75d9afb48ae61228400b65b9ae4611d98bab9656"
+    },
+    "sources/textures/props/barrel/barrel_1_nmap.tga": {
+      "bytes": 786476,
+      "sha256": "da6a22247b9c55ed6f72d19a3b97bc83e95a1a88803e54ba3b4f44247e6971e9"
+    },
+    "sources/textures/props/barrel/barrel_1_spec.options": {
+      "bytes": 122,
+      "sha256": "56a402fc5e8ace26ab520d92b6c6385e6522eadf9f319dc8c6e1ae691d4654f3"
+    },
+    "sources/textures/props/barrel/barrel_1_spec.tga": {
+      "bytes": 786476,
+      "sha256": "615306720cd3c760a9ed2cd669d9fe6ef45aabef1fedb3256b866baacd677d2a"
+    },
+    "sources/textures/props/barrel/barrel_rad_1.options": {
+      "bytes": 122,
+      "sha256": "56a402fc5e8ace26ab520d92b6c6385e6522eadf9f319dc8c6e1ae691d4654f3"
+    },
+    "sources/textures/props/barrel/barrel_rad_1.tga": {
+      "bytes": 786476,
+      "sha256": "32038a919558d933885ed536afe144bc1c25df768c4a39c36b8d75cbef04d72a"
+    },
+    "sources/textures/props/barrel/barrel_rad_1_spec.TGA": {
+      "bytes": 786476,
+      "sha256": "ad6f83b199bf6965e6e61d23c558e6487a70dbc767c9592d0fa1530a8d4f49e1"
+    },
+    "sources/textures/props/barrel/barrel_rad_1_spec.options": {
+      "bytes": 159,
+      "sha256": "1ded980f06833ecdb7c493c602d9a75d8a4667e5d4bb402e064c83b1e07ca772"
+    },
+    "sources/textures/props/barrel/barrel_rad_1_spec.tga": {
+      "bytes": 786476,
+      "sha256": "ad6f83b199bf6965e6e61d23c558e6487a70dbc767c9592d0fa1530a8d4f49e1"
+    },
+    "sources/textures/props/box/wood_box.options": {
+      "bytes": 122,
+      "sha256": "56a402fc5e8ace26ab520d92b6c6385e6522eadf9f319dc8c6e1ae691d4654f3"
+    },
+    "sources/textures/props/box/wood_box.tga": {
+      "bytes": 12582956,
+      "sha256": "e93c04efb0c29a4661b9af1f24b98f773bb93b0c1a401928075b80318b9bd4bd"
+    },
+    "sources/textures/props/box/wood_box_nmap.options": {
+      "bytes": 128,
+      "sha256": "475119777011ef18795368fb75d9afb48ae61228400b65b9ae4611d98bab9656"
+    },
+    "sources/textures/props/box/wood_box_nmap.tga": {
+      "bytes": 12582956,
+      "sha256": "24a7ac3a40d5c6e22dcc6412c65737139e610b17f7aeb71798c9374c7b9dc832"
+    },
+    "sources/textures/props/box/wood_box_spec.options": {
+      "bytes": 122,
+      "sha256": "56a402fc5e8ace26ab520d92b6c6385e6522eadf9f319dc8c6e1ae691d4654f3"
+    },
+    "sources/textures/props/box/wood_box_spec.tga": {
+      "bytes": 12582956,
+      "sha256": "83b22670624de2584ed01a4c5db2e3159ba0a3f38903780298d583dfd837f268"
+    },
+    "sources/textures/skin/skin_shadow.options": {
+      "bytes": 122,
+      "sha256": "56a402fc5e8ace26ab520d92b6c6385e6522eadf9f319dc8c6e1ae691d4654f3"
+    },
+    "sources/textures/skin/skin_shadow.tga": {
+      "bytes": 49196,
+      "sha256": "a718dd14fcfaaa9cb7b869dc4ea9291a91dcd0a9a457a99b40653f4e618871a8"
+    },
+    "sources/textures/speedtree/acacia/texture_atlas_spec.options": {
+      "bytes": 323,
+      "sha256": "bdf2b91c2968c6d4ee8c95bbe51d41576cd7b37a2662e52d068bcc38c2b8fd5a"
+    },
+    "sources/textures/speedtree/acacia/texture_atlas_spec.tga": {
+      "bytes": 4194322,
+      "sha256": "1d8062bc0b475dba139bc36aa4637896f4364d0ddaaca9e8ff1dd1e29c8940eb"
+    },
+    "sources/textures/speedtree/eastern_white_pine/billboard_atlas_diffuse.options": {
+      "bytes": 139,
+      "sha256": "5d474e781e8f4302a0973882d1d724d7bdba415a3ed82e01b391083738978ffd"
+    },
+    "sources/textures/speedtree/eastern_white_pine/billboard_atlas_diffuse.tga": {
+      "bytes": 4194322,
+      "sha256": "9f1b39f980ddbf4148a58585735c19aa186e207eda99ca62a58dc1d002bc1d85"
+    },
+    "sources/textures/speedtree/eastern_white_pine/billboard_atlas_nmap.options": {
+      "bytes": 145,
+      "sha256": "102892f86749a594a047de862312b5a5542898a55e981820bda4540ed1bb0036"
+    },
+    "sources/textures/speedtree/eastern_white_pine/billboard_atlas_nmap.tga": {
+      "bytes": 4194322,
+      "sha256": "91f2563201a56c231c41e1f7626901574a5915458cdffe6fd8f584b9a83becad"
+    },
+    "sources/textures/speedtree/eastern_white_pine/texture_atlas_diffuse.options": {
+      "bytes": 139,
+      "sha256": "5d474e781e8f4302a0973882d1d724d7bdba415a3ed82e01b391083738978ffd"
+    },
+    "sources/textures/speedtree/eastern_white_pine/texture_atlas_diffuse.tga": {
+      "bytes": 8388626,
+      "sha256": "4653bda5ef51ac44675dbca0c7b0ca1290561f8a16e7cb8d4e50adb7bc972e86"
+    },
+    "sources/textures/speedtree/eastern_white_pine/texture_atlas_nmap.options": {
+      "bytes": 145,
+      "sha256": "102892f86749a594a047de862312b5a5542898a55e981820bda4540ed1bb0036"
+    },
+    "sources/textures/speedtree/eastern_white_pine/texture_atlas_nmap.tga": {
+      "bytes": 8388626,
+      "sha256": "d09c8cd01ec50e887f942ef31611ecc4a684b15e1bbf5fc5b64abab5c7d23f17"
+    },
+    "sources/textures/speedtree/eastern_white_pine/white_pine_bark.options": {
+      "bytes": 139,
+      "sha256": "b958bc8c18a7cd2e2b4d525947853e05de6d107a351af70ae728963635b96627"
+    },
+    "sources/textures/speedtree/eastern_white_pine/white_pine_bark.tga": {
+      "bytes": 4194322,
+      "sha256": "d3d3d400b7a278fe92523a11b4e4826fc0efc6472abd8414409e7f41b632da24"
+    },
+    "sources/textures/speedtree/eastern_white_pine/white_pine_bark_nmap.options": {
+      "bytes": 145,
+      "sha256": "102892f86749a594a047de862312b5a5542898a55e981820bda4540ed1bb0036"
+    },
+    "sources/textures/speedtree/eastern_white_pine/white_pine_bark_nmap.tga": {
+      "bytes": 4194322,
+      "sha256": "c67c73d287a9858bee6bb079260a6ab1629b49737b99dc7a475d83992c5bd98e"
+    },
+    "sources/textures/terrain/asphalt_cracks_moss.options": {
+      "bytes": 122,
+      "sha256": "56a402fc5e8ace26ab520d92b6c6385e6522eadf9f319dc8c6e1ae691d4654f3"
+    },
+    "sources/textures/terrain/asphalt_cracks_moss.tga": {
+      "bytes": 12582956,
+      "sha256": "7bf4f616b1b19a68d40b297ff74513839c35ad0b5de8bac3d98491e2080b6c09"
+    },
+    "sources/textures/terrain/asphalt_cracks_moss_nmap.options": {
+      "bytes": 128,
+      "sha256": "475119777011ef18795368fb75d9afb48ae61228400b65b9ae4611d98bab9656"
+    },
+    "sources/textures/terrain/asphalt_cracks_moss_nmap.tga": {
+      "bytes": 12582956,
+      "sha256": "c8e980402cc976355627bf9d185fdeee2cd9d3066a920d36edb78033c7a610f9"
+    },
+    "sources/textures/terrain/asphalt_cracks_moss_spec.options": {
+      "bytes": 122,
+      "sha256": "56a402fc5e8ace26ab520d92b6c6385e6522eadf9f319dc8c6e1ae691d4654f3"
+    },
+    "sources/textures/terrain/asphalt_cracks_moss_spec.tga": {
+      "bytes": 12582956,
+      "sha256": "f28bc1907732abf71bead04eccf409a2b9648ecc1f1620f9eb94d11645e61472"
+    },
+    "sources/textures/terrain/earth_cracked.options": {
+      "bytes": 122,
+      "sha256": "56a402fc5e8ace26ab520d92b6c6385e6522eadf9f319dc8c6e1ae691d4654f3"
+    },
+    "sources/textures/terrain/earth_cracked.tga": {
+      "bytes": 4194348,
+      "sha256": "ac2665dd53216169dd7d943e955586e84a87b0aaa879da205f2d9cedc8323e4d"
+    },
+    "sources/textures/terrain/earth_cracked_nmap.options": {
+      "bytes": 128,
+      "sha256": "475119777011ef18795368fb75d9afb48ae61228400b65b9ae4611d98bab9656"
+    },
+    "sources/textures/terrain/earth_cracked_nmap.tga": {
+      "bytes": 3145772,
+      "sha256": "8c4af8e90e475dbcf2208bef1614c01bf98209c372e937156fcd15f62865ecb3"
+    },
+    "sources/textures/terrain/earth_cracked_spec.options": {
+      "bytes": 122,
+      "sha256": "56a402fc5e8ace26ab520d92b6c6385e6522eadf9f319dc8c6e1ae691d4654f3"
+    },
+    "sources/textures/terrain/earth_cracked_spec.tga": {
+      "bytes": 3145772,
+      "sha256": "101b0d82fa5d18ab707af1d820eef27d22be891573577879c0183577ea446776"
+    },
+    "sources/textures/terrain/grass_dry.options": {
+      "bytes": 122,
+      "sha256": "56a402fc5e8ace26ab520d92b6c6385e6522eadf9f319dc8c6e1ae691d4654f3"
+    },
+    "sources/textures/terrain/grass_dry.tga": {
+      "bytes": 3145772,
+      "sha256": "0e03c7af966604c9d08177058305762938d407cc780bda215938bbdf0196bfac"
+    },
+    "sources/textures/terrain/grass_dry_nmap.options": {
+      "bytes": 128,
+      "sha256": "475119777011ef18795368fb75d9afb48ae61228400b65b9ae4611d98bab9656"
+    },
+    "sources/textures/terrain/grass_dry_nmap.tga": {
+      "bytes": 3145772,
+      "sha256": "59f9189e6ecb76c1f029d1dae5fe4a5671d3e9f492e4fb69dc5e3d085c5dec0b"
+    },
+    "sources/textures/terrain/grass_dry_spec.options": {
+      "bytes": 122,
+      "sha256": "56a402fc5e8ace26ab520d92b6c6385e6522eadf9f319dc8c6e1ae691d4654f3"
+    },
+    "sources/textures/terrain/grass_dry_spec.tga": {
+      "bytes": 3145772,
+      "sha256": "6dff233d70777f27f0ceb36dd9b24397bce74e55a21cb6303eebc12da9c70196"
+    },
+    "sources/textures/terrain/grass_muddy.options": {
+      "bytes": 122,
+      "sha256": "56a402fc5e8ace26ab520d92b6c6385e6522eadf9f319dc8c6e1ae691d4654f3"
+    },
+    "sources/textures/terrain/grass_muddy.tga": {
+      "bytes": 3145772,
+      "sha256": "95a33ef5d991e8b22e4991cd2e92cceed67bbe9bd0acbc8f2f5dd7e5617c2442"
+    },
+    "sources/textures/terrain/grass_muddy_nmap.options": {
+      "bytes": 128,
+      "sha256": "475119777011ef18795368fb75d9afb48ae61228400b65b9ae4611d98bab9656"
+    },
+    "sources/textures/terrain/grass_muddy_nmap.tga": {
+      "bytes": 3145772,
+      "sha256": "be2aeee89aeaf3b61c2ea01bdacddb4b5148fdf3296cacac02d0bfdbafd68e9b"
+    },
+    "sources/textures/terrain/grass_muddy_spec.options": {
+      "bytes": 122,
+      "sha256": "56a402fc5e8ace26ab520d92b6c6385e6522eadf9f319dc8c6e1ae691d4654f3"
+    },
+    "sources/textures/terrain/grass_muddy_spec.tga": {
+      "bytes": 3145772,
+      "sha256": "4a6e96e15d07d435b403f3eca860893c5b103901a2f0d46ea652faee2353c2ba"
+    },
+    "sources/textures/terrain/gravel.options": {
+      "bytes": 122,
+      "sha256": "56a402fc5e8ace26ab520d92b6c6385e6522eadf9f319dc8c6e1ae691d4654f3"
+    },
+    "sources/textures/terrain/gravel.tga": {
+      "bytes": 3145772,
+      "sha256": "a4b8d6933fb65b23011c64ab7459adf023508736eddd6faf58581d4f44626369"
+    },
+    "sources/textures/terrain/gravel_nmap.options": {
+      "bytes": 128,
+      "sha256": "475119777011ef18795368fb75d9afb48ae61228400b65b9ae4611d98bab9656"
+    },
+    "sources/textures/terrain/gravel_nmap.tga": {
+      "bytes": 3145772,
+      "sha256": "ea1d756c97059ee07734d166c7f6c40575062f5aeb2b1995590689c6b3fb4c0e"
+    },
+    "sources/textures/terrain/gravel_spec.options": {
+      "bytes": 122,
+      "sha256": "56a402fc5e8ace26ab520d92b6c6385e6522eadf9f319dc8c6e1ae691d4654f3"
+    },
+    "sources/textures/terrain/gravel_spec.tga": {
+      "bytes": 3145772,
+      "sha256": "9c1acea19577cfe46e441559d16295b9873924a2243dfb4f1252da7a48274b4f"
+    },
+    "sources/textures/terrain/loam.options": {
+      "bytes": 159,
+      "sha256": "1ded980f06833ecdb7c493c602d9a75d8a4667e5d4bb402e064c83b1e07ca772"
+    },
+    "sources/textures/terrain/loam.tga": {
+      "bytes": 3145772,
+      "sha256": "221ccd6db6a2129c27cf70c3ec71fbdcb738756b508d3e317b6dc6535835b4b2"
+    },
+    "sources/textures/terrain/loam_nmap.options": {
+      "bytes": 165,
+      "sha256": "491d9bc3cc98b345f5f87c2c23e180a8758f1272977fd957db6217581bec46ce"
+    },
+    "sources/textures/terrain/loam_nmap.tga": {
+      "bytes": 3145772,
+      "sha256": "d17bf3e4ebd033e54b101bea7e385fea466f885d673717e8ac845a81c38d84fe"
+    },
+    "sources/textures/terrain/loam_spec.options": {
+      "bytes": 159,
+      "sha256": "1ded980f06833ecdb7c493c602d9a75d8a4667e5d4bb402e064c83b1e07ca772"
+    },
+    "sources/textures/terrain/loam_spec.tga": {
+      "bytes": 12582956,
+      "sha256": "61d269da33e0445489a8b95edd266bb70c48818a2c29b2e67b367fe4a5b39dae"
+    },
+    "sources/textures/terrain/mud.options": {
+      "bytes": 122,
+      "sha256": "56a402fc5e8ace26ab520d92b6c6385e6522eadf9f319dc8c6e1ae691d4654f3"
+    },
+    "sources/textures/terrain/mud.tga": {
+      "bytes": 3145772,
+      "sha256": "effb61cf28b08e1d9984beb02188d8f6f0f7d8f8f8df60474931fc8dec056e3f"
+    },
+    "sources/textures/terrain/mud_nmap.options": {
+      "bytes": 128,
+      "sha256": "475119777011ef18795368fb75d9afb48ae61228400b65b9ae4611d98bab9656"
+    },
+    "sources/textures/terrain/mud_nmap.tga": {
+      "bytes": 3145772,
+      "sha256": "73eb06660a37a98f5b5fbb47f022a2b9caecdc5879a6c10f22a4455db5fc441f"
+    },
+    "sources/textures/terrain/mud_spec.options": {
+      "bytes": 122,
+      "sha256": "56a402fc5e8ace26ab520d92b6c6385e6522eadf9f319dc8c6e1ae691d4654f3"
+    },
+    "sources/textures/terrain/mud_spec.tga": {
+      "bytes": 3145772,
+      "sha256": "0f804177e6d41725f859282609e78fc501024d2936c2175124cb0c05f28cb08c"
+    },
+    "sources/textures/terrain/mud_ver1.options": {
+      "bytes": 122,
+      "sha256": "56a402fc5e8ace26ab520d92b6c6385e6522eadf9f319dc8c6e1ae691d4654f3"
+    },
+    "sources/textures/terrain/mud_ver1.tga": {
+      "bytes": 3145772,
+      "sha256": "6dfeab6c403f14f1461ef8eeaf9a1289a2d572ec682385c7917252eeace2c85c"
+    },
+    "sources/textures/terrain/mud_ver1_nmap.options": {
+      "bytes": 128,
+      "sha256": "475119777011ef18795368fb75d9afb48ae61228400b65b9ae4611d98bab9656"
+    },
+    "sources/textures/terrain/mud_ver1_nmap.tga": {
+      "bytes": 3145772,
+      "sha256": "7f0f5c6e5a23e972c12fbaf122218451bb66d884219d48b5e718fc9801a47b1b"
+    },
+    "sources/textures/terrain/mud_ver1_spec.options": {
+      "bytes": 122,
+      "sha256": "56a402fc5e8ace26ab520d92b6c6385e6522eadf9f319dc8c6e1ae691d4654f3"
+    },
+    "sources/textures/terrain/mud_ver1_spec.tga": {
+      "bytes": 3145772,
+      "sha256": "183f2b2cc555a4915ecd7771051495fd1260197ff63d1543bb20d0953747f2cd"
+    },
+    "sources/textures/terrain/sand.options": {
+      "bytes": 122,
+      "sha256": "56a402fc5e8ace26ab520d92b6c6385e6522eadf9f319dc8c6e1ae691d4654f3"
+    },
+    "sources/textures/terrain/sand.tga": {
+      "bytes": 3145772,
+      "sha256": "d1beaf1000d64a29003aa23c143fb2ba598e733fcc2aeab9f88ddfb1b351b466"
+    },
+    "sources/textures/terrain/sand_nmap.options": {
+      "bytes": 128,
+      "sha256": "475119777011ef18795368fb75d9afb48ae61228400b65b9ae4611d98bab9656"
+    },
+    "sources/textures/terrain/sand_nmap.tga": {
+      "bytes": 3145772,
+      "sha256": "4fe8f6b7216d33d6386849d8552eaa4c8a0a435be83ae4fe502026da1693d05c"
+    },
+    "sources/textures/terrain/sand_spec.options": {
+      "bytes": 122,
+      "sha256": "56a402fc5e8ace26ab520d92b6c6385e6522eadf9f319dc8c6e1ae691d4654f3"
+    },
+    "sources/textures/terrain/sand_spec.tga": {
+      "bytes": 3145772,
+      "sha256": "af7fe9e8867fbc90c0bc350ed9ef5348618dba7e258e2a00aad62d5f2321ddae"
+    },
+    "sources/textures/terrain/soil_ravine.options": {
+      "bytes": 122,
+      "sha256": "56a402fc5e8ace26ab520d92b6c6385e6522eadf9f319dc8c6e1ae691d4654f3"
+    },
+    "sources/textures/terrain/soil_ravine.tga": {
+      "bytes": 3145772,
+      "sha256": "787a03866b7930e3c2bd9263811ddb1f08651102c5405b011e5bff6ebedcaea3"
+    },
+    "sources/textures/terrain/soil_ravine_nmap.options": {
+      "bytes": 128,
+      "sha256": "475119777011ef18795368fb75d9afb48ae61228400b65b9ae4611d98bab9656"
+    },
+    "sources/textures/terrain/soil_ravine_nmap.tga": {
+      "bytes": 3145772,
+      "sha256": "320c04693b1a2139a6e2672e9e756231905bac3e4fc7e1ee5d5184d65ed80524"
+    },
+    "sources/textures/terrain/soil_ravine_spec.options": {
+      "bytes": 122,
+      "sha256": "56a402fc5e8ace26ab520d92b6c6385e6522eadf9f319dc8c6e1ae691d4654f3"
+    },
+    "sources/textures/terrain/soil_ravine_spec.tga": {
+      "bytes": 3145772,
+      "sha256": "77e137c352493cfdc5f57ccae14d6e4ae1d13dc8856e4138e842e5032d0eafdf"
+    },
+    "sources/textures/test/calibrate/50grey.options": {
+      "bytes": 130,
+      "sha256": "299c6d02567a0aae3707aa2b39eb23db2cc9fa2f631a624e940bde13ac293853"
+    },
+    "sources/textures/test/calibrate/50grey.tga": {
+      "bytes": 49196,
+      "sha256": "bd5f2e9a2cc5cd31241665cbc28dd4fa8e9f9810a67a791680d63d40631c0440"
+    },
+    "sources/textures/test/sky_9_cube.options": {
+      "bytes": 150,
+      "sha256": "0fc0a3203f2ca2f46f66648feb0ee8889ac782c78527a53fd3cfd7c0c4332460"
+    },
+    "sources/textures/test/sky_9_cube.tga": {
+      "bytes": 75497516,
+      "sha256": "fa841501e14d77f591713d396affe173762a3b1fc603490196fb43c23e522540"
+    },
+    "sources/textures/test/test.options": {
+      "bytes": 122,
+      "sha256": "56a402fc5e8ace26ab520d92b6c6385e6522eadf9f319dc8c6e1ae691d4654f3"
+    },
+    "sources/textures/test/test.tga": {
+      "bytes": 3145772,
+      "sha256": "7302e7b6fb803cbbb2b30d69dee8af8ec3779942f17db35ee6d24b73bf30378d"
+    },
+    "sources/textures/tiled/earth/flowerbed_nmap.options": {
+      "bytes": 128,
+      "sha256": "475119777011ef18795368fb75d9afb48ae61228400b65b9ae4611d98bab9656"
+    },
+    "sources/textures/tiled/earth/flowerbed_nmap.tga": {
+      "bytes": 786476,
+      "sha256": "90d1859a08cf650480cd26339351c2c225428b76db1104c24f4c9260ecb2537d"
+    }
+  },
+  "provenance": {
+    "build/real-assets/barrel-radiation-stage7-material-inputs/provenance.json": {
+      "bytes": 22461,
+      "sha256": "6bdd39c957b234e0d1ba7eb487902fedc0ffa2a70510aed118c3e3ec9945ad28"
+    },
+    "build/real-assets/woodbox-mil-stage7-detail-inputs/provenance.json": {
+      "bytes": 21967,
+      "sha256": "c5b246ab2070de970aada6a66712bf2db865ae48f1d390b62969dc8c21430816"
+    },
+    "build/stage8-character-materials/neutral-surface-clips-pack/provenance.json": {
+      "bytes": 68506,
+      "sha256": "6a9ec9878c93a8e4a9257b8a759d8eb008c7ac800dbe7d59cb585b803c9c47f4"
+    },
+    "build/stage8-terrain-normalization/real-pack/provenance.json": {
+      "bytes": 123989,
+      "sha256": "20f42bffd6c137aca31a23e55e17aacd30496ba30aa342627ec81a102c043234"
+    }
+  }
+}

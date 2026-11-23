@@ -1,0 +1,22 @@
+dialog_node = create_property_table {
+	name = "dialog_node",
+	width = 200,
+	height = 50,
+	font_size = 10,
+	conn_points_font_size = 6,
+	inactive_link_color = "Black",
+	highlight_link_color = "YellowGreen",
+	active_link_color = "YellowGreen",
+	connection_styles = create_property_table {
+		child = create_property_table {
+			name = "child",
+			dir = "output",
+			align = "bottom",
+		},
+		parent = create_property_table {
+			name = "parent",
+			dir = "input",
+			align = "top",
+		},
+	},
+} -- dialog_node

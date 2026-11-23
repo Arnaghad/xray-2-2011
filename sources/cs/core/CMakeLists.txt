@@ -1,0 +1,6 @@
+file(GLOB CORE_CS_SOURCES "sources/*.cpp")
+list(FILTER CORE_CS_SOURCES EXCLUDE REGEX ".*delayhlp\\.cpp$")
+add_library(cs_core SHARED ${CORE_CS_SOURCES})
+target_include_directories(cs_core PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_link_libraries(cs_core PUBLIC sol2::sol2 PRIVATE winmm mimalloc)
+target_compile_definitions(cs_core PRIVATE CS_CORE_BUILDING)

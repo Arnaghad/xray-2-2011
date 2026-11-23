@@ -1,0 +1,688 @@
+{
+  "schemaVersion": 1,
+  "stage": "SDK-5",
+  "stageComplete": false,
+  "checkpoint": "main-viewport-services",
+  "checkpointAccepted": true,
+  "date": "2026-11-11",
+  "evidenceRoot": "build/sdk5-viewport-20261111",
+  "scope": "Main authored viewport typed settings, renderer grid/selection bounds/editor lights, capability-gated modes, culling freeze and runtime camera navigation.",
+  "checks": [
+    {
+      "configuration": "debug",
+      "build": {
+        "path": "build/sdk5-viewport-20261111/build-debug.log",
+        "sha256": "ca965430e7535ed44ce9fded0b60d3012d60bfa0d6d654f2a97e31483d8b2c0a"
+      },
+      "ctest": {
+        "path": "build/sdk5-viewport-20261111/ctest-debug.log",
+        "sha256": "a329a4d7f756b6f576b26b15199e28d8b2de19b1cbb1b201636dc687dbcb844d",
+        "passed": 5,
+        "total": 5
+      },
+      "compatibility": {
+        "path": "build/sdk5-viewport-20261111/compatibility-debug.json",
+        "sha256": "c432b67b60d35b02d210148cdc86360bed1f7df8e21ec6b8bf9c3e8999f9a1b8",
+        "groups": 15,
+        "runtime": "10.0.13"
+      }
+    },
+    {
+      "configuration": "release",
+      "build": {
+        "path": "build/sdk5-viewport-20261111/build-release.log",
+        "sha256": "e49b5ff39235b9900ef305689b7044d108a5b292161a3c444f2c26260e545e5d"
+      },
+      "ctest": {
+        "path": "build/sdk5-viewport-20261111/ctest-release.log",
+        "sha256": "54eaab8de632eabb30392f522e6ee0b2b341b9427b03efb33f7c804447d79d56",
+        "passed": 5,
+        "total": 5
+      },
+      "compatibility": {
+        "path": "build/sdk5-viewport-20261111/compatibility-release.json",
+        "sha256": "c432b67b60d35b02d210148cdc86360bed1f7df8e21ec6b8bf9c3e8999f9a1b8",
+        "groups": 15,
+        "runtime": "10.0.13"
+      }
+    }
+  ],
+  "native": [
+    {
+      "configuration": "debug",
+      "workflow": "viewport",
+      "validationErrors": 0,
+      "validationWarnings": 0,
+      "runtime": {
+        "path": "build/sdk5-viewport-20261111/viewport-final-debug/runtime-result.json",
+        "sha256": "5ddcf3fb4e9471aac2b4bb50f5f27fab4d50afdabc176bad8b59f15f4b76312e"
+      },
+      "log": {
+        "path": "build/sdk5-viewport-20261111/viewport-final-debug/stderr.log",
+        "sha256": "64caed62b99120c1e88e7d1f8746394689ad631d15c395ca3c532a716f1ead40"
+      },
+      "launch": {
+        "path": "build/sdk5-viewport-20261111/viewport-final-debug/launch.json",
+        "sha256": "759fd866342ce0e5cef20879ada8c5ca2ff0e99076a11c11f3d1f3825acd97c3"
+      },
+      "readbacks": {
+        "path": "build/sdk5-viewport-20261111/viewport-final-debug/capture-result.json",
+        "sha256": "6ac8437d67fa50736c6115fe1d5c4c59ba408bb768889e62e582072501d5c6b5"
+      },
+      "images": [
+        {
+          "path": "build/sdk5-viewport-20261111/viewport-final-debug/captures/sdk_layout_edited.bmp",
+          "sha256": "5dbe4c9b635ac3eda9a0051ab5abb85ac3abb593567f78531d6b609a30fbc4aa"
+        },
+        {
+          "path": "build/sdk5-viewport-20261111/viewport-final-debug/captures/sdk_layout_redo.bmp",
+          "sha256": "2f6f29943ff1ac92d06d2b7b3c7bba6c31ced85b03649ba1f7d93d558f168f0f"
+        },
+        {
+          "path": "build/sdk5-viewport-20261111/viewport-final-debug/captures/sdk_layout_restored.bmp",
+          "sha256": "924be7b2e9df8a2a9deb2dc96af023fb35fb767adf0f4bd738df548e4b64cc2d"
+        },
+        {
+          "path": "build/sdk5-viewport-20261111/viewport-final-debug/captures/sdk_layout_undo.bmp",
+          "sha256": "924be7b2e9df8a2a9deb2dc96af023fb35fb767adf0f4bd738df548e4b64cc2d"
+        },
+        {
+          "path": "build/sdk5-viewport-20261111/viewport-final-debug/captures/sdk_property_baseline.bmp",
+          "sha256": "924be7b2e9df8a2a9deb2dc96af023fb35fb767adf0f4bd738df548e4b64cc2d"
+        },
+        {
+          "path": "build/sdk5-viewport-20261111/viewport-final-debug/captures/sdk_property_edited.bmp",
+          "sha256": "8fc3c5337d10b9772fbb8121965f18a7c717699bfde5902a7ea08cd4209aa0c0"
+        },
+        {
+          "path": "build/sdk5-viewport-20261111/viewport-final-debug/captures/sdk_property_redo.bmp",
+          "sha256": "294ad9146a7095bafcebd177453c3c3083347ec79418b0663dc6889a1b7ae7cc"
+        },
+        {
+          "path": "build/sdk5-viewport-20261111/viewport-final-debug/captures/sdk_property_restored.bmp",
+          "sha256": "bad174eec7f46f94a960e04ce4638bbdbcff10d7aff7744751ba086b2caa97b5"
+        },
+        {
+          "path": "build/sdk5-viewport-20261111/viewport-final-debug/captures/sdk_property_undo.bmp",
+          "sha256": "0fd69ba8fc206a6b18ccf8b601b659eb4f295f2ecf5eb57c195f786f3c8b7e62"
+        }
+      ]
+    },
+    {
+      "configuration": "debug",
+      "workflow": "scene",
+      "validationErrors": 0,
+      "validationWarnings": 0,
+      "runtime": {
+        "path": "build/sdk5-viewport-20261111/scene-final-debug/runtime-result.json",
+        "sha256": "0d9a5ea851059a1762d1745963cd6601e5c1850a0ad70acf0bee1fc923b7d058"
+      },
+      "log": {
+        "path": "build/sdk5-viewport-20261111/scene-final-debug/stderr.log",
+        "sha256": "a8be651bf8878616e93dfd2db8354a3af586718707d0f0261d1e3681c63335e3"
+      },
+      "launch": {
+        "path": "build/sdk5-viewport-20261111/scene-final-debug/launch.json",
+        "sha256": "0ecd3303224709b44893b45cead365c0c63bc4cd7332c95483126099649659f2"
+      },
+      "readbacks": {
+        "path": "build/sdk5-viewport-20261111/scene-final-debug/capture-result.json",
+        "sha256": "b5f6cd730e26898446fe70fe5e283ebfa4fef19b58238fed708f1cf25eb21e6f"
+      },
+      "images": [
+        {
+          "path": "build/sdk5-viewport-20261111/scene-final-debug/captures/sdk_layout_edited.bmp",
+          "sha256": "922d0339cc041fc49665fecc6d1fc0a8e2548592bffa398d6b66af565cf550f6"
+        },
+        {
+          "path": "build/sdk5-viewport-20261111/scene-final-debug/captures/sdk_layout_redo.bmp",
+          "sha256": "922d0339cc041fc49665fecc6d1fc0a8e2548592bffa398d6b66af565cf550f6"
+        },
+        {
+          "path": "build/sdk5-viewport-20261111/scene-final-debug/captures/sdk_layout_restored.bmp",
+          "sha256": "922d0339cc041fc49665fecc6d1fc0a8e2548592bffa398d6b66af565cf550f6"
+        },
+        {
+          "path": "build/sdk5-viewport-20261111/scene-final-debug/captures/sdk_layout_undo.bmp",
+          "sha256": "9af0c8a9f63ab2769f2060a1d498b4cccc30dd0eeae233fa388bba163599e1f2"
+        },
+        {
+          "path": "build/sdk5-viewport-20261111/scene-final-debug/captures/sdk_property_baseline.bmp",
+          "sha256": "04fbae8593faf30e74623fc4959b5b2d56e914d4aed6f72fa05bed324ffde6c6"
+        },
+        {
+          "path": "build/sdk5-viewport-20261111/scene-final-debug/captures/sdk_property_edited.bmp",
+          "sha256": "f6a48bffd00262435226abdf946f8b17e7144b7f8a35f6b726457d523aee4298"
+        },
+        {
+          "path": "build/sdk5-viewport-20261111/scene-final-debug/captures/sdk_property_redo.bmp",
+          "sha256": "f6a48bffd00262435226abdf946f8b17e7144b7f8a35f6b726457d523aee4298"
+        },
+        {
+          "path": "build/sdk5-viewport-20261111/scene-final-debug/captures/sdk_property_restored.bmp",
+          "sha256": "f6a48bffd00262435226abdf946f8b17e7144b7f8a35f6b726457d523aee4298"
+        },
+        {
+          "path": "build/sdk5-viewport-20261111/scene-final-debug/captures/sdk_property_undo.bmp",
+          "sha256": "04fbae8593faf30e74623fc4959b5b2d56e914d4aed6f72fa05bed324ffde6c6"
+        }
+      ]
+    },
+    {
+      "configuration": "debug",
+      "workflow": "property",
+      "validationErrors": 0,
+      "validationWarnings": 0,
+      "runtime": {
+        "path": "build/sdk5-viewport-20261111/property-final-debug/runtime-result.json",
+        "sha256": "2b33475f765295615de3d16de945ac430be2a33127fc222eeae8c919fb679aff"
+      },
+      "log": {
+        "path": "build/sdk5-viewport-20261111/property-final-debug/stderr.log",
+        "sha256": "17831ad6bf49d33fa4ee6de6faa0ffaffbb3547d01455caceca168dda0ce35e7"
+      },
+      "launch": {
+        "path": "build/sdk5-viewport-20261111/property-final-debug/launch.json",
+        "sha256": "e13583116a769ad322b8fd47bc72d6792d2bebf4ccdd6ca189f55aa94098476b"
+      },
+      "readbacks": {
+        "path": "build/sdk5-viewport-20261111/property-final-debug/capture-result.json",
+        "sha256": "9707b5e2b010c9458d4c7c2b926fb5b14939fb4a6636520fca787c5eec1a66e6"
+      },
+      "images": [
+        {
+          "path": "build/sdk5-viewport-20261111/property-final-debug/captures/sdk_layout_edited.bmp",
+          "sha256": "75880822bf6b7af49310bbd6d3540f76c35b7133c3ddb41f8e1783f8b16353e7"
+        },
+        {
+          "path": "build/sdk5-viewport-20261111/property-final-debug/captures/sdk_layout_redo.bmp",
+          "sha256": "75880822bf6b7af49310bbd6d3540f76c35b7133c3ddb41f8e1783f8b16353e7"
+        },
+        {
+          "path": "build/sdk5-viewport-20261111/property-final-debug/captures/sdk_layout_restored.bmp",
+          "sha256": "5ac2344137e0f7a6e703ef2f418909742094dac355ec3aa7435a074a0acadae9"
+        },
+        {
+          "path": "build/sdk5-viewport-20261111/property-final-debug/captures/sdk_layout_undo.bmp",
+          "sha256": "5ac2344137e0f7a6e703ef2f418909742094dac355ec3aa7435a074a0acadae9"
+        },
+        {
+          "path": "build/sdk5-viewport-20261111/property-final-debug/captures/sdk_property_baseline.bmp",
+          "sha256": "5ac2344137e0f7a6e703ef2f418909742094dac355ec3aa7435a074a0acadae9"
+        },
+        {
+          "path": "build/sdk5-viewport-20261111/property-final-debug/captures/sdk_property_edited.bmp",
+          "sha256": "75880822bf6b7af49310bbd6d3540f76c35b7133c3ddb41f8e1783f8b16353e7"
+        },
+        {
+          "path": "build/sdk5-viewport-20261111/property-final-debug/captures/sdk_property_redo.bmp",
+          "sha256": "75880822bf6b7af49310bbd6d3540f76c35b7133c3ddb41f8e1783f8b16353e7"
+        },
+        {
+          "path": "build/sdk5-viewport-20261111/property-final-debug/captures/sdk_property_restored.bmp",
+          "sha256": "5ac2344137e0f7a6e703ef2f418909742094dac355ec3aa7435a074a0acadae9"
+        },
+        {
+          "path": "build/sdk5-viewport-20261111/property-final-debug/captures/sdk_property_undo.bmp",
+          "sha256": "5ac2344137e0f7a6e703ef2f418909742094dac355ec3aa7435a074a0acadae9"
+        }
+      ]
+    },
+    {
+      "configuration": "debug",
+      "workflow": "legacy",
+      "validationErrors": 0,
+      "validationWarnings": 0,
+      "runtime": {
+        "path": "build/sdk5-viewport-20261111/legacy-final-debug/runtime-result.json",
+        "sha256": "b148867a95af01b8e80cd625476f0b2268c42ec934a4223259cd7b1fc19695fc"
+      },
+      "log": {
+        "path": "build/sdk5-viewport-20261111/legacy-final-debug/stderr.log",
+        "sha256": "0be0d364346432e56dfc517b83fca458abd792e756a5e8712154de12726654ab"
+      },
+      "launch": {
+        "path": "build/sdk5-viewport-20261111/legacy-final-debug/launch.json",
+        "sha256": "c479bb996ac9c8442760b54ef6a52701caa9f940585023da67cddccfcc5ffc48"
+      },
+      "images": [
+        {
+          "path": "build/sdk5-viewport-20261111/legacy-final-debug/captures/game.bmp",
+          "sha256": "42998866793f892c57383c758ddd6bf5916fb3b97152e8b14234d7723a88d76f"
+        }
+      ]
+    },
+    {
+      "configuration": "release",
+      "workflow": "viewport",
+      "validationErrors": 0,
+      "validationWarnings": 0,
+      "runtime": {
+        "path": "build/sdk5-viewport-20261111/viewport-final-release/runtime-result.json",
+        "sha256": "5ddcf3fb4e9471aac2b4bb50f5f27fab4d50afdabc176bad8b59f15f4b76312e"
+      },
+      "log": {
+        "path": "build/sdk5-viewport-20261111/viewport-final-release/stderr.log",
+        "sha256": "43e995d53cd07b056bee6b5a570d3577859163969da2d922b3a0c3b7d75e5175"
+      },
+      "launch": {
+        "path": "build/sdk5-viewport-20261111/viewport-final-release/launch.json",
+        "sha256": "75d5be6d914b94e3063c093c1c8c0888a7f26b0566d899f3e6f9ab72a8d5e37f"
+      },
+      "readbacks": {
+        "path": "build/sdk5-viewport-20261111/viewport-final-release/capture-result.json",
+        "sha256": "6ac8437d67fa50736c6115fe1d5c4c59ba408bb768889e62e582072501d5c6b5"
+      },
+      "images": [
+        {
+          "path": "build/sdk5-viewport-20261111/viewport-final-release/captures/sdk_layout_edited.bmp",
+          "sha256": "5dbe4c9b635ac3eda9a0051ab5abb85ac3abb593567f78531d6b609a30fbc4aa"
+        },
+        {
+          "path": "build/sdk5-viewport-20261111/viewport-final-release/captures/sdk_layout_redo.bmp",
+          "sha256": "2f6f29943ff1ac92d06d2b7b3c7bba6c31ced85b03649ba1f7d93d558f168f0f"
+        },
+        {
+          "path": "build/sdk5-viewport-20261111/viewport-final-release/captures/sdk_layout_restored.bmp",
+          "sha256": "924be7b2e9df8a2a9deb2dc96af023fb35fb767adf0f4bd738df548e4b64cc2d"
+        },
+        {
+          "path": "build/sdk5-viewport-20261111/viewport-final-release/captures/sdk_layout_undo.bmp",
+          "sha256": "924be7b2e9df8a2a9deb2dc96af023fb35fb767adf0f4bd738df548e4b64cc2d"
+        },
+        {
+          "path": "build/sdk5-viewport-20261111/viewport-final-release/captures/sdk_property_baseline.bmp",
+          "sha256": "924be7b2e9df8a2a9deb2dc96af023fb35fb767adf0f4bd738df548e4b64cc2d"
+        },
+        {
+          "path": "build/sdk5-viewport-20261111/viewport-final-release/captures/sdk_property_edited.bmp",
+          "sha256": "8fc3c5337d10b9772fbb8121965f18a7c717699bfde5902a7ea08cd4209aa0c0"
+        },
+        {
+          "path": "build/sdk5-viewport-20261111/viewport-final-release/captures/sdk_property_redo.bmp",
+          "sha256": "294ad9146a7095bafcebd177453c3c3083347ec79418b0663dc6889a1b7ae7cc"
+        },
+        {
+          "path": "build/sdk5-viewport-20261111/viewport-final-release/captures/sdk_property_restored.bmp",
+          "sha256": "bad174eec7f46f94a960e04ce4638bbdbcff10d7aff7744751ba086b2caa97b5"
+        },
+        {
+          "path": "build/sdk5-viewport-20261111/viewport-final-release/captures/sdk_property_undo.bmp",
+          "sha256": "0fd69ba8fc206a6b18ccf8b601b659eb4f295f2ecf5eb57c195f786f3c8b7e62"
+        }
+      ]
+    },
+    {
+      "configuration": "release",
+      "workflow": "scene",
+      "validationErrors": 0,
+      "validationWarnings": 0,
+      "runtime": {
+        "path": "build/sdk5-viewport-20261111/scene-final-release/runtime-result.json",
+        "sha256": "0d9a5ea851059a1762d1745963cd6601e5c1850a0ad70acf0bee1fc923b7d058"
+      },
+      "log": {
+        "path": "build/sdk5-viewport-20261111/scene-final-release/stderr.log",
+        "sha256": "069cb9296e158a5e38e5b42e58fb81488ed977ecbc6310205884ddb790bf8be4"
+      },
+      "launch": {
+        "path": "build/sdk5-viewport-20261111/scene-final-release/launch.json",
+        "sha256": "2b0c7818dfce500185e68540b6cb63f3c439267b53ba1dd45497eeb7dd52a70e"
+      },
+      "readbacks": {
+        "path": "build/sdk5-viewport-20261111/scene-final-release/capture-result.json",
+        "sha256": "3f8b91b3898a554b14e13dd2df842b7f5179e4362d29b394c869f93c12cbeb22"
+      },
+      "images": [
+        {
+          "path": "build/sdk5-viewport-20261111/scene-final-release/captures/sdk_layout_edited.bmp",
+          "sha256": "434722f3e1f389d877017e2b9fecd580c4c716327f5bf7d8092582bbc26a4c1c"
+        },
+        {
+          "path": "build/sdk5-viewport-20261111/scene-final-release/captures/sdk_layout_redo.bmp",
+          "sha256": "434722f3e1f389d877017e2b9fecd580c4c716327f5bf7d8092582bbc26a4c1c"
+        },
+        {
+          "path": "build/sdk5-viewport-20261111/scene-final-release/captures/sdk_layout_restored.bmp",
+          "sha256": "434722f3e1f389d877017e2b9fecd580c4c716327f5bf7d8092582bbc26a4c1c"
+        },
+        {
+          "path": "build/sdk5-viewport-20261111/scene-final-release/captures/sdk_layout_undo.bmp",
+          "sha256": "9af0c8a9f63ab2769f2060a1d498b4cccc30dd0eeae233fa388bba163599e1f2"
+        },
+        {
+          "path": "build/sdk5-viewport-20261111/scene-final-release/captures/sdk_property_baseline.bmp",
+          "sha256": "04fbae8593faf30e74623fc4959b5b2d56e914d4aed6f72fa05bed324ffde6c6"
+        },
+        {
+          "path": "build/sdk5-viewport-20261111/scene-final-release/captures/sdk_property_edited.bmp",
+          "sha256": "f6a48bffd00262435226abdf946f8b17e7144b7f8a35f6b726457d523aee4298"
+        },
+        {
+          "path": "build/sdk5-viewport-20261111/scene-final-release/captures/sdk_property_redo.bmp",
+          "sha256": "f6a48bffd00262435226abdf946f8b17e7144b7f8a35f6b726457d523aee4298"
+        },
+        {
+          "path": "build/sdk5-viewport-20261111/scene-final-release/captures/sdk_property_restored.bmp",
+          "sha256": "f6a48bffd00262435226abdf946f8b17e7144b7f8a35f6b726457d523aee4298"
+        },
+        {
+          "path": "build/sdk5-viewport-20261111/scene-final-release/captures/sdk_property_undo.bmp",
+          "sha256": "04fbae8593faf30e74623fc4959b5b2d56e914d4aed6f72fa05bed324ffde6c6"
+        }
+      ]
+    },
+    {
+      "configuration": "release",
+      "workflow": "property",
+      "validationErrors": 0,
+      "validationWarnings": 0,
+      "runtime": {
+        "path": "build/sdk5-viewport-20261111/property-final-release/runtime-result.json",
+        "sha256": "2b33475f765295615de3d16de945ac430be2a33127fc222eeae8c919fb679aff"
+      },
+      "log": {
+        "path": "build/sdk5-viewport-20261111/property-final-release/stderr.log",
+        "sha256": "f978842b381939e137cad3cc4f4e55c5479f6bb6fc87c96d9e53713b16a01fae"
+      },
+      "launch": {
+        "path": "build/sdk5-viewport-20261111/property-final-release/launch.json",
+        "sha256": "c0439f13c5d3403e6f4b69631d07b265b914eadec3262fa0f3e299f58d6999d8"
+      },
+      "readbacks": {
+        "path": "build/sdk5-viewport-20261111/property-final-release/capture-result.json",
+        "sha256": "9707b5e2b010c9458d4c7c2b926fb5b14939fb4a6636520fca787c5eec1a66e6"
+      },
+      "images": [
+        {
+          "path": "build/sdk5-viewport-20261111/property-final-release/captures/sdk_layout_edited.bmp",
+          "sha256": "75880822bf6b7af49310bbd6d3540f76c35b7133c3ddb41f8e1783f8b16353e7"
+        },
+        {
+          "path": "build/sdk5-viewport-20261111/property-final-release/captures/sdk_layout_redo.bmp",
+          "sha256": "75880822bf6b7af49310bbd6d3540f76c35b7133c3ddb41f8e1783f8b16353e7"
+        },
+        {
+          "path": "build/sdk5-viewport-20261111/property-final-release/captures/sdk_layout_restored.bmp",
+          "sha256": "5ac2344137e0f7a6e703ef2f418909742094dac355ec3aa7435a074a0acadae9"
+        },
+        {
+          "path": "build/sdk5-viewport-20261111/property-final-release/captures/sdk_layout_undo.bmp",
+          "sha256": "5ac2344137e0f7a6e703ef2f418909742094dac355ec3aa7435a074a0acadae9"
+        },
+        {
+          "path": "build/sdk5-viewport-20261111/property-final-release/captures/sdk_property_baseline.bmp",
+          "sha256": "5ac2344137e0f7a6e703ef2f418909742094dac355ec3aa7435a074a0acadae9"
+        },
+        {
+          "path": "build/sdk5-viewport-20261111/property-final-release/captures/sdk_property_edited.bmp",
+          "sha256": "75880822bf6b7af49310bbd6d3540f76c35b7133c3ddb41f8e1783f8b16353e7"
+        },
+        {
+          "path": "build/sdk5-viewport-20261111/property-final-release/captures/sdk_property_redo.bmp",
+          "sha256": "75880822bf6b7af49310bbd6d3540f76c35b7133c3ddb41f8e1783f8b16353e7"
+        },
+        {
+          "path": "build/sdk5-viewport-20261111/property-final-release/captures/sdk_property_restored.bmp",
+          "sha256": "5ac2344137e0f7a6e703ef2f418909742094dac355ec3aa7435a074a0acadae9"
+        },
+        {
+          "path": "build/sdk5-viewport-20261111/property-final-release/captures/sdk_property_undo.bmp",
+          "sha256": "5ac2344137e0f7a6e703ef2f418909742094dac355ec3aa7435a074a0acadae9"
+        }
+      ]
+    },
+    {
+      "configuration": "release",
+      "workflow": "legacy",
+      "validationErrors": 0,
+      "validationWarnings": 0,
+      "runtime": {
+        "path": "build/sdk5-viewport-20261111/legacy-final-release/runtime-result.json",
+        "sha256": "b148867a95af01b8e80cd625476f0b2268c42ec934a4223259cd7b1fc19695fc"
+      },
+      "log": {
+        "path": "build/sdk5-viewport-20261111/legacy-final-release/stderr.log",
+        "sha256": "d08b15a1b4ac742d9731d61b53f8da2a8840764357064bd49f648a5330cc4ad4"
+      },
+      "launch": {
+        "path": "build/sdk5-viewport-20261111/legacy-final-release/launch.json",
+        "sha256": "09e3cbc0d1e09258e8ff74f5da22cfbaa841951cc107ef09d78a340069967d08"
+      },
+      "images": [
+        {
+          "path": "build/sdk5-viewport-20261111/legacy-final-release/captures/game.bmp",
+          "sha256": "42998866793f892c57383c758ddd6bf5916fb3b97152e8b14234d7723a88d76f"
+        }
+      ]
+    }
+  ],
+  "implementation": [
+    {
+      "path": "sources/tools/sdk/test-sdk-property.ps1",
+      "sha256": "b1ab25052a2d29304c636e42cc2f66cfd14fdd3ceb9c55393b168f4e46504653"
+    },
+    {
+      "path": "sources/tools/sdk/verify-sdk-property.py",
+      "sha256": "7d021bdcd69cd889d13b10a90325b44f16a14deaefc682b859cb8f744a19cc1c"
+    },
+    {
+      "path": "sources/tools/sdk/verify-sdk-scene.py",
+      "sha256": "9587eea6ccd68b111746aa93fe51c9a98fced1e3ae917fcde02f22dea08fa8cf"
+    },
+    {
+      "path": "sources/tools/sdk/verify-sdk-viewport.py",
+      "sha256": "72ded857f15f61c14bef9edc0f0dfdd3febf4bcc8f5a6249681775516018b394"
+    },
+    {
+      "path": "sources/xray/editor/base/CMakeLists.txt",
+      "sha256": "8fd8c21e3ed314a7ee3495745bff2948189334867749d849bc527d6536aae528"
+    },
+    {
+      "path": "sources/xray/editor/base/Command.cs",
+      "sha256": "3538095cfb0707feae733ed0e722f64b9d7dd76c75aa2f3c185390029d0181cd"
+    },
+    {
+      "path": "sources/xray/editor/base/CommandEngine.cs",
+      "sha256": "01dfd1526886ecef63c40af7e0d9f2b81e61391f27c13a49ab7cdba854c1535d"
+    },
+    {
+      "path": "sources/xray/editor/base/EditorHost.csproj.in",
+      "sha256": "1b9759c43a7f6aba3286063700e494833719684f4e38e6793362975fbde17461"
+    },
+    {
+      "path": "sources/xray/editor/base/EditorWorld.SceneChecks.cs",
+      "sha256": "3c1c2c6cbf6785ff7199252f18d3a010dbec010d8f2a80fbf248bcafc2fd0d64"
+    },
+    {
+      "path": "sources/xray/editor/base/EditorWorld.Sdk.cs",
+      "sha256": "38e009b22da6b960b73f9a3c6dfd41e65cf54e21a47edd64faccfabe44e922d6"
+    },
+    {
+      "path": "sources/xray/editor/base/EditorWorld.ViewportChecks.cs",
+      "sha256": "8f05025d69c4d9d7daecb6e1482ae3611a5156626dfc9fec7f9b56b2723eafec"
+    },
+    {
+      "path": "sources/xray/editor/base/EditorWorld.cs",
+      "sha256": "4578f957d8e1890f3d813d818abdd1eed897d57ace33c90e409c36f6e1448ee0"
+    },
+    {
+      "path": "sources/xray/editor/base/Project.cs",
+      "sha256": "f9a11c09515a631b4575fee9f2f2d1bc56f198019f67cab7a8509f8d03353ebb"
+    },
+    {
+      "path": "sources/xray/editor/base/ProjectClipboard.cs",
+      "sha256": "62647445ecef846dbf5985be36b616ada26d8b6ca20e822954947074d9093737"
+    },
+    {
+      "path": "sources/xray/editor/base/ProjectEditing.cs",
+      "sha256": "5c808a8e24cb52e9f2f42d8ea2acdccf9e076568fa2615afefee256d35b4ab57"
+    },
+    {
+      "path": "sources/xray/editor/base/ProjectItems.cs",
+      "sha256": "a03c3cda0c86a65d593f73364bdebe250ee5cffd7c0ecc4eb7ea8ca0c9007cfb"
+    },
+    {
+      "path": "sources/xray/editor/base/ProjectPropertyAdapters.cs",
+      "sha256": "6011d1aa6fc59f2c922d9faa2e154f46fb9f623a807340e75794fbed548bca7a"
+    },
+    {
+      "path": "sources/xray/editor/base/ProjectTab.cs",
+      "sha256": "a027d6b232d9186d2aa9980e957c13afff765fb147a5eff6aa6ce386cbb0f8e5"
+    },
+    {
+      "path": "sources/xray/editor/base/ProjectViewportEditing.cs",
+      "sha256": "58e466c62d00641dd6730632dbfe5cf9a04b1bccfd7603ff6c8606cd4e13ee85"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkIdePanels.cs",
+      "sha256": "e4d23ae9eb924ad65f15c4edb61a27018e3e7148463223535af2a91403831bb9"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkNativeResources.cs",
+      "sha256": "ea1a90ddfd48987bfdee76b94259188960128cc877052e7e124215fd4efa0b82"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkProperties.cs",
+      "sha256": "24e888332fd557bdd0482e1e8765701bdd5304e8ae3d4a2125d343959dfda85d"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkScene.cs",
+      "sha256": "c92bb6da8e26c51e0689ae98180d145f3ce15754f5a4f6ef86b695d553142d85"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkViewport.cs",
+      "sha256": "f011eae02461018e0c7978e824adcbcd3dc70f539f31d2cd8d331f8be075b271"
+    },
+    {
+      "path": "sources/xray/editor/base/ViewportNavigation.cs",
+      "sha256": "7ba52d15f8acd3ed85fb8a0df6609c1626e3f5a5fd021a623a33fd731fe7961d"
+    },
+    {
+      "path": "sources/xray/editor/base/WindowIde.Editing.cs",
+      "sha256": "202b1004e4f5e465beff246df02485d50d7c5620de13eabd6600648f35fbf034"
+    },
+    {
+      "path": "sources/xray/editor/base/WindowIde.Projects.cs",
+      "sha256": "363a16b20fcf540e8bca808dd2ecd0b3e9664847d1e447bb1cdf04958746e2ba"
+    },
+    {
+      "path": "sources/xray/editor/base/WindowIde.cs",
+      "sha256": "91c517e03f19f5c0ed72a75814c014184a71daad6b53e58142d4963534252a35"
+    },
+    {
+      "path": "sources/xray/editor/base/sdk_transform.h",
+      "sha256": "7dcc4ca11d0fe22ac8505780a9e90b997b4a84c2ffe12aeb393630a257842eb2"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/sdk_transform.cpp",
+      "sha256": "71b188615a5362a80d412cc7ab38d1d89679545f5b5a66432d387b4de081dbd5"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/transform_control_rotation.cpp",
+      "sha256": "cf5e047ec7d6c5e4c30c96b2822446c60f777ddddb566bc66151bf81c96b76eb"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/transform_control_scaling.cpp",
+      "sha256": "0aa311727ac84d5a91cbb82571dac87ffdc9ce850ceab9060098def5fc77067d"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/transform_control_translation.cpp",
+      "sha256": "0f17fa392af42d1f79736e24ab06487c7c0e1e893ef387fb65266a3f286ebdb0"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/Program.cs",
+      "sha256": "87667ef32b4c21ac3c63ce94cfc6d4ece22806693d5164851598d54c8a55b3d1"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/SDKUI.Compatibility.csproj",
+      "sha256": "95a217769e754647e24748ed1a7c66e3fd61f275f972e1229d3d5a2956492225"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/SdkCommandChecks.cs",
+      "sha256": "1bef42491c410e3a7b71b1f9d8bd140f539a9699306874a3434c4fc2aa90054d"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/SdkContractChecks.cs",
+      "sha256": "567c1c9372ba40333f660059b0822b99182741e03d8959578fbe66d67d431eac"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/SdkProjectCommandChecks.cs",
+      "sha256": "36f557ffad4d4091c86d270ea62b84bccff0ef73fa4b49898dc6c7522467b2cf"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/SdkSceneCommandChecks.cs",
+      "sha256": "0d6987afb677efd9ed2d08f69d00065dcf505defd798416b09b700d4ecc5f21f"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/SdkViewportChecks.cs",
+      "sha256": "7b0051225f028ccc786e1c860f9514d4f344a702201fa6416582d2d54a06bf4f"
+    },
+    {
+      "path": "sources/xray/editor/world/sdk_scene_bridge.h",
+      "sha256": "8c6214237320ae225f3576e7f400004247a9376d8128c1abf71047eda47fcdb4"
+    },
+    {
+      "path": "sources/xray/editor/world/sources/editor_entry_point.cpp",
+      "sha256": "2a21b7a0dcf1836562448fb8bed4292c74cd47eac3b7367d89fc93aa2dc2be65"
+    },
+    {
+      "path": "sources/xray/editor/world/sources/managed_host.cpp",
+      "sha256": "bbbbeaf17a891b904a5ee545e4762451840b6b91a080eb4e61cea14a44f1d173"
+    },
+    {
+      "path": "sources/xray/editor/world/sources/managed_host.h",
+      "sha256": "f1c766838d092907f12859108c1a7e62f53ad4681f30b0633aab56cc3c12a6c3"
+    },
+    {
+      "path": "sources/xray/editor/world/sources/sdk_scene.h",
+      "sha256": "981e2fd547309b05c157a9e60277e5605fe2f2f10ae95307b508d86fbe8292c1"
+    },
+    {
+      "path": "sources/xray/render/facade/control_level.h",
+      "sha256": "c0a0ac0d4bf3b7405cac240ebf2deb9226761229c5c2200dbc51b5ce6a1f60e7"
+    }
+  ],
+  "resolvedDependencies": [
+    {
+      "path": "gpu-debug-1",
+      "reason": "Inherited SSAO/distortion settings are invalid in normals/unlit or disabled postprocess. Added explicit per-mode postprocess profiles."
+    }
+  ],
+  "remaining": [
+    "Native silhouette outlines and original glow/pulse selection parameters (current overlay is bounds only).",
+    "Full native gizmo geometry/draw/axis picking and remaining 16 legacy render modes.",
+    "Generic selected camera/model/asset preview view/output binding and isolation; fixed M8 woodbox preview is a regression control.",
+    "Resize/DPI/minimize, dock/float/redock, HWND recreation release/reattach and hide/destroy coverage in generic SDK views.",
+    "Active scene/preview resource reload, pending frames/queries coverage and measured incremental scene synchronization.",
+    "Real edit/play/simulate transition; shell flag is not runtime simulation acceptance."
+  ],
+  "limitations": [
+    "Automated in-process WinForms mouse/key handlers on hidden HWNDs; physical desktop/manual smoke is not claimed.",
+    "Five native modes are capability-gated; dedicated new readbacks cover lit/normals/unlit. Other two use existing typed lighting modes.",
+    "Bounding-box alpha currently saturates selection_rate at 1. Original glow/pulse behavior is a separate outline dependency.",
+    "View/culling snapshots are read after capture fences in the diagnostic. Full SDK-5 remains unchecked."
+  ],
+  "documentation": [
+    {
+      "path": "sdk_migration_plan.md",
+      "sha256": "f9ee5705796a8f2192bf488c87af4722647246adc7b7753dc8072a58b96af676"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/README.md",
+      "sha256": "5244be52764971c17b2413a90207506790482841416b8ce9f01d8ca47d7bcca4"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk0/function-matrix.json",
+      "sha256": "908c9d922e85651e26c83a9c6a2206f5dddcf453da34d6e125ea772325c50f79"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk5/README.md",
+      "sha256": "90706c264ab57025d0d788cf890d5d9a5091d72d6b03ff0e43d28d6f87e70ec6"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk5/renderer-mapping.json",
+      "sha256": "c7c1a1a478cad8285aa1e127ece2e698e94801a4ce5d8e377a50c4700b3d5e62"
+    }
+  ]
+}

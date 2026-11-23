@@ -1,0 +1,43 @@
+{
+  "version": 3,
+  "resource_arena_mib": 4096,
+  "manifest_sha256": "b9cf3b00202857e7a170f1807438ec4b4a8268b17129f9507c03ba92992fd21a",
+  "scenes": ["game", "editor-preview"],
+  "configurations": ["Debug", "Release"],
+  "content": "Full M8 inspection camera at actor time 240 ms; particles pause after the initial overview capture; game or editor main plus shared model preview. Validation and capture readback remain enabled.",
+  "modes": {
+    "baseline": {"warmup_seconds": 15, "stress_seconds": 300, "deadline_margin_seconds": 30, "cpu_workers": 0, "repeats": 1},
+    "background": {"warmup_seconds": 10, "stress_seconds": 60, "deadline_margin_seconds": 30, "cpu_workers": 4, "repeats": 1},
+    "near-timeout": {"warmup_seconds": 5, "stress_seconds": 15, "deadline_margin_seconds": 5, "cpu_workers": 2, "repeats": 3}
+  },
+  "budgets": {
+    "startup_seconds": 90,
+    "device_live_bytes": 4294967296,
+    "process_private_bytes": 8589934592,
+    "device_local_heap_usage_bytes": 4294967296,
+    "device_local_heap_headroom_bytes": 268435456,
+    "device_live_growth_bytes": 8388608,
+    "host_live_growth_bytes": 8388608,
+    "process_private_growth_bytes": 134217728,
+    "device_local_heap_growth_bytes": 67108864,
+    "resource_count_growth": 16,
+    "retired_count_growth": 16,
+    "descriptor_uniform_capacity_growth": 0,
+    "device_allocations_during_stress": 0,
+    "pipeline_creations_during_stress": 0,
+    "device_idle_calls_during_stress": 0,
+    "cached_pass_objects_per_output": 64,
+    "cached_pass_growth": 0,
+    "pass_pair_creations_during_stress": 0,
+    "host_allocations_per_presented_frame": 4096,
+    "cpu_frame_p95_ms": 100,
+    "cpu_frame_p99_ms": 200,
+    "gpu_frame_p95_ms": 100,
+    "gpu_frame_p99_ms": 200,
+    "render_owner_interval_p95_ms": 200,
+    "cold_pipeline_creation_ms": 15000,
+    "minimum_presentations_per_stress_second": 2,
+    "near_timeout_remaining_seconds_max": 10,
+    "cpu_worker_minimum_core_fraction": 0.4
+  }
+}

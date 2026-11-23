@@ -1,0 +1,17 @@
+find_package(Lua 5.5.1 REQUIRED)
+if(NOT Lua_VERSION_MAJOR EQUAL 5 OR NOT Lua_VERSION_MINOR EQUAL 5)
+    message(FATAL_ERROR "The sol2 compatibility patch is tested with Lua 5.5 only.")
+endif()
+if(MINGW AND NOT LUA_LIBRARY MATCHES "\\.dll\\.a$")
+    message(FATAL_ERROR "Use the system Lua DLL import library, not a static Lua runtime: ${LUA_LIBRARY}")
+endif()
+
+# One system Lua runtime is shared by the engine DLLs and executables.
+add_library(lua INTERFACE)
+target_include_directories(lua SYSTEM INTERFACE ${LUA_INCLUDE_DIR})
+target_link_libraries(lua INTERFACE ${LUA_LIBRARIES})
+target_compile_definitions(lua INTERFACE XRAY_SYSTEM_LUA=1)
+if(WIN32)
+    target_compile_definitions(lua INTERFACE LUA_BUILD_AS_DLL)
+endif()
+message(STATUS "System Lua ${Lua_VERSION}: ${LUA_LIBRARIES}")

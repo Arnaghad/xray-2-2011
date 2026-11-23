@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "id": "vulkan-m8-editor-preview-v1",
+  "date": "2026-10-19",
+  "scope": "M8-OUTPUTS initial managed static-model preview checkpoint; complete native resize/minimize/close workflow remains open",
+  "base_host_contract": "sources/xray/render/vulkan/m8_editor_host.json",
+  "base_host_contract_sha256": "75ddbdcb117e766a6fb682d8d24f411e9660aa1fb8e9b232dd6e820c92e0d8da",
+  "base_manifest_sha256": "b9cf3b00202857e7a170f1807438ec4b4a8268b17129f9507c03ba92992fd21a",
+  "abi": {"version": 2, "callbacks_bytes": 80, "world_bridge_bytes": 112, "migration": "same-deployment native and managed artifacts update together; ABI 1 is rejected by the new factory; archived ABI 1 evidence stays valid for its recorded binaries", "extension": "native Preview(context, uintptr HWND, uint operation); managed PreviewHandle(context) and PreviewClosed(context); operation 0 opens, 1 requests close"},
+  "toolbar_command": {"9": "open independent woodbox_mil preview or request its close"},
+  "model": {"asset": "resources/models/props/box/woodbox_mil.model/render", "instance": "typed static_model_clone_request through the registered resource cook", "sharing": "immutable model data, mesh, original materials and device resources", "isolation": "independent instance overrides, scene, view, HWND, surface/swapchain, render targets, presentation state and history"},
+  "camera": {"eye": [1.8,1.6,-2.5], "target": [0,0.5,0], "vertical_fov_degrees": 60, "near": 0.1, "far": 64, "model_transform": "identity", "view_mode": "unlit"},
+  "window": {"initial_client_size": [640,480], "owner": "editor STA", "interactive": "independent top-level WinForms window", "automated": "hidden, nonactivating, input-transparent, explicitly opted into fenced readback"},
+  "close": "WM_CLOSE requests native retirement and retains HWND; renderer drains GPU work and acknowledges even an output closed before first adoption; native scene/view/output references drain before managed PreviewClosed disposes the HWND; host shutdown retains both windows through Vulkan teardown",
+  "smoke": {"launcher_flags": ["--editor","--preview"], "environment": {"XRAY_M8_EDITOR_OPEN_PREVIEW":"1"}, "expected_captures": ["game.bmp","preview.bmp"], "main_content_frames": 16, "preview_content_frames": 15, "capture_phase": "publish on the actual sixteenth main content frame, allowing asynchronous preview cooks between frames; toolbar opens preview after the first ready main frame", "pending_cooks": "main continues presenting its last stable content phase with particles paused, then resumes simulation; require a redraw receipt on the editor owner", "validation": "0 errors / 0 warnings through teardown"},
+  "remaining_acceptance": ["combined native main/preview resize and minimize controls", "preview close/reopen while main continues with image oracles", "close host with pending preview resource work", "M8-AUDIT after integration"]
+}

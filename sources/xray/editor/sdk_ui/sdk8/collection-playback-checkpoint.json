@@ -1,0 +1,555 @@
+{
+  "schemaVersion": 1,
+  "stage": "SDK-8",
+  "date": "2026-11-16",
+  "stageComplete": false,
+  "accepted": false,
+  "checkpoint": "collection-policy-playback",
+  "checkpointVerified": true,
+  "evidenceRoot": "build/sdk8-collections-20261116",
+  "scope": "Original collection source authoring with nested/reference random/sequential/cyclic/dont-repeat policy playback over native clip samples and independent skeletal output.",
+  "acceptedFamilies": [],
+  "pendingFamilies": [
+    "animation-placement",
+    "animation-viewer",
+    "animation-setup",
+    "animation-collections",
+    "animation-groups"
+  ],
+  "limitations": [
+    "Clip transitions are unblended; mixer transitions and root-motion accumulation remain pending",
+    "Full collection UI inventory and reference workflow audit remain pending",
+    "Viewer .avs/.anim_clip graphs, setup/channels/curves, groups/controllers and level bindings remain pending"
+  ],
+  "policySemantics": {
+    "randomGenerator": "native random32, seed 0 by default",
+    "dontRepeat": "true excludes previous child index; singleton permits repetition",
+    "originalCookDifference": "Legacy cook passes dont-repeat directly as can-repeat-successively. This implementation follows the named field and editor emitter."
+  },
+  "builds": {
+    "Debug": "passed, 0 warnings/errors",
+    "Release": "passed, 0 warnings/errors"
+  },
+  "sdkCTest": {
+    "Debug": {
+      "passed": 5,
+      "total": 5,
+      "managedGroups": 25
+    },
+    "Release": {
+      "passed": 5,
+      "total": 5,
+      "managedGroups": 25
+    }
+  },
+  "gpuWorkflows": [
+    {
+      "configuration": "Debug",
+      "root": "build/sdk8-collections-20261116/gpu-debug-final",
+      "steps": 9,
+      "captures": 27,
+      "exactMatches": 20,
+      "poseChanges": 5,
+      "validationErrors": 0,
+      "validationWarnings": 0,
+      "pendingCloseVerified": true,
+      "artifacts": [
+        {
+          "path": "build/sdk8-collections-20261116/gpu-debug-final/capture-result.json",
+          "sha256": "a81d69ed14978b8f82b3dac985be0029203366f6521c90818e2c3215b902f306"
+        },
+        {
+          "path": "build/sdk8-collections-20261116/gpu-debug-final/runtime-result.json",
+          "sha256": "b83d028a9757153fb2e2d2eceb390a43024facc118806fa411dc058045c12330"
+        },
+        {
+          "path": "build/sdk8-collections-20261116/gpu-debug-final/launch.json",
+          "sha256": "dff892516193485383ae4e063de45dd228bdc038b53034506644eb7f71bede04"
+        },
+        {
+          "path": "build/sdk8-collections-20261116/gpu-debug-final/stderr.log",
+          "sha256": "d3e48e9381ab68f535547d14e636009df6f515a96be84ed5ba4fbdbea315340b"
+        },
+        {
+          "path": "build/sdk8-collections-20261116/gpu-debug-final/stdout.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "build/sdk8-collections-20261116/gpu-debug-final/user-data/collection-playback-result.json",
+          "sha256": "7ef34611f44ee1baf0f278ed03cddd5dfe3d32ff1a65424bfe89b96840859bfe"
+        },
+        {
+          "path": "build/sdk8-collections-20261116/gpu-debug-final/captures/sdk_layout_edited.bmp",
+          "sha256": "ce7bc87d435c1a78efc292e01fea516a15f5e80a43c6b2e1a2ed6ed08733d810"
+        },
+        {
+          "path": "build/sdk8-collections-20261116/gpu-debug-final/captures/sdk_layout_edited_asset.bmp",
+          "sha256": "04b29c3bdd4ab8fc67e922f3a47ccb0a930ee3e3a1d60cae8e3ff7f779e53590"
+        },
+        {
+          "path": "build/sdk8-collections-20261116/gpu-debug-final/captures/sdk_layout_edited_camera.bmp",
+          "sha256": "1c71171d7b392733b43bdd946e9089e345b48bfec73b6b563f10e938a8125b44"
+        },
+        {
+          "path": "build/sdk8-collections-20261116/gpu-debug-final/captures/sdk_layout_redo.bmp",
+          "sha256": "ce7bc87d435c1a78efc292e01fea516a15f5e80a43c6b2e1a2ed6ed08733d810"
+        },
+        {
+          "path": "build/sdk8-collections-20261116/gpu-debug-final/captures/sdk_layout_redo_asset.bmp",
+          "sha256": "04b29c3bdd4ab8fc67e922f3a47ccb0a930ee3e3a1d60cae8e3ff7f779e53590"
+        },
+        {
+          "path": "build/sdk8-collections-20261116/gpu-debug-final/captures/sdk_layout_redo_camera.bmp",
+          "sha256": "32bc6e6e157cc1be75ab92196a3ffbdf1529b2702ce748ac10e71d4cb0f3556d"
+        },
+        {
+          "path": "build/sdk8-collections-20261116/gpu-debug-final/captures/sdk_layout_restored.bmp",
+          "sha256": "ce7bc87d435c1a78efc292e01fea516a15f5e80a43c6b2e1a2ed6ed08733d810"
+        },
+        {
+          "path": "build/sdk8-collections-20261116/gpu-debug-final/captures/sdk_layout_restored_asset.bmp",
+          "sha256": "04b29c3bdd4ab8fc67e922f3a47ccb0a930ee3e3a1d60cae8e3ff7f779e53590"
+        },
+        {
+          "path": "build/sdk8-collections-20261116/gpu-debug-final/captures/sdk_layout_restored_camera.bmp",
+          "sha256": "1c71171d7b392733b43bdd946e9089e345b48bfec73b6b563f10e938a8125b44"
+        },
+        {
+          "path": "build/sdk8-collections-20261116/gpu-debug-final/captures/sdk_layout_undo.bmp",
+          "sha256": "ce7bc87d435c1a78efc292e01fea516a15f5e80a43c6b2e1a2ed6ed08733d810"
+        },
+        {
+          "path": "build/sdk8-collections-20261116/gpu-debug-final/captures/sdk_layout_undo_asset.bmp",
+          "sha256": "04b29c3bdd4ab8fc67e922f3a47ccb0a930ee3e3a1d60cae8e3ff7f779e53590"
+        },
+        {
+          "path": "build/sdk8-collections-20261116/gpu-debug-final/captures/sdk_layout_undo_camera.bmp",
+          "sha256": "53cf5d31069762391bc418e5540118fb148983f06938252806d870ed17b9666b"
+        },
+        {
+          "path": "build/sdk8-collections-20261116/gpu-debug-final/captures/sdk_property_baseline.bmp",
+          "sha256": "ce7bc87d435c1a78efc292e01fea516a15f5e80a43c6b2e1a2ed6ed08733d810"
+        },
+        {
+          "path": "build/sdk8-collections-20261116/gpu-debug-final/captures/sdk_property_baseline_asset.bmp",
+          "sha256": "04b29c3bdd4ab8fc67e922f3a47ccb0a930ee3e3a1d60cae8e3ff7f779e53590"
+        },
+        {
+          "path": "build/sdk8-collections-20261116/gpu-debug-final/captures/sdk_property_baseline_camera.bmp",
+          "sha256": "32bc6e6e157cc1be75ab92196a3ffbdf1529b2702ce748ac10e71d4cb0f3556d"
+        },
+        {
+          "path": "build/sdk8-collections-20261116/gpu-debug-final/captures/sdk_property_edited.bmp",
+          "sha256": "ce7bc87d435c1a78efc292e01fea516a15f5e80a43c6b2e1a2ed6ed08733d810"
+        },
+        {
+          "path": "build/sdk8-collections-20261116/gpu-debug-final/captures/sdk_property_edited_asset.bmp",
+          "sha256": "04b29c3bdd4ab8fc67e922f3a47ccb0a930ee3e3a1d60cae8e3ff7f779e53590"
+        },
+        {
+          "path": "build/sdk8-collections-20261116/gpu-debug-final/captures/sdk_property_edited_camera.bmp",
+          "sha256": "22f55790004a1676bb69cc5dcbe38fc3f597274f539e295e2054fdecf0500057"
+        },
+        {
+          "path": "build/sdk8-collections-20261116/gpu-debug-final/captures/sdk_property_redo.bmp",
+          "sha256": "ce7bc87d435c1a78efc292e01fea516a15f5e80a43c6b2e1a2ed6ed08733d810"
+        },
+        {
+          "path": "build/sdk8-collections-20261116/gpu-debug-final/captures/sdk_property_redo_asset.bmp",
+          "sha256": "04b29c3bdd4ab8fc67e922f3a47ccb0a930ee3e3a1d60cae8e3ff7f779e53590"
+        },
+        {
+          "path": "build/sdk8-collections-20261116/gpu-debug-final/captures/sdk_property_redo_camera.bmp",
+          "sha256": "0026d215df1d8d6833f8c9da29a800e6464ab2b4b181c493d9680e85c9d019fe"
+        },
+        {
+          "path": "build/sdk8-collections-20261116/gpu-debug-final/captures/sdk_property_restored.bmp",
+          "sha256": "ce7bc87d435c1a78efc292e01fea516a15f5e80a43c6b2e1a2ed6ed08733d810"
+        },
+        {
+          "path": "build/sdk8-collections-20261116/gpu-debug-final/captures/sdk_property_restored_asset.bmp",
+          "sha256": "04b29c3bdd4ab8fc67e922f3a47ccb0a930ee3e3a1d60cae8e3ff7f779e53590"
+        },
+        {
+          "path": "build/sdk8-collections-20261116/gpu-debug-final/captures/sdk_property_restored_camera.bmp",
+          "sha256": "32bc6e6e157cc1be75ab92196a3ffbdf1529b2702ce748ac10e71d4cb0f3556d"
+        },
+        {
+          "path": "build/sdk8-collections-20261116/gpu-debug-final/captures/sdk_property_undo.bmp",
+          "sha256": "ce7bc87d435c1a78efc292e01fea516a15f5e80a43c6b2e1a2ed6ed08733d810"
+        },
+        {
+          "path": "build/sdk8-collections-20261116/gpu-debug-final/captures/sdk_property_undo_asset.bmp",
+          "sha256": "04b29c3bdd4ab8fc67e922f3a47ccb0a930ee3e3a1d60cae8e3ff7f779e53590"
+        },
+        {
+          "path": "build/sdk8-collections-20261116/gpu-debug-final/captures/sdk_property_undo_camera.bmp",
+          "sha256": "0026d215df1d8d6833f8c9da29a800e6464ab2b4b181c493d9680e85c9d019fe"
+        }
+      ]
+    },
+    {
+      "configuration": "Release",
+      "root": "build/sdk8-collections-20261116/gpu-release",
+      "steps": 9,
+      "captures": 27,
+      "exactMatches": 20,
+      "poseChanges": 5,
+      "validationErrors": 0,
+      "validationWarnings": 0,
+      "pendingCloseVerified": true,
+      "artifacts": [
+        {
+          "path": "build/sdk8-collections-20261116/gpu-release/capture-result.json",
+          "sha256": "a81d69ed14978b8f82b3dac985be0029203366f6521c90818e2c3215b902f306"
+        },
+        {
+          "path": "build/sdk8-collections-20261116/gpu-release/runtime-result.json",
+          "sha256": "005f23b5fec3a8d20725a069db0f1b60dbfc2e1d50379e77a54c13539c16ded8"
+        },
+        {
+          "path": "build/sdk8-collections-20261116/gpu-release/launch.json",
+          "sha256": "b6aa868f67aa992941cc3cb607aaf6df3761a3a01ccb207881ccce7dd2edd4c0"
+        },
+        {
+          "path": "build/sdk8-collections-20261116/gpu-release/stderr.log",
+          "sha256": "6be16d674ac9d7a27380c9d5965b00f7efc5c2f25fb0952e7609f3c5faeb86e0"
+        },
+        {
+          "path": "build/sdk8-collections-20261116/gpu-release/stdout.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "build/sdk8-collections-20261116/gpu-release/user-data/collection-playback-result.json",
+          "sha256": "7ef34611f44ee1baf0f278ed03cddd5dfe3d32ff1a65424bfe89b96840859bfe"
+        },
+        {
+          "path": "build/sdk8-collections-20261116/gpu-release/captures/sdk_layout_edited.bmp",
+          "sha256": "ce7bc87d435c1a78efc292e01fea516a15f5e80a43c6b2e1a2ed6ed08733d810"
+        },
+        {
+          "path": "build/sdk8-collections-20261116/gpu-release/captures/sdk_layout_edited_asset.bmp",
+          "sha256": "04b29c3bdd4ab8fc67e922f3a47ccb0a930ee3e3a1d60cae8e3ff7f779e53590"
+        },
+        {
+          "path": "build/sdk8-collections-20261116/gpu-release/captures/sdk_layout_edited_camera.bmp",
+          "sha256": "1c71171d7b392733b43bdd946e9089e345b48bfec73b6b563f10e938a8125b44"
+        },
+        {
+          "path": "build/sdk8-collections-20261116/gpu-release/captures/sdk_layout_redo.bmp",
+          "sha256": "ce7bc87d435c1a78efc292e01fea516a15f5e80a43c6b2e1a2ed6ed08733d810"
+        },
+        {
+          "path": "build/sdk8-collections-20261116/gpu-release/captures/sdk_layout_redo_asset.bmp",
+          "sha256": "04b29c3bdd4ab8fc67e922f3a47ccb0a930ee3e3a1d60cae8e3ff7f779e53590"
+        },
+        {
+          "path": "build/sdk8-collections-20261116/gpu-release/captures/sdk_layout_redo_camera.bmp",
+          "sha256": "32bc6e6e157cc1be75ab92196a3ffbdf1529b2702ce748ac10e71d4cb0f3556d"
+        },
+        {
+          "path": "build/sdk8-collections-20261116/gpu-release/captures/sdk_layout_restored.bmp",
+          "sha256": "ce7bc87d435c1a78efc292e01fea516a15f5e80a43c6b2e1a2ed6ed08733d810"
+        },
+        {
+          "path": "build/sdk8-collections-20261116/gpu-release/captures/sdk_layout_restored_asset.bmp",
+          "sha256": "04b29c3bdd4ab8fc67e922f3a47ccb0a930ee3e3a1d60cae8e3ff7f779e53590"
+        },
+        {
+          "path": "build/sdk8-collections-20261116/gpu-release/captures/sdk_layout_restored_camera.bmp",
+          "sha256": "1c71171d7b392733b43bdd946e9089e345b48bfec73b6b563f10e938a8125b44"
+        },
+        {
+          "path": "build/sdk8-collections-20261116/gpu-release/captures/sdk_layout_undo.bmp",
+          "sha256": "ce7bc87d435c1a78efc292e01fea516a15f5e80a43c6b2e1a2ed6ed08733d810"
+        },
+        {
+          "path": "build/sdk8-collections-20261116/gpu-release/captures/sdk_layout_undo_asset.bmp",
+          "sha256": "04b29c3bdd4ab8fc67e922f3a47ccb0a930ee3e3a1d60cae8e3ff7f779e53590"
+        },
+        {
+          "path": "build/sdk8-collections-20261116/gpu-release/captures/sdk_layout_undo_camera.bmp",
+          "sha256": "53cf5d31069762391bc418e5540118fb148983f06938252806d870ed17b9666b"
+        },
+        {
+          "path": "build/sdk8-collections-20261116/gpu-release/captures/sdk_property_baseline.bmp",
+          "sha256": "ce7bc87d435c1a78efc292e01fea516a15f5e80a43c6b2e1a2ed6ed08733d810"
+        },
+        {
+          "path": "build/sdk8-collections-20261116/gpu-release/captures/sdk_property_baseline_asset.bmp",
+          "sha256": "04b29c3bdd4ab8fc67e922f3a47ccb0a930ee3e3a1d60cae8e3ff7f779e53590"
+        },
+        {
+          "path": "build/sdk8-collections-20261116/gpu-release/captures/sdk_property_baseline_camera.bmp",
+          "sha256": "32bc6e6e157cc1be75ab92196a3ffbdf1529b2702ce748ac10e71d4cb0f3556d"
+        },
+        {
+          "path": "build/sdk8-collections-20261116/gpu-release/captures/sdk_property_edited.bmp",
+          "sha256": "ce7bc87d435c1a78efc292e01fea516a15f5e80a43c6b2e1a2ed6ed08733d810"
+        },
+        {
+          "path": "build/sdk8-collections-20261116/gpu-release/captures/sdk_property_edited_asset.bmp",
+          "sha256": "04b29c3bdd4ab8fc67e922f3a47ccb0a930ee3e3a1d60cae8e3ff7f779e53590"
+        },
+        {
+          "path": "build/sdk8-collections-20261116/gpu-release/captures/sdk_property_edited_camera.bmp",
+          "sha256": "22f55790004a1676bb69cc5dcbe38fc3f597274f539e295e2054fdecf0500057"
+        },
+        {
+          "path": "build/sdk8-collections-20261116/gpu-release/captures/sdk_property_redo.bmp",
+          "sha256": "ce7bc87d435c1a78efc292e01fea516a15f5e80a43c6b2e1a2ed6ed08733d810"
+        },
+        {
+          "path": "build/sdk8-collections-20261116/gpu-release/captures/sdk_property_redo_asset.bmp",
+          "sha256": "04b29c3bdd4ab8fc67e922f3a47ccb0a930ee3e3a1d60cae8e3ff7f779e53590"
+        },
+        {
+          "path": "build/sdk8-collections-20261116/gpu-release/captures/sdk_property_redo_camera.bmp",
+          "sha256": "0026d215df1d8d6833f8c9da29a800e6464ab2b4b181c493d9680e85c9d019fe"
+        },
+        {
+          "path": "build/sdk8-collections-20261116/gpu-release/captures/sdk_property_restored.bmp",
+          "sha256": "ce7bc87d435c1a78efc292e01fea516a15f5e80a43c6b2e1a2ed6ed08733d810"
+        },
+        {
+          "path": "build/sdk8-collections-20261116/gpu-release/captures/sdk_property_restored_asset.bmp",
+          "sha256": "04b29c3bdd4ab8fc67e922f3a47ccb0a930ee3e3a1d60cae8e3ff7f779e53590"
+        },
+        {
+          "path": "build/sdk8-collections-20261116/gpu-release/captures/sdk_property_restored_camera.bmp",
+          "sha256": "32bc6e6e157cc1be75ab92196a3ffbdf1529b2702ce748ac10e71d4cb0f3556d"
+        },
+        {
+          "path": "build/sdk8-collections-20261116/gpu-release/captures/sdk_property_undo.bmp",
+          "sha256": "ce7bc87d435c1a78efc292e01fea516a15f5e80a43c6b2e1a2ed6ed08733d810"
+        },
+        {
+          "path": "build/sdk8-collections-20261116/gpu-release/captures/sdk_property_undo_asset.bmp",
+          "sha256": "04b29c3bdd4ab8fc67e922f3a47ccb0a930ee3e3a1d60cae8e3ff7f779e53590"
+        },
+        {
+          "path": "build/sdk8-collections-20261116/gpu-release/captures/sdk_property_undo_camera.bmp",
+          "sha256": "0026d215df1d8d6833f8c9da29a800e6464ab2b4b181c493d9680e85c9d019fe"
+        }
+      ]
+    }
+  ],
+  "previousCheckpoint": {
+    "path": "sources/xray/editor/sdk_ui/sdk8/initial-checkpoint.json",
+    "sha256": "b6aa8f152f38dc76147672e442929e613c3549427307cab3a89d4c4c1594462c"
+  },
+  "previousAcceptedStages": [
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk6/acceptance.json",
+      "sha256": "cf7e5e16f2468c5d60f16470f7d6981d62f0ed7dc211194332ae3fdd678b7416"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk7/acceptance.json",
+      "sha256": "6d2c7c2f38cf8183462ecbf30a592291253682b23b300c9d16bbead21572001a"
+    }
+  ],
+  "referenceSources": [
+    {
+      "path": "sources/xray/animation/sources/animation_collection.cpp",
+      "sha256": "2530f2c0d7e623d09fcb038cd099c0f9a7abfd5b0b65c24a6c2ec33fb1099db4"
+    },
+    {
+      "path": "sources/xray/animation/sources/animation_collection_cook.cpp",
+      "sha256": "8b6acfeac7d058ceeee8ee18bee921ea214c206c24cda9d16fc46132034c9b7a"
+    },
+    {
+      "path": "sources/xray/editor/animation/sources/animation_collection_item.cpp",
+      "sha256": "15bc37a2406a4e38d209863096f977ab76af08198ee52aef67cd1c60a37528ed"
+    },
+    {
+      "path": "sources/xray/math_randoms_generator.h",
+      "sha256": "590680b5d105e66c8a6d77cdcac6b4102e39bd6f5e020d0873788f07e97a0ba8"
+    }
+  ],
+  "sources": [
+    {
+      "path": "sdk_migration_plan.md",
+      "sha256": "a8a4b0de168ca6f86cb27517bb9cf5adee831dd4bf96b0a9c42183052f335e7f",
+      "snapshot": "build/sdk8-collections-20261116/source-snapshot/sdk_migration_plan.md"
+    },
+    {
+      "path": "sources/tools/sdk/prepare-sdk8-fixtures.py",
+      "sha256": "f6baa96b580e4d057813f63deab199465a2421a86a06b5aa6a4cc5ec01341640",
+      "snapshot": "build/sdk8-collections-20261116/source-snapshot/sources/tools/sdk/prepare-sdk8-fixtures.py"
+    },
+    {
+      "path": "sources/tools/sdk/test-sdk-property.ps1",
+      "sha256": "a04a1f71f5d79ca23e160c7d8d49a0567bd22657babd524a92d39a37f2bb6502",
+      "snapshot": "build/sdk8-collections-20261116/source-snapshot/sources/tools/sdk/test-sdk-property.ps1"
+    },
+    {
+      "path": "sources/tools/sdk/verify-sdk-animation.py",
+      "sha256": "b651a112906df212582885fc41eae6846a1938ff6a794726922c975eb0ed7be3",
+      "snapshot": "build/sdk8-collections-20261116/source-snapshot/sources/tools/sdk/verify-sdk-animation.py"
+    },
+    {
+      "path": "sources/tools/sdk/verify-sdk-collection-playback.py",
+      "sha256": "ae6c7114e43b757e7015b66dc6e617c4af5be4061225d520a0f76543661782df",
+      "snapshot": "build/sdk8-collections-20261116/source-snapshot/sources/tools/sdk/verify-sdk-collection-playback.py"
+    },
+    {
+      "path": "sources/xray/editor/base/CMakeLists.txt",
+      "sha256": "80fe92dbd7c48fcdc9eb0eca131049d00ee4a2c8c9a45073641e53d15841ba22",
+      "snapshot": "build/sdk8-collections-20261116/source-snapshot/sources/xray/editor/base/CMakeLists.txt"
+    },
+    {
+      "path": "sources/xray/editor/base/EditorHost.csproj.in",
+      "sha256": "a7accfb82957407523e93e464d14b92e12b3f05c7fe6934821401861ef6cd606",
+      "snapshot": "build/sdk8-collections-20261116/source-snapshot/sources/xray/editor/base/EditorHost.csproj.in"
+    },
+    {
+      "path": "sources/xray/editor/base/EditorWorld.AnimationChecks.cs",
+      "sha256": "a4c9fced554d3975a9ea239bd9259e1eb213b6227847144c3b5df6e58f5931bd",
+      "snapshot": "build/sdk8-collections-20261116/source-snapshot/sources/xray/editor/base/EditorWorld.AnimationChecks.cs"
+    },
+    {
+      "path": "sources/xray/editor/base/EditorWorld.CollectionChecks.cs",
+      "sha256": "cb67fb3d33a8f1ef39bcbe567beec91d0589a08f71a58a32bda632a5033f9c6b",
+      "snapshot": "build/sdk8-collections-20261116/source-snapshot/sources/xray/editor/base/EditorWorld.CollectionChecks.cs"
+    },
+    {
+      "path": "sources/xray/editor/base/EditorWorld.Sdk.cs",
+      "sha256": "5976be2727c36313cbab69e4031d2e15fc9cbe31d668abc0395cc698bc88018e",
+      "snapshot": "build/sdk8-collections-20261116/source-snapshot/sources/xray/editor/base/EditorWorld.Sdk.cs"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkAnimationCollection.cs",
+      "sha256": "2e8fdd3c55a353e6b98c429c2ea4d5bc692cfc438e923cc2b2fa5acdf40baab5",
+      "snapshot": "build/sdk8-collections-20261116/source-snapshot/sources/xray/editor/base/SdkAnimationCollection.cs"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkAnimationCollectionEditor.cs",
+      "sha256": "7d9eff56fb5c9488015c5b4a44a30c883de26c9d6d624ca3c93ec8448a9ceda9",
+      "snapshot": "build/sdk8-collections-20261116/source-snapshot/sources/xray/editor/base/SdkAnimationCollectionEditor.cs"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkAnimationPlayback.cs",
+      "sha256": "ec682c770ad7a2cb66f3922e3c19268fe492b7cfa1c39ee03f204d1c64c6b5ef",
+      "snapshot": "build/sdk8-collections-20261116/source-snapshot/sources/xray/editor/base/SdkAnimationPlayback.cs"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkAnimationPreview.cs",
+      "sha256": "ff62cb968f229ed7664e2829e84f04fe6cb264a7a3d14fecc98bd71eb988cf1b",
+      "snapshot": "build/sdk8-collections-20261116/source-snapshot/sources/xray/editor/base/SdkAnimationPreview.cs"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkResourceBrowser.cs",
+      "sha256": "4f204111f82d30a7f347e1b41a15e1d8a1522926c304e82084287f320ca7525e",
+      "snapshot": "build/sdk8-collections-20261116/source-snapshot/sources/xray/editor/base/SdkResourceBrowser.cs"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkRuntime.cs",
+      "sha256": "3f972dd14a28abe87c3e7038d302c5b3a99357d114560f1aab9b0165f439f6b3",
+      "snapshot": "build/sdk8-collections-20261116/source-snapshot/sources/xray/editor/base/SdkRuntime.cs"
+    },
+    {
+      "path": "sources/xray/editor/base/WindowIde.Animation.cs",
+      "sha256": "4cc4c0c83e8d1dc721cfc4d1c71ef100890e04b9bc7b93813ee149e3d14cc526",
+      "snapshot": "build/sdk8-collections-20261116/source-snapshot/sources/xray/editor/base/WindowIde.Animation.cs"
+    },
+    {
+      "path": "sources/xray/editor/base/WindowIde.cs",
+      "sha256": "f7f7d78f8c543ee0443a01ef71bb8a392bd064dcda43d0207e934e961adf5a5f",
+      "snapshot": "build/sdk8-collections-20261116/source-snapshot/sources/xray/editor/base/WindowIde.cs"
+    },
+    {
+      "path": "sources/xray/editor/base/WindowIde.Editing.cs",
+      "sha256": "c81b8a5fb03a71254c9344a81c2c4fccdf001a7f4a5f969d41db4a67290699f6",
+      "snapshot": "build/sdk8-collections-20261116/source-snapshot/sources/xray/editor/base/WindowIde.Editing.cs"
+    },
+    {
+      "path": "sources/xray/editor/base/WindowIde.Projects.cs",
+      "sha256": "360a568350982c46ddf50381e50c68296a18b66ffb19ef6a5a64a3ce5ca9829e",
+      "snapshot": "build/sdk8-collections-20261116/source-snapshot/sources/xray/editor/base/WindowIde.Projects.cs"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/Program.cs",
+      "sha256": "7281273a14e048d205e65cb505b5a2b32a58bfd8f54c15a94d5e017622df2137",
+      "snapshot": "build/sdk8-collections-20261116/source-snapshot/sources/xray/editor/sdk_ui/Program.cs"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk0/function-matrix.json",
+      "sha256": "23b7551190d913de7960b2f13fc40cb8c947cd8be15a67d6d966a9cc3087060c",
+      "snapshot": "build/sdk8-collections-20261116/source-snapshot/sources/xray/editor/sdk_ui/sdk0/function-matrix.json"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk8/collection-playback.md",
+      "sha256": "2c7640a4341c4fef85fdcdc32ccd141cca25ca5d9943b17bedf160cb5bbc6997",
+      "snapshot": "build/sdk8-collections-20261116/source-snapshot/sources/xray/editor/sdk_ui/sdk8/collection-playback.md"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk8/fixtures/inspect.anim_collection",
+      "sha256": "16fc4daab718fe00cf23ab2cab15bcbc6b3d3ac17af407ec6cd655ae49d21c75",
+      "snapshot": "build/sdk8-collections-20261116/source-snapshot/sources/xray/editor/sdk_ui/sdk8/fixtures/inspect.anim_collection"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk8/fixtures/provenance.json",
+      "sha256": "93e960b43b28efd536d6590db020673dec993f8e73f3f293dac4ab92b16a2aea",
+      "snapshot": "build/sdk8-collections-20261116/source-snapshot/sources/xray/editor/sdk_ui/sdk8/fixtures/provenance.json"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk8/fixtures/sit_high_guitar_play.anim_collection",
+      "sha256": "048d8ef17539761676abdf126a2b0b262d5e3afec294e38dbdaa00eced813c32",
+      "snapshot": "build/sdk8-collections-20261116/source-snapshot/sources/xray/editor/sdk_ui/sdk8/fixtures/sit_high_guitar_play.anim_collection"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk8/README.md",
+      "sha256": "ccde3e114a5b0875c4d3635af72dfda6c57656b23c3693cedfefc3d7ffd2b5ac",
+      "snapshot": "build/sdk8-collections-20261116/source-snapshot/sources/xray/editor/sdk_ui/sdk8/README.md"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/SdkAnimationChecks.cs",
+      "sha256": "1938e0e0133f26d13e03fe7cc77e41a610fb4d09f0aee48b295b73bf3a3a083e",
+      "snapshot": "build/sdk8-collections-20261116/source-snapshot/sources/xray/editor/sdk_ui/SdkAnimationChecks.cs"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/SdkContractChecks.cs",
+      "sha256": "c12c014a4d24af8d99e2f3eb9b35af13b008d6d49736c0253f9d05a96c50ca26",
+      "snapshot": "build/sdk8-collections-20261116/source-snapshot/sources/xray/editor/sdk_ui/SdkContractChecks.cs"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/SDKUI.Compatibility.csproj",
+      "sha256": "3fa591ca2e6a3a15368ad6d91d4196eba9613a2767f43d301785a7ffa2deb020",
+      "snapshot": "build/sdk8-collections-20261116/source-snapshot/sources/xray/editor/sdk_ui/SDKUI.Compatibility.csproj"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "build/sdk8-collections-20261116/build-debug-r3.log",
+      "sha256": "e74e184247357acc9378207d7b0ab75a350168bc1e30eb3d398d933afced551e"
+    },
+    {
+      "path": "build/sdk8-collections-20261116/build-release-r3.log",
+      "sha256": "666cb22de27501dddfec71b30e21515720b09bf1ab14469c93d9f574d22442b1"
+    },
+    {
+      "path": "build/sdk8-collections-20261116/ctest-sdk-debug-final.log",
+      "sha256": "7ce65fb4c4634b6eb43fd00735df546a89629487e361e3594a537ae314d05790"
+    },
+    {
+      "path": "build/sdk8-collections-20261116/ctest-sdk-release-final.log",
+      "sha256": "83d387f8251f46e656a781001a669761d18184f0a69ee66d412e044fdc0da3fb"
+    },
+    {
+      "path": "build/sdk8-collections-20261116/gpu-debug-final.log",
+      "sha256": "b987d822965386e20fda12c39ec5bc5e1294c543e109920266cea54cc9df59cb"
+    },
+    {
+      "path": "build/sdk8-collections-20261116/gpu-release.log",
+      "sha256": "bf3f9d17251906ea0ebbb8f8f3f34c3e371b17360d9ecc449072d398b07984fc"
+    },
+    {
+      "path": "build/sdk8-collections-20261116/verify-gpu-debug-final.log",
+      "sha256": "66150f97d939508869dbdb17cee07da93be91cf69ede0a7d6b13679645530cc5"
+    },
+    {
+      "path": "build/sdk8-collections-20261116/verify-gpu-release.log",
+      "sha256": "66150f97d939508869dbdb17cee07da93be91cf69ede0a7d6b13679645530cc5"
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "schema": "xray-migration-cache-compatibility/v1",
+  "advisory_worker_updates": [
+    {
+      "from_sha256": "c629d5339893358d8d0e857eed525ef859b739f08cfe1a449acee52084b59f52",
+      "to_sha256": "f53231df95ea3cff3052f64c046a2e67a4662dc6e3c2f3b1d43f6747d7af2736",
+      "reason": "Only texture availability probing changed. Evaluated samples, keys, parent links and geometry retain identical extraction semantics. Successful error-free extraction already guaranteed ancestor closure; failed/partial results must rerun."
+    },
+    {
+      "from_sha256": "539665ab31494f65018ce3bbcec70780cca0d50b2b276713c0f5558201cd62cf",
+      "to_sha256": "f53231df95ea3cff3052f64c046a2e67a4662dc6e3c2f3b1d43f6747d7af2736",
+      "reason": "Complete real skin-influence joint ancestors. Previous successful error-free filtered extractions already met the ancestor-closure check; failed/partial results must rerun."
+    }
+  ],
+  "dependency_baseline": {
+    "maya/plugin/shader_utils.py": "0601393230de322426fb00031ccf543dd882f9e49689d1781ed4f57e84a3fae7",
+    "maya/plugin/constants.py": "6780fcb17f6d2db1b07a4b417530f91bfe188d320608a69d133642ab099dee7e",
+    "dcc_common/constants.py": "343779c7540f7d2296ebae5033f3a4f7d7823c2363c61c2f9445ca3d1fc52ee9",
+    "dcc_common/logical_names.py": "cfca6d6c79dc5a79891c505c8de9b213378d75d489f0e881a93871288a7970e8",
+    "dcc_common/ma_reader.py": "dae0621f989cc81496430eedaa10ddf48a59b9477b2b2768145961b012432797",
+    "dcc_common/dcc_math.py": "c30c9030ca2564159aecd9189235923f621d805b694e2bf6d23310fc30ad3352"
+  }
+}

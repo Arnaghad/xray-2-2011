@@ -1,0 +1,40 @@
+dialog = {
+	links = {
+		{
+			dst_id = 1,
+			src_id = 0,
+		}, -- 1
+
+		{
+			dst_id = 0,
+			src_id = 4,
+		}, -- 2
+
+	}, -- links
+
+	nodes = {
+		{
+			id = 0,
+			is_dialog = false,
+			is_root = false,
+			string_table = "zaton_test_zaton_string_table_id_0",
+		}, -- 1
+
+		{
+			id = 1,
+			is_dialog = false,
+			is_root = false,
+			string_table = "zaton_test_zaton_string_table_id_1",
+		}, -- 2
+
+		{
+			id = 4,
+			is_dialog = false,
+			is_root = true,
+			string_table = "zaton_test_zaton_string_table_id_2",
+		}, -- 5
+
+	}, -- nodes
+
+} -- dialog
+

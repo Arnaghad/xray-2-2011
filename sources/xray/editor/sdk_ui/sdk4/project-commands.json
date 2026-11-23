@@ -1,0 +1,183 @@
+{
+  "schemaVersion": 1,
+  "stage": "SDK-4",
+  "stageComplete": false,
+  "checkpoint": "project-editing-commands",
+  "checkpointAccepted": true,
+  "date": "2026-11-10",
+  "evidenceRoot": "build/sdk4-project-commands-20261110",
+  "scope": "Authored project data commands, managed tree/inspector/menu/keyboard bindings and saved-state lifecycle",
+  "checks": [
+    {
+      "configuration": "debug",
+      "ctest": {
+        "path": "build/sdk4-project-commands-20261110/ctest-debug.log",
+        "sha256": "fb218f2e43ea7721f2c8db18cfcc20ae6af27cc134c076506a0d452ca2c7ff85",
+        "passed": 5,
+        "total": 5
+      },
+      "compatibility": {
+        "path": "build/sdk4-project-commands-20261110/compatibility-debug/result.json",
+        "sha256": "024e269f6740eb4807aa47d9952351006abd51fd421a10a2589edde72d1280c2",
+        "groups": 13,
+        "runtime": "10.0.13"
+      }
+    },
+    {
+      "configuration": "release",
+      "ctest": {
+        "path": "build/sdk4-project-commands-20261110/ctest-release.log",
+        "sha256": "f0d783315fa9de367d9ee28405b87c3b1a89e8eb796b819b54f08d24a2f75e90",
+        "passed": 5,
+        "total": 5
+      },
+      "compatibility": {
+        "path": "build/sdk4-project-commands-20261110/compatibility-release/result.json",
+        "sha256": "024e269f6740eb4807aa47d9952351006abd51fd421a10a2589edde72d1280c2",
+        "groups": 13,
+        "runtime": "10.0.13"
+      }
+    }
+  ],
+  "nativeRegression": [
+    {
+      "configuration": "debug",
+      "validationErrors": 0,
+      "validationWarnings": 0,
+      "evidence": [
+        {
+          "path": "build/sdk4-project-commands-20261110/gpu-final-debug/runtime-result.json",
+          "sha256": "e48c45f6314345ae0962cab319b5851048f8e4d6895d6bbf2f304de58002222c"
+        },
+        {
+          "path": "build/sdk4-project-commands-20261110/gpu-final-debug/capture-result.json",
+          "sha256": "9707b5e2b010c9458d4c7c2b926fb5b14939fb4a6636520fca787c5eec1a66e6"
+        },
+        {
+          "path": "build/sdk4-project-commands-20261110/gpu-final-debug/launch.json",
+          "sha256": "1c89f69bfaa1a6d9e984d63cbea1f3e369360c68dfad3f69967987b4a9059dc8"
+        },
+        {
+          "path": "build/sdk4-project-commands-20261110/gpu-final-debug/stderr.log",
+          "sha256": "73bac81179938b1e92e509b5d20e94cc48ca9649704bb4b5da347456ffb6cee4"
+        }
+      ]
+    },
+    {
+      "configuration": "release",
+      "validationErrors": 0,
+      "validationWarnings": 0,
+      "evidence": [
+        {
+          "path": "build/sdk4-project-commands-20261110/gpu-final-release/runtime-result.json",
+          "sha256": "e87331eae55ef70a71253d15c50c46584203391002a4055d2d625ab9d81d9158"
+        },
+        {
+          "path": "build/sdk4-project-commands-20261110/gpu-final-release/capture-result.json",
+          "sha256": "9707b5e2b010c9458d4c7c2b926fb5b14939fb4a6636520fca787c5eec1a66e6"
+        },
+        {
+          "path": "build/sdk4-project-commands-20261110/gpu-final-release/launch.json",
+          "sha256": "d2e7557fde7897169919fd1569c9af976207ea6ae5c2e1a9eabef6a3c595b113"
+        },
+        {
+          "path": "build/sdk4-project-commands-20261110/gpu-final-release/stderr.log",
+          "sha256": "020e05ed43e9d4bc0d8aa2aa79559ac410d5d499bd58db2afa4a3c4c7735664d"
+        }
+      ]
+    }
+  ],
+  "implementation": [
+    {
+      "path": "sources/xray/editor/base/Command.cs",
+      "sha256": "3538095cfb0707feae733ed0e722f64b9d7dd76c75aa2f3c185390029d0181cd"
+    },
+    {
+      "path": "sources/xray/editor/base/CommandEngine.cs",
+      "sha256": "23d60dbdf81e99a16718506e5f9082349a503c83561853a0374046f9198ce710"
+    },
+    {
+      "path": "sources/xray/editor/base/ProjectEditing.cs",
+      "sha256": "00e4a5b3e24935f684839de4c98f9b2ce646da0d4b2bb15f023e2bfc0d58a84e"
+    },
+    {
+      "path": "sources/xray/editor/base/ProjectClipboard.cs",
+      "sha256": "62647445ecef846dbf5985be36b616ada26d8b6ca20e822954947074d9093737"
+    },
+    {
+      "path": "sources/xray/editor/base/ProjectPropertyAdapters.cs",
+      "sha256": "6011d1aa6fc59f2c922d9faa2e154f46fb9f623a807340e75794fbed548bca7a"
+    },
+    {
+      "path": "sources/xray/editor/base/Project.cs",
+      "sha256": "6ae89b974ecdba28da54b4bef02e36a7924b7dd45d81a653d9581979222e1756"
+    },
+    {
+      "path": "sources/xray/editor/base/ProjectItems.cs",
+      "sha256": "a03c3cda0c86a65d593f73364bdebe250ee5cffd7c0ecc4eb7ea8ca0c9007cfb"
+    },
+    {
+      "path": "sources/xray/editor/base/ProjectTab.cs",
+      "sha256": "a027d6b232d9186d2aa9980e957c13afff765fb147a5eff6aa6ce386cbb0f8e5"
+    },
+    {
+      "path": "sources/xray/editor/base/WindowIde.cs",
+      "sha256": "ccd0a480d87aa36740763696f2b4a60fd4df5818ca19dd228c1bfcd50edeb821"
+    },
+    {
+      "path": "sources/xray/editor/base/WindowIde.Editing.cs",
+      "sha256": "7ce98cd70111578852b43012060e05ce7026bdae7647f55a662d5d370464d05d"
+    },
+    {
+      "path": "sources/xray/editor/base/WindowIde.Projects.cs",
+      "sha256": "8c47fb5ef71edfaaea272b4ccd50d8fd3f5575fd4d6298d32e6852d542d97db9"
+    },
+    {
+      "path": "sources/xray/editor/base/InputEngine.cs",
+      "sha256": "1266d6187f1c4f1d50be0eb8b82ba7932445e1611496b8647703dc388c2cc3cb"
+    },
+    {
+      "path": "sources/xray/editor/base/ToolsTab.cs",
+      "sha256": "8f0ef8ee97779aed456c2ace36c257f016b9087c8dbbe251abbca2204f8396b7"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkIdePanels.cs",
+      "sha256": "87a4930af79688a159f09f18ba70fc962a8821e2e37ae8c7fcd05de545d6dead"
+    },
+    {
+      "path": "sources/xray/editor/base/EditorWorld.Sdk.cs",
+      "sha256": "dd63ff33921a9a6deba54dfa0a4e1c8aac00ee446a1c1ce6a58301efe9469570"
+    },
+    {
+      "path": "sources/xray/editor/base/EditorHost.csproj.in",
+      "sha256": "2b759ec7dcd2d9f26066d83bd5d5e0a7a0d03d1cb84aa31b6280e5fef5ea2e04"
+    },
+    {
+      "path": "sources/xray/editor/base/CMakeLists.txt",
+      "sha256": "d59d3054f5980deb98728649c6064e7dd717104ee661d2c42692b4f2c9c584b9"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/SDKUI.Compatibility.csproj",
+      "sha256": "d629635b7c82d26b64a2b7a608eedc9b2937e2378f7c4cb5bbd699a56b56e268"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/SdkProjectCommandChecks.cs",
+      "sha256": "36f557ffad4d4091c86d270ea62b84bccff0ef73fa4b49898dc6c7522467b2cf"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/SdkContractChecks.cs",
+      "sha256": "567c1c9372ba40333f660059b0822b99182741e03d8959578fbe66d67d431eac"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/Program.cs",
+      "sha256": "7ccaaeb0476f6c2a6e479afc8eb3d1390ac201ebcda547f313c8159237345e38"
+    }
+  ],
+  "limitations": [
+    "Native regressions exercise the existing M8 property slice, resource bridge and shutdown; they do not prove rendering of newly authored project objects.",
+    "General project/native object identity, scene rebuild and picking/selection synchronization remain open.",
+    "Existing native transform controls, coordinate spaces, snap and real mouse scene workflows remain open.",
+    "Visibility is stored as an optional visible field only when changed or already present. The current editor reads it; original SDK runtime parity for that extension is not claimed.",
+    "Native project diagnostics run in a separate project session so successful Open resets that history without altering the control-scene capture history."
+  ]
+}

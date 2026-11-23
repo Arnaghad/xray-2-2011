@@ -1,0 +1,13 @@
+schema_version = "1.0.0"
+id = "xray_blender"
+version = "0.3.3"
+name = "X-Ray 2.0"
+tagline = "Author X-Ray assets, physics helpers and rig metadata"
+maintainer = "X-Ray SDK maintainers"
+type = "add-on"
+tags = ["Import-Export", "Animation", "Rigging"]
+blender_version_min = "5.0.0"
+license = ["SPDX:GPL-3.0-or-later"]
+
+[permissions]
+files = "Import assets, write resources, and run the asset cooker"

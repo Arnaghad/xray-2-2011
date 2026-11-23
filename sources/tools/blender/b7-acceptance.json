@@ -1,0 +1,330 @@
+{
+  "schema": "xray-blender-b7-acceptance/v1",
+  "date": "2026-11-15",
+  "recorded_utc": "2026-11-15T13:05:53.811129+00:00",
+  "stage": "B7",
+  "status": "accepted_local",
+  "scope": [
+    "T1 independent of installed DCC",
+    "Installed Blender 5.3.0 headless ZIP/import/export/migration and native playback",
+    "Explicit no-Maya A+C1 acceptance",
+    "Optional complete Maya host suite and parity",
+    "Strict CTest inventory/JUnit and immutable per-run evidence",
+    "GitHub workflow implementation and actionlint"
+  ],
+  "runs": [
+    {
+      "name": "ci-t1",
+      "configuration": "Release",
+      "scope": "standalone",
+      "tier": "t1",
+      "tests": 7,
+      "status": "PASS",
+      "host": {
+        "status": "not_required"
+      },
+      "maya": {
+        "mode": "off",
+        "status": "disabled"
+      },
+      "receipt": {
+        "path": "build/blender-b7/ci-t1/result.json",
+        "bytes": 2364,
+        "sha256": "002122a53ff7a6e82c4f3969d84726d86ca02b01af7532390bf9e2cc53aa0585"
+      },
+      "receipt_hashes_verified": 6
+    },
+    {
+      "name": "ci-release-final",
+      "configuration": "Release",
+      "scope": "engine",
+      "tier": "all",
+      "tests": 22,
+      "status": "PASS",
+      "host": {
+        "executable": "C:\\Program Files\\Blender Foundation\\Blender 5.3\\blender.exe",
+        "sha256": "739a8167f81fc3dbcabaa448bb5335923b04c91f9a2408fd979c778e14d3d642",
+        "version": "5.3.0"
+      },
+      "maya": {
+        "mode": "required",
+        "status": "scheduled",
+        "executable": "C:/Program Files/Autodesk/Maya2027/bin/mayapy.exe",
+        "sha256": "5b4fcb5bf3c46c360eca750bd9ddb945d864424ff4b77f8d3e395573ddca4acb"
+      },
+      "receipt": {
+        "path": "build/blender-b7/ci-release-final/result.json",
+        "bytes": 42849,
+        "sha256": "baed0d8b8920dc9286854d8412ab04e2dadfc2e09f98cd373a370f650b789a26"
+      },
+      "receipt_hashes_verified": 241
+    },
+    {
+      "name": "ci-debug-final",
+      "configuration": "Debug",
+      "scope": "engine",
+      "tier": "all",
+      "tests": 19,
+      "status": "PASS",
+      "host": {
+        "executable": "C:\\Program Files\\Blender Foundation\\Blender 5.3\\blender.exe",
+        "sha256": "739a8167f81fc3dbcabaa448bb5335923b04c91f9a2408fd979c778e14d3d642",
+        "version": "5.3.0"
+      },
+      "maya": {
+        "mode": "off",
+        "status": "disabled"
+      },
+      "receipt": {
+        "path": "build/blender-b7/ci-debug-final/result.json",
+        "bytes": 23866,
+        "sha256": "8abf90e70164c25886c1a2a421e68820b9f31204de3ae13f3817b4dc40fbcae8"
+      },
+      "receipt_hashes_verified": 123
+    },
+    {
+      "name": "ci-fresh-engine",
+      "configuration": "Release",
+      "scope": "engine",
+      "tier": "all",
+      "tests": 22,
+      "status": "PASS",
+      "host": {
+        "executable": "C:\\Program Files\\Blender Foundation\\Blender 5.3\\blender.exe",
+        "sha256": "739a8167f81fc3dbcabaa448bb5335923b04c91f9a2408fd979c778e14d3d642",
+        "version": "5.3.0"
+      },
+      "maya": {
+        "mode": "auto",
+        "status": "scheduled",
+        "executable": "C:/Program Files/Autodesk/Maya2027/bin/mayapy.exe",
+        "sha256": "5b4fcb5bf3c46c360eca750bd9ddb945d864424ff4b77f8d3e395573ddca4acb"
+      },
+      "receipt": {
+        "path": "build/blender-b7/ci-fresh-engine/result.json",
+        "bytes": 29677,
+        "sha256": "5bf5a3035c5d2b051696afdabdecef3b12cb246231f829b66b05f8537a410df6"
+      },
+      "receipt_hashes_verified": 161
+    }
+  ],
+  "full_release": {
+    "status": "PASS",
+    "tests": 29,
+    "evidence": [
+      {
+        "path": "build/blender-b7/full-release-final.xml",
+        "bytes": 17486,
+        "sha256": "fa1b524deff2f4e5353e5189535ff85e1e6ae374a14220caaf455b1028744e12"
+      },
+      {
+        "path": "build/blender-b7/full-release-final.log",
+        "bytes": 4269,
+        "sha256": "8d836c2acc1fdfdda60ae378c51caab998d23999bbe03520b2ba57b967b10b99"
+      }
+    ]
+  },
+  "no_maya": [
+    {
+      "environment": {
+        "mayapy": null,
+        "maya_python": false
+      },
+      "maya_environment_variables": [],
+      "zero_root_rejected_without_repair": true,
+      "evidence": {
+        "path": "build/blender-b7/ci-debug-final/no-maya/receipts/xray/maya_cook/blender/no-maya-contract/result.json",
+        "bytes": 429,
+        "sha256": "e2f7dee39b45524dbd1a127ca148b4165c45b400909b19e2ce3b202303c067b8"
+      }
+    },
+    {
+      "environment": {
+        "mayapy": null,
+        "maya_python": false
+      },
+      "maya_environment_variables": [],
+      "zero_root_rejected_without_repair": true,
+      "evidence": {
+        "path": "build/blender-b7/ci-fresh-engine/no-maya/receipts/xray/maya_cook/blender/no-maya-contract/result.json",
+        "bytes": 429,
+        "sha256": "e2f7dee39b45524dbd1a127ca148b4165c45b400909b19e2ce3b202303c067b8"
+      }
+    }
+  ],
+  "maya_availability": {
+    "path": "build/blender-b7/maya-availability/result.json",
+    "bytes": 302,
+    "sha256": "5bd20747419920c35d5b55fb0ef020d3f5331870a9ea38d2de46eda759a46116"
+  },
+  "diagnostic_worker_incident": {
+    "status": "cause_unresolved_not_reproduced",
+    "initial_result": "FAIL",
+    "reason": "Blender worker exited 1 before completing contract.model and contract.physics",
+    "original_worker_logs": "Removed by TemporaryDirectory cleanup before diagnostic retention was added",
+    "automatic_ci_retries": 0,
+    "initial_evidence": [
+      {
+        "path": "build/blender-b7/zero-root-no-maya-debug.log",
+        "bytes": 16126,
+        "sha256": "9d1a1751e84840c4192575594cca684ce66e95ee39d2981935291d5540cd4c30"
+      },
+      {
+        "path": "build/blender-b7/zero-root-no-maya-debug.xml",
+        "bytes": 15957,
+        "sha256": "5d7fca6e5d5df0488ce362725b54ca14a5bee70a6407f9941e47dc3fa64ac65b"
+      }
+    ],
+    "followup": {
+      "single_run": "PASS",
+      "until_first_failure_runs": 5,
+      "passed": 5,
+      "evidence": [
+        {
+          "path": "build/blender-b7/no-maya-debug-diagnostic.log",
+          "bytes": 513,
+          "sha256": "cb3d08e18aaca7cfa94ca09243946cdc85a037540e94ded675b1a2762ea9dc04"
+        },
+        {
+          "path": "build/blender-b7/no-maya-debug-stress.log",
+          "bytes": 941,
+          "sha256": "ece2710dae9e9f17ba61ba03d8085d245539b95aa710d3f0262f342cfd9476ba"
+        }
+      ]
+    },
+    "mitigation": "Preserve migration worker JSON/logs before temporary cleanup; do not retry or change the failed CI result"
+  },
+  "workflow": {
+    "path": ".github/workflows/blender-ci.yml",
+    "actionlint": {
+      "status": "PASS",
+      "version": "1.7.12",
+      "evidence": {
+        "path": "build/blender-b7/actionlint-final.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "remote_run": "not_dispatched",
+    "reason": "Checkout has no Git remote or provisioned GitHub runner",
+    "fork_pr_runs": false
+  },
+  "corpus_policy": {
+    "zero_root_failures": 23,
+    "repair": false,
+    "original_b5_checkpoint_unchanged_by_this_stage": true,
+    "prior_problem_animation_acceptance": {
+      "path": "build/blender-5.3-validation/result.json",
+      "bytes": 3469,
+      "sha256": "d3770f30cbe52e2cd0c672b1fd549fb6b5cb2d1c7f63e85b9561684980791cfa"
+    }
+  },
+  "runtime": {
+    "portable_runtime_removed": true,
+    "extension_unchanged": {
+      "path": "build/blender/extension/xray_blender-0.3.1.zip",
+      "bytes": 73781,
+      "sha256": "7fad0d09e5da24ab3c4782588f6523e8b613ad6284bc3108c08e67d905b788c6"
+    },
+    "main_builds_restored_to_maya_auto": [
+      {
+        "path": "build/sdk-native-20261108-release/CMakeCache.txt",
+        "bytes": 38265,
+        "sha256": "54064e9038fa0007b2e7d236d69c37963377f861ea9ac8fb0da76afb73a38ce3"
+      },
+      {
+        "path": "build/sdk-native-20261108-debug/CMakeCache.txt",
+        "bytes": 38239,
+        "sha256": "498d3077b0ba204786c6b5a248fb0bb2f05e33288a1e2ddbf678034997305855"
+      }
+    ]
+  },
+  "source_snapshot": [
+    {
+      "path": "sources/tools/blender/ci_contract.py",
+      "bytes": 2657,
+      "sha256": "a2892acdad97488f54546f8a24987f3f5803bd5c6f75243019ed900d7f7aafb7"
+    },
+    {
+      "path": "sources/tools/blender/test_ci_contract.py",
+      "bytes": 3037,
+      "sha256": "1e1ed12f70f784ab7eae9093f40ba83e2d1ae554f7e4c9f2a651a2b9e2699902"
+    },
+    {
+      "path": "sources/tools/blender/run_ci.py",
+      "bytes": 11132,
+      "sha256": "bbb0412c3477db28c11e0438cd31ab59195b9dee0dfdb73f24752cae194b350e"
+    },
+    {
+      "path": "sources/tools/blender/run_without_maya.py",
+      "bytes": 2842,
+      "sha256": "e1da1475d9bd638049c397ae2ed2200dad5b07ffc536ebeb056569d8e56541bb"
+    },
+    {
+      "path": "sources/tools/blender/run_migration_test.py",
+      "bytes": 8505,
+      "sha256": "8a3b774781b8df2391a996d1fc4dad0644beea016ce3b46870ffdc6317456521"
+    },
+    {
+      "path": "sources/tools/blender/run_import_test.py",
+      "bytes": 5906,
+      "sha256": "bec1b25104e076d7627081b1e546fffde538bcaba188842655fb705c3180c9b9"
+    },
+    {
+      "path": "sources/tools/blender/verify_import.py",
+      "bytes": 18009,
+      "sha256": "a341ac822b2148787fcc76d70f5823aadb2ff2c33afa8a085c506fdda6d48dfd"
+    },
+    {
+      "path": "sources/tools/blender/CMakeLists.txt",
+      "bytes": 5807,
+      "sha256": "dff71a7e45f50334ab36b8b526833a511fe5dff358fb2b0190c45b776932512b"
+    },
+    {
+      "path": "sources/CMakeLists.txt",
+      "bytes": 10363,
+      "sha256": "503b2b7e1ae089762e0c331a32b4970f06a46f7a83bf95c800cd0f2d508fbf63"
+    },
+    {
+      "path": ".github/workflows/blender-ci.yml",
+      "bytes": 3187,
+      "sha256": "9afb39685b34597546e3b8b2fe9c28a17d6457143e91d8b93baf152913e6ec0c"
+    },
+    {
+      "path": ".github/actionlint.yaml",
+      "bytes": 45,
+      "sha256": "11a5a778a3d0a714b429e5d075492874abb06610069218ffa146e0edd1088d4a"
+    },
+    {
+      "path": "sources/tools/blender/CI.md",
+      "bytes": 8129,
+      "sha256": "8135d0bdfc798f91696f9acf8e3de7cb0dc516372c3ba97a4dc03983ab886a10"
+    },
+    {
+      "path": "sources/tools/blender/README.md",
+      "bytes": 10764,
+      "sha256": "84413564e4ee4a7d1c1f463a41fb883a2a52cc62c1e58f3e7437471115f2d39e"
+    },
+    {
+      "path": "blender_pipeline_plan.md",
+      "bytes": 50308,
+      "sha256": "0e0c10213edbab10548b4114a2ac9677eebb0783bd37111de77b51707a229aed"
+    },
+    {
+      "path": "sdk_migration_plan.md",
+      "bytes": 91066,
+      "sha256": "0ca96ded08a7d55c6180b4829da1d345f8df9a672f0a27834989993ee43dadc8"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk0/function-matrix.json",
+      "bytes": 733600,
+      "sha256": "45578300adcf3ab28df3e4d0f4a5ed6b4e196c569208ddfe542199e58f7b9acd"
+    }
+  ],
+  "remaining": [
+    "B8 artist and maintainer documentation",
+    "Remote GitHub execution after repository/runner setup",
+    "Diagnose intermittent worker exit if it recurs using preserved logs",
+    "Full SDK8 animation graph, retargeting and actor integration remain outside B7"
+  ]
+}

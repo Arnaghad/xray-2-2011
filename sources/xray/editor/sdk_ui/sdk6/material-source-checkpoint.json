@@ -1,0 +1,1019 @@
+{
+  "schemaVersion": 1,
+  "stage": "SDK-6",
+  "accepted": false,
+  "stageComplete": false,
+  "checkpoint": "static-material-source-authoring",
+  "checkpointAccepted": true,
+  "date": "2026-11-12",
+  "scope": "Original static g_stage_default material/base/instance sources: inheritance-preserving history, apply/reset/save/reopen, atomic dependent publication, live/fresh model updates, published-before-first-use dependencies, cold host restore and resource callback shutdown lifetime.",
+  "previousCheckpoints": [
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk6/texture-source-checkpoint.json",
+      "sha256": "e211eda43f0cbce2a6beb51dcb893716d857988fefff58a3c9872bbd352055b0"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk5/acceptance.json",
+      "sha256": "d24220b8836d6cc8520b52c9272433ea8ba26a6ef590101b177591e367687626"
+    }
+  ],
+  "checks": {
+    "ctestPerConfiguration": "7/7",
+    "managedGroupsPerConfiguration": 20,
+    "gpuWorkflows": 4,
+    "gpuCaptures": 99,
+    "materialExactMatchesPerConfiguration": 17,
+    "materialObservableChangesPerConfiguration": 7,
+    "restoredMaterialChangedPixels": 6026,
+    "validationErrors": 0,
+    "validationWarnings": 0,
+    "standaloneConcurrency": "APC admission closes, waits for an active callback, rejects later callbacks, and drains thrown exceptions before manager destruction."
+  },
+  "workflows": [
+    {
+      "path": "build/sdk6-material-20261112/quiescent/debug-material",
+      "configuration": "Debug",
+      "workflow": "material",
+      "captures": 27
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/release-material",
+      "configuration": "Release",
+      "workflow": "material",
+      "captures": 27
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/release-texture",
+      "configuration": "Release",
+      "workflow": "texture",
+      "captures": 27
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/debug-runtime-seeded",
+      "configuration": "Debug",
+      "workflow": "runtime-seeded",
+      "captures": 18
+    }
+  ],
+  "sourceSnapshots": [
+    {
+      "path": "sdk_migration_plan.md",
+      "snapshot": "build/sdk6-material-20261112/checkpoint/source/sdk_migration_plan.md",
+      "sha256": "d8d3f1611d4e0eac0d8edcd323b2062aab90085ea022b2fd1b04aa3dd01ec905"
+    },
+    {
+      "path": "sources/tools/sdk/check-sdk6-material-checkpoint.py",
+      "snapshot": "build/sdk6-material-20261112/checkpoint/source/sources/tools/sdk/check-sdk6-material-checkpoint.py",
+      "sha256": "a1d9a99c060d84d7c165c84c4b0af6b2b64c47c367c254d37d09bba63b59b669"
+    },
+    {
+      "path": "sources/tools/sdk/collect-sdk6-material-checkpoint.py",
+      "snapshot": "build/sdk6-material-20261112/checkpoint/source/sources/tools/sdk/collect-sdk6-material-checkpoint.py",
+      "sha256": "bce75dc8181fca56ab5147eda28eeb515e67fc65266ce87c20e9ae9b24532fb6"
+    },
+    {
+      "path": "sources/tools/sdk/prepare-sdk6-material-fixtures.py",
+      "snapshot": "build/sdk6-material-20261112/checkpoint/source/sources/tools/sdk/prepare-sdk6-material-fixtures.py",
+      "sha256": "84ef2bc1957c41a1dfd2e5c7ed4283ac309c83b41d3ddf541600a6406051fcb8"
+    },
+    {
+      "path": "sources/tools/sdk/test-sdk-property.ps1",
+      "snapshot": "build/sdk6-material-20261112/checkpoint/source/sources/tools/sdk/test-sdk-property.ps1",
+      "sha256": "c052d160105db1b1076a6f816010dc64bde1c472e1f33b9b28c3624421824607"
+    },
+    {
+      "path": "sources/tools/sdk/verify-sdk-material.py",
+      "snapshot": "build/sdk6-material-20261112/checkpoint/source/sources/tools/sdk/verify-sdk-material.py",
+      "sha256": "c2fb52e7233fd14fe471efdff1263c2c51adc20fbc924a1deb6a0abd7c9c0549"
+    },
+    {
+      "path": "sources/tools/tests/apc_resource_callbacks_contract.cpp",
+      "snapshot": "build/sdk6-material-20261112/checkpoint/source/sources/tools/tests/apc_resource_callbacks_contract.cpp",
+      "sha256": "c5c60f004ffb50b0e26909fc828cebbac7a2a7686abf1a3c4b8c89c4279b5790"
+    },
+    {
+      "path": "sources/xray/editor/base/CMakeLists.txt",
+      "snapshot": "build/sdk6-material-20261112/checkpoint/source/sources/xray/editor/base/CMakeLists.txt",
+      "sha256": "941a355daa88ef2a4f03443bb9b35ba2964b748af4ce3d8ae352cdd3dc5e4054"
+    },
+    {
+      "path": "sources/xray/editor/base/EditorHost.csproj.in",
+      "snapshot": "build/sdk6-material-20261112/checkpoint/source/sources/xray/editor/base/EditorHost.csproj.in",
+      "sha256": "a26e08169a0546f96a211fb6b369fb109b09fdb9787a9642562ea1048fc3abb8"
+    },
+    {
+      "path": "sources/xray/editor/base/EditorWorld.cs",
+      "snapshot": "build/sdk6-material-20261112/checkpoint/source/sources/xray/editor/base/EditorWorld.cs",
+      "sha256": "9a9ba77fabb6d1be3d1554e879fe889ccc2b34b204eca94f832b91685f5934f3"
+    },
+    {
+      "path": "sources/xray/editor/base/EditorWorld.MaterialChecks.cs",
+      "snapshot": "build/sdk6-material-20261112/checkpoint/source/sources/xray/editor/base/EditorWorld.MaterialChecks.cs",
+      "sha256": "529fa54ca8c4c90ae9feb2d8f8b8d53184efe6be029db1b66fce4412fadbce22"
+    },
+    {
+      "path": "sources/xray/editor/base/EditorWorld.Sdk.cs",
+      "snapshot": "build/sdk6-material-20261112/checkpoint/source/sources/xray/editor/base/EditorWorld.Sdk.cs",
+      "sha256": "6fd7f9a36de399a22b6f85a1b747f503200c1a0bfe54ff8ddbd37c0eae2bbccf"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkMaterialDocument.cs",
+      "snapshot": "build/sdk6-material-20261112/checkpoint/source/sources/xray/editor/base/SdkMaterialDocument.cs",
+      "sha256": "8843579102cfa6d8a3b308506c4f48d6e791f2142e51708a27c6c889f61b205b"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkMaterialEditor.cs",
+      "snapshot": "build/sdk6-material-20261112/checkpoint/source/sources/xray/editor/base/SdkMaterialEditor.cs",
+      "sha256": "5ef3560f2736e2858e3693742df2fe052b12bb7e3371472475f020f04cd128de"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkMaterialGraph.cs",
+      "snapshot": "build/sdk6-material-20261112/checkpoint/source/sources/xray/editor/base/SdkMaterialGraph.cs",
+      "sha256": "d05b9a47d1b021333283447a450435d74a49c3975391754c1ba222615e93ec2b"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkMaterialSources.cs",
+      "snapshot": "build/sdk6-material-20261112/checkpoint/source/sources/xray/editor/base/SdkMaterialSources.cs",
+      "sha256": "d5035ef5a4bd1f54c1ae10e2d161bb2d929460dba2bd9c394a65d05802e2499c"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkResourceBrowser.cs",
+      "snapshot": "build/sdk6-material-20261112/checkpoint/source/sources/xray/editor/base/SdkResourceBrowser.cs",
+      "sha256": "793bfaf7b4956aea1cb593684ee432ed2dd4936116b7ce83941ee9e251297655"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkResourcePipeline.cs",
+      "snapshot": "build/sdk6-material-20261112/checkpoint/source/sources/xray/editor/base/SdkResourcePipeline.cs",
+      "sha256": "f1c1a5275ea2aded17f790472cf2edee956edc4912e1af8e83ae0c4beaad689a"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkRuntime.cs",
+      "snapshot": "build/sdk6-material-20261112/checkpoint/source/sources/xray/editor/base/SdkRuntime.cs",
+      "sha256": "b86f6a8f6c3bc2b4619d31ef04e0927002b5dd7b4853b8c88a4f4cd8c3a0feb9"
+    },
+    {
+      "path": "sources/xray/editor/base/WindowIde.cs",
+      "snapshot": "build/sdk6-material-20261112/checkpoint/source/sources/xray/editor/base/WindowIde.cs",
+      "sha256": "afbd5aaebfd3bc6eede09334fdc926056bcb04c83c82aa85aa68e5c93430b848"
+    },
+    {
+      "path": "sources/xray/editor/base/WindowIde.Editing.cs",
+      "snapshot": "build/sdk6-material-20261112/checkpoint/source/sources/xray/editor/base/WindowIde.Editing.cs",
+      "sha256": "ce0c5aafaffc12d4b9315c9df7e5eecc7953651e4d3897583a13b7673a8ddcb2"
+    },
+    {
+      "path": "sources/xray/editor/base/WindowIde.Materials.cs",
+      "snapshot": "build/sdk6-material-20261112/checkpoint/source/sources/xray/editor/base/WindowIde.Materials.cs",
+      "sha256": "6e14c128b346310517723c82355c25972906fae1fd01eef0654cb4d5dbe4ab53"
+    },
+    {
+      "path": "sources/xray/editor/base/WindowIde.Projects.cs",
+      "snapshot": "build/sdk6-material-20261112/checkpoint/source/sources/xray/editor/base/WindowIde.Projects.cs",
+      "sha256": "a368df8ed8073752b935ef3b0f471e5b831f6921817a4ad78f11679649113839"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/Program.cs",
+      "snapshot": "build/sdk6-material-20261112/checkpoint/source/sources/xray/editor/sdk_ui/Program.cs",
+      "sha256": "5f4a7aa88db9740709a525d547c81c9e6072761b4b65254d88067af6707933db"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk0/function-matrix.json",
+      "snapshot": "build/sdk6-material-20261112/checkpoint/source/sources/xray/editor/sdk_ui/sdk0/function-matrix.json",
+      "sha256": "f942063bb5d93202735a5fb6e8bfdccd11ecd29e139fe411569b2e00af879e57"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk6/material-source.md",
+      "snapshot": "build/sdk6-material-20261112/checkpoint/source/sources/xray/editor/sdk_ui/sdk6/material-source.md",
+      "sha256": "be79180a4dfaf87c223fa3f1772db180e0e6c1bf5c4afdf0b6728024beee6673"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk6/README.md",
+      "snapshot": "build/sdk6-material-20261112/checkpoint/source/sources/xray/editor/sdk_ui/sdk6/README.md",
+      "sha256": "d1dc87b9fc9bc9e4a3c4acdb6a20ff6044b429d2a8563d8c0731b06f62e980d5"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/SdkContractChecks.cs",
+      "snapshot": "build/sdk6-material-20261112/checkpoint/source/sources/xray/editor/sdk_ui/SdkContractChecks.cs",
+      "sha256": "044342d1acaef32f8151c58e2c606c8c1381985217d6f95d028b91b300f4eef3"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/SdkMaterialChecks.cs",
+      "snapshot": "build/sdk6-material-20261112/checkpoint/source/sources/xray/editor/sdk_ui/SdkMaterialChecks.cs",
+      "sha256": "19d151313808906ead9c4259aaf529ca20aee43038b4d5100de99ff89e0a514a"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/SDKUI.Compatibility.csproj",
+      "snapshot": "build/sdk6-material-20261112/checkpoint/source/sources/xray/editor/sdk_ui/SDKUI.Compatibility.csproj",
+      "sha256": "203ec763329c873c6e6b89452f9d48d573743e49e0fd034e94d7667e761280dc"
+    },
+    {
+      "path": "sources/xray/editor/world/sdk_scene_bridge.h",
+      "snapshot": "build/sdk6-material-20261112/checkpoint/source/sources/xray/editor/world/sdk_scene_bridge.h",
+      "sha256": "dd2c2de2263f8349d71ea4ed369092d189c473474be87182e6300383483e3263"
+    },
+    {
+      "path": "sources/xray/editor/world/sources/editor_entry_point.cpp",
+      "snapshot": "build/sdk6-material-20261112/checkpoint/source/sources/xray/editor/world/sources/editor_entry_point.cpp",
+      "sha256": "ce1f3301ee3c93e0d2b566b5a5bb982d0a86c8f45564682785ab96d4475d67e6"
+    },
+    {
+      "path": "sources/xray/editor/world/sources/sdk_resources.h",
+      "snapshot": "build/sdk6-material-20261112/checkpoint/source/sources/xray/editor/world/sources/sdk_resources.h",
+      "sha256": "e92520312be0bb19865143624475523e84a25683d41b51b9fa04132065dfb7d3"
+    },
+    {
+      "path": "sources/xray/editor/world/sources/sdk_scene.h",
+      "snapshot": "build/sdk6-material-20261112/checkpoint/source/sources/xray/editor/world/sources/sdk_scene.h",
+      "sha256": "31e2889fb7e11a3c510b381b77bd144e233c31d05f1d219e3db5631111110ddc"
+    },
+    {
+      "path": "sources/xray/engine/CMakeLists.txt",
+      "snapshot": "build/sdk6-material-20261112/checkpoint/source/sources/xray/engine/CMakeLists.txt",
+      "sha256": "21448442a1da8a51574bb2c6c9a1f3b732ec640aac4fa9a41700ff781de8c72a"
+    },
+    {
+      "path": "sources/xray/engine/sources/apc.cpp",
+      "snapshot": "build/sdk6-material-20261112/checkpoint/source/sources/xray/engine/sources/apc.cpp",
+      "sha256": "1c70882dac33140e6a56b1ba44bb5a9ad7cae98b3a876b60e39ff84c011dbc99"
+    },
+    {
+      "path": "sources/xray/engine/sources/apc.h",
+      "snapshot": "build/sdk6-material-20261112/checkpoint/source/sources/xray/engine/sources/apc.h",
+      "sha256": "ca78d40b71f4ed8d6ce31143086e42d6af695f24e05205c26126975325784877"
+    },
+    {
+      "path": "sources/xray/engine/sources/apc_resource_callbacks.h",
+      "snapshot": "build/sdk6-material-20261112/checkpoint/source/sources/xray/engine/sources/apc_resource_callbacks.h",
+      "sha256": "63888fdde2ec75664ff3f746a6f84920c56184a10b659425656a8afe4d38e3ff"
+    },
+    {
+      "path": "sources/xray/engine/sources/engine_world_resources.cpp",
+      "snapshot": "build/sdk6-material-20261112/checkpoint/source/sources/xray/engine/sources/engine_world_resources.cpp",
+      "sha256": "f61552ce974b335a252b286d16f8ac1f35fa4278846a30b1d956f1722a91469f"
+    },
+    {
+      "path": "sources/xray/render/vulkan/material_resources.h",
+      "snapshot": "build/sdk6-material-20261112/checkpoint/source/sources/xray/render/vulkan/material_resources.h",
+      "sha256": "a1a592ad0e39fd1098c73f03b6474d7d82e89baa95ec3d5405d1c1e77863e5ce"
+    },
+    {
+      "path": "sources/xray/render/vulkan/scene_resources.h",
+      "snapshot": "build/sdk6-material-20261112/checkpoint/source/sources/xray/render/vulkan/scene_resources.h",
+      "sha256": "ecad272159261a59754d9f7b2869e9beb4c4d4aabe0322d16e61a382e96f6b09"
+    },
+    {
+      "path": "sources/xray/render/vulkan/sources/vulkan_material_assets.cpp",
+      "snapshot": "build/sdk6-material-20261112/checkpoint/source/sources/xray/render/vulkan/sources/vulkan_material_assets.cpp",
+      "sha256": "8a71635a1e238f2be8ced2ed79203cd003e12e81a0298cd2a2c5892b17b9ccf1"
+    },
+    {
+      "path": "sources/xray/render/vulkan/sources/vulkan_material_cook.cpp",
+      "snapshot": "build/sdk6-material-20261112/checkpoint/source/sources/xray/render/vulkan/sources/vulkan_material_cook.cpp",
+      "sha256": "911711aef5e8f78e6446e0278b75276cdbd42decb6a54a09b9ce247c39c2f386"
+    },
+    {
+      "path": "sources/xray/render/vulkan/sources/vulkan_material_cook.h",
+      "snapshot": "build/sdk6-material-20261112/checkpoint/source/sources/xray/render/vulkan/sources/vulkan_material_cook.h",
+      "sha256": "81b4ff885de92cb773bd02244254e6062efdfb6acea3e7d728efd3afcbd68018"
+    },
+    {
+      "path": "sources/xray/render/vulkan/sources/vulkan_scene_resources.cpp",
+      "snapshot": "build/sdk6-material-20261112/checkpoint/source/sources/xray/render/vulkan/sources/vulkan_scene_resources.cpp",
+      "sha256": "c5ae68afbee8eccd76e3fc1c28d3ab58153219c19cd0951ac207eae5ddb9d3d2"
+    },
+    {
+      "path": "sources/xray/render/vulkan/sources/vulkan_scene_runtime.cpp",
+      "snapshot": "build/sdk6-material-20261112/checkpoint/source/sources/xray/render/vulkan/sources/vulkan_scene_runtime.cpp",
+      "sha256": "3e39e79d180179f2c5c2207c01f316c5607ab4c30a3fac9b15a33c586201f7f9"
+    }
+  ],
+  "binarySnapshots": [
+    {
+      "path": "build/sdk-native-20261108-debug/binaries/stalker2.exe",
+      "snapshot": "build/sdk6-material-20261112/checkpoint/binaries/debug/stalker2.exe",
+      "sha256": "6fe4cdcf30effc5220f0f7543c005d0110a9afb53a82308b95b8b3c9b5c4b3e4"
+    },
+    {
+      "path": "build/sdk-native-20261108-debug/binaries/xray_editor_world.dll",
+      "snapshot": "build/sdk6-material-20261112/checkpoint/binaries/debug/xray_editor_world.dll",
+      "sha256": "8bc8a27d688145efb59d24fd880d09596d769b0d79a81c231239198af4a8fa82"
+    },
+    {
+      "path": "build/sdk-native-20261108-debug/binaries/xray.editor.base.dll",
+      "snapshot": "build/sdk6-material-20261112/checkpoint/binaries/debug/xray.editor.base.dll",
+      "sha256": "d81b5100f5e91ab7a40e992094178c05d72fb0b6d6c5e06ecc6093782e4a2828"
+    },
+    {
+      "path": "build/sdk-native-20261108-debug/binaries/xray.editor.base.runtimeconfig.json",
+      "snapshot": "build/sdk6-material-20261112/checkpoint/binaries/debug/xray.editor.base.runtimeconfig.json",
+      "sha256": "3b9c2fd128f616507f6c26ee4cef4e7bfc5379eefad991425353441bffd3eaf6"
+    },
+    {
+      "path": "build/sdk-native-20261108-debug/binaries/xray.editor.base.deps.json",
+      "snapshot": "build/sdk6-material-20261112/checkpoint/binaries/debug/xray.editor.base.deps.json",
+      "sha256": "64147c751feb591ad710c0a7d25e195a5b2e8eb95b84207d657c02a3b4680776"
+    },
+    {
+      "path": "build/sdk-native-20261108-debug/binaries/libxray_render_vulkan.dll",
+      "snapshot": "build/sdk6-material-20261112/checkpoint/binaries/debug/libxray_render_vulkan.dll",
+      "sha256": "ac05385dddd5e41f9f8b4e66b8edf5478c07d33772d7b34daef23200f46d2589"
+    },
+    {
+      "path": "build/sdk-native-20261108-debug/binaries/libxray_engine.dll",
+      "snapshot": "build/sdk6-material-20261112/checkpoint/binaries/debug/libxray_engine.dll",
+      "sha256": "bd5c4f11823522e65b53a92cb11ada0d243deda346fe9b4ef229c2e97a3253f6"
+    },
+    {
+      "path": "build/sdk-native-20261108-debug/binaries/libxray_core.dll",
+      "snapshot": "build/sdk6-material-20261112/checkpoint/binaries/debug/libxray_core.dll",
+      "sha256": "9107b667787b27cf50fc6a19b1427e380bf5b7b87bec21290d02b019a9a1a0e4"
+    },
+    {
+      "path": "build/sdk-native-20261108-debug/binaries/libxray_editor_base.dll",
+      "snapshot": "build/sdk6-material-20261112/checkpoint/binaries/debug/libxray_editor_base.dll",
+      "sha256": "7213a47102534013520ddba60ff947daa6215f81323680c752810d66cbf2b0a6"
+    },
+    {
+      "path": "build/sdk-native-20261108-debug/binaries/xray_apc_resource_callbacks_contract.exe",
+      "snapshot": "build/sdk6-material-20261112/checkpoint/binaries/debug/xray_apc_resource_callbacks_contract.exe",
+      "sha256": "340351bc128dbe79ee4cb8335cb6235bb56055a07774d690813b487ed7ad2b16"
+    },
+    {
+      "path": "build/sdk-native-20261108-debug/binaries/wpf_controls.dll",
+      "snapshot": "build/sdk6-material-20261112/checkpoint/binaries/debug/wpf_controls.dll",
+      "sha256": "a0d39cfc208d208ba4593fa7aff9dd3eaad583a266f25d1f6965161800071f31"
+    },
+    {
+      "path": "build/sdk-native-20261108-debug/sdk-ui/artifacts/bin/SDKUI.Compatibility/debug/SDKUI.Compatibility.dll",
+      "snapshot": "build/sdk6-material-20261112/checkpoint/binaries/debug/SDKUI.Compatibility.dll",
+      "sha256": "5653275a36561e66a29ec51cb580614744d4f15dd05b48b2fb721917e826c371"
+    },
+    {
+      "path": "build/sdk-native-20261108-release/binaries/stalker2.exe",
+      "snapshot": "build/sdk6-material-20261112/checkpoint/binaries/release/stalker2.exe",
+      "sha256": "895906415eb2d41a363fdc1be9a83d57c216cfb35a3287c25782d567099512ab"
+    },
+    {
+      "path": "build/sdk-native-20261108-release/binaries/xray_editor_world.dll",
+      "snapshot": "build/sdk6-material-20261112/checkpoint/binaries/release/xray_editor_world.dll",
+      "sha256": "3307c0227db8bf52a668233cce856aeca65a78deb27c1d8a777ef4b89f12e36a"
+    },
+    {
+      "path": "build/sdk-native-20261108-release/binaries/xray.editor.base.dll",
+      "snapshot": "build/sdk6-material-20261112/checkpoint/binaries/release/xray.editor.base.dll",
+      "sha256": "125206e54e70ad55194f907785992987b32dab178311bf43280e186b1e109016"
+    },
+    {
+      "path": "build/sdk-native-20261108-release/binaries/xray.editor.base.runtimeconfig.json",
+      "snapshot": "build/sdk6-material-20261112/checkpoint/binaries/release/xray.editor.base.runtimeconfig.json",
+      "sha256": "00fe7f505ff03644e06136f0d9a79dfa8fdb0d6c86a3aa6468ba6573e103e67b"
+    },
+    {
+      "path": "build/sdk-native-20261108-release/binaries/xray.editor.base.deps.json",
+      "snapshot": "build/sdk6-material-20261112/checkpoint/binaries/release/xray.editor.base.deps.json",
+      "sha256": "64147c751feb591ad710c0a7d25e195a5b2e8eb95b84207d657c02a3b4680776"
+    },
+    {
+      "path": "build/sdk-native-20261108-release/binaries/libxray_render_vulkan.dll",
+      "snapshot": "build/sdk6-material-20261112/checkpoint/binaries/release/libxray_render_vulkan.dll",
+      "sha256": "d9ccebe5d9fa529a3aeccd46d84e454fd4c8f9fb5fe038d35b92f3334a9949dc"
+    },
+    {
+      "path": "build/sdk-native-20261108-release/binaries/libxray_engine.dll",
+      "snapshot": "build/sdk6-material-20261112/checkpoint/binaries/release/libxray_engine.dll",
+      "sha256": "938a2ea3f90461fbddc7188f23ce8ff87ef995b1bb1824256f4dd69b9110665d"
+    },
+    {
+      "path": "build/sdk-native-20261108-release/binaries/libxray_core.dll",
+      "snapshot": "build/sdk6-material-20261112/checkpoint/binaries/release/libxray_core.dll",
+      "sha256": "c3f877b23a6e1accc1349898f4e7f5e83667a457f4c7987152ba62c9784d6165"
+    },
+    {
+      "path": "build/sdk-native-20261108-release/binaries/libxray_editor_base.dll",
+      "snapshot": "build/sdk6-material-20261112/checkpoint/binaries/release/libxray_editor_base.dll",
+      "sha256": "c0c81d2c1d0818fcb53f6786840f310743374505a0ad894e9714099f8f644dd8"
+    },
+    {
+      "path": "build/sdk-native-20261108-release/binaries/xray_apc_resource_callbacks_contract.exe",
+      "snapshot": "build/sdk6-material-20261112/checkpoint/binaries/release/xray_apc_resource_callbacks_contract.exe",
+      "sha256": "ffa4065dbba917e18014cb196f8df9a6c27593e377f2937181ec9e4ea2c36953"
+    },
+    {
+      "path": "build/sdk-native-20261108-release/binaries/wpf_controls.dll",
+      "snapshot": "build/sdk6-material-20261112/checkpoint/binaries/release/wpf_controls.dll",
+      "sha256": "d0fc059c7dcbb6c916480c13004f99a95e532fb71274b8364a3d25abaab2d7c9"
+    },
+    {
+      "path": "build/sdk-native-20261108-release/sdk-ui/artifacts/bin/SDKUI.Compatibility/release/SDKUI.Compatibility.dll",
+      "snapshot": "build/sdk6-material-20261112/checkpoint/binaries/release/SDKUI.Compatibility.dll",
+      "sha256": "e094aa728ab201704e3aec16c15a2442e6c55043f8c4c97525a1a864c2ef956a"
+    }
+  ],
+  "evidence": [
+    {
+      "path": "build/sdk6-material-20261112/checkpoint/managed-debug/result.json",
+      "sha256": "1deb90c9d4d57712495bbdee0d306ff198cf991c701e8c77f1c0416bc6d52290"
+    },
+    {
+      "path": "build/sdk6-material-20261112/checkpoint/managed-debug/curves.png",
+      "sha256": "a92ae9e3f9687e8e8c5d129972d62c6ca1e87580e5a3de1ac44929b6c84f2e9b"
+    },
+    {
+      "path": "build/sdk6-material-20261112/checkpoint/managed-debug/graph.png",
+      "sha256": "71c0caccb153849dff6168ee46ea2867ae1a59b72d3c1b241af21fcab622109a"
+    },
+    {
+      "path": "build/sdk6-material-20261112/checkpoint/managed-debug/ide-workspace.png",
+      "sha256": "b07630dd4dc92f8f11729441af98a5e3b8c0766fcfeedbe7eb9ee7c0d9869338"
+    },
+    {
+      "path": "build/sdk6-material-20261112/checkpoint/managed-debug/numeric-editor.png",
+      "sha256": "fc2d31061b47367545a6afe2e9d63617ca14ea2585b5fe9e7d7daf1d3975d7f0"
+    },
+    {
+      "path": "build/sdk6-material-20261112/checkpoint/managed-debug/properties-144dpi.png",
+      "sha256": "9e7d407ad5b1c2244e7cc961d218382027d2021785ddfffb6491057c35fcdff8"
+    },
+    {
+      "path": "build/sdk6-material-20261112/checkpoint/managed-debug/properties.png",
+      "sha256": "60df378a6e35bfa631d8e1c9d4f6ef7b15642ccaffdb87f167e16c9336a48503"
+    },
+    {
+      "path": "build/sdk6-material-20261112/checkpoint/checks/ctest-quiescent-debug.log",
+      "sha256": "f6b4ba020fa01002e414f19fd13e618a7694ddcfe3fbaf8298f3e4cece90db6b"
+    },
+    {
+      "path": "build/sdk6-material-20261112/checkpoint/checks/build-quiescent-debug.log",
+      "sha256": "af6dc469011416511167deb8d3fddda5c8ccfe8f3903ee0d596c6bf404ebe0b5"
+    },
+    {
+      "path": "build/sdk6-material-20261112/checkpoint/managed-release/result.json",
+      "sha256": "1deb90c9d4d57712495bbdee0d306ff198cf991c701e8c77f1c0416bc6d52290"
+    },
+    {
+      "path": "build/sdk6-material-20261112/checkpoint/managed-release/curves.png",
+      "sha256": "a92ae9e3f9687e8e8c5d129972d62c6ca1e87580e5a3de1ac44929b6c84f2e9b"
+    },
+    {
+      "path": "build/sdk6-material-20261112/checkpoint/managed-release/graph.png",
+      "sha256": "71c0caccb153849dff6168ee46ea2867ae1a59b72d3c1b241af21fcab622109a"
+    },
+    {
+      "path": "build/sdk6-material-20261112/checkpoint/managed-release/ide-workspace.png",
+      "sha256": "b07630dd4dc92f8f11729441af98a5e3b8c0766fcfeedbe7eb9ee7c0d9869338"
+    },
+    {
+      "path": "build/sdk6-material-20261112/checkpoint/managed-release/numeric-editor.png",
+      "sha256": "fc2d31061b47367545a6afe2e9d63617ca14ea2585b5fe9e7d7daf1d3975d7f0"
+    },
+    {
+      "path": "build/sdk6-material-20261112/checkpoint/managed-release/properties-144dpi.png",
+      "sha256": "9e7d407ad5b1c2244e7cc961d218382027d2021785ddfffb6491057c35fcdff8"
+    },
+    {
+      "path": "build/sdk6-material-20261112/checkpoint/managed-release/properties.png",
+      "sha256": "60df378a6e35bfa631d8e1c9d4f6ef7b15642ccaffdb87f167e16c9336a48503"
+    },
+    {
+      "path": "build/sdk6-material-20261112/checkpoint/checks/ctest-quiescent-release.log",
+      "sha256": "80f1dac3d7c944c47975983d9102f768e988580b3729a5118b9cd010a503a414"
+    },
+    {
+      "path": "build/sdk6-material-20261112/checkpoint/checks/build-quiescent-release.log",
+      "sha256": "f2d408ad7ec67cde04dcd1e05437d1e78c6d7dd542ff566e01a3560b5de16e98"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/debug-material/captures/sdk_layout_edited.bmp",
+      "sha256": "b6b5ea6fb1083cdee3337ac8c511a66085b339141373b895130610e5d9b2108f"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/debug-material/captures/sdk_layout_edited_asset.bmp",
+      "sha256": "fb5e178f829b61771e617b38742743a69c47b782a31218d49982fc6c2d2f738e"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/debug-material/captures/sdk_layout_edited_camera.bmp",
+      "sha256": "adfa574a701a0f4ec378de38eccb879e95df199ec80429328c1a8f41418249c5"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/debug-material/captures/sdk_layout_redo.bmp",
+      "sha256": "0850c29d37480f3450c4a8f8be9110459eb4bcdf7d0d44a148bc5b1d00d28bb4"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/debug-material/captures/sdk_layout_redo_asset.bmp",
+      "sha256": "78c2f7f3555386cfb90784198d030c390e331efcb2fc8c6d4fe620fdbae34c92"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/debug-material/captures/sdk_layout_redo_camera.bmp",
+      "sha256": "a1ac564f4e73d4e78eb0ccc4cd5c88722f1d3f36d6456f6b0a66d580f2873eb3"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/debug-material/captures/sdk_layout_restored.bmp",
+      "sha256": "b6b5ea6fb1083cdee3337ac8c511a66085b339141373b895130610e5d9b2108f"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/debug-material/captures/sdk_layout_restored_asset.bmp",
+      "sha256": "fb5e178f829b61771e617b38742743a69c47b782a31218d49982fc6c2d2f738e"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/debug-material/captures/sdk_layout_restored_camera.bmp",
+      "sha256": "345fa65c9dc2f016b11631afb1822018b16c73acb6227ac02515b729bab57de4"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/debug-material/captures/sdk_layout_undo.bmp",
+      "sha256": "0850c29d37480f3450c4a8f8be9110459eb4bcdf7d0d44a148bc5b1d00d28bb4"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/debug-material/captures/sdk_layout_undo_asset.bmp",
+      "sha256": "78c2f7f3555386cfb90784198d030c390e331efcb2fc8c6d4fe620fdbae34c92"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/debug-material/captures/sdk_layout_undo_camera.bmp",
+      "sha256": "a1ac564f4e73d4e78eb0ccc4cd5c88722f1d3f36d6456f6b0a66d580f2873eb3"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/debug-material/captures/sdk_property_baseline.bmp",
+      "sha256": "b6b5ea6fb1083cdee3337ac8c511a66085b339141373b895130610e5d9b2108f"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/debug-material/captures/sdk_property_baseline_asset.bmp",
+      "sha256": "fb5e178f829b61771e617b38742743a69c47b782a31218d49982fc6c2d2f738e"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/debug-material/captures/sdk_property_baseline_camera.bmp",
+      "sha256": "345fa65c9dc2f016b11631afb1822018b16c73acb6227ac02515b729bab57de4"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/debug-material/captures/sdk_property_edited.bmp",
+      "sha256": "b6b5ea6fb1083cdee3337ac8c511a66085b339141373b895130610e5d9b2108f"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/debug-material/captures/sdk_property_edited_asset.bmp",
+      "sha256": "fb5e178f829b61771e617b38742743a69c47b782a31218d49982fc6c2d2f738e"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/debug-material/captures/sdk_property_edited_camera.bmp",
+      "sha256": "59d64166cce53c693f9d930a7c45f784b11abc343f5a626c06577f0d968af49d"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/debug-material/captures/sdk_property_redo.bmp",
+      "sha256": "d9f10e15840e294fd78b67513d7eb672c394fdeb03bd738f46b5cb3092b541ee"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/debug-material/captures/sdk_property_redo_asset.bmp",
+      "sha256": "5a845a776c30a333697de66ea6eb5126692028d204962436181ad2fd12eb4f25"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/debug-material/captures/sdk_property_redo_camera.bmp",
+      "sha256": "345fa65c9dc2f016b11631afb1822018b16c73acb6227ac02515b729bab57de4"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/debug-material/captures/sdk_property_restored.bmp",
+      "sha256": "b6b5ea6fb1083cdee3337ac8c511a66085b339141373b895130610e5d9b2108f"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/debug-material/captures/sdk_property_restored_asset.bmp",
+      "sha256": "fb5e178f829b61771e617b38742743a69c47b782a31218d49982fc6c2d2f738e"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/debug-material/captures/sdk_property_restored_camera.bmp",
+      "sha256": "345fa65c9dc2f016b11631afb1822018b16c73acb6227ac02515b729bab57de4"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/debug-material/captures/sdk_property_undo.bmp",
+      "sha256": "d9f10e15840e294fd78b67513d7eb672c394fdeb03bd738f46b5cb3092b541ee"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/debug-material/captures/sdk_property_undo_asset.bmp",
+      "sha256": "5a845a776c30a333697de66ea6eb5126692028d204962436181ad2fd12eb4f25"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/debug-material/captures/sdk_property_undo_camera.bmp",
+      "sha256": "59d64166cce53c693f9d930a7c45f784b11abc343f5a626c06577f0d968af49d"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/debug-material/capture-result.json",
+      "sha256": "4cc144a39911fdef43ca133f4a3b64ed8d24699a2d34c2de31c35cbcdff156cd"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/debug-material/launch.json",
+      "sha256": "37bce28e96f7a44257e1d0ca50625a5282c4e543882ea3432c092ea2fa2d18c7"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/debug-material/runtime-result.json",
+      "sha256": "58f828ca4d234cdd64add1269018d4bc25802f5b94e82fbd1de5971f82e23c5a"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/debug-material/stderr.log",
+      "sha256": "67998bdfd0d6d5ec62351fd1cc74dc81b0ff63b5df1061ba4d5ba88f591abd09"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/debug-material/stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/release-material/captures/sdk_layout_edited.bmp",
+      "sha256": "b6b5ea6fb1083cdee3337ac8c511a66085b339141373b895130610e5d9b2108f"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/release-material/captures/sdk_layout_edited_asset.bmp",
+      "sha256": "fb5e178f829b61771e617b38742743a69c47b782a31218d49982fc6c2d2f738e"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/release-material/captures/sdk_layout_edited_camera.bmp",
+      "sha256": "adfa574a701a0f4ec378de38eccb879e95df199ec80429328c1a8f41418249c5"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/release-material/captures/sdk_layout_redo.bmp",
+      "sha256": "0850c29d37480f3450c4a8f8be9110459eb4bcdf7d0d44a148bc5b1d00d28bb4"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/release-material/captures/sdk_layout_redo_asset.bmp",
+      "sha256": "78c2f7f3555386cfb90784198d030c390e331efcb2fc8c6d4fe620fdbae34c92"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/release-material/captures/sdk_layout_redo_camera.bmp",
+      "sha256": "a1ac564f4e73d4e78eb0ccc4cd5c88722f1d3f36d6456f6b0a66d580f2873eb3"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/release-material/captures/sdk_layout_restored.bmp",
+      "sha256": "b6b5ea6fb1083cdee3337ac8c511a66085b339141373b895130610e5d9b2108f"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/release-material/captures/sdk_layout_restored_asset.bmp",
+      "sha256": "fb5e178f829b61771e617b38742743a69c47b782a31218d49982fc6c2d2f738e"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/release-material/captures/sdk_layout_restored_camera.bmp",
+      "sha256": "345fa65c9dc2f016b11631afb1822018b16c73acb6227ac02515b729bab57de4"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/release-material/captures/sdk_layout_undo.bmp",
+      "sha256": "0850c29d37480f3450c4a8f8be9110459eb4bcdf7d0d44a148bc5b1d00d28bb4"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/release-material/captures/sdk_layout_undo_asset.bmp",
+      "sha256": "78c2f7f3555386cfb90784198d030c390e331efcb2fc8c6d4fe620fdbae34c92"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/release-material/captures/sdk_layout_undo_camera.bmp",
+      "sha256": "a1ac564f4e73d4e78eb0ccc4cd5c88722f1d3f36d6456f6b0a66d580f2873eb3"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/release-material/captures/sdk_property_baseline.bmp",
+      "sha256": "b6b5ea6fb1083cdee3337ac8c511a66085b339141373b895130610e5d9b2108f"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/release-material/captures/sdk_property_baseline_asset.bmp",
+      "sha256": "fb5e178f829b61771e617b38742743a69c47b782a31218d49982fc6c2d2f738e"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/release-material/captures/sdk_property_baseline_camera.bmp",
+      "sha256": "345fa65c9dc2f016b11631afb1822018b16c73acb6227ac02515b729bab57de4"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/release-material/captures/sdk_property_edited.bmp",
+      "sha256": "b6b5ea6fb1083cdee3337ac8c511a66085b339141373b895130610e5d9b2108f"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/release-material/captures/sdk_property_edited_asset.bmp",
+      "sha256": "fb5e178f829b61771e617b38742743a69c47b782a31218d49982fc6c2d2f738e"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/release-material/captures/sdk_property_edited_camera.bmp",
+      "sha256": "59d64166cce53c693f9d930a7c45f784b11abc343f5a626c06577f0d968af49d"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/release-material/captures/sdk_property_redo.bmp",
+      "sha256": "d9f10e15840e294fd78b67513d7eb672c394fdeb03bd738f46b5cb3092b541ee"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/release-material/captures/sdk_property_redo_asset.bmp",
+      "sha256": "5a845a776c30a333697de66ea6eb5126692028d204962436181ad2fd12eb4f25"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/release-material/captures/sdk_property_redo_camera.bmp",
+      "sha256": "345fa65c9dc2f016b11631afb1822018b16c73acb6227ac02515b729bab57de4"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/release-material/captures/sdk_property_restored.bmp",
+      "sha256": "b6b5ea6fb1083cdee3337ac8c511a66085b339141373b895130610e5d9b2108f"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/release-material/captures/sdk_property_restored_asset.bmp",
+      "sha256": "fb5e178f829b61771e617b38742743a69c47b782a31218d49982fc6c2d2f738e"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/release-material/captures/sdk_property_restored_camera.bmp",
+      "sha256": "345fa65c9dc2f016b11631afb1822018b16c73acb6227ac02515b729bab57de4"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/release-material/captures/sdk_property_undo.bmp",
+      "sha256": "d9f10e15840e294fd78b67513d7eb672c394fdeb03bd738f46b5cb3092b541ee"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/release-material/captures/sdk_property_undo_asset.bmp",
+      "sha256": "5a845a776c30a333697de66ea6eb5126692028d204962436181ad2fd12eb4f25"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/release-material/captures/sdk_property_undo_camera.bmp",
+      "sha256": "59d64166cce53c693f9d930a7c45f784b11abc343f5a626c06577f0d968af49d"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/release-material/capture-result.json",
+      "sha256": "4cc144a39911fdef43ca133f4a3b64ed8d24699a2d34c2de31c35cbcdff156cd"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/release-material/launch.json",
+      "sha256": "5bb2021c0f3b249e339f33c3297cf32f14f721bc7f4ea22376938fa40b2039b9"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/release-material/runtime-result.json",
+      "sha256": "87b3e82781e3aaea9dcfaa2bdf104d038459e62a0ad3c81b2a209063eecbd4cd"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/release-material/stderr.log",
+      "sha256": "4ebba5df6fc294f9911c875b66164497d827171ae4406a390ade89d6eac3247f"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/release-material/stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/release-texture/captures/sdk_layout_edited.bmp",
+      "sha256": "b6b5ea6fb1083cdee3337ac8c511a66085b339141373b895130610e5d9b2108f"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/release-texture/captures/sdk_layout_edited_asset.bmp",
+      "sha256": "fb5e178f829b61771e617b38742743a69c47b782a31218d49982fc6c2d2f738e"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/release-texture/captures/sdk_layout_edited_camera.bmp",
+      "sha256": "2afec12230fb9f3bbb6f6d39608efb3d535844952fc22ad963453afccf1e68d4"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/release-texture/captures/sdk_layout_redo.bmp",
+      "sha256": "b6b5ea6fb1083cdee3337ac8c511a66085b339141373b895130610e5d9b2108f"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/release-texture/captures/sdk_layout_redo_asset.bmp",
+      "sha256": "fb5e178f829b61771e617b38742743a69c47b782a31218d49982fc6c2d2f738e"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/release-texture/captures/sdk_layout_redo_camera.bmp",
+      "sha256": "0d6ec9e9ef09b9225522b62134f1981f0ce3bbaeac7517243b6bea8c606e9812"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/release-texture/captures/sdk_layout_restored.bmp",
+      "sha256": "b6b5ea6fb1083cdee3337ac8c511a66085b339141373b895130610e5d9b2108f"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/release-texture/captures/sdk_layout_restored_asset.bmp",
+      "sha256": "fb5e178f829b61771e617b38742743a69c47b782a31218d49982fc6c2d2f738e"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/release-texture/captures/sdk_layout_restored_camera.bmp",
+      "sha256": "0d6ec9e9ef09b9225522b62134f1981f0ce3bbaeac7517243b6bea8c606e9812"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/release-texture/captures/sdk_layout_undo.bmp",
+      "sha256": "b6b5ea6fb1083cdee3337ac8c511a66085b339141373b895130610e5d9b2108f"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/release-texture/captures/sdk_layout_undo_asset.bmp",
+      "sha256": "fb5e178f829b61771e617b38742743a69c47b782a31218d49982fc6c2d2f738e"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/release-texture/captures/sdk_layout_undo_camera.bmp",
+      "sha256": "0d6ec9e9ef09b9225522b62134f1981f0ce3bbaeac7517243b6bea8c606e9812"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/release-texture/captures/sdk_property_baseline.bmp",
+      "sha256": "b6b5ea6fb1083cdee3337ac8c511a66085b339141373b895130610e5d9b2108f"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/release-texture/captures/sdk_property_baseline_asset.bmp",
+      "sha256": "fb5e178f829b61771e617b38742743a69c47b782a31218d49982fc6c2d2f738e"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/release-texture/captures/sdk_property_baseline_camera.bmp",
+      "sha256": "1958574a2edc5f44e5eb4a751012e2404316002ea0a29512a6a980279f8e0efe"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/release-texture/captures/sdk_property_edited.bmp",
+      "sha256": "b6b5ea6fb1083cdee3337ac8c511a66085b339141373b895130610e5d9b2108f"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/release-texture/captures/sdk_property_edited_asset.bmp",
+      "sha256": "fb5e178f829b61771e617b38742743a69c47b782a31218d49982fc6c2d2f738e"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/release-texture/captures/sdk_property_edited_camera.bmp",
+      "sha256": "5d388bc8ef56c3810d8a3b43d752d40262fd1f4359795ff84230ead83f005597"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/release-texture/captures/sdk_property_redo.bmp",
+      "sha256": "6276e2a1a3a67ca34034b4fefb74c70296e3f163aa788e61c5f2bf42485640e3"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/release-texture/captures/sdk_property_redo_asset.bmp",
+      "sha256": "cc2193667d2a834f70d1491cbd4044361565ac63d3eb16b0645b15818f258cb5"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/release-texture/captures/sdk_property_redo_camera.bmp",
+      "sha256": "1958574a2edc5f44e5eb4a751012e2404316002ea0a29512a6a980279f8e0efe"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/release-texture/captures/sdk_property_restored.bmp",
+      "sha256": "b6b5ea6fb1083cdee3337ac8c511a66085b339141373b895130610e5d9b2108f"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/release-texture/captures/sdk_property_restored_asset.bmp",
+      "sha256": "fb5e178f829b61771e617b38742743a69c47b782a31218d49982fc6c2d2f738e"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/release-texture/captures/sdk_property_restored_camera.bmp",
+      "sha256": "1958574a2edc5f44e5eb4a751012e2404316002ea0a29512a6a980279f8e0efe"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/release-texture/captures/sdk_property_undo.bmp",
+      "sha256": "6276e2a1a3a67ca34034b4fefb74c70296e3f163aa788e61c5f2bf42485640e3"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/release-texture/captures/sdk_property_undo_asset.bmp",
+      "sha256": "cc2193667d2a834f70d1491cbd4044361565ac63d3eb16b0645b15818f258cb5"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/release-texture/captures/sdk_property_undo_camera.bmp",
+      "sha256": "5d388bc8ef56c3810d8a3b43d752d40262fd1f4359795ff84230ead83f005597"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/release-texture/capture-result.json",
+      "sha256": "2bdb9b85fd8d6fb048daaafdf6b2f4563cbe79a91c19d49789f3edd24d69fb59"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/release-texture/launch.json",
+      "sha256": "62c846d11acc7cd8a39ce9e78cca5a7b6b8c1fe87488e860fc0737c0048eefd5"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/release-texture/runtime-result.json",
+      "sha256": "f4ecdd74c6d0cf832809156214c3d68e2db88140df1f3c2e461d410ebd84beaa"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/release-texture/stderr.log",
+      "sha256": "6cb25b4c56f12961b048aaa5d0171d54cd16669641e93f160fdc5a08ab82a90d"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/release-texture/stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/debug-runtime-seeded/captures/sdk_layout_edited.bmp",
+      "sha256": "ad37f0f902574d57e8693f9456b5a4f728a089e1d8793c803da6167a18d5343c"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/debug-runtime-seeded/captures/sdk_layout_edited_camera.bmp",
+      "sha256": "1d19dd44c50371d0775f4adfc04eefaefd84bf76c2dd0e18518e4e2a2b6e0310"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/debug-runtime-seeded/captures/sdk_layout_redo.bmp",
+      "sha256": "ad37f0f902574d57e8693f9456b5a4f728a089e1d8793c803da6167a18d5343c"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/debug-runtime-seeded/captures/sdk_layout_redo_camera.bmp",
+      "sha256": "1d19dd44c50371d0775f4adfc04eefaefd84bf76c2dd0e18518e4e2a2b6e0310"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/debug-runtime-seeded/captures/sdk_layout_restored.bmp",
+      "sha256": "420ac0d7b6834eaea5d54cff7c027c815137fab018607e7e04d0a3e2d4245912"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/debug-runtime-seeded/captures/sdk_layout_restored_camera.bmp",
+      "sha256": "1d19dd44c50371d0775f4adfc04eefaefd84bf76c2dd0e18518e4e2a2b6e0310"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/debug-runtime-seeded/captures/sdk_layout_undo.bmp",
+      "sha256": "420ac0d7b6834eaea5d54cff7c027c815137fab018607e7e04d0a3e2d4245912"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/debug-runtime-seeded/captures/sdk_layout_undo_camera.bmp",
+      "sha256": "1d19dd44c50371d0775f4adfc04eefaefd84bf76c2dd0e18518e4e2a2b6e0310"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/debug-runtime-seeded/captures/sdk_property_baseline.bmp",
+      "sha256": "ad37f0f902574d57e8693f9456b5a4f728a089e1d8793c803da6167a18d5343c"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/debug-runtime-seeded/captures/sdk_property_baseline_camera.bmp",
+      "sha256": "1d19dd44c50371d0775f4adfc04eefaefd84bf76c2dd0e18518e4e2a2b6e0310"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/debug-runtime-seeded/captures/sdk_property_edited.bmp",
+      "sha256": "420ac0d7b6834eaea5d54cff7c027c815137fab018607e7e04d0a3e2d4245912"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/debug-runtime-seeded/captures/sdk_property_edited_camera.bmp",
+      "sha256": "1d19dd44c50371d0775f4adfc04eefaefd84bf76c2dd0e18518e4e2a2b6e0310"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/debug-runtime-seeded/captures/sdk_property_redo.bmp",
+      "sha256": "a863590a2a10da9e51301a004beb0628d71b40da13344757a89e34caeee446d5"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/debug-runtime-seeded/captures/sdk_property_redo_camera.bmp",
+      "sha256": "1d19dd44c50371d0775f4adfc04eefaefd84bf76c2dd0e18518e4e2a2b6e0310"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/debug-runtime-seeded/captures/sdk_property_restored.bmp",
+      "sha256": "a863590a2a10da9e51301a004beb0628d71b40da13344757a89e34caeee446d5"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/debug-runtime-seeded/captures/sdk_property_restored_camera.bmp",
+      "sha256": "1d19dd44c50371d0775f4adfc04eefaefd84bf76c2dd0e18518e4e2a2b6e0310"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/debug-runtime-seeded/captures/sdk_property_undo.bmp",
+      "sha256": "a863590a2a10da9e51301a004beb0628d71b40da13344757a89e34caeee446d5"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/debug-runtime-seeded/captures/sdk_property_undo_camera.bmp",
+      "sha256": "1d19dd44c50371d0775f4adfc04eefaefd84bf76c2dd0e18518e4e2a2b6e0310"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/debug-runtime-seeded/capture-result.json",
+      "sha256": "908e89ba85ef524fcf7a667b88bb24b421bce932b5c9a8501abedfbc068cb1a3"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/debug-runtime-seeded/launch.json",
+      "sha256": "f0dd2874d87637cd1465cd33c237b8d91d598f9e1b6c58bc6328fee37026c8ab"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/debug-runtime-seeded/restore-result.json",
+      "sha256": "b8b49fa5e729c304ac149ddd7a46abd88115e42e258737bc3fb26cfba38a31b3"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/debug-runtime-seeded/runtime-result.json",
+      "sha256": "92e4a58d1e6f4722e92adfeb70aba79bc6cb5f04ca5a4d7e67e0bba9f3edd7c6"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/debug-runtime-seeded/stderr.log",
+      "sha256": "bc1f21364cd90b8cea9fe8f40abe455c1a5a1eeb7e972ed55b11c8edd0b0ac8f"
+    },
+    {
+      "path": "build/sdk6-material-20261112/quiescent/debug-runtime-seeded/stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/sdk6-material-20261112/checkpoint/controls/unseeded-runtime-baseline.bmp",
+      "sha256": "88b0ba2b55f130b3fa8a8a615998703e245b0de153b1ca3d32aad59f80790b1b"
+    },
+    {
+      "path": "build/sdk6-material-20261112/checkpoint/checks/seed-material-fixture.json",
+      "sha256": "684ae58b9f67e4719a7975edd8a7100848e096ca42476e049e92904e808c5b98"
+    },
+    {
+      "path": "build/sdk6-material-20261112/checkpoint/checks/metadata-final.log",
+      "sha256": "daf982106b46fa8e6a2c0b47dfab628af870b71f81415683517b8d2c154d6ac2"
+    },
+    {
+      "path": "build/sdk6-material-20261112/checkpoint/checks/sdk6-material-sources.json",
+      "sha256": "0efa1ede6a515151fbee0613cf8018d67ab8f60b202787d2b46a06f47509f853"
+    },
+    {
+      "path": "build/sdk6-material-20261112/checkpoint/seed-sources/materials/wood_painted_with_metal_parts.material",
+      "sha256": "d4191024b42ac8b3123b196a609f490a3d48ea947ef0a7055f630c68a0a06c65"
+    },
+    {
+      "path": "build/sdk6-material-20261112/checkpoint/seed-sources/material_instances/sdk6_unloaded.material",
+      "sha256": "768fc26dfcb1921aae33d02f3085cd4b2101794853ac2e90450236898c7f4921"
+    },
+    {
+      "path": "build/sdk6-material-20261112/checkpoint/seed-sources/material_instances/props/box/wood_box.material",
+      "sha256": "768fc26dfcb1921aae33d02f3085cd4b2101794853ac2e90450236898c7f4921"
+    }
+  ],
+  "exploratoryFailures": [
+    {
+      "path": "build/sdk6-material-20261112/gpu-debug-1",
+      "finding": "Copying uncooked source instances exposed a vegetation alias conflict; preserved the accepted prepared-base binding."
+    },
+    {
+      "path": "build/sdk6-material-20261112/verified/release-material",
+      "finding": "Resource manager lock destructor observed the still-dispatching resource APC owner; added admission and in-flight callback barrier before destruction. This failed run is not accepted evidence."
+    }
+  ],
+  "remaining": [
+    "Other material stages/effect palette and schema repair",
+    "Shader authoring/compilation workflow parity",
+    "Model surface assignment, collision and physics",
+    "Render-options source capability mapping",
+    "Texture import/compression/cube workflow",
+    "OBJ/Maya exporters and actual toolchain roundtrips"
+  ],
+  "limitations": [
+    "Bounded original static g_stage_default source profile; the full materials family and all SDK-6 families remain runtimeWorkflowAccepted=false.",
+    "Material preview uses a standard woodbox primitive; it is not arbitrary-model import acceptance.",
+    "Native unsupported-effect failure plus managed rejected-commit compensation are covered; arbitrary custom shader compilation is pending.",
+    "Preview scratch files are retained in user data.",
+    "Automated background UI/native evidence; no claim of manual desktop smoke."
+  ]
+}

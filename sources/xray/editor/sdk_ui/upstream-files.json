@@ -1,0 +1,1696 @@
+{
+  "repository": "tsnest/xray-2-2011",
+  "commit": "1795aa33a51fdde2ff5ea10627fc6d0b2b755c56",
+  "files": [
+    {
+      "path": "sources/xray/editor/controls/property_container_interface.h",
+      "gitBlob": "74ef6e9c992817fd203b64b0fbc716b6ef388447"
+    },
+    {
+      "path": "sources/xray/editor/controls/property_incrementable.h",
+      "gitBlob": "fa5438478bc314119f982be229c25c9d9bccfcef"
+    },
+    {
+      "path": "sources/xray/editor/controls/property_mouse_events.h",
+      "gitBlob": "b46f4ff7ac41bc06073166e5027cd597cf32e9b3"
+    },
+    {
+      "path": "sources/xray/editor/controls/property_value.h",
+      "gitBlob": "a0f28cfd7d578bb8ff9e98b36bd4fc69cc398477"
+    },
+    {
+      "path": "sources/xray/editor/controls/sources/AssemblyInfo.cpp",
+      "gitBlob": "dc52cfbb56a8f09f3109c6a1cca7c1bc1f37d083"
+    },
+    {
+      "path": "sources/xray/editor/controls/sources/alphanum_comparator.cpp",
+      "gitBlob": "4675f355aef7e0d5d3edb175d0a4ebfdcbaf3386"
+    },
+    {
+      "path": "sources/xray/editor/controls/sources/alphanum_comparator.h",
+      "gitBlob": "d4b03757adb0b455d8e9d9a02baffc01d1ac7540"
+    },
+    {
+      "path": "sources/xray/editor/controls/sources/base_registry_key.h",
+      "gitBlob": "cd8959e8a783fb33aaaaab0a9e35a2710b4c8ca0"
+    },
+    {
+      "path": "sources/xray/editor/controls/sources/delegates.h",
+      "gitBlob": "a002f3b9117649b89098922a9893b63bcd3eeaad"
+    },
+    {
+      "path": "sources/xray/editor/controls/sources/dock_panel_serializer.cpp",
+      "gitBlob": "344f1d91cc2804d4ba05c43cf66e015052b6e745"
+    },
+    {
+      "path": "sources/xray/editor/controls/sources/dock_panel_serializer.h",
+      "gitBlob": "d9d7e0ffad015357c3c64ac98579291128fe4d38"
+    },
+    {
+      "path": "sources/xray/editor/controls/sources/document_base.cpp",
+      "gitBlob": "54667afe99f13bb0b760b49693cc46049e8c76d1"
+    },
+    {
+      "path": "sources/xray/editor/controls/sources/document_base.h",
+      "gitBlob": "a10ee55be803b14fa4b6b37b80007c340caf94fb"
+    },
+    {
+      "path": "sources/xray/editor/controls/sources/document_editor_base.cpp",
+      "gitBlob": "30906419be0beb1f978b3c578632434f9a6da8ae"
+    },
+    {
+      "path": "sources/xray/editor/controls/sources/document_editor_base.h",
+      "gitBlob": "7117f3ff65e0cf171bb9f91432c6e22a01ecbf7f"
+    },
+    {
+      "path": "sources/xray/editor/controls/sources/document_event_args.h",
+      "gitBlob": "b2b7bf004a843b0102be8d0435fa723ca76b3b55"
+    },
+    {
+      "path": "sources/xray/editor/controls/sources/drag_cursor_collection.cpp",
+      "gitBlob": "096c322ac31e82b20554b0f22eb098c7ddc3941b"
+    },
+    {
+      "path": "sources/xray/editor/controls/sources/drag_cursor_collection.h",
+      "gitBlob": "6ae7b6fb82091c522f469ffc568a0b624085e46c"
+    },
+    {
+      "path": "sources/xray/editor/controls/sources/drawing2d_utils.cpp",
+      "gitBlob": "8128b054c929ece62882123c61e65fc7d76bf9e9"
+    },
+    {
+      "path": "sources/xray/editor/controls/sources/drawing2d_utils.h",
+      "gitBlob": "972af78f92cb9d73840e68e4386e6a36d2961e3e"
+    },
+    {
+      "path": "sources/xray/editor/controls/sources/editor_controls_entry_point.cpp",
+      "gitBlob": "297fc7dbcfa5642db7b318a66c4c628bffd31193"
+    },
+    {
+      "path": "sources/xray/editor/controls/sources/file_tree_view_search_and_filter.cpp",
+      "gitBlob": "f2af34e7e932fe3abd8f48ad0467b5acdafbbbb7"
+    },
+    {
+      "path": "sources/xray/editor/controls/sources/file_view_panel_base.cpp",
+      "gitBlob": "15e647d2bcc75480b9506a8d2ee028ad182b7d9e"
+    },
+    {
+      "path": "sources/xray/editor/controls/sources/file_view_panel_base.h",
+      "gitBlob": "9b7977d4978158dc5b92c176e5a0a0cd2436f52b"
+    },
+    {
+      "path": "sources/xray/editor/controls/sources/file_view_panel_base.resx",
+      "gitBlob": "19dc0dd8b3964e653690c64d095c5d28283828b7"
+    },
+    {
+      "path": "sources/xray/editor/controls/sources/hypergraph.cpp",
+      "gitBlob": "5154be19753b02a294546f66e1c8ace060127881"
+    },
+    {
+      "path": "sources/xray/editor/controls/sources/hypergraph.h",
+      "gitBlob": "9bb8803dbf1f94447352b87bf3df9dc035e26848"
+    },
+    {
+      "path": "sources/xray/editor/controls/sources/hypergraph.resx",
+      "gitBlob": "19dc0dd8b3964e653690c64d095c5d28283828b7"
+    },
+    {
+      "path": "sources/xray/editor/controls/sources/hypergraph_defines.h",
+      "gitBlob": "f1446cc397b0bce35c3cb06290ea7e835220c0fa"
+    },
+    {
+      "path": "sources/xray/editor/controls/sources/hypergraph_draw.cpp",
+      "gitBlob": "12c54647bb286ecb7ead72fe31bb9e1ef49fe7de"
+    },
+    {
+      "path": "sources/xray/editor/controls/sources/hypergraph_node.cpp",
+      "gitBlob": "1be8b026c9871b9b8a4c7f21ec7e048af218fb11"
+    },
+    {
+      "path": "sources/xray/editor/controls/sources/hypergraph_node.h",
+      "gitBlob": "e0b8f580e7ef9caa0e8ce4f708e11b5385e4c14c"
+    },
+    {
+      "path": "sources/xray/editor/controls/sources/hypergraph_node.resx",
+      "gitBlob": "19dc0dd8b3964e653690c64d095c5d28283828b7"
+    },
+    {
+      "path": "sources/xray/editor/controls/sources/hypergraph_node_draw.cpp",
+      "gitBlob": "ed38a8aed33d4df7ace2a2eaef91890be0f4a964"
+    },
+    {
+      "path": "sources/xray/editor/controls/sources/hypergraph_node_style.cpp",
+      "gitBlob": "afd93f9e1c3a5453560f6ca57fbd290086b2a8b9"
+    },
+    {
+      "path": "sources/xray/editor/controls/sources/hypergraph_node_style.h",
+      "gitBlob": "a2a7137fa6ab6af9f1900b5e5bb9aa8bd68d56ab"
+    },
+    {
+      "path": "sources/xray/editor/controls/sources/i_document_editor_shortcut_receiver.h",
+      "gitBlob": "bedb5b1834405737120f9cda6c82eceabe11974e"
+    },
+    {
+      "path": "sources/xray/editor/controls/sources/item_properties_panel_base.cpp",
+      "gitBlob": "f2d8d579af53ee70ec76afb6f04c7adbd4497464"
+    },
+    {
+      "path": "sources/xray/editor/controls/sources/item_properties_panel_base.h",
+      "gitBlob": "d019d659e67602d54291386af411b2cf2dc91c5c"
+    },
+    {
+      "path": "sources/xray/editor/controls/sources/mode_button.cpp",
+      "gitBlob": "d5cb9064f04acc36f168c59d503cd2d7d989733f"
+    },
+    {
+      "path": "sources/xray/editor/controls/sources/mode_button.h",
+      "gitBlob": "6ffeb9157b06ca688fd10e6b0cfa37b97d929b55"
+    },
+    {
+      "path": "sources/xray/editor/controls/sources/mode_strip_button.cpp",
+      "gitBlob": "e09bf5d04b11fe9aa6085378e48e156d7772a3cc"
+    },
+    {
+      "path": "sources/xray/editor/controls/sources/mode_strip_button.h",
+      "gitBlob": "6f285c720903d2ccecfaabe6b72aa47f68b37fd6"
+    },
+    {
+      "path": "sources/xray/editor/controls/sources/node_connection_point.cpp",
+      "gitBlob": "a6ad31399ae8b592ec2a51ae00e27814c94268a0"
+    },
+    {
+      "path": "sources/xray/editor/controls/sources/node_connection_point.h",
+      "gitBlob": "5dcdb0e8d08ccbcc1b0004d21fe11cd3e19bc736"
+    },
+    {
+      "path": "sources/xray/editor/controls/sources/node_connection_point.resx",
+      "gitBlob": "19dc0dd8b3964e653690c64d095c5d28283828b7"
+    },
+    {
+      "path": "sources/xray/editor/controls/sources/pch.cpp",
+      "gitBlob": "97cb7c4cfaee9df1184f027b5089cd87a7b3e104"
+    },
+    {
+      "path": "sources/xray/editor/controls/sources/pch.h",
+      "gitBlob": "52f242cf066dcca0a6a1cce935207245c23645cf"
+    },
+    {
+      "path": "sources/xray/editor/controls/sources/property_grid.cpp",
+      "gitBlob": "3991fcd35ae71ed37256dd9cdf9b4dbacd3a5128"
+    },
+    {
+      "path": "sources/xray/editor/controls/sources/property_grid.h",
+      "gitBlob": "eb4d5ddad4cd93fac74d7c785f2ee9983699faf9"
+    },
+    {
+      "path": "sources/xray/editor/controls/sources/scalable_scroll_bar.cpp",
+      "gitBlob": "7498e9e80409d04de8b85058b95f8775accb9dab"
+    },
+    {
+      "path": "sources/xray/editor/controls/sources/scalable_scroll_bar.h",
+      "gitBlob": "ac606696cb887a3ca2e137463490dab564ad3ef5"
+    },
+    {
+      "path": "sources/xray/editor/controls/sources/scalable_scroll_bar.resx",
+      "gitBlob": "19dc0dd8b3964e653690c64d095c5d28283828b7"
+    },
+    {
+      "path": "sources/xray/editor/controls/sources/scroller_event_args.h",
+      "gitBlob": "7b1a8d8aa97b3ab4bb146ef3f5441754ccf52301"
+    },
+    {
+      "path": "sources/xray/editor/controls/sources/toolbar_panel_base.cpp",
+      "gitBlob": "7a87688e0280403372bb9519a7391ce672889599"
+    },
+    {
+      "path": "sources/xray/editor/controls/sources/toolbar_panel_base.h",
+      "gitBlob": "50834ce96a7f81fa2a330cfb4721d323249d3345"
+    },
+    {
+      "path": "sources/xray/editor/controls/sources/tree_node.cpp",
+      "gitBlob": "5a0d253924058e61b564b24a2f87c136512ae182"
+    },
+    {
+      "path": "sources/xray/editor/controls/sources/tree_node.h",
+      "gitBlob": "1ce6faab20b2d30ad59d4488ef61024f18c09f86"
+    },
+    {
+      "path": "sources/xray/editor/controls/sources/tree_node_alphanum_comparer.cpp",
+      "gitBlob": "818f813dcb5e949ad9e9250633aba1400880134b"
+    },
+    {
+      "path": "sources/xray/editor/controls/sources/tree_node_alphanum_comparer.h",
+      "gitBlob": "9cab12adc3930aa7e874b17a68f09ea3686ba432"
+    },
+    {
+      "path": "sources/xray/editor/controls/sources/tree_node_type.h",
+      "gitBlob": "004af784c523d3d1189d348be494eb8749ff94be"
+    },
+    {
+      "path": "sources/xray/editor/controls/sources/tree_view.cpp",
+      "gitBlob": "ce7aa8d6339d87c70cca0dd68728e013ec6e9e5e"
+    },
+    {
+      "path": "sources/xray/editor/controls/sources/tree_view.h",
+      "gitBlob": "d0d220b1e087e29b4a89cf42708aaef696ee0f58"
+    },
+    {
+      "path": "sources/xray/editor/controls/sources/tree_view_event_args.h",
+      "gitBlob": "62cb2916a08d59f4f57550a4812176d7cd814ac5"
+    },
+    {
+      "path": "sources/xray/editor/controls/sources/tree_view_filter_panel.cpp",
+      "gitBlob": "e267479565a307af4226f080af91399c0fea642e"
+    },
+    {
+      "path": "sources/xray/editor/controls/sources/tree_view_filter_panel.h",
+      "gitBlob": "c4e526ac3af0937bdf062a5a8a91fe16317bf065"
+    },
+    {
+      "path": "sources/xray/editor/controls/sources/tree_view_filter_panel.resx",
+      "gitBlob": "19dc0dd8b3964e653690c64d095c5d28283828b7"
+    },
+    {
+      "path": "sources/xray/editor/controls/sources/tree_view_initialize.cpp",
+      "gitBlob": "4dea7738099885273928e1691c18fe55af6e33f2"
+    },
+    {
+      "path": "sources/xray/editor/controls/sources/tree_view_multiselection.cpp",
+      "gitBlob": "4ce3dd3fd2eadf4828769c4fd1b847e1dea0d1fb"
+    },
+    {
+      "path": "sources/xray/editor/controls/sources/tree_view_search_panel.cpp",
+      "gitBlob": "6cccf6f862e527b5779e71f34380cbbbb3550cbd"
+    },
+    {
+      "path": "sources/xray/editor/controls/sources/tree_view_search_panel.h",
+      "gitBlob": "0d10fab1e3efec50fb20b6b019fad2e832a39871"
+    },
+    {
+      "path": "sources/xray/editor/controls/sources/tree_view_search_panel.resx",
+      "gitBlob": "19dc0dd8b3964e653690c64d095c5d28283828b7"
+    },
+    {
+      "path": "sources/xray/editor/controls/sources/tree_view_select_action.h",
+      "gitBlob": "286fedf4e702b7c94051dfbbb7dd00b3a15ed1d0"
+    },
+    {
+      "path": "sources/xray/editor/controls/sources/tree_view_selection_event_args.h",
+      "gitBlob": "d2354450fb09c615f8c682303c06510248c365de"
+    },
+    {
+      "path": "sources/xray/editor/controls/sources/tree_view_source.h",
+      "gitBlob": "ac31d773c07b81f2aa42e29f3a27fddf18b37142"
+    },
+    {
+      "path": "sources/xray/editor/dialog/api.h",
+      "gitBlob": "94aa9f86acb7d264c6e607e57b4ffe66cea09fac"
+    },
+    {
+      "path": "sources/xray/editor/dialog/engine.h",
+      "gitBlob": "c53eb5c7a95230b374d830d575a89e51bfb4ec25"
+    },
+    {
+      "path": "sources/xray/editor/dialog/library_linkage.h",
+      "gitBlob": "9a02de9554cf815254a26a6c05d3e98746b19d46"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/add_language_form.cpp",
+      "gitBlob": "58475f1d6e5762ff66a4981caa1af5cf6aadfd98"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/add_language_form.h",
+      "gitBlob": "619d352d93fca4a077243c9b8cec5d43fd7153a2"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/add_language_form.resx",
+      "gitBlob": "19dc0dd8b3964e653690c64d095c5d28283828b7"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/command_add_delete_group.cpp",
+      "gitBlob": "f794ccc3ffcf92b7a29954646700ebd5bb949d09"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/command_add_delete_group.h",
+      "gitBlob": "089dc361f53e14fb58ff2c222aa7ac9b3998be29"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/command_add_delete_links.cpp",
+      "gitBlob": "6d553f38738890cff997b7469f14b7d1f29b8c4b"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/command_add_delete_links.h",
+      "gitBlob": "09841d7a897ef3f20e81990c395e781ae4bceb2b"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/command_change_node_properties.cpp",
+      "gitBlob": "62e0d6dd9cb128d68055e8d3bc80f357cbe50b1a"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/command_change_node_properties.h",
+      "gitBlob": "70213167096d1a23a73067ee9c22accefe8a196d"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/command_change_node_string_table.cpp",
+      "gitBlob": "aca5fdc292ad93ec089c5eb93ecffe8f4b35c251"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/command_change_node_string_table.h",
+      "gitBlob": "ea607a5f6e1cb6ea29800a3a69a4fdfe546c1858"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/command_move_nodes.cpp",
+      "gitBlob": "d665fa619abece75a2de478b9202ba83e0b51239"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/command_move_nodes.h",
+      "gitBlob": "7fa145e53456d6dea3c659c60f2578acf1f85ea7"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog.cpp",
+      "gitBlob": "c96dad300853e02c4886fc03e410deea9dee1bf5"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog.h",
+      "gitBlob": "0f725ca1da8118bcafd2abcb96894db9eff9b718"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_action.cpp",
+      "gitBlob": "bf9877cad29028a110185a1bcb03fb711d87545b"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_action.h",
+      "gitBlob": "412a9c53f1e6c02e974b9af4ccb40250b9598a68"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_container.cpp",
+      "gitBlob": "60f45de6dc01be9f657af7459e72847766108cdf"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_container.h",
+      "gitBlob": "236e95602f7fd8863f6c175edada49841fcc9ef7"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_control_panel.cpp",
+      "gitBlob": "7d3fd1c5d4b5804f5bf8b853e092d638289ba00b"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_control_panel.h",
+      "gitBlob": "46312a5e49036c7147227c157740a5dc8e837321"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_control_panel.resx",
+      "gitBlob": "fd9ff25dafe57fa2d29e2639d935926d3a851969"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_cooker.cpp",
+      "gitBlob": "80f789fb6246e041a579760d8c92f247569a7f38"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_cooker.h",
+      "gitBlob": "fe231ca4c9e8295b929a78e865203e64032fd8c3"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_document.cpp",
+      "gitBlob": "7dd88eabb2bc9b92e482580dcb6bb87ea9d11794"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_document.h",
+      "gitBlob": "4b09a98cbbbf5235af43001f09b69adfbf48338f"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_document.resx",
+      "gitBlob": "fd9ff25dafe57fa2d29e2639d935926d3a851969"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_document_node_factory.cpp",
+      "gitBlob": "71e102b752581d76a0e93ff6b49069c93d5877b0"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_editor.cpp",
+      "gitBlob": "41b778809ad416f472c1fe618377bcb25f153272"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_editor.h",
+      "gitBlob": "74aa8633209add47761fb7930f388a4f02e881af"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_editor_components.cpp",
+      "gitBlob": "efc3fe2030ff477709bd07b8336aee28c0196239"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_editor_contexts_manager.cpp",
+      "gitBlob": "a285251bcc5f924cbc118c4a9fd3c6212b5ae7ad"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_editor_contexts_manager.h",
+      "gitBlob": "4c05ea469c81baea3ac7d05efbae78d459ba7951"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_editor_entry_point.cpp",
+      "gitBlob": "8590442a668616279c292a1b2abd898ea7e3b4e1"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_editor_form.cpp",
+      "gitBlob": "dc6d4ca3792e5605aaf82fdf04d9cd2975873d2a"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_editor_form.h",
+      "gitBlob": "a7a3a2a1e4abc50cff4ff920e89bd5ad9d95c9ca"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_editor_form.resx",
+      "gitBlob": "cbea2b992d10bffa7daa74b9b44a906fa6dc7d72"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_editor_library_linkage.cpp",
+      "gitBlob": "251869ed60da66c2a8c1416d0a8bb2891b85f232"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_editor_memory.h",
+      "gitBlob": "796a95b8f58613f5d6cac461ea5bf2dbc605be93"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_editor_resource.cpp",
+      "gitBlob": "1426b43219d2ee3010fe14d887b91d63d654bafb"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_editor_resource.h",
+      "gitBlob": "726f0570d3de8601fa86c8d422750cb4052e160e"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_editor_resources_cooker.cpp",
+      "gitBlob": "ed1e6b898f827076e2f525888053a00b564a78ef"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_editor_resources_cooker.h",
+      "gitBlob": "f72518dced45372803081b85ee9005576b426c69"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_export_form.cpp",
+      "gitBlob": "fd73a190526246323f3d50a6c9bcca5be58fa15b"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_export_form.h",
+      "gitBlob": "6fcd6ea2da79c8dd574b915db3805204ceb49b62"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_export_form.resx",
+      "gitBlob": "19dc0dd8b3964e653690c64d095c5d28283828b7"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_expression.cpp",
+      "gitBlob": "a3265dc9bcec0738331b0f3007c80d3c24319779"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_expression.h",
+      "gitBlob": "3aad84a6ad413fa0c5757e0854008b0633393df6"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_files_source.cpp",
+      "gitBlob": "166c972f6e5b123f23043d570dad3c9b9824a90e"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_files_source.h",
+      "gitBlob": "b1000ed9ad55643a87c3f5a4a6d7f05a0eda892c"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_files_view_panel.cpp",
+      "gitBlob": "94b217cde1cf275d1e5fca251fa4aa8cc18cca57"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_files_view_panel.h",
+      "gitBlob": "f440492c779d137f4cff021c096fec99889f71d2"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_files_view_panel.resx",
+      "gitBlob": "0e09edff169bb679df417225c913eca692ad77be"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_graph_link.cpp",
+      "gitBlob": "93a9ea5a321213da17d6effe16b277e21c88721a"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_graph_link.h",
+      "gitBlob": "ab58ff93c7256ca6c26be6895817d241469fb1ab"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_graph_node.cpp",
+      "gitBlob": "9efd6f2b86490b2cd8a50030455d643e68c14bba"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_graph_node.h",
+      "gitBlob": "7a76b244532b6d9e76471fe8f2ba186c846d6600"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_graph_node_base.cpp",
+      "gitBlob": "e38414341c04823148a48c12c77bd2c0aca76448"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_graph_node_base.h",
+      "gitBlob": "8c75ae5317c3328084ab65406bf8f5fc382da5a0"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_graph_node_dialog.cpp",
+      "gitBlob": "3ed582dfb8de4b9d4cda179341171307c9ac9baa"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_graph_node_dialog.h",
+      "gitBlob": "10c5b6d13ff22de16c9f90d97424b9718fcd81eb"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_graph_node_layout.cpp",
+      "gitBlob": "1539aa240990d48686f599485e17e70778cd2713"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_graph_node_layout.h",
+      "gitBlob": "b35198511c62a4dbaea5b0d34e04b34b12e4f328"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_graph_node_phrase.cpp",
+      "gitBlob": "87ee10df1394a8248199a9ff87e40c6dd54c5ee7"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_graph_node_phrase.h",
+      "gitBlob": "0082673f77ee87fb86658efeebc0d98d5420535f"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_graph_node_style.cpp",
+      "gitBlob": "9a17066ea3f6209a07d1c4c146365b3455812fdb"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_graph_node_style.h",
+      "gitBlob": "be713785c9e1a8672ca5a36ac5ff8a6b63f7643e"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_hypergraph.cpp",
+      "gitBlob": "f9550c16e6ce2800281dda6323d5f65080a91f48"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_hypergraph.h",
+      "gitBlob": "5d764e3b5ececdafc8539807f9194af656368fa1"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_import_form.cpp",
+      "gitBlob": "6039dd9cd6afd8041c443f5df5fb2dbf4fd3af5f"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_import_form.h",
+      "gitBlob": "0e6a8e30c6225edd95cb3bfd8ca43e3cac4772d2"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_import_form.resx",
+      "gitBlob": "6e58fa8eca49fc0044b402fa2ff5e9b5dcdd9603"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_item_properties_panel.cpp",
+      "gitBlob": "882f56a1bd925cb25e145bf2bd03856cada64021"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_item_properties_panel.h",
+      "gitBlob": "06bd23b3463483700dce5a1f85025b5d11e28f48"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_language_panel.cpp",
+      "gitBlob": "4eaa51004710b1f47564674e0b408b2459921a34"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_language_panel.h",
+      "gitBlob": "a9914847245e6b4c3c70df2e254c37c361b27967"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_language_panel.resx",
+      "gitBlob": "19dc0dd8b3964e653690c64d095c5d28283828b7"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_link.cpp",
+      "gitBlob": "04b4a393174b1f4ffc365dbc0bb167990ff5aee1"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_link.h",
+      "gitBlob": "5d1dc0dd47a532f986cfddd9a4ce5100ab4ad781"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_link_action.cpp",
+      "gitBlob": "c62f3018a4539fe7d0d31a9cdc949e9af00a90ce"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_link_action.h",
+      "gitBlob": "aed7257217c0f6620f29926f6af7d03db69c84cd"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_link_precondition.cpp",
+      "gitBlob": "060a2c099fc666fa0a3684bb3b0f4900769a77e0"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_link_precondition.h",
+      "gitBlob": "9069a29ee0860694aecd1a052c9ec27c2330172a"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_links_manager.cpp",
+      "gitBlob": "a559a25eb6730c7720eac074cfe279f29faaab8b"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_links_manager.h",
+      "gitBlob": "5a66893e04e3fb01d8e500132c6b30d2123939d9"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_node_base.cpp",
+      "gitBlob": "495ca0f416c4f58f178ed9249821ce2e6f1b703f"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_node_base.h",
+      "gitBlob": "3ac5e31e0cca4d3fae2e1dfad9a282a202c685aa"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_node_connection_editor.cpp",
+      "gitBlob": "2d3239740eb186114b9260297215d81615568e3d"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_node_connection_editor.h",
+      "gitBlob": "126858373170f91adc6db9398b89ff5f1a17a078"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_node_hypergraph.cpp",
+      "gitBlob": "3bca8bcb8416ee695482492d0be6f4e7d9b84843"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_node_hypergraph.h",
+      "gitBlob": "904439080fafc21813d5a57d170d9e62b44b3aac"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_node_visitors.cpp",
+      "gitBlob": "df468f3834df5351878a6c12df3809afac0bcf22"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_node_visitors.h",
+      "gitBlob": "c6c4f4d7cf92aa44cc65155b3e4326ecbf914cfb"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_operation.cpp",
+      "gitBlob": "87173f08890dbae5718f088212e06cfec7a9c414"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_operation.h",
+      "gitBlob": "a6e312206cfb6d4457f9bd1a0c2495759ca3da7f"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_operation_and.cpp",
+      "gitBlob": "dcb8c0901fb9da39336cfe22b590023f571931c7"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_operation_and.h",
+      "gitBlob": "52be7fe73f6cbc8f7db4cddd4fcdceb55e496b4d"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_operation_not.cpp",
+      "gitBlob": "1395971dd11d41b6419141d2785c1f990b520787"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_operation_not.h",
+      "gitBlob": "b606b20cbb8263fbfd5a410d696c576cd5b5dd51"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_operation_or.cpp",
+      "gitBlob": "8930171127286061fc4f17afb1ed642ae376281c"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_operation_or.h",
+      "gitBlob": "aa0a089b9a39a543a0566c212c497116cfb4798b"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_phrase.cpp",
+      "gitBlob": "be1cd425c7f1c4cf48c35a8f17956e5c51e9ccd3"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_phrase.h",
+      "gitBlob": "cd374d75aaee112875517ae044429f38b31d28e6"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_precondition.cpp",
+      "gitBlob": "338805abb0249abb215492a70200ad03f3ed8b61"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_precondition.h",
+      "gitBlob": "fc2d645c6ecff07b306b0a230e75d096cc1a142a"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_precondition_action_editor.cpp",
+      "gitBlob": "fb5a0bcac21c5161993492961c50b58e998c0135"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_precondition_action_editor.h",
+      "gitBlob": "6a6493de9d8bad9833cc0707aa909a32a642c099"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_precondition_action_editor.resx",
+      "gitBlob": "19dc0dd8b3964e653690c64d095c5d28283828b7"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_text_editor.cpp",
+      "gitBlob": "e8751504bc55a3341e765e89eaadad79d2c9a320"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_text_editor.h",
+      "gitBlob": "1dbe176b54355c72e2f3b3f519eaacf6e64893df"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_text_editor.resx",
+      "gitBlob": "19dc0dd8b3964e653690c64d095c5d28283828b7"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_text_editor_sorter.cpp",
+      "gitBlob": "a6ed29de0107ec9b0739371efc8ca801ee53a77c"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_text_editor_sorter.h",
+      "gitBlob": "d3b8c85c0e08e533d27a69f5ec184efa95842065"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialogs_manager.cpp",
+      "gitBlob": "b3979c2ce4c7cc5192446768a9be464d698b3f61"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialogs_manager.h",
+      "gitBlob": "9b115575e422424b96436330e596434b39f030e1"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/editor_creator.cpp",
+      "gitBlob": "4c37f9f96695f68c8267a1cbfe99633cb175d8b7"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/editor_creator.h",
+      "gitBlob": "e81f073f13fa911d690e1f28b71eb117a257c0ce"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/excel_file.cpp",
+      "gitBlob": "053f46d2a08038f45420759ea3dd66df575ad77c"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/excel_file.h",
+      "gitBlob": "3b0a0d4a9a3a3a33ec1887e183e3bf5324420617"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/game_dialog.cpp",
+      "gitBlob": "0a7238060e87a56771dc1798c9e3c9566148ec13"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/game_dialog.h",
+      "gitBlob": "3fb82357ef76e53395e890170e8f5cae9cd0f009"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/game_dialog_container.cpp",
+      "gitBlob": "a196a9d25fe781ae90b2d847016dd0bdea8eca3f"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/game_dialog_container.h",
+      "gitBlob": "b9e275e5d72739bde962e72857bf6c4ec41bc9c3"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/game_dialog_cooker.cpp",
+      "gitBlob": "1f1ae47a39297aa57a1f3e18074a3e02c5ef492b"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/game_dialog_cooker.h",
+      "gitBlob": "5730e5e5cc9f9711e9feae0a1fd3ff82379bf868"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/images/images70x53.h",
+      "gitBlob": "c55e0296eff361abe9a16eedb027ad289fd0cb99"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/images/images70x53.png",
+      "gitBlob": "912193100e3cc04bd6e7805fc038ac79d75cad00"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/pch.cpp",
+      "gitBlob": "b2c24e23f92f633dffa06fce4602b8b4b08d123c"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/pch.h",
+      "gitBlob": "203c5420725b81e55cfa026465ca0c1607ae54e9"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/remove_language_form.cpp",
+      "gitBlob": "5ae5ba1469aa685689b10295c785f9fc7f0affca"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/remove_language_form.h",
+      "gitBlob": "c7d8662b9e9d95d0930384e434a737398fe6ce83"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/remove_language_form.resx",
+      "gitBlob": "19dc0dd8b3964e653690c64d095c5d28283828b7"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/resources.resx",
+      "gitBlob": "c154ce395d0302dd89a863cfcee391409333d455"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/string_table_id.cpp",
+      "gitBlob": "97d8aecd8092dcdeef6e57d7740ac1ffcfecf0eb"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/string_table_id.h",
+      "gitBlob": "a60eb4d5461a5032ca502766449cc74fb83efea0"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/string_table_id_options.cpp",
+      "gitBlob": "ed34986706935060c2db654a4be0794ea317ff58"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/string_table_id_options.h",
+      "gitBlob": "3e9e7f40fed286d15af9c85ced26acd684a83999"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/string_table_ids_storage.cpp",
+      "gitBlob": "bd61460e7f3b7cacf28937d648837a0df882e82a"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/string_table_ids_storage.h",
+      "gitBlob": "18ccb91127709f0b4792d48f57358c192eef4407"
+    },
+    {
+      "path": "sources/xray/editor/model/library_linkage.h",
+      "gitBlob": "b0abec3a89557ef3fd90bd79b0b0982ca6e2e771"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/bsp_portal_blank.cpp",
+      "gitBlob": "d2e61b58093bfb74444c8b26c6835e62f8874a61"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/bsp_portal_blank.h",
+      "gitBlob": "b826e3c59c6e69c8dadae60e05581556cb396f45"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/bsp_tree.cpp",
+      "gitBlob": "2a3e9d2abbe68cbb2f5b592e6e21ac5ae55b069e"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/bsp_tree.h",
+      "gitBlob": "b389931ce042a2612e4d80b8da7e90cd8587e0c8"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/bsp_tree_control.cpp",
+      "gitBlob": "0c341a146bb7f66bf65d45b4a57e4646ef1abedd"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/bsp_tree_control.h",
+      "gitBlob": "9c47fe35c7ede7ce7b8667668306867c38bd7dab"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/bsp_tree_control.resx",
+      "gitBlob": "19dc0dd8b3964e653690c64d095c5d28283828b7"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/bsp_tree_node.cpp",
+      "gitBlob": "021497c5c52bad21d51a09cd0245ebbd143d6b55"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/bsp_tree_node.h",
+      "gitBlob": "f1e1ab853d24f399cacb24975d5a7cd6dbe5054e"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/bsp_tree_panel.cpp",
+      "gitBlob": "0d700d000642b1c1fcfc666f13e500ee591eaa84"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/bsp_tree_triangle.cpp",
+      "gitBlob": "69cd57570d74a120613c813c21a82f0fbfa2ded1"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/bsp_tree_triangle.h",
+      "gitBlob": "73bf512451585e233e2043d869a0ea9d5600df2c"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/bsp_tree_utilities.cpp",
+      "gitBlob": "9d08906fa1225f0fbd0d7550d7c822d149d92b75"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/bsp_tree_utilities.h",
+      "gitBlob": "2a869705cd0709aa93b04981d369b648ff3a79b9"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/bsp_typedefs.h",
+      "gitBlob": "b089ecfb4a25eb82dba1c38ffce7a3913e4b19b7"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/collision_primitive_item.cpp",
+      "gitBlob": "0c1dbe922b88e44c7cf6e510615cfb66345550b7"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/collision_primitive_item.h",
+      "gitBlob": "ce92abb16473f943fb9f0fe96c322a2f2b6a6f81"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/contexts_manager.cpp",
+      "gitBlob": "f999af2ea246a86034672a95ae2bcd1d907c38e1"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/contexts_manager.h",
+      "gitBlob": "f9f459ecb455024329f3d6e36e95d98c332173b7"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/edge_utilities.h",
+      "gitBlob": "ff1776f7a8aa5e349cbc77eb956f1ce591c3b78e"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/edit_object_base.cpp",
+      "gitBlob": "8d0324971d0224250e4628bd126b6a27427b5059"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/edit_object_base.h",
+      "gitBlob": "9bbb1ea39893d4222fba96e52d7c2a985b18d0f7"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/edit_object_composite_visual.cpp",
+      "gitBlob": "25cdcd0db67e40a8393dddd27a0ae023998367ff"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/edit_object_composite_visual.h",
+      "gitBlob": "1c79ac0ecd9ad62a2d31b4e6757b036a26e50604"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/edit_object_composite_visual_actions.cpp",
+      "gitBlob": "245fc7affa546f1f6012a627c9a1bd187ceffd5e"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/edit_object_composite_visual_item.cpp",
+      "gitBlob": "c30f2b6576028261de94e99b43a77e04ca277c56"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/edit_object_composite_visual_properties.cpp",
+      "gitBlob": "c56050601c0f77b7cec5639dbdfee081ce22e4c3"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/edit_object_composite_visual_serialize.cpp",
+      "gitBlob": "9cbca3be213babe0e4ba711a1859d6ad3409afdb"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/edit_object_lods.cpp",
+      "gitBlob": "3e68781eab50e251a0e3f7fda9df6426341a1496"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/edit_object_mesh_collision.cpp",
+      "gitBlob": "4bef62b7b65b50d57be6af4604764738019c5a4c"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/edit_object_preview.cpp",
+      "gitBlob": "4be48996223ef2c16a78efec24b268f19255ebcb"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/edit_object_properties.cpp",
+      "gitBlob": "6f5be165827bc0b9cef7e499c54ca82c5f3e3584"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/edit_object_speedtree.cpp",
+      "gitBlob": "907117a366c25762d2acdaeca3339373eca5ac33"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/edit_object_speedtree.h",
+      "gitBlob": "bd219316752fd5ccf2f78525c65d1d2a4ddec672"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/edit_object_speedtree_properties.cpp",
+      "gitBlob": "2af55e0d58dfafd790cbbe34168e77b07c2d70b3"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/edit_portal.cpp",
+      "gitBlob": "897b4ad587e3d957b4a512265aa3dbbd9fd663a1"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/edit_portal.h",
+      "gitBlob": "0636ed18f93dffee1423cc61555d177a62a530a7"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/edit_surface.cpp",
+      "gitBlob": "f9d663b8f8dbbcaccc1cc7d78e223d0b83b9dbc0"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/edit_surface.h",
+      "gitBlob": "1f140a866d94758e9eac87466eb2d47c6ebff0e0"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/editor_creator.cpp",
+      "gitBlob": "3c034346a0e2646092676d012f8e1d05415b2a76"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/editor_creator.h",
+      "gitBlob": "d1b27d416a36dc8f84c0e4d0de0093752749c329"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/float3_similar.h",
+      "gitBlob": "1795f1c971582bda2f7db061c5264e4cc717ca31"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/generated_portal.cpp",
+      "gitBlob": "b00af6d8001689e6d8709ea6ba2df8289ea31efd"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/generated_portal.h",
+      "gitBlob": "d5b00398cbd3c82e118c31690943741d70a39410"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/ide.cpp",
+      "gitBlob": "4cf11a5fa727a2906fa2ef5021da2070f91d4900"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/ide.h",
+      "gitBlob": "cb1ad21d224ccb3bf808cf21682ece3a04d33158"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/ide.resx",
+      "gitBlob": "4b8dbc33deb314df1bb42b0de6aedcc68b2ebee7"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/input_actions.cpp",
+      "gitBlob": "f824eec2407377ead328e7fcce2fa8364b3c4a45"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/input_actions.h",
+      "gitBlob": "621a50811b8ac8180e92e491370a71a5766bcd35"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/lod_view_panel.cpp",
+      "gitBlob": "4a90f06c3e9cd49f9be28e477b26437304ef3423"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/lod_view_panel.h",
+      "gitBlob": "60621573a9089f93677800fa69654e96e21a2d76"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/lod_view_panel.resx",
+      "gitBlob": "19dc0dd8b3964e653690c64d095c5d28283828b7"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/model_editor.cpp",
+      "gitBlob": "d47d73e7aa3a2879e5f0c18ef4cea52560384b4d"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/model_editor.h",
+      "gitBlob": "388da78b9647944b7acd69e5becb21001cda36e3"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/model_editor_actions.cpp",
+      "gitBlob": "3242cbbd7ed2b9dd58e36c8a512329cd92c64046"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/model_editor_entry_point.cpp",
+      "gitBlob": "146005dc1cd502401b035cd4987ec9f37429341a"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/model_editor_library_linkage.cpp",
+      "gitBlob": "bdb4fdfbca227e88f4a38b17a77fa32131b9f7e4"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/model_editor_memory.h",
+      "gitBlob": "1db950f6041d9dc65761fbc9931d6404938faf6a"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/model_editor_object.cpp",
+      "gitBlob": "ef3721706c08e0ed99257054f57db9fe133298b9"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/model_editor_object.h",
+      "gitBlob": "44f76ea1fe76dfa84d8947da554bebda1dd058ff"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/object_portals_panel.cpp",
+      "gitBlob": "d2fa6456190951ff1b5e0fd2fddc132d5b30a934"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/object_portals_panel.h",
+      "gitBlob": "eafb684785930f80019294b0d0360c5852893b13"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/object_portals_panel.resx",
+      "gitBlob": "19dc0dd8b3964e653690c64d095c5d28283828b7"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/pch.cpp",
+      "gitBlob": "7e2d5e41f0fc72612fa0ac1a8704e9f2d8b12082"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/pch.h",
+      "gitBlob": "3ab41841abad89b48c1ff4867bf185ef0761c367"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/portal_collision_object.cpp",
+      "gitBlob": "9ecd95f84da6473578e545ec1f3b77453026b86e"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/portal_collision_object.h",
+      "gitBlob": "0fe3c2b7794ef5e62b9c2614e3c5789e1457e317"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/portal_generation_view.cpp",
+      "gitBlob": "1847972354d697bc3e06253bd7884e186b7fc18d"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/portal_generation_view.h",
+      "gitBlob": "73cacf0744a1d93189f3b985973cde40d9872698"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/portal_generation_view.resx",
+      "gitBlob": "a976628d1571a98e78622ecf86b77d5192cce5e8"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/portal_vertex_collision.cpp",
+      "gitBlob": "9dc4ff2f3c771560df0a22536c7577a247d37506"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/portal_vertex_collision.h",
+      "gitBlob": "11e04a3ded8bb4696fac922e65284849aade6fa8"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/portal_vertex_shift.cpp",
+      "gitBlob": "5d5f8cef10ed38fc7775a6aa47dd5aac6014117c"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/portal_vertex_shift.h",
+      "gitBlob": "3c3f33ca139efc8f14495a983d66dc68c00a0a8e"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/property_grid_panel.cpp",
+      "gitBlob": "bffa58d390c66a5744a3c15934800c30f914e69d"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/property_grid_panel.h",
+      "gitBlob": "4feeaca9bb8a6b0a162355e54c8ebcb2574c0ed5"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/property_grid_panel.resx",
+      "gitBlob": "19dc0dd8b3964e653690c64d095c5d28283828b7"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/render_model_wrapper.cpp",
+      "gitBlob": "98723a3b6f583b392aaed232e18372a94090b872"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/render_model_wrapper.h",
+      "gitBlob": "90eb2ab4a6e2f91ecc29f2d9e5b92e0adf247cd6"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/resources.resx",
+      "gitBlob": "7080a7d118e8cd7ec668e9bb0d8e90767e0c7a3c"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/sector_generator_portal.cpp",
+      "gitBlob": "466fae978c074ead6dceeaf31da89bfba125993a"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/sector_generator_portal.h",
+      "gitBlob": "afeab50e0f82180df738ed5d46135ea4f8692fb3"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/sectors_controls.cpp",
+      "gitBlob": "8f4090b0e6d40bf766289d4a2660aa2882a7161b"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/sectors_controls.h",
+      "gitBlob": "72561a7871cebe1f369f6c4bc14b40a881462ea9"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/sectors_controls.resx",
+      "gitBlob": "19dc0dd8b3964e653690c64d095c5d28283828b7"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/sectors_generator.cpp",
+      "gitBlob": "b821f293b63317c7499c2d6e639abfda0a501b98"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/sectors_generator.h",
+      "gitBlob": "406be5c70fdba52623d9a20afc0b14f2bf604b21"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/sectors_view.cpp",
+      "gitBlob": "b230916283b71353351171a6a734e92c27a4772f"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/sectors_view.h",
+      "gitBlob": "947df9993b0d447f406d66e3d8e31abbcbb7817c"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/sectors_view.resx",
+      "gitBlob": "19dc0dd8b3964e653690c64d095c5d28283828b7"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/spatial_sector.cpp",
+      "gitBlob": "f2971e7f126a57ff74c585cc4e4c979888b863f0"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/spatial_sector.h",
+      "gitBlob": "232cd5e540afa2a8c14f3dfe65b5e28a47522e14"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/triangles_mesh_utilities.cpp",
+      "gitBlob": "9e7074ba52905004c986b010770138418b3ecb13"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/triangles_mesh_utilities.h",
+      "gitBlob": "f6281af606909b2810477afbb7d79b9e364097ae"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/triple.h",
+      "gitBlob": "8fdc9edb29b487fca2206682c021c0d7cbdc0f9f"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/unique_name_helper.cpp",
+      "gitBlob": "84a1b114af40b647964fd5bc1d999b155f4925cb"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/unique_name_helper.h",
+      "gitBlob": "a15ec86ae2bdd616bf17cc5ce542f4ab132a92c8"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/unmanaged_delegate.h",
+      "gitBlob": "7e88455c0278b61b77b7ad39a7519906a317deea"
+    },
+    {
+      "path": "sources/xray/editor/particle/api.h",
+      "gitBlob": "74cdf88eb3cf75493ee10bb482a895538a883462"
+    },
+    {
+      "path": "sources/xray/editor/particle/engine.h",
+      "gitBlob": "9a572b9698ceb319e7aefef112cb5005782cdacb"
+    },
+    {
+      "path": "sources/xray/editor/particle/library_linkage.h",
+      "gitBlob": "350a49301ea8e9f6d173f46b1d9468419bb20756"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/add_delete_group_nodes.cpp",
+      "gitBlob": "0a0abff9008b05f517c50f598bd721ef28707693"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/add_delete_group_nodes.h",
+      "gitBlob": "38ba6b772a3a69b5322134c00a448587e2fb0174"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/change_node_index.cpp",
+      "gitBlob": "5182428275588119829fb963c28a2943b428d53a"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/change_node_index.h",
+      "gitBlob": "340a4b3baaa8ceb23daa866d2f13f07090a4bf23"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/disable_group_nodes.cpp",
+      "gitBlob": "3c5c10e1cba54163b11af0aca3de15588f29c0f5"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/disable_group_nodes.h",
+      "gitBlob": "870075b0761ed08c2248ad9990e265e97a67e018"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/editor_creator.cpp",
+      "gitBlob": "270b78893f29d97ca72c650d745305a08979bd79"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/editor_creator.h",
+      "gitBlob": "dd407002b9899787e36d001108f5027942c3af79"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/images/images104x8.h",
+      "gitBlob": "58fb46e05a0d66781ceca0297a3e43e538555322"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/images/images104x8.png",
+      "gitBlob": "1bbe30d9953bf5c1e4323e2308e18f8e80b0c0e9"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/images/images30x25.h",
+      "gitBlob": "a610b74d02c3de61f3801e794083f77586cda7d8"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/images/images30x25.png",
+      "gitBlob": "c2d7bb37ca5b9489ba7dafebaa3036816faa5a77"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/images/images92x25.h",
+      "gitBlob": "b4642e7ba2446d2ca778e9649687349bba7c1a4d"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/images/images92x25.png",
+      "gitBlob": "082f61ac6c3d1518e210a575b1a17893cf769a39"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/images/images9x9.h",
+      "gitBlob": "7734b62970332875765a913507f964c7daa34985"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/images/images9x9.png",
+      "gitBlob": "cf36d75e2230571494ffd886c7af38d396a7b5fa"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/images/particle_editor_images16x16.h",
+      "gitBlob": "8ea89046a9b37354b496883101180324b9cbdea1"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/images/particle_editor_images16x16.png",
+      "gitBlob": "585e13573214c7fd7811f13b928cf767064f68db"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/images/particle_editor_images16x16.psd",
+      "gitBlob": "0d2b5ee0f4e08f1ce6c589b9d90fad273ec72eee"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/input_actions.cpp",
+      "gitBlob": "34fdafebc484f505b95fec500b24e95cbd514897"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/input_actions.h",
+      "gitBlob": "5ccf17b5b886baefd2041ca45e3ab9b3fc4380f5"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/move_node.cpp",
+      "gitBlob": "1a2b9a765a9ca8de4546e7ac3a2d3acf7828080a"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/move_node.h",
+      "gitBlob": "b6ac613ea98653d097767805699dbe4c815015c4"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/particle_color_curve_holder.cpp",
+      "gitBlob": "09546775e0811662d1f33fd017c795bc865d49df"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/particle_color_curve_holder.h",
+      "gitBlob": "8020a23c2a9c67b9c02967f556254dd235543732"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/particle_contexts_manager.cpp",
+      "gitBlob": "fc3612cbbfa30568e80c0ac8796f17995717d6fa"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/particle_contexts_manager.h",
+      "gitBlob": "fafd3f6bf12fbbaed781177f0be38bdd3a076f28"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/particle_data_source_base.h",
+      "gitBlob": "7c14e12c9f8229e305ddc94d711aa17887bbb992"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/particle_data_source_color.cpp",
+      "gitBlob": "ffb7a803f3e8a9e0c369434162942428bc2c6f6d"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/particle_data_source_color.h",
+      "gitBlob": "fd0c2625488e538dcf83249219f648fa17e34137"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/particle_data_source_color_matrix.cpp",
+      "gitBlob": "04360bd6336827d18965fc812036024e4089e38b"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/particle_data_source_color_matrix.h",
+      "gitBlob": "88e3c45b869e343f1bb8aa39345ba329de181c5b"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/particle_data_source_float.cpp",
+      "gitBlob": "893978f2e6eec07e3ec89d440cbd5b99e4e36ce0"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/particle_data_source_float.h",
+      "gitBlob": "0e4a7ddb731fab4ddd717bbc8aa3e9a35b446b7d"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/particle_data_source_float3.cpp",
+      "gitBlob": "ba53489ab2f3ce1fdb56e05ed5899ddcc1f2b748"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/particle_data_source_float3.h",
+      "gitBlob": "e7a78aebb7dbfedde8af91fdbc25a391f986b9a6"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/particle_data_source_property_holder.cpp",
+      "gitBlob": "8bb8e9d74428f5bb2e1600a4a9d5d4c2eef11957"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/particle_data_source_property_holder.h",
+      "gitBlob": "fd3a3976a083af1cb95fa331b7621566ce1dae2f"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/particle_data_sources_holder.cpp",
+      "gitBlob": "6148b015b0a701a83a03e757e9ef4932ef1f3592"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/particle_data_sources_holder.h",
+      "gitBlob": "e06ce85dacee5495ae7f48e38f1d5b57eef24a04"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/particle_data_sources_panel.cpp",
+      "gitBlob": "58ad69b9689a526cceca544b12e7ab510691e7a7"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/particle_data_sources_panel.h",
+      "gitBlob": "c0a0a4db31a22c777db6355a45e06280e388418e"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/particle_domain_type_holder.cpp",
+      "gitBlob": "c5d006dee046073e86a1ef5d26d9be9dc0d5da2a"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/particle_domain_type_holder.h",
+      "gitBlob": "47bc2bd7233f1579718a01fd90f6cfdd0c4523b9"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/particle_editor.cpp",
+      "gitBlob": "d9ec97c32b0cf321eb941e53af5df3127a9d355a"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/particle_editor.h",
+      "gitBlob": "50a16f2e6a7ccb235b58e1f8418e060d5ffdc798"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/particle_editor.resx",
+      "gitBlob": "19dc0dd8b3964e653690c64d095c5d28283828b7"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/particle_editor_entry_point.cpp",
+      "gitBlob": "57fa2bfda9cc60744ca6c5f58bade0c1bfefe9d9"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/particle_editor_library_linkage.cpp",
+      "gitBlob": "be79405be71fe98453c05c129a76da2e4c75b765"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/particle_editor_memory.h",
+      "gitBlob": "fda7832bdad580023657ce269849aaab7aa02b5f"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/particle_graph_document.cpp",
+      "gitBlob": "64eb8bb203a73ca94289125a47ac9e2252a7a5b3"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/particle_graph_document.h",
+      "gitBlob": "8b8a6371013f691144bcdc70c0d6c75ce0515887"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/particle_graph_node.cpp",
+      "gitBlob": "cf5722bf820ee887b70d412fbb19b9f4af03b1df"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/particle_graph_node.h",
+      "gitBlob": "3844cffe7e3aebde9b7775330e7bbb9b5401b2bc"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/particle_graph_node_action.cpp",
+      "gitBlob": "802b76911309c032aa8c15b2dedd4ebbae8055da"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/particle_graph_node_action.h",
+      "gitBlob": "a333fbf16366e09ed3e4585308ea752e8b3c1100"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/particle_graph_node_collection.cpp",
+      "gitBlob": "46736eeb3c5dc3032c27f8cae599b42d476a74c0"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/particle_graph_node_collection.h",
+      "gitBlob": "e070127ea147cb05c4ced301179f3e4d11a7c481"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/particle_graph_node_emitter.cpp",
+      "gitBlob": "a20d4f75dbe89f22a724dcbd6b620540b7236889"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/particle_graph_node_emitter.h",
+      "gitBlob": "2bdb5d65163c7d05998154cae6f61d6aba6235bd"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/particle_graph_node_event.cpp",
+      "gitBlob": "a2ef1305227b37779fbad03e13ea4dd3a6bc3b6d"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/particle_graph_node_event.h",
+      "gitBlob": "14fc628157aad3d290d6de8683da4b079ec69b1f"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/particle_graph_node_property.cpp",
+      "gitBlob": "12e2f33920f792bf6f03be09b8259c2fe0b3ef85"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/particle_graph_node_property.h",
+      "gitBlob": "94c0f4fbec8ab69a686829b6da73bfdb4fb872ad"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/particle_graph_node_style.cpp",
+      "gitBlob": "0e1445bdf027559798dc860d338f7e161c8971c7"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/particle_graph_node_style.h",
+      "gitBlob": "825b620c266647401e9267cabc4176a6900d6530"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/particle_graph_panel.resx",
+      "gitBlob": "19dc0dd8b3964e653690c64d095c5d28283828b7"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/particle_groups_source.cpp",
+      "gitBlob": "019bd6611356385c47275ecd8af51f8b7679e1b6"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/particle_groups_source.h",
+      "gitBlob": "03bbd56096ac01e4b8f1d446ee02001b575755ff"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/particle_hypergraph.cpp",
+      "gitBlob": "6079254d7b3436ec4816654022ea1b09ec04cf11"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/particle_hypergraph.h",
+      "gitBlob": "127d29f20f03cd1a1af18e0ac23af0808a1f030c"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/particle_links_manager.cpp",
+      "gitBlob": "c9874d9c3b485edc5fafcfe45d9ea7580052b46b"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/particle_links_manager.h",
+      "gitBlob": "6511f0b1a767b19703d927b247349696074d6b95"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/particle_node_connection_editor.cpp",
+      "gitBlob": "22cedabc61f87d85f1353911ebb9013f242ecee2"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/particle_node_connection_editor.h",
+      "gitBlob": "8b6f65606b2aa704ddf069d8c6bcea14079bbc71"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/particle_node_properties.cpp",
+      "gitBlob": "435102dc2a9caaebc6132fbcba5038d4978f67b9"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/particle_node_properties.h",
+      "gitBlob": "e7687355601cebaa43b0dcf6d608e002b8e7dceb"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/particle_node_properties_inline.h",
+      "gitBlob": "15aa9a408aa43e91482b8105e9bfc185e4664431"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/particle_preview_panel.resx",
+      "gitBlob": "19dc0dd8b3964e653690c64d095c5d28283828b7"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/particle_source_nodes_container.cpp",
+      "gitBlob": "f92ba1e7fe8307f4d9ca7449a1ccbe55f9be576b"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/particle_source_nodes_container.h",
+      "gitBlob": "7211105f612e894f9f2175b69f8187be3b1f541c"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/particle_source_nodes_container.resx",
+      "gitBlob": "19dc0dd8b3964e653690c64d095c5d28283828b7"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/particle_sources_panel.cpp",
+      "gitBlob": "352d729d5558db0a159ef0539ed6844b4dae3e8e"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/particle_sources_panel.h",
+      "gitBlob": "d4a22d8a00e5ef3b462694b774611d93dd8080b2"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/particle_system_config_wrapper.h",
+      "gitBlob": "dc53e0ad4bfeb0aed13a03266c241a8de10a32ac"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/particle_time_based_layout_panel.cpp",
+      "gitBlob": "23ddef56243669f19d03e3b6298a2f00dadb6c43"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/particle_time_based_layout_panel.h",
+      "gitBlob": "f52429f3b7f2ece6b00809a6268f51637c0f66c8"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/particle_time_based_layout_props.h",
+      "gitBlob": "ebee9e064163542ef8be76cfa20ea387ea46a1d4"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/particle_time_parameters_holder.cpp",
+      "gitBlob": "3d36e88c098d3f3b205fa2c9a578aee088e3d366"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/particle_time_parameters_holder.h",
+      "gitBlob": "7661ad2578abcf5e08a7b60a470e738fdfefdf97"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/particle_tree_node_holder.cpp",
+      "gitBlob": "aa530652ec7d605e1ea14ed4c569efb60865d774"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/particle_tree_node_holder.h",
+      "gitBlob": "414185583d2b47dd05c51f81b45b9494e000d380"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/pch.cpp",
+      "gitBlob": "f7d0b316984f241ba566564998b21c4221a8b3ea"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/pch.h",
+      "gitBlob": "60899ba1edbec93f50fcbcfee481cddef9777435"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/property_visualizers.cpp",
+      "gitBlob": "42adfb5f92ff7fc82343062ff64d690832b7228d"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/property_visualizers.h",
+      "gitBlob": "bc7a1e2100bd33980abccf6d6dc54b07edcd5f89"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/resources.resx",
+      "gitBlob": "79449e4857d904c0d379fc832d4053eb2accb682"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/transform_control_helper.cpp",
+      "gitBlob": "013d7d00b1a36bc809c7e8b7ca361b324c75ecee"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/transform_control_helper.h",
+      "gitBlob": "7b8e1aa9c0fc83c8bc8f4f331e848ca9ded4447e"
+    }
+  ],
+  "referenceProjects": [
+    {
+      "path": "sources/xray/editor/controls/sources/editor_controls.vcproj",
+      "gitBlob": "5aa81dc87e3827df95a83c0f02c51b1c95b69b5b"
+    },
+    {
+      "path": "sources/xray/editor/dialog/sources/dialog_editor.vcproj",
+      "gitBlob": "12ed8c0925a84216c581485e02e67d9e061eaec0"
+    },
+    {
+      "path": "sources/xray/editor/model/sources/model_editor.vcproj",
+      "gitBlob": "04e49ffd8805ee81945ccfb5989d611c4e555df5"
+    },
+    {
+      "path": "sources/xray/editor/particle/sources/particle_editor.vcproj",
+      "gitBlob": "1c2dc13e1f68303607fccaca8e6e9ba9f1a8232c"
+    }
+  ]
+}

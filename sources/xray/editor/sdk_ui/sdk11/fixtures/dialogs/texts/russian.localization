@@ -1,0 +1,11 @@
+string_table_ids = {
+	new_file1_string_table_id_0 = "",
+	new_file1_string_table_id_1 = "",
+	test_string_table_id_0 = "",
+	test_string_table_id_1 = "",
+	test_string_table_id_2 = "",
+	zaton_test_zaton_string_table_id_0 = "",
+	zaton_test_zaton_string_table_id_1 = "",
+	zaton_test_zaton_string_table_id_2 = "",
+} -- string_table_ids
+

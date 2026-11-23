@@ -1,0 +1,113 @@
+{
+  "version": 1,
+  "id": "vulkan-m8-control",
+  "scope_date": "2026-10-17",
+  "amendments": [{"date": "2026-10-18", "decision": "User retained chaz_mir_part/-1_-1.terr and authorized an explicit larger terrain memory profile and boundary checks; default profile and original input inventory stay unchanged."}],
+  "status": "defined; runtime acceptance remains open",
+  "plan": "vulkan_integration_plan.md",
+  "source_root": "C:/Stalker2_2011/xr2-dsgn/resources",
+  "input_inventory": "sources/xray/render/vulkan/m8_acceptance_inputs.json",
+  "prepared_root": "build/m8-control/assets",
+  "original_inputs_read_only": true,
+  "projection_policy": "Offline preparation is explicit and records retained/omitted parameters. It never proves original scene parity or M5-C compatibility.",
+  "user_decision": {
+    "required_additions": ["distortion", "SSAO"],
+    "deferred": ["GI", "LPV"],
+    "basis": "User selected distortion and SSAO on 2026-10-17; terrain, actors, particles, vegetation, decals and editor main/preview remain required."
+  },
+  "configuration": {
+    "platform": "Windows x64",
+    "cpp_toolchain": "GCC/MinGW-w64 + Ninja",
+    "m8_build": "Debug",
+    "m9_builds": ["Debug", "Release"],
+    "gpu_baseline": "NVIDIA GeForce RTX 4070",
+    "runtime": ["system Vulkan >= 1.4", "system Lua 5.5 ABI", "DXC"],
+    "validation_environment": {"XRAY_VULKAN_REQUIRE_VALIDATION": "1"},
+    "automated_windows": "hidden, nonactivating, input-transparent; fenced GPU capture before present"
+  },
+  "input_selections": {
+    "provenance": [
+      "build/real-assets/barrel-radiation-stage7-material-inputs/provenance.json",
+      "build/real-assets/woodbox-mil-stage7-detail-inputs/provenance.json",
+      "build/stage8-character-materials/neutral-surface-clips-pack/provenance.json",
+      "build/stage8-terrain-normalization/real-pack/provenance.json"
+    ],
+    "source_files": [
+      "sources/particles/candlelight_small.particle",
+      "sources/material_instances/fx/pfx/candlelight.material",
+      "sources/textures/fx/pfx/candlelight.tga",
+      "sources/textures/fx/pfx/candlelight.options",
+      "sources/speedtree/eastern_white_pine.srt",
+      "sources/speedtree/eastern_white_pine.options",
+      "sources/material_instances/nature/eastern_white_pine/branch.material",
+      "sources/material_instances/nature/eastern_white_pine/frond.material",
+      "sources/material_instances/nature/eastern_white_pine/leafcard.material",
+      "sources/material_instances/nature/eastern_white_pine/leafmesh.material",
+      "sources/material_instances/nature/eastern_white_pine/billboard.material",
+      "sources/material_instances/decals/bullet_hit_concrete.material",
+      "sources/material_instances/fx/pfx/distort_14_panner.material",
+      "sources/shaders/sm_4_0/ssao_accumulation.ps",
+      "sources/shaders/sm_4_0/ssao_filter4x4.ps",
+      "sources/shaders/sm_4_0/ssao_filter4x4_1.ps",
+      "sources/shaders/sm_4_0/distortion_base.ps",
+      "sources/shaders/sm_4_0/distortion_panner.ps",
+      "sources/shaders/sm_4_0/apply_distortion.vs",
+      "sources/shaders/sm_4_0/apply_distortion.ps",
+      "sources/shaders/sm_4_0/post_process_distortion.ps"
+    ],
+    "dependency_policy": "Resolve module inheritance and quoted texture references read-only; hash all inputs from selected provenance and metadata closure. Reference shader includes are inventoried; they are not assumed to compile unchanged."
+  },
+  "scene": {
+    "logical_project": "vulkan_m8_control",
+    "project_virtual_path": "resources/projects/vulkan_m8_control",
+    "content": [
+      {"role": "terrain", "inputs": ["projects/bar_shooting_gallery/terrain/0_0.terr", "projects/chaz_mir_part/terrain/-1_-1.terr"], "profile": "immutable translated cells, normalized RGBA role arrays; use authored placement and put actor/props above verified ground"},
+      {"role": "static", "inputs": ["props/barrel/barrel_metal03_radiation.model", "props/box/woodbox_mil.model"], "profile": "accepted surface projection, mapped normal/specular; opaque and cutout controls"},
+      {"role": "actor", "inputs": ["character/human/neutral/neutral_01/neutral_01.skinned_model", "single/human/camp/sit_high_guitar_idle.clip", "single/human/camp/sit_high_guitar_play_1.clip"], "profile": "accepted four-weight CPU skinning, root motion/loop and fixed transition"},
+      {"role": "particles", "inputs": ["particles/candlelight_small.particle", "material_instances/fx/pfx/candlelight.material", "textures/fx/pfx/candlelight.tga"], "profile": "explicit constant-profile projection, square/rectangle camera-facing unlit alpha and additive controls; unit UV, RGBA8, LOD0", "omissions": ["original locked-axis alignment", "original curves/domains/graph timing", "soft particles", "subUV", "original effect parity"]},
+      {"role": "vegetation", "inputs": ["speedtree/eastern_white_pine.srt", "speedtree/eastern_white_pine.options"], "profile": "one tree, fixed highest geometry LOD, branches/fronds/leaves and authored RGBA cutout materials; wind and distance/billboard LOD transitions excluded from this fixed view"},
+      {"role": "decals", "inputs": ["material_instances/decals/bullet_hit_concrete.material"], "profile": "one bounded projected decal on terrain/static receiver, diffuse and normal contribution, add/update/remove; no particle decals"}
+    ],
+    "camera": {"projection": "finite forward-Z perspective", "vertical_fov_degrees": 60, "near": 0.1, "far": 256, "fit": "prepare a stored camera transform from aggregate placed bounds; no runtime auto-fit changes during comparison"},
+    "views": [{"width": 960, "height": 640}, {"width": 1102, "height": 673}],
+    "aa": {"required": "1x, post-AA off for full mixed scene", "static_regression": "retain existing 12-profile M7 and terrain AA suites", "excluded_claims": ["animated actor TAA", "particle MSAA/TAA", "motion-vector reprojection"]},
+    "postprocess": {"exposure_ev": 0, "tonemap": "existing Reinhard", "bloom": "existing opt-in control", "new_features": []},
+    "lighting": "existing directional/point/spot with shadows; one fixed configuration and individually switched controls",
+    "pass_contract": ["GBuffer/material inputs", "decal material contributions before lighting", "SSAO and bounded filter from depth/normals, modulating indirect/ambient contribution", "existing direct lighting/shadows/combine/environment/sky", "unlit alpha/additive particles in linear HDR with opaque depth test, no depth writes", "distortion field and separate HDR source/destination composite", "existing bloom/tonemap", "UI/debug overlay"],
+    "shader_requirements": {"SSAO": ["fullscreen VS", "fragment shader", "sampled depth/normals", "separate AO/filter targets"], "distortion": ["graphics VS/PS", "bounded field target", "separate sampled HDR source and output"], "geometry_tessellation_compute": "not required by these bounded screen-space effects; unsupported stages must not be enabled implicitly"},
+    "physics": "retain accepted terrain collision profile; free-rotation/body-shape expansion is not implied by placing an animated visual",
+    "terrain_memory": {"default_cell_mib": 256, "extended_cell_mib": 384, "extended_queued_view_mib": 576, "activation": "explicit typed scene and cook profiles; no automatic escalation or downsampling", "extended_cells": ["projects/chaz_mir_part/terrain/-1_-1.terr"]}
+  },
+  "workflows": [
+    {
+      "id": "game",
+      "executable": "binaries/stalker2.exe",
+      "arguments": ["-level=vulkan_m8_control"],
+      "working_directory": "binaries",
+      "mounts": {"resources": "build/m8-control/assets/resources", "resources.converted": "build/m8-control/assets/resources.converted"},
+      "launch_state": "target contract; project preparation, mounting and production startup are M8-GAME work",
+      "threads": "ordinary logic/render/resource; no -debug_single_thread",
+      "operations": ["load", "move camera", "animate actor", "particle play/update/visibility/pause/stop/remove", "vegetation visibility/transform", "decal add/update/remove", "toggle SSAO/distortion", "unload/reload", "shutdown with pending work"]
+    },
+    {
+      "id": "editor",
+      "executable": "binaries/stalker2.exe",
+      "arguments": ["-editor"],
+      "working_directory": "binaries",
+      "mounts": "same prepared resources and resources.converted as game",
+      "launch_state": "target contract; host build/deployment and DLL/ABI/readiness repairs remain M8-EDITOR work",
+      "runtime_artifacts": {"native": ["xray_editor_world", "xray_editor_base", "xray_render_vulkan"], "managed": "xray.editor.base.dll exposing xray_editor_create_world with pointer-width-safe callbacks; explicit build/publish integration required"},
+      "required_modes": ["main scene view", "separate static-model preview using woodbox_mil", "terrain binding edit commands", "transform/visibility and UI/debug controls"],
+      "excluded_modes": ["particle graph editor/preview", "unported legacy managed panels"],
+      "operations": ["load main content", "open independent model preview", "resize each output", "close preview while main continues", "reopen preview", "close main/host with pending resource work"]
+    }
+  ],
+  "controls": {
+    "required_images": ["all content visible", "empty particle world still draws opaque content", "particle alpha vs additive over opaque background", "particle transform and visibility", "vegetation visibility and cutout silhouette", "decal moved/removed and normal response", "SSAO corner occlusion vs open surface and disabled identity", "distortion known offset vs zero-field identity and occlusion", "main/preview isolation", "resized output"],
+    "oracle": "Independent analytic/synthetic controls per feature plus provenance-backed real captures; never derive expected pixels from the GPU image under test. Store tolerances and selected regions before acceptance.",
+    "lifecycle": ["copied caller payload", "foreign scene/world rejected", "closed/pending/retained callback guards", "queue remove/replay semantics", "cook/deleter and GPU retirement drain", "input SHA-256 unchanged"],
+    "negative_inputs": ["missing material/texture", "unsupported particle graph/profile", "budget overflow", "unknown feature/stage", "foreign HWND/output", "malformed transform"],
+    "runtime_acceptance": false,
+    "m5_legacy_pack_acceptance": false
+  }
+}

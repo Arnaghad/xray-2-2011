@@ -1,0 +1,169 @@
+{
+  "repository": "https://github.com/zeux/meshoptimizer",
+  "release": "v1.3",
+  "commit": "9e1f07b159d3cb777f1c67ed31fc11fd117986f4",
+  "license": "MIT",
+  "files": [
+    {
+      "path": "LICENSE.md",
+      "local": "LICENSE.md",
+      "gitBlob": "468827f4b86ef754465396a9e163db25af406626",
+      "sha256": "f03037ca7bad1e3eb7f4a63fa6084a8baabd5ba30d3c239a9a7f35705d873e26",
+      "bytes": 1079
+    },
+    {
+      "path": "src/allocator.cpp",
+      "local": "allocator.cpp",
+      "gitBlob": "058fbf3129cae10f91df463789e5b295e5fac093",
+      "sha256": "d2cc48691fe2f4c6d097bf7a766389cfb7f83ca14a5f747e3944332656d02254",
+      "bytes": 607
+    },
+    {
+      "path": "src/clusterizer.cpp",
+      "local": "clusterizer.cpp",
+      "gitBlob": "8e884e0632c9ff2a7f015236ba121432198bc374",
+      "sha256": "a2775edf77d86a9a5f0ca82f4635ce6ce741bbda79fd9a652ffc8c5dd61d3b0e",
+      "bytes": 47880
+    },
+    {
+      "path": "src/indexanalyzer.cpp",
+      "local": "indexanalyzer.cpp",
+      "gitBlob": "e8e975c274a25ca3249f32803eb4a9f17ecbf29c",
+      "sha256": "bff37aecb10cefa33f3f6a217413c6ac98899c23e6de5282420c60e6baf786ec",
+      "bytes": 3820
+    },
+    {
+      "path": "src/indexcodec.cpp",
+      "local": "indexcodec.cpp",
+      "gitBlob": "8dead6343281509c9e2b2e8a5d786ebb34645703",
+      "sha256": "2b98ede67ab4731e8ab54da794c46b735d659ea360666fe66bc5725c027fff6e",
+      "bytes": 21390
+    },
+    {
+      "path": "src/indexgenerator.cpp",
+      "local": "indexgenerator.cpp",
+      "gitBlob": "0f29614000f5097164ae5323a740c5bd782185b7",
+      "sha256": "f362cdcd8af10016333bf699347a9364335987f413f061e5b7e8cafe3b498948",
+      "bytes": 24600
+    },
+    {
+      "path": "src/meshletcodec.cpp",
+      "local": "meshletcodec.cpp",
+      "gitBlob": "f6984a77b95d6ba107bd73c6da3d186d53199562",
+      "sha256": "f7bad517cb77a646ba0beef916ac42715c2fe18002f29e12c6cd4ccd5835e678",
+      "bytes": 33807
+    },
+    {
+      "path": "src/meshletutils.cpp",
+      "local": "meshletutils.cpp",
+      "gitBlob": "b92332addaf0160b6a84ad2c099d4214c1fe8b4c",
+      "sha256": "4813a0c9e8648c6de53f317322fa17c9486ff024f186aa9d631e7c60ba96c33e",
+      "bytes": 20635
+    },
+    {
+      "path": "src/meshoptimizer.h",
+      "local": "meshoptimizer.h",
+      "gitBlob": "ff69785b52cc5ee481315925787546d9deeb30d8",
+      "sha256": "e3688ef553f603391747895a5c221ef1528574cc7f8173782417a96cb531f61b",
+      "bytes": 109292
+    },
+    {
+      "path": "src/opacitymap.cpp",
+      "local": "opacitymap.cpp",
+      "gitBlob": "0ec5eaab4a023f6ddb2a5b2d3f63147749121132",
+      "sha256": "81037b530d10aaac80a43197294aef5b27b3ccf8d1e323c5ccdc0945fc4c5d69",
+      "bytes": 18567
+    },
+    {
+      "path": "src/overdrawoptimizer.cpp",
+      "local": "overdrawoptimizer.cpp",
+      "gitBlob": "682b924a9082fd1e4143d530a483e156c0125b9c",
+      "sha256": "a70412562f991133ce52b2833adee9de0a9029dc45312ada1eb5c2452dc4f3ee",
+      "bytes": 11671
+    },
+    {
+      "path": "src/partition.cpp",
+      "local": "partition.cpp",
+      "gitBlob": "5f0426da696c972429a60ff995c91a12ae83aa7a",
+      "sha256": "cf34f00dd7a550c7b18b31c35d683ac2efb9e1d711bcec411649d311477d4b2d",
+      "bytes": 19387
+    },
+    {
+      "path": "src/quantization.cpp",
+      "local": "quantization.cpp",
+      "gitBlob": "8571973022acc5433d156a48bca617b562f5b055",
+      "sha256": "28282f555d42a118a6735f161b1ba78fcbe0d1810a6a337a399bd8471f79105e",
+      "bytes": 3503
+    },
+    {
+      "path": "src/rasterizer.cpp",
+      "local": "rasterizer.cpp",
+      "gitBlob": "0e640bc0287bdc15b64c836defeaa446bb8f3509",
+      "sha256": "2172e0ac82359a19f2880763e2088f51b7ec361b23fb54f743b618691967dbe5",
+      "bytes": 8739
+    },
+    {
+      "path": "src/remesher.cpp",
+      "local": "remesher.cpp",
+      "gitBlob": "9279cc3a8de02cdfd559ce4106ffa12b8b5a7f1d",
+      "sha256": "51a06f9d348709b99e2f750710cc607793c8a08c5486193d8622ca2a06f67fb2",
+      "bytes": 27168
+    },
+    {
+      "path": "src/simplifier.cpp",
+      "local": "simplifier.cpp",
+      "gitBlob": "85c502524f439be82198dc451caba27a62b720de",
+      "sha256": "719303b6970398631e30724e8eebc6cd2e7e08b67fe8ab7cbf7eecafdaa08616",
+      "bytes": 107217
+    },
+    {
+      "path": "src/spatialorder.cpp",
+      "local": "spatialorder.cpp",
+      "gitBlob": "8a785fcd5604a7d4ed0e685706f4a18f46c70463",
+      "sha256": "9005ee0069ed8c56797606de80c0cd951ab55ffb608bc3af83c4e5b2517371b1",
+      "bytes": 11093
+    },
+    {
+      "path": "src/stripifier.cpp",
+      "local": "stripifier.cpp",
+      "gitBlob": "4043195aeb1625dcb1e902857f2f7a4177a601cc",
+      "sha256": "e653e6be3a9b821016a1f6a90b756b971422f1246ebd03e60b478251a288bfd4",
+      "bytes": 7752
+    },
+    {
+      "path": "src/tangentspace.cpp",
+      "local": "tangentspace.cpp",
+      "gitBlob": "f9a60e97a539493c42b4544635a8c2bb943ad730",
+      "sha256": "1ba72a59793887e870e5cc2c31b9b3d38296b436ee2fcdfb2c9e409b480e4079",
+      "bytes": 26559
+    },
+    {
+      "path": "src/vcacheoptimizer.cpp",
+      "local": "vcacheoptimizer.cpp",
+      "gitBlob": "e4ecc71d36e5acb28752c03d0e28df33175f497b",
+      "sha256": "618429ef4db8ab9b16fde4e73dcf425d89452acbf103085478bc8b1761fa6689",
+      "bytes": 14171
+    },
+    {
+      "path": "src/vertexcodec.cpp",
+      "local": "vertexcodec.cpp",
+      "gitBlob": "e6ccef02bf65a8b181df91e1916e69e647bb4f72",
+      "sha256": "6af26a85ed38daffb97d988e9704ffc257c690af05048304044bfc786699550f",
+      "bytes": 60507
+    },
+    {
+      "path": "src/vertexfilter.cpp",
+      "local": "vertexfilter.cpp",
+      "gitBlob": "a8d89d1aa14a8de576629b6d051c1f4e9e3d782d",
+      "sha256": "780e7f95024b577b8adcb8ee2a2e442294ebd62a1b6aaf37627fc1ff3cac4ff3",
+      "bytes": 55477
+    },
+    {
+      "path": "src/vfetchoptimizer.cpp",
+      "local": "vfetchoptimizer.cpp",
+      "gitBlob": "4847465b6ab022c6f827125ae018171ff203f507",
+      "sha256": "aa534bb8150ca27ae229c58a0dc51f85f9acccbc5d4214f4c82edd91fc08e478",
+      "bytes": 1915
+    }
+  ]
+}

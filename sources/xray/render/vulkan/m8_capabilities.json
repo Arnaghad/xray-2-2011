@@ -1,0 +1,1158 @@
+{
+  "version": 1,
+  "id": "vulkan-m8-capability-audit-v1",
+  "date": "2026-10-20",
+  "base_manifest": "sources/xray/render/vulkan/m8_acceptance_manifest.json",
+  "base_manifest_sha256": "b9cf3b00202857e7a170f1807438ec4b4a8268b17129f9507c03ba92992fd21a",
+  "scope": "Bounded M8 manifest workflows only; preserve original inputs, accepted feature bounds and M5-C/M9 ownership.",
+  "coverage": [
+    {
+      "manifest_pointer": "/workflows/0/operations/0",
+      "operation": "load",
+      "implementation": [
+        {
+          "file": "sources/xray/render/facade/control_level.h",
+          "symbol": "load"
+        },
+        {
+          "file": "sources/xray/render/facade/control_level.h",
+          "symbol": "read_project"
+        },
+        {
+          "file": "sources/xray/render/facade/control_level.h",
+          "symbol": "start"
+        },
+        {
+          "file": "sources/xray/render/vulkan/sources/vulkan_world.cpp",
+          "symbol": "initialize_game"
+        }
+      ],
+      "ctest": [
+        "xray_render_stage4_resources",
+        "xray_render_stage8_game_threads_gpu"
+      ],
+      "native": {
+        "game": [
+          "overview",
+          "inspection"
+        ]
+      }
+    },
+    {
+      "manifest_pointer": "/workflows/0/operations/1",
+      "operation": "move camera",
+      "implementation": [
+        {
+          "file": "sources/xray/render/facade/control_level.h",
+          "symbol": "render_frame"
+        },
+        {
+          "file": "sources/xray/render/vulkan/sources/vulkan_world.cpp",
+          "symbol": "set_view_matrix"
+        },
+        {
+          "file": "sources/xray/render/vulkan/sources/vulkan_world.cpp",
+          "symbol": "set_projection_matrix"
+        }
+      ],
+      "ctest": [
+        "xray_render_stage4_resources"
+      ],
+      "native": {
+        "game": [
+          "camera_moved",
+          "camera_restored"
+        ]
+      }
+    },
+    {
+      "manifest_pointer": "/workflows/0/operations/2",
+      "operation": "animate actor",
+      "implementation": [
+        {
+          "file": "sources/xray/render/facade/control_level.h",
+          "symbol": "render_frame"
+        },
+        {
+          "file": "sources/xray/render/vulkan/sources/vulkan_world.cpp",
+          "symbol": "update_skeleton"
+        },
+        {
+          "file": "sources/xray/render/vulkan/sources/vulkan_world.cpp",
+          "symbol": "update_model"
+        }
+      ],
+      "ctest": [
+        "xray_render_stage8_animation_player",
+        "xray_render_stage8_skeletal_gpu"
+      ],
+      "native": {
+        "game": [
+          "actor_transition",
+          "restored_animation"
+        ]
+      }
+    },
+    {
+      "manifest_pointer": "/workflows/0/operations/3",
+      "operation": "particle play/update/visibility/pause/stop/remove",
+      "implementation": [
+        {
+          "file": "sources/xray/render/vulkan/sources/vulkan_world.cpp",
+          "symbol": "play_particle_system"
+        },
+        {
+          "file": "sources/xray/render/vulkan/sources/vulkan_world.cpp",
+          "symbol": "update_particle_system_instance"
+        },
+        {
+          "file": "sources/xray/render/vulkan/sources/vulkan_world.cpp",
+          "symbol": "stop_particle_system"
+        },
+        {
+          "file": "sources/xray/render/vulkan/sources/vulkan_world.cpp",
+          "symbol": "remove_particle_system_instance"
+        }
+      ],
+      "ctest": [
+        "xray_render_stage8_particle_scene_gpu",
+        "xray_render_stage8_particle_submission_gpu"
+      ],
+      "native": {
+        "game": [
+          "particle_moved",
+          "no_particles",
+          "particles_stopped_removed",
+          "particles_replayed"
+        ]
+      }
+    },
+    {
+      "manifest_pointer": "/workflows/0/operations/4",
+      "operation": "vegetation visibility/transform",
+      "implementation": [
+        {
+          "file": "sources/xray/render/vulkan/sources/vulkan_world.cpp",
+          "symbol": "set_speedtree_instance_visible"
+        },
+        {
+          "file": "sources/xray/render/vulkan/sources/vulkan_world.cpp",
+          "symbol": "update_speedtree_instance"
+        }
+      ],
+      "ctest": [
+        "xray_render_stage8_vegetation_gpu"
+      ],
+      "native": {
+        "game": [
+          "no_tree",
+          "tree_moved",
+          "restored_tree_transform"
+        ]
+      }
+    },
+    {
+      "manifest_pointer": "/workflows/0/operations/5",
+      "operation": "decal add/update/remove",
+      "implementation": [
+        {
+          "file": "sources/xray/render/vulkan/sources/vulkan_world.cpp",
+          "symbol": "add_decal"
+        },
+        {
+          "file": "sources/xray/render/vulkan/sources/vulkan_world.cpp",
+          "symbol": "update_decal"
+        },
+        {
+          "file": "sources/xray/render/vulkan/sources/vulkan_world.cpp",
+          "symbol": "remove_decal"
+        }
+      ],
+      "ctest": [
+        "xray_render_stage8_decals_gpu"
+      ],
+      "native": {
+        "game": [
+          "no_decals",
+          "decal_moved",
+          "restored_decal_transform"
+        ]
+      }
+    },
+    {
+      "manifest_pointer": "/workflows/0/operations/6",
+      "operation": "toggle SSAO/distortion",
+      "implementation": [
+        {
+          "file": "sources/xray/render/facade/control_level.h",
+          "symbol": "controls"
+        },
+        {
+          "file": "sources/xray/render/vulkan/sources/vulkan_world.cpp",
+          "symbol": "set_postprocess_settings"
+        }
+      ],
+      "ctest": [
+        "xray_render_stage8_effects_gpu"
+      ],
+      "native": {
+        "game": [
+          "no_ssao",
+          "restored_ssao",
+          "no_distortion",
+          "restored_distortion"
+        ]
+      }
+    },
+    {
+      "manifest_pointer": "/workflows/0/operations/7",
+      "operation": "unload/reload",
+      "implementation": [
+        {
+          "file": "sources/xray/render/facade/control_level.h",
+          "symbol": "load"
+        },
+        {
+          "file": "sources/xray/render/facade/control_level.h",
+          "symbol": "unload"
+        },
+        {
+          "file": "sources/xray/render/facade/control_level.h",
+          "symbol": "clear_resources"
+        }
+      ],
+      "ctest": [
+        "xray_render_stage8_game_threads_gpu",
+        "xray_render_stage4_resources"
+      ],
+      "native": {
+        "game": [
+          "unloaded",
+          "reloaded_overview",
+          "reloaded_inspection"
+        ]
+      }
+    },
+    {
+      "manifest_pointer": "/workflows/0/operations/8",
+      "operation": "shutdown with pending work",
+      "implementation": [
+        {
+          "file": "sources/xray/render/facade/control_level.h",
+          "symbol": "on_render_session_closed"
+        },
+        {
+          "file": "sources/xray/render/vulkan/sources/vulkan_world.cpp",
+          "symbol": "clear_resources"
+        },
+        {
+          "file": "sources/xray/render/vulkan/sources/vulkan_world.cpp",
+          "symbol": "finalize_game_resources"
+        }
+      ],
+      "ctest": [
+        "xray_render_stage8_game_threads_gpu",
+        "xray_render_stage8_particle_scene_gpu"
+      ],
+      "native": {
+        "game": [
+          "reloaded_inspection"
+        ]
+      }
+    },
+    {
+      "manifest_pointer": "/workflows/1/operations/0",
+      "operation": "load main content",
+      "implementation": [
+        {
+          "file": "sources/xray/render/facade/control_level.h",
+          "symbol": "load"
+        },
+        {
+          "file": "sources/xray/render/facade/control_level.h",
+          "symbol": "start"
+        },
+        {
+          "file": "sources/xray/editor/world/sources/editor_entry_point.cpp",
+          "symbol": "step"
+        }
+      ],
+      "ctest": [
+        "xray_stage8_editor_host"
+      ],
+      "native": {
+        "editor": [
+          "overview",
+          "inspection"
+        ]
+      }
+    },
+    {
+      "manifest_pointer": "/workflows/1/operations/1",
+      "operation": "open independent model preview",
+      "implementation": [
+        {
+          "file": "sources/xray/render/facade/control_level.h",
+          "symbol": "open_preview"
+        },
+        {
+          "file": "sources/xray/editor/base/EditorWorld.cs",
+          "symbol": "TogglePreview"
+        }
+      ],
+      "ctest": [
+        "xray_stage8_editor_host"
+      ],
+      "native": {
+        "outputs": [
+          "baseline.main",
+          "baseline.preview"
+        ]
+      }
+    },
+    {
+      "manifest_pointer": "/workflows/1/operations/2",
+      "operation": "resize each output",
+      "implementation": [
+        {
+          "file": "sources/xray/editor/world/sources/editor_entry_point.cpp",
+          "symbol": "resize_window"
+        },
+        {
+          "file": "sources/xray/editor/world/sources/editor_entry_point.cpp",
+          "symbol": "resize_main"
+        }
+      ],
+      "ctest": [
+        "xray_render_stage8_output_scene_gpu"
+      ],
+      "native": {
+        "outputs": [
+          "preview_resized.main",
+          "preview_resized.preview",
+          "main_resized.main",
+          "main_resized.preview"
+        ]
+      }
+    },
+    {
+      "manifest_pointer": "/workflows/1/operations/3",
+      "operation": "close preview while main continues",
+      "implementation": [
+        {
+          "file": "sources/xray/render/facade/control_level.h",
+          "symbol": "close_preview"
+        },
+        {
+          "file": "sources/xray/render/facade/control_level.h",
+          "symbol": "collect_closed_preview"
+        },
+        {
+          "file": "sources/xray/render/vulkan/sources/vulkan_world.cpp",
+          "symbol": "close_output"
+        }
+      ],
+      "ctest": [
+        "xray_render_stage8_output_scene_gpu"
+      ],
+      "native": {
+        "outputs": [
+          "preview_closed.main"
+        ]
+      }
+    },
+    {
+      "manifest_pointer": "/workflows/1/operations/4",
+      "operation": "reopen preview",
+      "implementation": [
+        {
+          "file": "sources/xray/render/facade/control_level.h",
+          "symbol": "open_preview"
+        }
+      ],
+      "ctest": [
+        "xray_stage8_editor_host",
+        "xray_render_stage8_outputs_gpu"
+      ],
+      "native": {
+        "outputs": [
+          "preview_reopened.main",
+          "preview_reopened.preview"
+        ]
+      }
+    },
+    {
+      "manifest_pointer": "/workflows/1/operations/5",
+      "operation": "close main/host with pending resource work",
+      "implementation": [
+        {
+          "file": "sources/xray/editor/world/sources/editor_entry_point.cpp",
+          "symbol": "on_render_session_closed"
+        },
+        {
+          "file": "sources/xray/render/facade/control_level.h",
+          "symbol": "clear_resources"
+        }
+      ],
+      "ctest": [
+        "xray_render_stage8_output_scene_gpu"
+      ],
+      "native": {
+        "outputs": [
+          "shutdown_ready.main"
+        ]
+      }
+    },
+    {
+      "manifest_pointer": "/workflows/1/required_modes/0",
+      "operation": "main scene view",
+      "implementation": [
+        {
+          "file": "sources/xray/render/facade/control_level.h",
+          "symbol": "load"
+        },
+        {
+          "file": "sources/xray/render/facade/control_level.h",
+          "symbol": "start"
+        },
+        {
+          "file": "sources/xray/editor/world/sources/editor_entry_point.cpp",
+          "symbol": "step"
+        }
+      ],
+      "ctest": [
+        "xray_stage8_editor_host"
+      ],
+      "native": {
+        "editor": [
+          "overview",
+          "inspection"
+        ]
+      }
+    },
+    {
+      "manifest_pointer": "/workflows/1/required_modes/1",
+      "operation": "separate static-model preview using woodbox_mil",
+      "implementation": [
+        {
+          "file": "sources/xray/render/facade/control_level.h",
+          "symbol": "open_preview"
+        },
+        {
+          "file": "sources/xray/editor/base/EditorWorld.cs",
+          "symbol": "TogglePreview"
+        }
+      ],
+      "ctest": [
+        "xray_stage8_editor_host"
+      ],
+      "native": {
+        "outputs": [
+          "baseline.main",
+          "baseline.preview"
+        ]
+      }
+    },
+    {
+      "manifest_pointer": "/workflows/1/required_modes/2",
+      "operation": "terrain binding edit commands",
+      "implementation": [
+        {
+          "file": "sources/xray/render/facade/control_level.h",
+          "symbol": "editor_command"
+        },
+        {
+          "file": "sources/xray/render/vulkan/sources/vulkan_world.cpp",
+          "symbol": "terrain_add_cell_texture"
+        },
+        {
+          "file": "sources/xray/render/vulkan/sources/vulkan_world.cpp",
+          "symbol": "terrain_remove_cell_texture"
+        },
+        {
+          "file": "sources/xray/render/vulkan/sources/vulkan_world.cpp",
+          "symbol": "terrain_exchange_texture"
+        }
+      ],
+      "ctest": [
+        "xray_render_stage8_terrain_bindings"
+      ],
+      "native": {
+        "editor": [
+          "editor_layer_added",
+          "editor_layer_removed",
+          "editor_layer_exchanged",
+          "editor_layers_restored"
+        ]
+      }
+    },
+    {
+      "manifest_pointer": "/workflows/1/required_modes/3",
+      "operation": "transform/visibility and UI/debug controls",
+      "implementation": [
+        {
+          "file": "sources/xray/render/facade/control_level.h",
+          "symbol": "editor_command"
+        },
+        {
+          "file": "sources/xray/render/facade/control_level.h",
+          "symbol": "render_frame"
+        },
+        {
+          "file": "sources/xray/render/vulkan/sources/vulkan_world.cpp",
+          "symbol": "update_model"
+        },
+        {
+          "file": "sources/xray/render/vulkan/sources/vulkan_world.cpp",
+          "symbol": "draw_triangles"
+        },
+        {
+          "file": "sources/xray/render/vulkan/sources/vulkan_world.cpp",
+          "symbol": "draw_ui_vertices"
+        }
+      ],
+      "ctest": [
+        "xray_render_stage8_debug_gpu",
+        "xray_render_stage8_ui_gpu"
+      ],
+      "native": {
+        "editor": [
+          "editor_props_hidden",
+          "editor_props_moved",
+          "editor_overlay",
+          "editor_overlay_restored"
+        ]
+      }
+    },
+    {
+      "manifest_pointer": "/controls/required_images/0",
+      "operation": "all content visible",
+      "implementation": [
+        {
+          "file": "sources/xray/render/facade/control_level.h",
+          "symbol": "load"
+        },
+        {
+          "file": "sources/xray/render/facade/control_level.h",
+          "symbol": "read_project"
+        },
+        {
+          "file": "sources/xray/render/facade/control_level.h",
+          "symbol": "start"
+        },
+        {
+          "file": "sources/xray/render/vulkan/sources/vulkan_world.cpp",
+          "symbol": "initialize_game"
+        }
+      ],
+      "ctest": [
+        "xray_render_stage4_resources",
+        "xray_render_stage8_game_threads_gpu"
+      ],
+      "native": {
+        "game": [
+          "overview",
+          "inspection"
+        ]
+      }
+    },
+    {
+      "manifest_pointer": "/controls/required_images/1",
+      "operation": "empty particle world still draws opaque content",
+      "implementation": [
+        {
+          "file": "sources/xray/render/vulkan/sources/vulkan_world.cpp",
+          "symbol": "remove_particle_system_instance"
+        }
+      ],
+      "ctest": [
+        "xray_render_stage8_particle_submission_gpu"
+      ],
+      "native": {
+        "game": [
+          "particles_stopped_removed",
+          "no_particles"
+        ]
+      }
+    },
+    {
+      "manifest_pointer": "/controls/required_images/2",
+      "operation": "particle alpha vs additive over opaque background",
+      "implementation": [
+        {
+          "file": "sources/xray/render/vulkan/sources/vulkan_world.cpp",
+          "symbol": "play_particle_system"
+        }
+      ],
+      "ctest": [
+        "xray_render_stage8_particle_submission_gpu"
+      ],
+      "native": {
+        "game": [
+          "no_alpha",
+          "no_additive",
+          "inspection"
+        ]
+      }
+    },
+    {
+      "manifest_pointer": "/controls/required_images/3",
+      "operation": "particle transform and visibility",
+      "implementation": [
+        {
+          "file": "sources/xray/render/vulkan/sources/vulkan_world.cpp",
+          "symbol": "play_particle_system"
+        },
+        {
+          "file": "sources/xray/render/vulkan/sources/vulkan_world.cpp",
+          "symbol": "update_particle_system_instance"
+        },
+        {
+          "file": "sources/xray/render/vulkan/sources/vulkan_world.cpp",
+          "symbol": "stop_particle_system"
+        },
+        {
+          "file": "sources/xray/render/vulkan/sources/vulkan_world.cpp",
+          "symbol": "remove_particle_system_instance"
+        }
+      ],
+      "ctest": [
+        "xray_render_stage8_particle_scene_gpu",
+        "xray_render_stage8_particle_submission_gpu"
+      ],
+      "native": {
+        "game": [
+          "particle_moved",
+          "no_particles",
+          "particles_stopped_removed",
+          "particles_replayed"
+        ]
+      }
+    },
+    {
+      "manifest_pointer": "/controls/required_images/4",
+      "operation": "vegetation visibility and cutout silhouette",
+      "implementation": [
+        {
+          "file": "sources/xray/render/vulkan/sources/vulkan_world.cpp",
+          "symbol": "set_speedtree_instance_visible"
+        },
+        {
+          "file": "sources/xray/render/vulkan/sources/vulkan_world.cpp",
+          "symbol": "update_speedtree_instance"
+        }
+      ],
+      "ctest": [
+        "xray_render_stage8_vegetation_gpu"
+      ],
+      "native": {
+        "game": [
+          "no_tree",
+          "tree_moved",
+          "restored_tree_transform"
+        ]
+      }
+    },
+    {
+      "manifest_pointer": "/controls/required_images/5",
+      "operation": "decal moved/removed and normal response",
+      "implementation": [
+        {
+          "file": "sources/xray/render/vulkan/sources/vulkan_world.cpp",
+          "symbol": "add_decal"
+        },
+        {
+          "file": "sources/xray/render/vulkan/sources/vulkan_world.cpp",
+          "symbol": "update_decal"
+        },
+        {
+          "file": "sources/xray/render/vulkan/sources/vulkan_world.cpp",
+          "symbol": "remove_decal"
+        }
+      ],
+      "ctest": [
+        "xray_render_stage8_decals_gpu"
+      ],
+      "native": {
+        "game": [
+          "no_decals",
+          "decal_moved",
+          "restored_decal_transform"
+        ]
+      }
+    },
+    {
+      "manifest_pointer": "/controls/required_images/6",
+      "operation": "SSAO corner occlusion vs open surface and disabled identity",
+      "implementation": [
+        {
+          "file": "sources/xray/render/facade/control_level.h",
+          "symbol": "controls"
+        },
+        {
+          "file": "sources/xray/render/vulkan/sources/vulkan_world.cpp",
+          "symbol": "set_postprocess_settings"
+        }
+      ],
+      "ctest": [
+        "xray_render_stage8_effects_gpu"
+      ],
+      "native": {
+        "game": [
+          "no_ssao",
+          "restored_ssao",
+          "no_distortion",
+          "restored_distortion"
+        ]
+      }
+    },
+    {
+      "manifest_pointer": "/controls/required_images/7",
+      "operation": "distortion known offset vs zero-field identity and occlusion",
+      "implementation": [
+        {
+          "file": "sources/xray/render/vulkan/sources/vulkan_world.cpp",
+          "symbol": "set_postprocess_settings"
+        }
+      ],
+      "ctest": [
+        "xray_render_stage8_effects_gpu"
+      ],
+      "native": {
+        "game": [
+          "no_distortion",
+          "restored_distortion"
+        ]
+      }
+    },
+    {
+      "manifest_pointer": "/controls/required_images/8",
+      "operation": "main/preview isolation",
+      "implementation": [
+        {
+          "file": "sources/xray/render/facade/control_level.h",
+          "symbol": "preview_visible"
+        },
+        {
+          "file": "sources/xray/render/facade/control_level.h",
+          "symbol": "editor_command"
+        }
+      ],
+      "ctest": [
+        "xray_render_stage8_output_scene_gpu"
+      ],
+      "native": {
+        "outputs": [
+          "preview_hidden.main",
+          "preview_hidden.preview",
+          "main_props_hidden.preview"
+        ]
+      }
+    },
+    {
+      "manifest_pointer": "/controls/required_images/9",
+      "operation": "resized output",
+      "implementation": [
+        {
+          "file": "sources/xray/editor/world/sources/editor_entry_point.cpp",
+          "symbol": "resize_window"
+        },
+        {
+          "file": "sources/xray/editor/world/sources/editor_entry_point.cpp",
+          "symbol": "resize_main"
+        }
+      ],
+      "ctest": [
+        "xray_render_stage8_output_scene_gpu"
+      ],
+      "native": {
+        "outputs": [
+          "preview_resized.main",
+          "preview_resized.preview",
+          "main_resized.main",
+          "main_resized.preview"
+        ]
+      }
+    },
+    {
+      "manifest_pointer": "/controls/lifecycle/0",
+      "operation": "copied caller payload",
+      "implementation": [
+        {
+          "file": "sources/xray/render/facade/sources/scene_renderer.cpp",
+          "symbol": "update_skeleton"
+        },
+        {
+          "file": "sources/xray/render/facade/sources/scene_renderer.cpp",
+          "symbol": "update_model_vertex_buffer"
+        }
+      ],
+      "ctest": [
+        "xray_render_stage4_resources",
+        "xray_render_stage8_particle_billboards"
+      ],
+      "native": {
+        "editor": [
+          "inspection"
+        ]
+      }
+    },
+    {
+      "manifest_pointer": "/controls/lifecycle/1",
+      "operation": "foreign scene/world rejected",
+      "implementation": [
+        {
+          "file": "sources/xray/render/vulkan/sources/vulkan_scene_runtime.cpp",
+          "symbol": "queue"
+        },
+        {
+          "file": "sources/xray/render/vulkan/scene_resources.h",
+          "symbol": "scene_registry"
+        }
+      ],
+      "ctest": [
+        "xray_render_stage4_resources",
+        "xray_render_stage8_particle_scene_gpu"
+      ],
+      "native": {}
+    },
+    {
+      "manifest_pointer": "/controls/lifecycle/2",
+      "operation": "closed/pending/retained callback guards",
+      "implementation": [
+        {
+          "file": "sources/xray/render/facade/control_level.h",
+          "symbol": "clear_resources"
+        },
+        {
+          "file": "sources/xray/render/facade/control_level.h",
+          "symbol": "on_render_session_closed"
+        }
+      ],
+      "ctest": [
+        "xray_render_stage8_particle_scene",
+        "xray_render_stage8_particle_lifetime"
+      ],
+      "native": {
+        "outputs": [
+          "shutdown_ready.main"
+        ]
+      }
+    },
+    {
+      "manifest_pointer": "/controls/lifecycle/3",
+      "operation": "queue remove/replay semantics",
+      "implementation": [
+        {
+          "file": "sources/xray/render/vulkan/sources/vulkan_world.cpp",
+          "symbol": "play_particle_system"
+        },
+        {
+          "file": "sources/xray/render/vulkan/sources/vulkan_world.cpp",
+          "symbol": "update_particle_system_instance"
+        },
+        {
+          "file": "sources/xray/render/vulkan/sources/vulkan_world.cpp",
+          "symbol": "stop_particle_system"
+        },
+        {
+          "file": "sources/xray/render/vulkan/sources/vulkan_world.cpp",
+          "symbol": "remove_particle_system_instance"
+        }
+      ],
+      "ctest": [
+        "xray_render_stage8_particle_scene_gpu",
+        "xray_render_stage8_particle_submission_gpu"
+      ],
+      "native": {
+        "game": [
+          "particle_moved",
+          "no_particles",
+          "particles_stopped_removed",
+          "particles_replayed"
+        ]
+      }
+    },
+    {
+      "manifest_pointer": "/controls/lifecycle/4",
+      "operation": "cook/deleter and GPU retirement drain",
+      "implementation": [
+        {
+          "file": "sources/xray/render/vulkan/sources/vulkan_world.cpp",
+          "symbol": "clear_resources"
+        },
+        {
+          "file": "sources/xray/render/vulkan/sources/vulkan_world.cpp",
+          "symbol": "finalize_game_resources"
+        }
+      ],
+      "ctest": [
+        "xray_render_stage8_output_scene_gpu",
+        "xray_render_stage8_game_threads_gpu"
+      ],
+      "native": {
+        "outputs": [
+          "preview_closed.main",
+          "shutdown_ready.main"
+        ]
+      }
+    },
+    {
+      "manifest_pointer": "/controls/lifecycle/5",
+      "operation": "input SHA-256 unchanged",
+      "implementation": [
+        {
+          "file": "sources/xray/render/vulkan/tests/tools/prepare_m8_control_pack.py",
+          "symbol": "verify"
+        }
+      ],
+      "ctest": [
+        "xray_source_contract"
+      ],
+      "native": {
+        "game": [
+          "reloaded_inspection"
+        ]
+      }
+    },
+    {
+      "manifest_pointer": "/controls/negative_inputs/0",
+      "operation": "missing material/texture",
+      "implementation": [
+        {
+          "file": "sources/xray/render/vulkan/sources/vulkan_material_cook.cpp",
+          "symbol": "translate_query"
+        },
+        {
+          "file": "sources/xray/render/vulkan/sources/vulkan_particle_material_cook.cpp",
+          "symbol": "translate_query"
+        }
+      ],
+      "ctest": [
+        "xray_render_stage8_particle_materials_gpu",
+        "xray_render_stage4_resources"
+      ],
+      "native": {}
+    },
+    {
+      "manifest_pointer": "/controls/negative_inputs/1",
+      "operation": "unsupported particle graph/profile",
+      "implementation": [
+        {
+          "file": "sources/xray/particle/sources/bounded_particle_template_cook.cpp",
+          "symbol": "parse"
+        }
+      ],
+      "ctest": [
+        "xray_render_stage8_particle_templates",
+        "xray_render_stage8_particle_materials"
+      ],
+      "native": {}
+    },
+    {
+      "manifest_pointer": "/controls/negative_inputs/2",
+      "operation": "budget overflow",
+      "implementation": [
+        {
+          "file": "sources/xray/render/vulkan/terrain_resources.h",
+          "symbol": "terrain_memory_profile"
+        }
+      ],
+      "ctest": [
+        "xray_render_stage8_terrain_arrays",
+        "xray_render_stage8_terrain_texture_profile",
+        "xray_render_stage8_particle_submission_gpu"
+      ],
+      "native": {}
+    },
+    {
+      "manifest_pointer": "/controls/negative_inputs/3",
+      "operation": "unknown feature/stage",
+      "implementation": [
+        {
+          "file": "sources/xray/render/base/sources/vulkan_stubs.cpp",
+          "symbol": "toggle_render_stage"
+        },
+        {
+          "file": "sources/xray/render/facade/sources/scene_renderer.cpp",
+          "symbol": "toggle_render_stage"
+        }
+      ],
+      "ctest": [
+        "xray_render_stage8_capabilities",
+        "xray_render_stage2_contracts"
+      ],
+      "native": {}
+    },
+    {
+      "manifest_pointer": "/controls/negative_inputs/4",
+      "operation": "foreign HWND/output",
+      "implementation": [
+        {
+          "file": "sources/xray/render/vulkan/sources/vulkan_scene_resources.cpp",
+          "symbol": "make_presentation"
+        }
+      ],
+      "ctest": [
+        "xray_render_stage4_resources",
+        "xray_render_stage8_outputs_gpu"
+      ],
+      "native": {}
+    },
+    {
+      "manifest_pointer": "/controls/negative_inputs/5",
+      "operation": "malformed transform",
+      "implementation": [
+        {
+          "file": "sources/xray/render/vulkan/sources/vulkan_particle_snapshot.cpp",
+          "symbol": "validate_particle_transform"
+        }
+      ],
+      "ctest": [
+        "xray_render_stage8_particle_scene_gpu",
+        "xray_render_stage8_terrain_assets"
+      ],
+      "native": {}
+    }
+  ],
+  "legacy": {
+    "world_file": "sources/xray/render/base/sources/vulkan_stubs.cpp",
+    "world_guards": [
+      "set_model_ghost_mode",
+      "draw_debug_lines",
+      "draw_debug_triangles",
+      "draw_editor_lines",
+      "draw_editor_triangles",
+      "set_slomo",
+      "set_particles_render_mode",
+      "set_post_process",
+      "toggle_render_stage",
+      "particle_world",
+      "reload_shaders",
+      "draw_render_statistics",
+      "set_renderer_configuration",
+      "apply_render_options_changes",
+      "draw_text",
+      "draw_screen_lines",
+      "draw_3D_screen_lines",
+      "draw_3D_screen_point",
+      "setup_grid_render_mode",
+      "remove_grid_render_mode",
+      "setup_rotation_control_modes",
+      "clear_zbuffer",
+      "draw_terrain_debug",
+      "set_selection_parameters",
+      "update_system_model",
+      "update_preview_particle_system",
+      "update_preview_particle_system_transform",
+      "add_preview_particle_system",
+      "remove_preview_particle_system",
+      "restart_preview_particle_system",
+      "set_looping_preview_particle_system",
+      "show_preview_particle_system",
+      "gather_preview_particle_system_statistics",
+      "get_num_preview_particle_system_emitters",
+      "select_particle_system_instance",
+      "select_speedtree_instance",
+      "select_model",
+      "enable_terrain_debug_mode",
+      "apply_material_changes"
+    ],
+    "private_config_callbacks": [
+      "reset_renderer",
+      "on_renderer_config_loaded",
+      "on_console_commands_config_loaded",
+      "load_console_commands_config_query"
+    ],
+    "platform_guards": [
+      "dx9_create_render_platform",
+      "dx10_create_render_platform"
+    ],
+    "producer_guards": {
+      "scene": [
+        "set_slomo",
+        "set_post_process",
+        "reload_shaders",
+        "toggle_render_stage",
+        "set_particles_render_mode",
+        "set_model_ghost_mode",
+        "particle_world",
+        "draw_render_statistics"
+      ],
+      "editor": [
+        "set_renderer_configuration",
+        "apply_render_options_changes",
+        "draw_screen_lines",
+        "draw_screen_rectangle",
+        "clear_zbuffer",
+        "setup_grid_render_mode",
+        "remove_grid_render_mode",
+        "draw_3D_screen_lines",
+        "draw_3D_screen_line",
+        "draw_3D_screen_ellipse",
+        "draw_3D_screen_rectangle",
+        "setup_rotation_control_modes",
+        "draw_3D_screen_point",
+        "select_particle_system_instance",
+        "update_preview_particle_system",
+        "update_preview_particle_system_transform",
+        "add_preview_particle_system",
+        "restart_preview_particle_system",
+        "set_looping_preview_particle_system",
+        "remove_preview_particle_system",
+        "show_preview_particle_system",
+        "get_num_preview_particle_system_emitters",
+        "gather_preview_particle_system_statistics",
+        "select_speedtree_instance",
+        "select_model",
+        "set_selection_parameters",
+        "enable_terrain_debug_mode",
+        "apply_material_changes"
+      ]
+    },
+    "native_lua_operations": [
+      "update_preview_particle_system",
+      "add_preview_particle_system",
+      "apply_material_changes"
+    ],
+    "cpu_test": "xray_render_stage8_capabilities",
+    "policy": "Producer rejection precedes assertions, payload copies and queue insertion. Engine guards cover direct calls. Retired platform factories reject before backend initialization. Private callbacks are reachable only through rejected configuration APIs.",
+    "alternatives": {
+      "postprocess": "scene_renderer::set_postprocess_settings / enable_post_process per view",
+      "particles": "scene-owned particle_world_handle and play/update/stop/remove facade commands",
+      "debug_ui": "scene-bound debug renderer and scene-view UI renderer",
+      "models": "update_model, set_model_visible and immutable material-instance overrides",
+      "configuration": "typed scene/view settings and explicit cook profiles; no legacy renderer reconfiguration, shader reload or live Lua material editor"
+    },
+    "legacy_stage_controls": [
+      7,
+      12,
+      8,
+      -1
+    ]
+  },
+  "deferred": [
+    "GI",
+    "LPV"
+  ],
+  "excluded_editor_modes": [
+    "particle graph editor/preview",
+    "unported legacy managed panels"
+  ],
+  "acceptance": "Current native game/editor/output replays, complete CTest, CPU and native Lua negative controls; source and original-input identity checks. The frozen manifest status fields describe its original scope record.",
+  "deferred_gates": [
+    {
+      "feature": "GI",
+      "file": "sources/xray/render/base/sources/vulkan_stubs.cpp",
+      "symbol": "toggle_render_stage",
+      "ctest": "xray_render_stage8_capabilities",
+      "reason": "No GI capability is published in typed M8 scene/view settings; legacy global stages/configuration reject."
+    },
+    {
+      "feature": "LPV",
+      "file": "sources/xray/render/vulkan/sources/vulkan_lights.cpp",
+      "symbol": "describe_light",
+      "ctest": "xray_render_stage7_lighting"
+    }
+  ]
+}

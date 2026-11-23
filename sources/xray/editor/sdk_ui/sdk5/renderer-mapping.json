@@ -1,0 +1,247 @@
+{
+  "schemaVersion": 1,
+  "stage": "SDK-5",
+  "stageComplete": true,
+  "date": "2026-11-12",
+  "scope": "Accepted SDK renderer services and authored Play/Simulate on the game logic owner.",
+  "routes": [
+    {
+      "id": "main-scene",
+      "legacy": "editor::renderer::draw_scene; scene_view_panel view/projection",
+      "source": [
+        "sources/xray/editor/base/sources/scene_view_panel.cpp",
+        "sources/xray/render/facade/editor_renderer.h"
+      ],
+      "typed": [
+        "SdkNativeScene scene candidates and atomic model edit batches",
+        "scene_renderer::apply_model_edits"
+      ],
+      "status": "accepted SDK-5",
+      "proof": "sources/xray/editor/sdk_ui/sdk5/acceptance.json; 24 sequential Debug/Release GPU workflows, CTest 6/6 and 18 UI groups; validation 0/0 through module release",
+      "decision": "Cooked scene/model data reused for transform, selection and visibility; structural changes retain isolated candidate publication."
+    },
+    {
+      "id": "camera-navigation",
+      "legacy": "view_control_actions; scene_view_panel set_view_matrix and mouse ray",
+      "source": [
+        "sources/xray/editor/base/sources/view_control_actions.cpp",
+        "sources/xray/editor/base/sources/scene_view_panel.cpp"
+      ],
+      "typed": [
+        "ViewportNavigation",
+        "SceneViewPanel.SetCameraWorld",
+        "sdk_scene operation 9 selection bounds",
+        "shared view/projection supplied to main render and mesh picking"
+      ],
+      "status": "accepted SDK-5",
+      "proof": "sources/xray/editor/sdk_ui/sdk5/acceptance.json; 24 sequential Debug/Release GPU workflows, CTest 6/6 and 18 UI groups; validation 0/0 through module release"
+    },
+    {
+      "id": "render-modes",
+      "legacy": "scene_renderer::set_view_mode; scene_view_mode catalog",
+      "source": [
+        "sources/xray/render/facade/scene_view_mode.h",
+        "sources/xray/render/facade/scene_renderer.h"
+      ],
+      "typed": [
+        "ViewportSettings modes 0..20",
+        "editor_view_modes; physical Vulkan wireframe; diagnostic/gbuffer/effect/combine shaders"
+      ],
+      "status": "accepted SDK-5",
+      "supported": [
+        "unlit",
+        "lit",
+        "normals",
+        "lighting_diffuse",
+        "lighting_specular"
+      ],
+      "decision": "All 21 catalog modes have real routes. Complexity is SPIR-V instruction count / projected triangle-density estimate; indirect is the existing environment/ambient contribution, without a GI/LPV claim.",
+      "proof": "sources/xray/editor/sdk_ui/sdk5/acceptance.json; 24 sequential Debug/Release GPU workflows, CTest 6/6 and 18 UI groups; validation 0/0 through module release"
+    },
+    {
+      "id": "postprocess",
+      "legacy": "scene_view_panel post process toggle; scene_renderer post process",
+      "source": [
+        "sources/xray/editor/base/sources/scene_view_panel.cpp",
+        "sources/xray/render/facade/postprocess_settings.h"
+      ],
+      "typed": [
+        "scene_renderer::set_postprocess_settings",
+        "per-view lighting environment; explicit AO/distortion diagnostics"
+      ],
+      "status": "accepted SDK-5",
+      "decision": "Per-view profiles; diagnostic effects are explicit and do not inherit unsupported lit postprocessing combinations.",
+      "proof": "sources/xray/editor/sdk_ui/sdk5/acceptance.json; 24 sequential Debug/Release GPU workflows, CTest 6/6 and 18 UI groups; validation 0/0 through module release"
+    },
+    {
+      "id": "culling-freeze",
+      "legacy": "freeze culling view; set_view_matrix_only",
+      "source": [
+        "sources/xray/render/facade/scene_renderer.h"
+      ],
+      "typed": [
+        "ViewportFlags.FreezeCulling",
+        "scene_renderer::set_view_matrix_only",
+        "view_resource::camera snapshot via sdk_scene operation 8"
+      ],
+      "status": "accepted SDK-5",
+      "proof": "sources/xray/editor/sdk_ui/sdk5/acceptance.json; 24 sequential Debug/Release GPU workflows, CTest 6/6 and 18 UI groups; validation 0/0 through module release"
+    },
+    {
+      "id": "grid",
+      "legacy": "render_grid and legacy setup_grid_render_mode",
+      "source": [
+        "sources/xray/editor/base/sources/scene_view_panel.cpp",
+        "sources/xray/render/facade/sources/editor_renderer.cpp"
+      ],
+      "typed": [
+        "ViewportFlags.Grid",
+        "debug::renderer::draw_lines(scene,vertices,indices,depth=true)"
+      ],
+      "status": "accepted SDK-5",
+      "decision": "One indexed debug batch per frame; bounded dimension 1..10000, step .1..10000 and full extent <=1e6. Legacy setup_grid_render_mode stays rejected.",
+      "proof": "sources/xray/editor/sdk_ui/sdk5/acceptance.json; 24 sequential Debug/Release GPU workflows, CTest 6/6 and 18 UI groups; validation 0/0 through module release"
+    },
+    {
+      "id": "selection-bounds",
+      "legacy": "project selection and selection parameters",
+      "source": [
+        "sources/xray/render/facade/sources/editor_renderer.cpp"
+      ],
+      "typed": [
+        "sdk_scene cooked transformed bounds",
+        "debug::renderer indexed lines"
+      ],
+      "status": "accepted SDK-5",
+      "decision": "Bounds are an optional renderer guide and remain separate from silhouettes.",
+      "proof": "sources/xray/editor/sdk_ui/sdk5/acceptance.json; 24 sequential Debug/Release GPU workflows, CTest 6/6 and 18 UI groups; validation 0/0 through module release"
+    },
+    {
+      "id": "selection-outlines",
+      "legacy": "editor::renderer::select_model/set_selection_parameters",
+      "source": [
+        "sources/xray/render/facade/sources/editor_renderer.cpp"
+      ],
+      "typed": [
+        "editor::renderer::select_model",
+        "scene_renderer::set_editor_selection",
+        "selected geometry mask and output-specific silhouette compositor"
+      ],
+      "status": "accepted SDK-5",
+      "decision": "Real mesh/alpha-cutout masks, exterior pixel band, source pulse sqrt(abs(cos(time*rate))), configurable color/width; no WPF overlay or AABB replacement.",
+      "proof": "sources/xray/editor/sdk_ui/sdk5/acceptance.json; 24 sequential Debug/Release GPU workflows, CTest 6/6 and 18 UI groups; validation 0/0 through module release"
+    },
+    {
+      "id": "editor-lights",
+      "legacy": "fill_camera_light_props/fill_sun_light_props",
+      "source": [
+        "sources/xray/editor/base/sources/scene_view_panel_light.cpp"
+      ],
+      "typed": [
+        "ViewportFlags.CameraLight/Sun",
+        "scene_renderer::add_light/update_light/remove_light"
+      ],
+      "status": "accepted SDK-5",
+      "decision": "Camera point light range=10/intensity=5 follows camera; editor sun intensity=2.8, 512px/4 cascades. Reserved IDs do not collide with authored lights.",
+      "proof": "sources/xray/editor/sdk_ui/sdk5/acceptance.json; 24 sequential Debug/Release GPU workflows, CTest 6/6 and 18 UI groups; validation 0/0 through module release"
+    },
+    {
+      "id": "gizmo",
+      "legacy": "transform_control_*::draw; clear_zbuffer; setup_rotation_control_modes; draw_3D_screen_lines",
+      "source": [
+        "sources/xray/editor/base/sources/transform_control_base.cpp",
+        "sources/xray/editor/base/sources/transform_control_rotation_draw.cpp",
+        "sources/xray/editor/base/sources/transform_control_scaling_draw.cpp",
+        "sources/xray/render/facade/sources/editor_renderer.cpp"
+      ],
+      "typed": [
+        "sdk_gizmo geometry/pick/frozen-origin drag v1/v2",
+        "sdk_transform / sdk_transform_in_frame",
+        "ProjectEditing shared preview/history"
+      ],
+      "status": "accepted SDK-5",
+      "decision": "XYZ, uniform, XY/YZ/ZX planes, camera-plane translate/scale, camera ring and arcball. Edge-on XYZ rotation uses sphere fallback. TRS shear remains an explicit rejected edit.",
+      "proof": "sources/xray/editor/sdk_ui/sdk5/acceptance.json; 24 sequential Debug/Release GPU workflows, CTest 6/6 and 18 UI groups; validation 0/0 through module release"
+    },
+    {
+      "id": "camera-preview",
+      "legacy": "camera_view_panel",
+      "source": [
+        "sources/xray/editor/base/sources/camera_view_panel.cpp"
+      ],
+      "typed": [
+        "SdkOutputs operations 20/21/23/24",
+        "CameraViewPanel SdkViewportHost",
+        "ProjectViewportOutputs independent input/camera"
+      ],
+      "status": "accepted SDK-5",
+      "decision": "Own scene view/output, shared authored scene while project is open, empty camera scene after close; hide suspends and retains its lease.",
+      "proof": "sources/xray/editor/sdk_ui/sdk5/acceptance.json; 24 sequential Debug/Release GPU workflows, CTest 6/6 and 18 UI groups; validation 0/0 through module release"
+    },
+    {
+      "id": "model-asset-preview",
+      "legacy": "selected model/asset preview",
+      "source": [
+        "sources/xray/render/facade/control_level.h",
+        "sources/xray/editor/base/EditorWorld.cs"
+      ],
+      "typed": [
+        "ISdkOutputScene selected URI",
+        "static model clone; source TGA/DDS texture; material on explicit preview primitive"
+      ],
+      "status": "accepted SDK-5",
+      "decision": "Selected resources drive independent model/texture/material outputs, auto framing and mouse orbit/look/pan/dolly. Cook/format failures are explicit; domain authoring/import coverage remains SDK-6.",
+      "proof": "sources/xray/editor/sdk_ui/sdk5/acceptance.json; 24 sequential Debug/Release GPU workflows, CTest 6/6 and 18 UI groups; validation 0/0 through module release"
+    },
+    {
+      "id": "hwnd-lifecycle",
+      "legacy": "WinForms/WPF docking and native viewport HWND",
+      "source": [
+        "sources/xray/editor/base/SdkIdePanels.cs",
+        "sources/xray/render/vulkan/scene_resources.h"
+      ],
+      "typed": [
+        "SdkViewportHost stable native child and parking HWND",
+        "typed Vulkan output close acknowledgement",
+        "DockPanelSuite float/redock; WinForms WM_DPICHANGED"
+      ],
+      "status": "accepted SDK-5",
+      "decision": "Managed HWND recreation parks/reparents the leased native surface. Resize, 96/144/96 DPI message, minimize/restore, hide, close/reopen, scene switch and pending shutdown are tested on main/secondary views.",
+      "proof": "sources/xray/editor/sdk_ui/sdk5/acceptance.json; 24 sequential Debug/Release GPU workflows, CTest 6/6 and 18 UI groups; validation 0/0 through module release"
+    },
+    {
+      "id": "reload-performance",
+      "legacy": "resource reload; scene switch and preview refresh",
+      "source": [
+        "sources/xray/editor/base/SdkResourcePipeline.cs",
+        "sources/xray/editor/world/sources/sdk_scene.h"
+      ],
+      "typed": [
+        "scene_renderer::reload_modified_textures",
+        "scene_registry::texture_reload_status",
+        "scene_renderer::apply_model_edits"
+      ],
+      "status": "accepted SDK-5",
+      "decision": "Real source reload updates level/model/texture preview; failed source keeps previous texture and reports failure. 64 transforms submit 64 atomic batches with no new scene/model cooks. Asset reimport/editors remain SDK-6.",
+      "proof": "sources/xray/editor/sdk_ui/sdk5/acceptance.json; 24 sequential Debug/Release GPU workflows, CTest 6/6 and 18 UI groups; validation 0/0 through module release"
+    },
+    {
+      "id": "play-mode",
+      "legacy": "level editor edit/play/simulate actions",
+      "source": [
+        "sources/xray/editor/world/sources/level_editor_actions.cpp",
+        "sources/xray/editor/base/WindowIde.cs"
+      ],
+      "typed": [
+        "engine_world::editor_runtime logic-owner APC",
+        "editor_game_world authored snapshot",
+        "SdkRuntime start/pause/step/focus/stop"
+      ],
+      "status": "accepted SDK-5",
+      "decision": "Independent runtime model instances and scene/view reuse the main output lease. Actual game channel/ticks/time, focus suspension, pause/single step, camera input, editing lock, exact stop/reopen and active-runtime shutdown. Unsupported/unresolved object kinds reject start; no shell-only success.",
+      "proof": "sources/xray/editor/sdk_ui/sdk5/acceptance.json; 24 sequential Debug/Release GPU workflows, CTest 6/6 and 18 UI groups; validation 0/0 through module release"
+    }
+  ],
+  "accepted": true,
+  "evidence": "sources/xray/editor/sdk_ui/sdk5/acceptance.json"
+}

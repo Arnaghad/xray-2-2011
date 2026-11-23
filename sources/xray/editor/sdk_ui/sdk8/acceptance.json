@@ -1,0 +1,3388 @@
+{
+  "schemaVersion": 1,
+  "stage": "SDK-8",
+  "stageComplete": true,
+  "accepted": true,
+  "date": "2026-11-19",
+  "evidenceRoot": "build/sdk8-acceptance-20261119",
+  "scope": "Animation authoring across all 5 SDK-8 families: animation-collections (policies, mixer crossfade, object_movement root motion, independent 63-bone preview), animation-viewer (weighted targets, Instant/Linear/Fermi timed transitions, direct/chained sync, additive layers, time_scale interpolation, scene.models transforms, root motion, explicit legacy childs/duplicate-link import repair), animation-setup (.clip_data 30 FPS intervals/partitions/events, save_first_as_last, .options, WPF panel, undo/redo), animation-groups (controller sets .lua/.options, crouch group configs, WPF hypergraph, interval resolution, runtime navigation diagnostics), and animation-placement (tool_animations filter, 7-channel float curves in AnimationCurveEditorPanel, transform evaluation, Project.Commands undo/redo, .xprj roundtrip).",
+  "acceptedFamilies": [
+    "animation-collections",
+    "animation-viewer",
+    "animation-setup",
+    "animation-groups",
+    "animation-placement"
+  ],
+  "previousCheckpoints": [
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk5/acceptance.json",
+      "sha256": "d24220b8836d6cc8520b52c9272433ea8ba26a6ef590101b177591e367687626"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk6/acceptance.json",
+      "sha256": "cf7e5e16f2468c5d60f16470f7d6981d62f0ed7dc211194332ae3fdd678b7416"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk7/acceptance.json",
+      "sha256": "6d2c7c2f38cf8183462ecbf30a592291253682b23b300c9d16bbead21572001a"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk8/initial-checkpoint.json",
+      "sha256": "b6aa8f152f38dc76147672e442929e613c3549427307cab3a89d4c4c1594462c"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk8/collection-playback-checkpoint.json",
+      "sha256": "7445bea953ca259ad0a49333b11ac9a0e665f6b229489280098c3b60d535aa95"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk8/viewer-checkpoint.json",
+      "sha256": "594cbab9418905a1cbf4e079e8f62be6d06c913beab45885034d853d4d5f2e49"
+    }
+  ],
+  "checks": [
+    {
+      "configuration": "debug",
+      "build": {
+        "path": "build/sdk8-acceptance-20261119/build-debug.log",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/checks/build-debug.log",
+        "sha256": "e69fd1e03a1a0dbdbc9a4b729b4d20d807852ed715bf3acf2b5d8a77332b2a64"
+      },
+      "ctestSdk": {
+        "path": "build/sdk8-acceptance-20261119/ctest-sdk-debug.log",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/checks/ctest-sdk-debug.log",
+        "sha256": "022969d9475ce5f5d8c383e31083c48b5b7481736a6619d64a5f551dc0fa0144",
+        "passed": 5,
+        "total": 5
+      },
+      "ctest": {
+        "path": "build/sdk8-acceptance-20261119/ctest-debug.log",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/checks/ctest-debug.log",
+        "sha256": "d10f7a5f8409e544b1422d3f20b5c79ab070ec8cfcc3c49dbc3947e1a1855848",
+        "passed": 31,
+        "total": 31
+      },
+      "compatibility": {
+        "result": {
+          "path": "build/sdk-native-20261108-debug/sdk-ui/evidence-debug/result.json",
+          "snapshot": "build/sdk8-acceptance-20261119/checkpoint/managed-debug/result.json",
+          "sha256": "803b6498a62aa6a5e8745eff5df6557a6db40b89cbdff23eaa263548510ebb93"
+        },
+        "groups": 29,
+        "screenshots": [
+          {
+            "path": "build/sdk-native-20261108-debug/sdk-ui/evidence-debug/curves.png",
+            "snapshot": "build/sdk8-acceptance-20261119/checkpoint/managed-debug/curves.png",
+            "sha256": "a92ae9e3f9687e8e8c5d129972d62c6ca1e87580e5a3de1ac44929b6c84f2e9b"
+          },
+          {
+            "path": "build/sdk-native-20261108-debug/sdk-ui/evidence-debug/graph.png",
+            "snapshot": "build/sdk8-acceptance-20261119/checkpoint/managed-debug/graph.png",
+            "sha256": "71c0caccb153849dff6168ee46ea2867ae1a59b72d3c1b241af21fcab622109a"
+          },
+          {
+            "path": "build/sdk-native-20261108-debug/sdk-ui/evidence-debug/ide-workspace.png",
+            "snapshot": "build/sdk8-acceptance-20261119/checkpoint/managed-debug/ide-workspace.png",
+            "sha256": "727241687bf6985f8dd11a8c34d372a464b6341b785fd0aa504142128cf8a531"
+          },
+          {
+            "path": "build/sdk-native-20261108-debug/sdk-ui/evidence-debug/numeric-editor.png",
+            "snapshot": "build/sdk8-acceptance-20261119/checkpoint/managed-debug/numeric-editor.png",
+            "sha256": "fc2d31061b47367545a6afe2e9d63617ca14ea2585b5fe9e7d7daf1d3975d7f0"
+          },
+          {
+            "path": "build/sdk-native-20261108-debug/sdk-ui/evidence-debug/properties-144dpi.png",
+            "snapshot": "build/sdk8-acceptance-20261119/checkpoint/managed-debug/properties-144dpi.png",
+            "sha256": "9e7d407ad5b1c2244e7cc961d218382027d2021785ddfffb6491057c35fcdff8"
+          },
+          {
+            "path": "build/sdk-native-20261108-debug/sdk-ui/evidence-debug/properties.png",
+            "snapshot": "build/sdk8-acceptance-20261119/checkpoint/managed-debug/properties.png",
+            "sha256": "60df378a6e35bfa631d8e1c9d4f6ef7b15642ccaffdb87f167e16c9336a48503"
+          }
+        ]
+      }
+    },
+    {
+      "configuration": "release",
+      "build": {
+        "path": "build/sdk8-acceptance-20261119/build-release.log",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/checks/build-release.log",
+        "sha256": "f251618fcb16df2862561f500ef8d1f5b0e02e231f56ce6dc0a7a109d02db61d"
+      },
+      "ctestSdk": {
+        "path": "build/sdk8-acceptance-20261119/ctest-sdk-release.log",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/checks/ctest-sdk-release.log",
+        "sha256": "477b74c9a3d0b5ba0f9be3be35d927a0ff9547c1707e94d20ed19651e1098487",
+        "passed": 5,
+        "total": 5
+      },
+      "ctest": {
+        "path": "build/sdk8-acceptance-20261119/ctest-release.log",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/checks/ctest-release.log",
+        "sha256": "34ee9c9de63866c37ac77a01da9fcda012cdaffcaa398065b6720143cd513497",
+        "passed": 31,
+        "total": 31
+      },
+      "compatibility": {
+        "result": {
+          "path": "build/sdk-native-20261108-release/sdk-ui/evidence-release/result.json",
+          "snapshot": "build/sdk8-acceptance-20261119/checkpoint/managed-release/result.json",
+          "sha256": "803b6498a62aa6a5e8745eff5df6557a6db40b89cbdff23eaa263548510ebb93"
+        },
+        "groups": 29,
+        "screenshots": [
+          {
+            "path": "build/sdk-native-20261108-release/sdk-ui/evidence-release/curves.png",
+            "snapshot": "build/sdk8-acceptance-20261119/checkpoint/managed-release/curves.png",
+            "sha256": "a92ae9e3f9687e8e8c5d129972d62c6ca1e87580e5a3de1ac44929b6c84f2e9b"
+          },
+          {
+            "path": "build/sdk-native-20261108-release/sdk-ui/evidence-release/graph.png",
+            "snapshot": "build/sdk8-acceptance-20261119/checkpoint/managed-release/graph.png",
+            "sha256": "71c0caccb153849dff6168ee46ea2867ae1a59b72d3c1b241af21fcab622109a"
+          },
+          {
+            "path": "build/sdk-native-20261108-release/sdk-ui/evidence-release/ide-workspace.png",
+            "snapshot": "build/sdk8-acceptance-20261119/checkpoint/managed-release/ide-workspace.png",
+            "sha256": "727241687bf6985f8dd11a8c34d372a464b6341b785fd0aa504142128cf8a531"
+          },
+          {
+            "path": "build/sdk-native-20261108-release/sdk-ui/evidence-release/numeric-editor.png",
+            "snapshot": "build/sdk8-acceptance-20261119/checkpoint/managed-release/numeric-editor.png",
+            "sha256": "fc2d31061b47367545a6afe2e9d63617ca14ea2585b5fe9e7d7daf1d3975d7f0"
+          },
+          {
+            "path": "build/sdk-native-20261108-release/sdk-ui/evidence-release/properties-144dpi.png",
+            "snapshot": "build/sdk8-acceptance-20261119/checkpoint/managed-release/properties-144dpi.png",
+            "sha256": "9e7d407ad5b1c2244e7cc961d218382027d2021785ddfffb6491057c35fcdff8"
+          },
+          {
+            "path": "build/sdk-native-20261108-release/sdk-ui/evidence-release/properties.png",
+            "snapshot": "build/sdk8-acceptance-20261119/checkpoint/managed-release/properties.png",
+            "sha256": "60df378a6e35bfa631d8e1c9d4f6ef7b15642ccaffdb87f167e16c9336a48503"
+          }
+        ]
+      }
+    }
+  ],
+  "native": [
+    {
+      "configuration": "debug",
+      "workflow": "viewer-additive-sdk8-closeout",
+      "validationErrors": 0,
+      "validationWarnings": 0,
+      "runtime": {
+        "path": "build/sdk8-acceptance-20261119/viewer-debug/runtime-result.json",
+        "sha256": "caa8ad943f65aaaa2ecac2700a206e244c3dd53557c93d7a2a04b7dfe6cbcb9a"
+      },
+      "launch": {
+        "path": "build/sdk8-acceptance-20261119/viewer-debug/launch.json",
+        "sha256": "b947915d5b0af1a6df2ecddd1023fdca415019496d3f6d494d4f85a781a1cd02"
+      },
+      "log": {
+        "path": "build/sdk8-acceptance-20261119/viewer-debug/stderr.log",
+        "sha256": "dd6cdad4794a67ce4fac8a86279ba2c10b4e38a62bbe9b2a46f45bbf6c28ce4d"
+      },
+      "verifyLog": {
+        "path": "build/sdk8-acceptance-20261119/verify-debug-viewer.log",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/checks/verify-debug-viewer.log",
+        "sha256": "0f71b13cea8117f4b8fb124cf2dc2d3902df37de8ee7926417285007ad047087"
+      },
+      "readbacks": {
+        "path": "build/sdk8-acceptance-20261119/viewer-debug/capture-result.json",
+        "sha256": "f3d4b5f611a4f40eb07f8254ed41cfa0e6e41a923d02dca1ee7bf645fcf75d7b"
+      },
+      "metrics": {
+        "path": "build/sdk8-acceptance-20261119/viewer-debug/user-data/viewer-additive-result.json",
+        "sha256": "ff9dba4237972b09b18fb0a236ca4a9379f06e4b48426ea98524fd93dd711409",
+        "values": {
+          "status": "passed",
+          "chainedSync": true,
+          "additiveLayers": true,
+          "setupVerified": true,
+          "groupsVerified": true,
+          "placementVerified": true,
+          "legacyRepairVerified": true,
+          "rootMotionVerified": true,
+          "collectionCrossfadeVerified": true,
+          "timeScaleInterpVerified": true,
+          "bones": 63,
+          "samples": [
+            {
+              "step": 0,
+              "time": 0,
+              "contributions": [
+                {
+                  "clip": "resources/animations/single/human/camp/sit_high_guitar_play_1_out",
+                  "time": 0,
+                  "weight": 1,
+                  "additive": false
+                },
+                {
+                  "clip": "resources/animations/single/human/camp/sit_high_guitar_idle",
+                  "time": 0,
+                  "weight": 0.5,
+                  "additive": true
+                }
+              ]
+            },
+            {
+              "step": 1,
+              "time": 0.25,
+              "contributions": [
+                {
+                  "clip": "resources/animations/single/human/camp/sit_high_guitar_play_1_out",
+                  "time": 0.2,
+                  "weight": 1,
+                  "additive": false
+                },
+                {
+                  "clip": "resources/animations/single/human/camp/sit_high_guitar_idle",
+                  "time": 0.2,
+                  "weight": 0.5,
+                  "additive": true
+                }
+              ]
+            },
+            {
+              "step": 2,
+              "time": 0.5,
+              "contributions": [
+                {
+                  "clip": "resources/animations/single/human/camp/sit_high_guitar_play_1_out",
+                  "time": 0.4,
+                  "weight": 1,
+                  "additive": false
+                },
+                {
+                  "clip": "resources/animations/single/human/camp/sit_high_guitar_idle",
+                  "time": 0.4,
+                  "weight": 0.5,
+                  "additive": true
+                }
+              ]
+            },
+            {
+              "step": 3,
+              "time": 0.25,
+              "contributions": [
+                {
+                  "clip": "resources/animations/single/human/camp/sit_high_guitar_play_1_out",
+                  "time": 0.2,
+                  "weight": 1,
+                  "additive": false
+                },
+                {
+                  "clip": "resources/animations/single/human/camp/sit_high_guitar_idle",
+                  "time": 0.2,
+                  "weight": 1,
+                  "additive": true
+                }
+              ]
+            },
+            {
+              "step": 4,
+              "time": 0.25,
+              "contributions": [
+                {
+                  "clip": "resources/animations/single/human/camp/sit_high_guitar_play_1_out",
+                  "time": 0.2,
+                  "weight": 1,
+                  "additive": false
+                }
+              ]
+            },
+            {
+              "step": 5,
+              "time": 0.25,
+              "contributions": [
+                {
+                  "clip": "resources/animations/single/human/camp/sit_high_guitar_play_1_out",
+                  "time": 0.2,
+                  "weight": 1,
+                  "additive": false
+                },
+                {
+                  "clip": "resources/animations/single/human/camp/sit_high_guitar_idle",
+                  "time": 0.2,
+                  "weight": 0.5,
+                  "additive": true
+                }
+              ]
+            },
+            {
+              "step": 6,
+              "time": 0.75,
+              "contributions": [
+                {
+                  "clip": "resources/animations/single/human/camp/sit_high_guitar_play_1_out",
+                  "time": 1,
+                  "weight": 1,
+                  "additive": false
+                },
+                {
+                  "clip": "resources/animations/single/human/camp/sit_high_guitar_idle",
+                  "time": 1,
+                  "weight": 0.5,
+                  "additive": true
+                }
+              ]
+            },
+            {
+              "step": 7,
+              "time": 0.75,
+              "contributions": [
+                {
+                  "clip": "resources/animations/single/human/camp/sit_high_guitar_play_1_out",
+                  "time": 1,
+                  "weight": 1,
+                  "additive": false
+                },
+                {
+                  "clip": "resources/animations/single/human/camp/sit_high_guitar_idle",
+                  "time": 1,
+                  "weight": 0.5,
+                  "additive": true
+                }
+              ]
+            },
+            {
+              "step": 8,
+              "time": 0.5,
+              "contributions": [
+                {
+                  "clip": "resources/animations/single/human/camp/sit_high_guitar_play_1_out",
+                  "time": 0.4,
+                  "weight": 1,
+                  "additive": false
+                },
+                {
+                  "clip": "resources/animations/single/human/camp/sit_high_guitar_idle",
+                  "time": 0.4,
+                  "weight": 0.5,
+                  "additive": true
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "images": [
+        {
+          "path": "build/sdk8-acceptance-20261119/viewer-debug/captures/sdk_layout_edited.bmp",
+          "sha256": "ce7bc87d435c1a78efc292e01fea516a15f5e80a43c6b2e1a2ed6ed08733d810"
+        },
+        {
+          "path": "build/sdk8-acceptance-20261119/viewer-debug/captures/sdk_layout_edited_asset.bmp",
+          "sha256": "04b29c3bdd4ab8fc67e922f3a47ccb0a930ee3e3a1d60cae8e3ff7f779e53590"
+        },
+        {
+          "path": "build/sdk8-acceptance-20261119/viewer-debug/captures/sdk_layout_edited_camera.bmp",
+          "sha256": "e57724d438f6880563060e1b9cf3c5071feb712b56f490195da191a2ade26b9e"
+        },
+        {
+          "path": "build/sdk8-acceptance-20261119/viewer-debug/captures/sdk_layout_redo.bmp",
+          "sha256": "ce7bc87d435c1a78efc292e01fea516a15f5e80a43c6b2e1a2ed6ed08733d810"
+        },
+        {
+          "path": "build/sdk8-acceptance-20261119/viewer-debug/captures/sdk_layout_redo_asset.bmp",
+          "sha256": "04b29c3bdd4ab8fc67e922f3a47ccb0a930ee3e3a1d60cae8e3ff7f779e53590"
+        },
+        {
+          "path": "build/sdk8-acceptance-20261119/viewer-debug/captures/sdk_layout_redo_camera.bmp",
+          "sha256": "c6e043567f686a1b62a8643c1c4e990519b85a4051755c9222d3a777644d45e6"
+        },
+        {
+          "path": "build/sdk8-acceptance-20261119/viewer-debug/captures/sdk_layout_restored.bmp",
+          "sha256": "ce7bc87d435c1a78efc292e01fea516a15f5e80a43c6b2e1a2ed6ed08733d810"
+        },
+        {
+          "path": "build/sdk8-acceptance-20261119/viewer-debug/captures/sdk_layout_restored_asset.bmp",
+          "sha256": "04b29c3bdd4ab8fc67e922f3a47ccb0a930ee3e3a1d60cae8e3ff7f779e53590"
+        },
+        {
+          "path": "build/sdk8-acceptance-20261119/viewer-debug/captures/sdk_layout_restored_camera.bmp",
+          "sha256": "c9146f6afa082664229fb02cb4e40dbbefeb724dd76ee8159c9b37465c79cd96"
+        },
+        {
+          "path": "build/sdk8-acceptance-20261119/viewer-debug/captures/sdk_layout_undo.bmp",
+          "sha256": "ce7bc87d435c1a78efc292e01fea516a15f5e80a43c6b2e1a2ed6ed08733d810"
+        },
+        {
+          "path": "build/sdk8-acceptance-20261119/viewer-debug/captures/sdk_layout_undo_asset.bmp",
+          "sha256": "04b29c3bdd4ab8fc67e922f3a47ccb0a930ee3e3a1d60cae8e3ff7f779e53590"
+        },
+        {
+          "path": "build/sdk8-acceptance-20261119/viewer-debug/captures/sdk_layout_undo_camera.bmp",
+          "sha256": "c6e043567f686a1b62a8643c1c4e990519b85a4051755c9222d3a777644d45e6"
+        },
+        {
+          "path": "build/sdk8-acceptance-20261119/viewer-debug/captures/sdk_property_baseline.bmp",
+          "sha256": "ce7bc87d435c1a78efc292e01fea516a15f5e80a43c6b2e1a2ed6ed08733d810"
+        },
+        {
+          "path": "build/sdk8-acceptance-20261119/viewer-debug/captures/sdk_property_baseline_asset.bmp",
+          "sha256": "04b29c3bdd4ab8fc67e922f3a47ccb0a930ee3e3a1d60cae8e3ff7f779e53590"
+        },
+        {
+          "path": "build/sdk8-acceptance-20261119/viewer-debug/captures/sdk_property_baseline_camera.bmp",
+          "sha256": "aa693aa1932626a527f496c08275de300163db7967f5bcfeab0233e4bb4f4684"
+        },
+        {
+          "path": "build/sdk8-acceptance-20261119/viewer-debug/captures/sdk_property_edited.bmp",
+          "sha256": "ce7bc87d435c1a78efc292e01fea516a15f5e80a43c6b2e1a2ed6ed08733d810"
+        },
+        {
+          "path": "build/sdk8-acceptance-20261119/viewer-debug/captures/sdk_property_edited_asset.bmp",
+          "sha256": "04b29c3bdd4ab8fc67e922f3a47ccb0a930ee3e3a1d60cae8e3ff7f779e53590"
+        },
+        {
+          "path": "build/sdk8-acceptance-20261119/viewer-debug/captures/sdk_property_edited_camera.bmp",
+          "sha256": "e57724d438f6880563060e1b9cf3c5071feb712b56f490195da191a2ade26b9e"
+        },
+        {
+          "path": "build/sdk8-acceptance-20261119/viewer-debug/captures/sdk_property_redo.bmp",
+          "sha256": "ce7bc87d435c1a78efc292e01fea516a15f5e80a43c6b2e1a2ed6ed08733d810"
+        },
+        {
+          "path": "build/sdk8-acceptance-20261119/viewer-debug/captures/sdk_property_redo_asset.bmp",
+          "sha256": "04b29c3bdd4ab8fc67e922f3a47ccb0a930ee3e3a1d60cae8e3ff7f779e53590"
+        },
+        {
+          "path": "build/sdk8-acceptance-20261119/viewer-debug/captures/sdk_property_redo_camera.bmp",
+          "sha256": "16d58bd9eaa429231b2983926f352c4f71c9e45baed46db409039658bab578a5"
+        },
+        {
+          "path": "build/sdk8-acceptance-20261119/viewer-debug/captures/sdk_property_restored.bmp",
+          "sha256": "ce7bc87d435c1a78efc292e01fea516a15f5e80a43c6b2e1a2ed6ed08733d810"
+        },
+        {
+          "path": "build/sdk8-acceptance-20261119/viewer-debug/captures/sdk_property_restored_asset.bmp",
+          "sha256": "04b29c3bdd4ab8fc67e922f3a47ccb0a930ee3e3a1d60cae8e3ff7f779e53590"
+        },
+        {
+          "path": "build/sdk8-acceptance-20261119/viewer-debug/captures/sdk_property_restored_camera.bmp",
+          "sha256": "bb85adb23fd012c7bb8cf6a23af38df6658ae2274d85e5849219722ab7643828"
+        },
+        {
+          "path": "build/sdk8-acceptance-20261119/viewer-debug/captures/sdk_property_undo.bmp",
+          "sha256": "ce7bc87d435c1a78efc292e01fea516a15f5e80a43c6b2e1a2ed6ed08733d810"
+        },
+        {
+          "path": "build/sdk8-acceptance-20261119/viewer-debug/captures/sdk_property_undo_asset.bmp",
+          "sha256": "04b29c3bdd4ab8fc67e922f3a47ccb0a930ee3e3a1d60cae8e3ff7f779e53590"
+        },
+        {
+          "path": "build/sdk8-acceptance-20261119/viewer-debug/captures/sdk_property_undo_camera.bmp",
+          "sha256": "c9146f6afa082664229fb02cb4e40dbbefeb724dd76ee8159c9b37465c79cd96"
+        }
+      ]
+    },
+    {
+      "configuration": "release",
+      "workflow": "viewer-additive-sdk8-closeout",
+      "validationErrors": 0,
+      "validationWarnings": 0,
+      "runtime": {
+        "path": "build/sdk8-acceptance-20261119/viewer-release/runtime-result.json",
+        "sha256": "caa8ad943f65aaaa2ecac2700a206e244c3dd53557c93d7a2a04b7dfe6cbcb9a"
+      },
+      "launch": {
+        "path": "build/sdk8-acceptance-20261119/viewer-release/launch.json",
+        "sha256": "a070be37ae6040ecd71c12d4e4b07eeae952bb4f8a2ccfc704132bc4346fe868"
+      },
+      "log": {
+        "path": "build/sdk8-acceptance-20261119/viewer-release/stderr.log",
+        "sha256": "7897e1d0ba4a5a09d7197736ddc913dc07d8afe0df12ac22bb61fa1bb8b98701"
+      },
+      "verifyLog": {
+        "path": "build/sdk8-acceptance-20261119/verify-release-viewer.log",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/checks/verify-release-viewer.log",
+        "sha256": "0f71b13cea8117f4b8fb124cf2dc2d3902df37de8ee7926417285007ad047087"
+      },
+      "readbacks": {
+        "path": "build/sdk8-acceptance-20261119/viewer-release/capture-result.json",
+        "sha256": "f3d4b5f611a4f40eb07f8254ed41cfa0e6e41a923d02dca1ee7bf645fcf75d7b"
+      },
+      "metrics": {
+        "path": "build/sdk8-acceptance-20261119/viewer-release/user-data/viewer-additive-result.json",
+        "sha256": "ff9dba4237972b09b18fb0a236ca4a9379f06e4b48426ea98524fd93dd711409",
+        "values": {
+          "status": "passed",
+          "chainedSync": true,
+          "additiveLayers": true,
+          "setupVerified": true,
+          "groupsVerified": true,
+          "placementVerified": true,
+          "legacyRepairVerified": true,
+          "rootMotionVerified": true,
+          "collectionCrossfadeVerified": true,
+          "timeScaleInterpVerified": true,
+          "bones": 63,
+          "samples": [
+            {
+              "step": 0,
+              "time": 0,
+              "contributions": [
+                {
+                  "clip": "resources/animations/single/human/camp/sit_high_guitar_play_1_out",
+                  "time": 0,
+                  "weight": 1,
+                  "additive": false
+                },
+                {
+                  "clip": "resources/animations/single/human/camp/sit_high_guitar_idle",
+                  "time": 0,
+                  "weight": 0.5,
+                  "additive": true
+                }
+              ]
+            },
+            {
+              "step": 1,
+              "time": 0.25,
+              "contributions": [
+                {
+                  "clip": "resources/animations/single/human/camp/sit_high_guitar_play_1_out",
+                  "time": 0.2,
+                  "weight": 1,
+                  "additive": false
+                },
+                {
+                  "clip": "resources/animations/single/human/camp/sit_high_guitar_idle",
+                  "time": 0.2,
+                  "weight": 0.5,
+                  "additive": true
+                }
+              ]
+            },
+            {
+              "step": 2,
+              "time": 0.5,
+              "contributions": [
+                {
+                  "clip": "resources/animations/single/human/camp/sit_high_guitar_play_1_out",
+                  "time": 0.4,
+                  "weight": 1,
+                  "additive": false
+                },
+                {
+                  "clip": "resources/animations/single/human/camp/sit_high_guitar_idle",
+                  "time": 0.4,
+                  "weight": 0.5,
+                  "additive": true
+                }
+              ]
+            },
+            {
+              "step": 3,
+              "time": 0.25,
+              "contributions": [
+                {
+                  "clip": "resources/animations/single/human/camp/sit_high_guitar_play_1_out",
+                  "time": 0.2,
+                  "weight": 1,
+                  "additive": false
+                },
+                {
+                  "clip": "resources/animations/single/human/camp/sit_high_guitar_idle",
+                  "time": 0.2,
+                  "weight": 1,
+                  "additive": true
+                }
+              ]
+            },
+            {
+              "step": 4,
+              "time": 0.25,
+              "contributions": [
+                {
+                  "clip": "resources/animations/single/human/camp/sit_high_guitar_play_1_out",
+                  "time": 0.2,
+                  "weight": 1,
+                  "additive": false
+                }
+              ]
+            },
+            {
+              "step": 5,
+              "time": 0.25,
+              "contributions": [
+                {
+                  "clip": "resources/animations/single/human/camp/sit_high_guitar_play_1_out",
+                  "time": 0.2,
+                  "weight": 1,
+                  "additive": false
+                },
+                {
+                  "clip": "resources/animations/single/human/camp/sit_high_guitar_idle",
+                  "time": 0.2,
+                  "weight": 0.5,
+                  "additive": true
+                }
+              ]
+            },
+            {
+              "step": 6,
+              "time": 0.75,
+              "contributions": [
+                {
+                  "clip": "resources/animations/single/human/camp/sit_high_guitar_play_1_out",
+                  "time": 1,
+                  "weight": 1,
+                  "additive": false
+                },
+                {
+                  "clip": "resources/animations/single/human/camp/sit_high_guitar_idle",
+                  "time": 1,
+                  "weight": 0.5,
+                  "additive": true
+                }
+              ]
+            },
+            {
+              "step": 7,
+              "time": 0.75,
+              "contributions": [
+                {
+                  "clip": "resources/animations/single/human/camp/sit_high_guitar_play_1_out",
+                  "time": 1,
+                  "weight": 1,
+                  "additive": false
+                },
+                {
+                  "clip": "resources/animations/single/human/camp/sit_high_guitar_idle",
+                  "time": 1,
+                  "weight": 0.5,
+                  "additive": true
+                }
+              ]
+            },
+            {
+              "step": 8,
+              "time": 0.5,
+              "contributions": [
+                {
+                  "clip": "resources/animations/single/human/camp/sit_high_guitar_play_1_out",
+                  "time": 0.4,
+                  "weight": 1,
+                  "additive": false
+                },
+                {
+                  "clip": "resources/animations/single/human/camp/sit_high_guitar_idle",
+                  "time": 0.4,
+                  "weight": 0.5,
+                  "additive": true
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "images": [
+        {
+          "path": "build/sdk8-acceptance-20261119/viewer-release/captures/sdk_layout_edited.bmp",
+          "sha256": "ce7bc87d435c1a78efc292e01fea516a15f5e80a43c6b2e1a2ed6ed08733d810"
+        },
+        {
+          "path": "build/sdk8-acceptance-20261119/viewer-release/captures/sdk_layout_edited_asset.bmp",
+          "sha256": "04b29c3bdd4ab8fc67e922f3a47ccb0a930ee3e3a1d60cae8e3ff7f779e53590"
+        },
+        {
+          "path": "build/sdk8-acceptance-20261119/viewer-release/captures/sdk_layout_edited_camera.bmp",
+          "sha256": "e57724d438f6880563060e1b9cf3c5071feb712b56f490195da191a2ade26b9e"
+        },
+        {
+          "path": "build/sdk8-acceptance-20261119/viewer-release/captures/sdk_layout_redo.bmp",
+          "sha256": "ce7bc87d435c1a78efc292e01fea516a15f5e80a43c6b2e1a2ed6ed08733d810"
+        },
+        {
+          "path": "build/sdk8-acceptance-20261119/viewer-release/captures/sdk_layout_redo_asset.bmp",
+          "sha256": "04b29c3bdd4ab8fc67e922f3a47ccb0a930ee3e3a1d60cae8e3ff7f779e53590"
+        },
+        {
+          "path": "build/sdk8-acceptance-20261119/viewer-release/captures/sdk_layout_redo_camera.bmp",
+          "sha256": "c6e043567f686a1b62a8643c1c4e990519b85a4051755c9222d3a777644d45e6"
+        },
+        {
+          "path": "build/sdk8-acceptance-20261119/viewer-release/captures/sdk_layout_restored.bmp",
+          "sha256": "ce7bc87d435c1a78efc292e01fea516a15f5e80a43c6b2e1a2ed6ed08733d810"
+        },
+        {
+          "path": "build/sdk8-acceptance-20261119/viewer-release/captures/sdk_layout_restored_asset.bmp",
+          "sha256": "04b29c3bdd4ab8fc67e922f3a47ccb0a930ee3e3a1d60cae8e3ff7f779e53590"
+        },
+        {
+          "path": "build/sdk8-acceptance-20261119/viewer-release/captures/sdk_layout_restored_camera.bmp",
+          "sha256": "c9146f6afa082664229fb02cb4e40dbbefeb724dd76ee8159c9b37465c79cd96"
+        },
+        {
+          "path": "build/sdk8-acceptance-20261119/viewer-release/captures/sdk_layout_undo.bmp",
+          "sha256": "ce7bc87d435c1a78efc292e01fea516a15f5e80a43c6b2e1a2ed6ed08733d810"
+        },
+        {
+          "path": "build/sdk8-acceptance-20261119/viewer-release/captures/sdk_layout_undo_asset.bmp",
+          "sha256": "04b29c3bdd4ab8fc67e922f3a47ccb0a930ee3e3a1d60cae8e3ff7f779e53590"
+        },
+        {
+          "path": "build/sdk8-acceptance-20261119/viewer-release/captures/sdk_layout_undo_camera.bmp",
+          "sha256": "c6e043567f686a1b62a8643c1c4e990519b85a4051755c9222d3a777644d45e6"
+        },
+        {
+          "path": "build/sdk8-acceptance-20261119/viewer-release/captures/sdk_property_baseline.bmp",
+          "sha256": "ce7bc87d435c1a78efc292e01fea516a15f5e80a43c6b2e1a2ed6ed08733d810"
+        },
+        {
+          "path": "build/sdk8-acceptance-20261119/viewer-release/captures/sdk_property_baseline_asset.bmp",
+          "sha256": "04b29c3bdd4ab8fc67e922f3a47ccb0a930ee3e3a1d60cae8e3ff7f779e53590"
+        },
+        {
+          "path": "build/sdk8-acceptance-20261119/viewer-release/captures/sdk_property_baseline_camera.bmp",
+          "sha256": "aa693aa1932626a527f496c08275de300163db7967f5bcfeab0233e4bb4f4684"
+        },
+        {
+          "path": "build/sdk8-acceptance-20261119/viewer-release/captures/sdk_property_edited.bmp",
+          "sha256": "ce7bc87d435c1a78efc292e01fea516a15f5e80a43c6b2e1a2ed6ed08733d810"
+        },
+        {
+          "path": "build/sdk8-acceptance-20261119/viewer-release/captures/sdk_property_edited_asset.bmp",
+          "sha256": "04b29c3bdd4ab8fc67e922f3a47ccb0a930ee3e3a1d60cae8e3ff7f779e53590"
+        },
+        {
+          "path": "build/sdk8-acceptance-20261119/viewer-release/captures/sdk_property_edited_camera.bmp",
+          "sha256": "e57724d438f6880563060e1b9cf3c5071feb712b56f490195da191a2ade26b9e"
+        },
+        {
+          "path": "build/sdk8-acceptance-20261119/viewer-release/captures/sdk_property_redo.bmp",
+          "sha256": "ce7bc87d435c1a78efc292e01fea516a15f5e80a43c6b2e1a2ed6ed08733d810"
+        },
+        {
+          "path": "build/sdk8-acceptance-20261119/viewer-release/captures/sdk_property_redo_asset.bmp",
+          "sha256": "04b29c3bdd4ab8fc67e922f3a47ccb0a930ee3e3a1d60cae8e3ff7f779e53590"
+        },
+        {
+          "path": "build/sdk8-acceptance-20261119/viewer-release/captures/sdk_property_redo_camera.bmp",
+          "sha256": "16d58bd9eaa429231b2983926f352c4f71c9e45baed46db409039658bab578a5"
+        },
+        {
+          "path": "build/sdk8-acceptance-20261119/viewer-release/captures/sdk_property_restored.bmp",
+          "sha256": "ce7bc87d435c1a78efc292e01fea516a15f5e80a43c6b2e1a2ed6ed08733d810"
+        },
+        {
+          "path": "build/sdk8-acceptance-20261119/viewer-release/captures/sdk_property_restored_asset.bmp",
+          "sha256": "04b29c3bdd4ab8fc67e922f3a47ccb0a930ee3e3a1d60cae8e3ff7f779e53590"
+        },
+        {
+          "path": "build/sdk8-acceptance-20261119/viewer-release/captures/sdk_property_restored_camera.bmp",
+          "sha256": "bb85adb23fd012c7bb8cf6a23af38df6658ae2274d85e5849219722ab7643828"
+        },
+        {
+          "path": "build/sdk8-acceptance-20261119/viewer-release/captures/sdk_property_undo.bmp",
+          "sha256": "ce7bc87d435c1a78efc292e01fea516a15f5e80a43c6b2e1a2ed6ed08733d810"
+        },
+        {
+          "path": "build/sdk8-acceptance-20261119/viewer-release/captures/sdk_property_undo_asset.bmp",
+          "sha256": "04b29c3bdd4ab8fc67e922f3a47ccb0a930ee3e3a1d60cae8e3ff7f779e53590"
+        },
+        {
+          "path": "build/sdk8-acceptance-20261119/viewer-release/captures/sdk_property_undo_camera.bmp",
+          "sha256": "c9146f6afa082664229fb02cb4e40dbbefeb724dd76ee8159c9b37465c79cd96"
+        }
+      ]
+    }
+  ],
+  "binaries": {
+    "debug": [
+      {
+        "path": "build/sdk-native-20261108-debug/binaries/WeifenLuo.WinFormsUI.Docking.ThemeVS2015.dll",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/debug/WeifenLuo.WinFormsUI.Docking.ThemeVS2015.dll",
+        "sha256": "cda40f2ac6547f2f227de0a4f45f7624e6e90556c867b35c1d5f0c8b6d118619"
+      },
+      {
+        "path": "build/sdk-native-20261108-debug/binaries/WeifenLuo.WinFormsUI.Docking.dll",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/debug/WeifenLuo.WinFormsUI.Docking.dll",
+        "sha256": "89b4327377221a13d914a1480d73f9338d16627cb9e76a7f189b0211e55ee20e"
+      },
+      {
+        "path": "build/sdk-native-20261108-debug/binaries/Xceed.Wpf.AvalonDock.Themes.Aero.dll",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/debug/Xceed.Wpf.AvalonDock.Themes.Aero.dll",
+        "sha256": "ed32de9caf09fd89c1165180b6d0e0970d506f26a167a29bd1cae906eb0cf4d5"
+      },
+      {
+        "path": "build/sdk-native-20261108-debug/binaries/Xceed.Wpf.AvalonDock.Themes.Metro.dll",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/debug/Xceed.Wpf.AvalonDock.Themes.Metro.dll",
+        "sha256": "39c51d391d0ec300c7cb429577f73f6bf49f147e7efd40d3467e27e60fc19f02"
+      },
+      {
+        "path": "build/sdk-native-20261108-debug/binaries/Xceed.Wpf.AvalonDock.Themes.VS2010.dll",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/debug/Xceed.Wpf.AvalonDock.Themes.VS2010.dll",
+        "sha256": "a7501d9db0d3b971ebee98b148a405b3a3ba8e643a8bbd9969e8d98474cbccf1"
+      },
+      {
+        "path": "build/sdk-native-20261108-debug/binaries/Xceed.Wpf.AvalonDock.dll",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/debug/Xceed.Wpf.AvalonDock.dll",
+        "sha256": "d961508ee6518c410a929b3e3dd23d4412889b260c55fade53863d8a59d60765"
+      },
+      {
+        "path": "build/sdk-native-20261108-debug/binaries/Xceed.Wpf.Toolkit.dll",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/debug/Xceed.Wpf.Toolkit.dll",
+        "sha256": "8adc3d8a06dcdceef320e98022ffb3cde861b961f4da44338f4b38d49a845477"
+      },
+      {
+        "path": "build/sdk-native-20261108-debug/binaries/libcs_core.dll",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/debug/libcs_core.dll",
+        "sha256": "7dd6fe491a5d75f0fdb6b44982244d5ef6dc8f28d177b60e8ed4e6deeddb99dc"
+      },
+      {
+        "path": "build/sdk-native-20261108-debug/binaries/libcs_script.dll",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/debug/libcs_script.dll",
+        "sha256": "4cc50b77a3eafbfb816291828bb8869b68d61bf1184c6d2f7cfee530cd1a864d"
+      },
+      {
+        "path": "build/sdk-native-20261108-debug/binaries/libxray_core.dll",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/debug/libxray_core.dll",
+        "sha256": "4b4a6dd354b67378b5c3bde5bd7c23de82f6a4362e94ebbd02e8820854a76a5b"
+      },
+      {
+        "path": "build/sdk-native-20261108-debug/binaries/libxray_editor_animation.dll",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/debug/libxray_editor_animation.dll",
+        "sha256": "2f775071b2de5e6feb07a402d184fdbad47e302aa560307fa40df7cfec29856a"
+      },
+      {
+        "path": "build/sdk-native-20261108-debug/binaries/libxray_editor_base.dll",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/debug/libxray_editor_base.dll",
+        "sha256": "505ec4f0914d1cb2a4ca163934682eb8fe9a631714f62495eb272f5bf26f4bc2"
+      },
+      {
+        "path": "build/sdk-native-20261108-debug/binaries/libxray_engine.dll",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/debug/libxray_engine.dll",
+        "sha256": "c4fe7e02e5da6396045412c7225458ac49e5de939c37ca4d0ce95d1b8d705887"
+      },
+      {
+        "path": "build/sdk-native-20261108-debug/binaries/libxray_render_vulkan.dll",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/debug/libxray_render_vulkan.dll",
+        "sha256": "acf093ea034d99fc28138775c8813cbaa271cf1920e404fd531aff793e54f6b2"
+      },
+      {
+        "path": "build/sdk-native-20261108-debug/binaries/stalker2.exe",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/debug/stalker2.exe",
+        "sha256": "031c90105095d699f34c30e420f7a55ef372fc18c223c613431deeb4e45828ce"
+      },
+      {
+        "path": "build/sdk-native-20261108-debug/binaries/wpf_controls.deps.json",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/debug/wpf_controls.deps.json",
+        "sha256": "89262e9003328048a03a6286564031ffdc7d82a151a151e1745b77fda0052966"
+      },
+      {
+        "path": "build/sdk-native-20261108-debug/binaries/wpf_controls.dll",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/debug/wpf_controls.dll",
+        "sha256": "947920dfa00d39b6f2e75ab730ba4265ffd1a544dbb07e98290fb5757178454d"
+      },
+      {
+        "path": "build/sdk-native-20261108-debug/binaries/xray.editor.base.deps.json",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/debug/xray.editor.base.deps.json",
+        "sha256": "c12093d54f664d84dd0ffcfdc684458e08118c7153275a8c499d7d9ebc70b1c6"
+      },
+      {
+        "path": "build/sdk-native-20261108-debug/binaries/xray.editor.base.dll",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/debug/xray.editor.base.dll",
+        "sha256": "30ff1440c9d760d8de3dcad1dc91a6598a3d95cc84e0b209981d006a341aad67"
+      },
+      {
+        "path": "build/sdk-native-20261108-debug/binaries/xray.editor.base.runtimeconfig.dev.json",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/debug/xray.editor.base.runtimeconfig.dev.json",
+        "sha256": "34631339d8191a09e2d022bc7fa48d8ce197a136002bc14674e2884466acd348"
+      },
+      {
+        "path": "build/sdk-native-20261108-debug/binaries/xray.editor.base.runtimeconfig.json",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/debug/xray.editor.base.runtimeconfig.json",
+        "sha256": "c0f4ae779f28f23d5fd36522a9472715854cc1cc11689cf4dd2678fdaa822946"
+      },
+      {
+        "path": "build/sdk-native-20261108-debug/binaries/xray_animation_math_engine_contract_tests.exe",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/debug/xray_animation_math_engine_contract_tests.exe",
+        "sha256": "a909faf33875b00b7e56a576eefed951c230980f11c0d98afed6f4be7fb763e3"
+      },
+      {
+        "path": "build/sdk-native-20261108-debug/binaries/xray_animation_math_tests.exe",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/debug/xray_animation_math_tests.exe",
+        "sha256": "e7d147f6b516864432f6a0d66f3094795008233fca9bba5fe83a9aec9db72a6b"
+      },
+      {
+        "path": "build/sdk-native-20261108-debug/binaries/xray_apc_resource_callbacks_contract.exe",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/debug/xray_apc_resource_callbacks_contract.exe",
+        "sha256": "340351bc128dbe79ee4cb8335cb6235bb56055a07774d690813b487ed7ad2b16"
+      },
+      {
+        "path": "build/sdk-native-20261108-debug/binaries/xray_asset_cook_cli.exe",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/debug/xray_asset_cook_cli.exe",
+        "sha256": "de41a62bad3d06812497e50bcea49eec56bb5126ecc46d5e30542078176ef9eb"
+      },
+      {
+        "path": "build/sdk-native-20261108-debug/binaries/xray_configuration_contract_tests.exe",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/debug/xray_configuration_contract_tests.exe",
+        "sha256": "0efc063ac0f3eb0a41c8c19daecb65576e1d533faf00c99da6f2b4c108f18bdd"
+      },
+      {
+        "path": "build/sdk-native-20261108-debug/binaries/xray_editor_world.dll",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/debug/xray_editor_world.dll",
+        "sha256": "e1ccef1ee1e5d142247e94758fdb11d026901b516874fbcd2e6a77ac1e0a2f90"
+      },
+      {
+        "path": "build/sdk-native-20261108-debug/binaries/xray_lua_sol_binding_tests.exe",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/debug/xray_lua_sol_binding_tests.exe",
+        "sha256": "5029a012b9d980bf4fa4d254cd7784c9a599d4de2b3875a1dd5407027c453a3e"
+      },
+      {
+        "path": "build/sdk-native-20261108-debug/binaries/xray_maya_cook_cli.exe",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/debug/xray_maya_cook_cli.exe",
+        "sha256": "de41a62bad3d06812497e50bcea49eec56bb5126ecc46d5e30542078176ef9eb"
+      },
+      {
+        "path": "build/sdk-native-20261108-debug/binaries/xray_maya_cook_engine_contract_tests.exe",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/debug/xray_maya_cook_engine_contract_tests.exe",
+        "sha256": "74a91b6d1a48dd2dcfdc811ba4376ce09a73eb21660323fab212bfc7069e97b4"
+      },
+      {
+        "path": "build/sdk-native-20261108-debug/binaries/xray_maya_cook_tests.exe",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/debug/xray_maya_cook_tests.exe",
+        "sha256": "4aae2f447ef923376d47f845130ac91e3811118290079b5041b572b25a4f1240"
+      },
+      {
+        "path": "build/sdk-native-20261108-debug/binaries/xray_sdk_gizmo_contract_tests.exe",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/debug/xray_sdk_gizmo_contract_tests.exe",
+        "sha256": "6572b28b5e14c67a38452cb3fb61c144da65c128419d712e46fd617fc413dfd7"
+      },
+      {
+        "path": "build/sdk-native-20261108-debug/binaries/xray_sdk_model_physics_contract.exe",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/debug/xray_sdk_model_physics_contract.exe",
+        "sha256": "b163581422027440900f83858c705f403779e878f2445203288d0eaf268f2d23"
+      },
+      {
+        "path": "build/sdk-native-20261108-debug/binaries/xray_sdk_texture_contract.exe",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/debug/xray_sdk_texture_contract.exe",
+        "sha256": "0e57a7bf8c6578095011bfe73b15108a872254f216d4f0ffdccc4e425e015278"
+      },
+      {
+        "path": "build/sdk-native-20261108-debug/binaries/xray_sdk_world_tools_contract.exe",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/debug/xray_sdk_world_tools_contract.exe",
+        "sha256": "b7116fe265eca75e383d07714b3fc6bbdb6b60bc232c35e3357fb98234ed7ae9"
+      },
+      {
+        "path": "build/sdk-native-20261108-debug/binaries/xray_shader_compiler.exe",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/debug/xray_shader_compiler.exe",
+        "sha256": "7f7a5f392194acbc1a57b77ce658a94c4680a96271c636637d3c0340a2a2fd1a"
+      },
+      {
+        "path": "build/sdk-native-20261108-debug/binaries/xray_windows_x64_contract_tests.exe",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/debug/xray_windows_x64_contract_tests.exe",
+        "sha256": "4d7381d41912cb41db65d6452d13a81c4a7bcba4d805d4c3b2f094bf0a256844"
+      },
+      {
+        "path": "build/sdk-native-20261108-debug/sdk-ui/artifacts/bin/SDKUI.Compatibility/debug/SDKUI.Compatibility.dll",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/debug/SDKUI.Compatibility.dll",
+        "sha256": "5fdfe1316b0ded78e32e34685b0f290889e07cb837b332a344b606183dde18ba"
+      }
+    ],
+    "release": [
+      {
+        "path": "build/sdk-native-20261108-release/binaries/WeifenLuo.WinFormsUI.Docking.ThemeVS2015.dll",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/release/WeifenLuo.WinFormsUI.Docking.ThemeVS2015.dll",
+        "sha256": "cda40f2ac6547f2f227de0a4f45f7624e6e90556c867b35c1d5f0c8b6d118619"
+      },
+      {
+        "path": "build/sdk-native-20261108-release/binaries/WeifenLuo.WinFormsUI.Docking.dll",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/release/WeifenLuo.WinFormsUI.Docking.dll",
+        "sha256": "89b4327377221a13d914a1480d73f9338d16627cb9e76a7f189b0211e55ee20e"
+      },
+      {
+        "path": "build/sdk-native-20261108-release/binaries/Xceed.Wpf.AvalonDock.Themes.Aero.dll",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/release/Xceed.Wpf.AvalonDock.Themes.Aero.dll",
+        "sha256": "ed32de9caf09fd89c1165180b6d0e0970d506f26a167a29bd1cae906eb0cf4d5"
+      },
+      {
+        "path": "build/sdk-native-20261108-release/binaries/Xceed.Wpf.AvalonDock.Themes.Metro.dll",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/release/Xceed.Wpf.AvalonDock.Themes.Metro.dll",
+        "sha256": "39c51d391d0ec300c7cb429577f73f6bf49f147e7efd40d3467e27e60fc19f02"
+      },
+      {
+        "path": "build/sdk-native-20261108-release/binaries/Xceed.Wpf.AvalonDock.Themes.VS2010.dll",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/release/Xceed.Wpf.AvalonDock.Themes.VS2010.dll",
+        "sha256": "a7501d9db0d3b971ebee98b148a405b3a3ba8e643a8bbd9969e8d98474cbccf1"
+      },
+      {
+        "path": "build/sdk-native-20261108-release/binaries/Xceed.Wpf.AvalonDock.dll",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/release/Xceed.Wpf.AvalonDock.dll",
+        "sha256": "d961508ee6518c410a929b3e3dd23d4412889b260c55fade53863d8a59d60765"
+      },
+      {
+        "path": "build/sdk-native-20261108-release/binaries/Xceed.Wpf.Toolkit.dll",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/release/Xceed.Wpf.Toolkit.dll",
+        "sha256": "8adc3d8a06dcdceef320e98022ffb3cde861b961f4da44338f4b38d49a845477"
+      },
+      {
+        "path": "build/sdk-native-20261108-release/binaries/libcs_core.dll",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/release/libcs_core.dll",
+        "sha256": "4320d846a51eaa5ad424b08f0b6a5495b55a72f39ad56131ea41a8d0e4a86830"
+      },
+      {
+        "path": "build/sdk-native-20261108-release/binaries/libcs_script.dll",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/release/libcs_script.dll",
+        "sha256": "a1797bbde19498ccb0ca26f42742684928b4184ee92db0abda6a53855ef2ed6e"
+      },
+      {
+        "path": "build/sdk-native-20261108-release/binaries/libxray_core.dll",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/release/libxray_core.dll",
+        "sha256": "e3308c59e1719bdc15996dbe082579f686e468951bbfa1f8c463d5b42b3daa98"
+      },
+      {
+        "path": "build/sdk-native-20261108-release/binaries/libxray_editor_animation.dll",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/release/libxray_editor_animation.dll",
+        "sha256": "09e4b95b6bf273995d9629216597e4a30a321c1630d98c63d1acf14b807bb35b"
+      },
+      {
+        "path": "build/sdk-native-20261108-release/binaries/libxray_editor_base.dll",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/release/libxray_editor_base.dll",
+        "sha256": "d5697c2310c46434d98042b1514a86dc33745252d99f74510b94aa69eb59e7c2"
+      },
+      {
+        "path": "build/sdk-native-20261108-release/binaries/libxray_editor_sound.dll",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/release/libxray_editor_sound.dll",
+        "sha256": "685a5899478c6558239fb9805b0b0c0b23271410b510ee615b4c76e1ca9c3e6c"
+      },
+      {
+        "path": "build/sdk-native-20261108-release/binaries/libxray_engine.dll",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/release/libxray_engine.dll",
+        "sha256": "62659b4a28c5fd48c375debc337a8d2c87a48f3928b841112a891553e9ba74b8"
+      },
+      {
+        "path": "build/sdk-native-20261108-release/binaries/libxray_render_vulkan.dll",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/release/libxray_render_vulkan.dll",
+        "sha256": "75951f656f2e29da238261c74d960e75f63962c622d2a31ca4b11134ddc5bc5b"
+      },
+      {
+        "path": "build/sdk-native-20261108-release/binaries/stalker2.exe",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/release/stalker2.exe",
+        "sha256": "514bf4d7bf1dc41475bb376dabec8be649e3685bdd20bef99b9d8d2428b0e525"
+      },
+      {
+        "path": "build/sdk-native-20261108-release/binaries/wpf_controls.deps.json",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/release/wpf_controls.deps.json",
+        "sha256": "89262e9003328048a03a6286564031ffdc7d82a151a151e1745b77fda0052966"
+      },
+      {
+        "path": "build/sdk-native-20261108-release/binaries/wpf_controls.dll",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/release/wpf_controls.dll",
+        "sha256": "98874d21f888c9f18c493f21527def9490d8e9bfd5a3618ad36ecf91c980fe1d"
+      },
+      {
+        "path": "build/sdk-native-20261108-release/binaries/xray.editor.base.deps.json",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/release/xray.editor.base.deps.json",
+        "sha256": "c12093d54f664d84dd0ffcfdc684458e08118c7153275a8c499d7d9ebc70b1c6"
+      },
+      {
+        "path": "build/sdk-native-20261108-release/binaries/xray.editor.base.dll",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/release/xray.editor.base.dll",
+        "sha256": "b5236d3679bfcd6efdb353bd34d2bff27e993528d53dae3231e074aeb05dccc7"
+      },
+      {
+        "path": "build/sdk-native-20261108-release/binaries/xray.editor.base.runtimeconfig.json",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/release/xray.editor.base.runtimeconfig.json",
+        "sha256": "e810e823dbbf1f454609dc4fa67395aff5edb4b76ce1e93755757a9b1662ab00"
+      },
+      {
+        "path": "build/sdk-native-20261108-release/binaries/xray_animation_math_engine_contract_tests.exe",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/release/xray_animation_math_engine_contract_tests.exe",
+        "sha256": "02e719ff6de8651e5e5790fd710fb42a4590fd26e8a9ff63932be7e523d0030d"
+      },
+      {
+        "path": "build/sdk-native-20261108-release/binaries/xray_animation_math_tests.exe",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/release/xray_animation_math_tests.exe",
+        "sha256": "3f2686d324d070a89302524b1aafd873d3b1277c44c6b77428a98f5184761ff0"
+      },
+      {
+        "path": "build/sdk-native-20261108-release/binaries/xray_apc_resource_callbacks_contract.exe",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/release/xray_apc_resource_callbacks_contract.exe",
+        "sha256": "ffa4065dbba917e18014cb196f8df9a6c27593e377f2937181ec9e4ea2c36953"
+      },
+      {
+        "path": "build/sdk-native-20261108-release/binaries/xray_asset_cook_cli.exe",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/release/xray_asset_cook_cli.exe",
+        "sha256": "a33750dd18f59236e903cc59e16ffbf76852551bc76a39f0b1c2da1594a43e3f"
+      },
+      {
+        "path": "build/sdk-native-20261108-release/binaries/xray_configuration_contract_tests.exe",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/release/xray_configuration_contract_tests.exe",
+        "sha256": "8107f810771c6f7be4d4b5dfe825c46d9334f1e3216a2bb28b5bb7a8fb4d87de"
+      },
+      {
+        "path": "build/sdk-native-20261108-release/binaries/xray_editor_world.dll",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/release/xray_editor_world.dll",
+        "sha256": "aea45b6eb1a312f6b03075fab3996483ca67e54a46b3d5e44a1f0ae670262878"
+      },
+      {
+        "path": "build/sdk-native-20261108-release/binaries/xray_lua_sol_binding_tests.exe",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/release/xray_lua_sol_binding_tests.exe",
+        "sha256": "f336be060f160f25508d1849e0d4f0e9505ac04219560507e0d29f5a39bc8228"
+      },
+      {
+        "path": "build/sdk-native-20261108-release/binaries/xray_maya_cook_cli.exe",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/release/xray_maya_cook_cli.exe",
+        "sha256": "a33750dd18f59236e903cc59e16ffbf76852551bc76a39f0b1c2da1594a43e3f"
+      },
+      {
+        "path": "build/sdk-native-20261108-release/binaries/xray_maya_cook_engine_contract_tests.exe",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/release/xray_maya_cook_engine_contract_tests.exe",
+        "sha256": "c0650e8062f538ed3a68c83e234cfa8e7bd5a869f64fb9abedecd9b50d6c1e57"
+      },
+      {
+        "path": "build/sdk-native-20261108-release/binaries/xray_maya_cook_tests.exe",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/release/xray_maya_cook_tests.exe",
+        "sha256": "b40a7d8ac1b1915378d1ff31570fe9c578f0ab3c012a9155f80f632551944954"
+      },
+      {
+        "path": "build/sdk-native-20261108-release/binaries/xray_sdk_gizmo_contract_tests.exe",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/release/xray_sdk_gizmo_contract_tests.exe",
+        "sha256": "160a7acd15b16e170efbf3e8a8dbe6b03216f0c54a856e66cba90143c565d8b6"
+      },
+      {
+        "path": "build/sdk-native-20261108-release/binaries/xray_sdk_model_physics_contract.exe",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/release/xray_sdk_model_physics_contract.exe",
+        "sha256": "d9f04e131de61bb79e9ca39d7981adfaedd9eac5ddaf0673cffa22fdf8bf1a0b"
+      },
+      {
+        "path": "build/sdk-native-20261108-release/binaries/xray_sdk_texture_contract.exe",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/release/xray_sdk_texture_contract.exe",
+        "sha256": "be719aa5a0d1ee1c055d8394a743ccd9b7ebd09f34bc00fe6a05bfda2975e047"
+      },
+      {
+        "path": "build/sdk-native-20261108-release/binaries/xray_sdk_world_tools_contract.exe",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/release/xray_sdk_world_tools_contract.exe",
+        "sha256": "904518beb0bea32307ad58602ad88bedfe432c9031f6e722b906637c09568349"
+      },
+      {
+        "path": "build/sdk-native-20261108-release/binaries/xray_shader_compiler.exe",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/release/xray_shader_compiler.exe",
+        "sha256": "4398cb44969b68937be944bdd08948ac5aa89d3ebe113fa7c109202869cb3618"
+      },
+      {
+        "path": "build/sdk-native-20261108-release/binaries/xray_windows_x64_contract_tests.exe",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/release/xray_windows_x64_contract_tests.exe",
+        "sha256": "32d27c5005101e939587ca31b073be5e83b7cd7e4506a71ee22c0c0e48761204"
+      },
+      {
+        "path": "build/sdk-native-20261108-release/sdk-ui/artifacts/bin/SDKUI.Compatibility/release/SDKUI.Compatibility.dll",
+        "snapshot": "build/sdk8-acceptance-20261119/checkpoint/binaries/release/SDKUI.Compatibility.dll",
+        "sha256": "f05011e7b0464de633edcd754983e6237a555c6940ad80204887a928bba1a0dc"
+      }
+    ]
+  },
+  "implementation": [
+    {
+      "path": "sdk_migration_plan.md",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sdk_migration_plan.md",
+      "sha256": "deabdce5062303d842bc2af8c2b58bda0810843f0402ede3256cce61369ee178"
+    },
+    {
+      "path": "sources/tools/sdk/InspectSdkBinaries.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/tools/sdk/InspectSdkBinaries.cs",
+      "sha256": "a64153c917e5a9c2d5a46cc11c968def6a452448b3b8112a5871ef30ca7b77df"
+    },
+    {
+      "path": "sources/tools/sdk/build-sdk-ui.ps1",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/tools/sdk/build-sdk-ui.ps1",
+      "sha256": "96f93f44dd828544fbd36912f278f05ee277e7901781868aabe3ed3375282f33"
+    },
+    {
+      "path": "sources/tools/sdk/check-sdk0-fixtures.py",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/tools/sdk/check-sdk0-fixtures.py",
+      "sha256": "4f101072862a9f80668d0e587b3f6778fe9a19378793cf169b7623459f8542a7"
+    },
+    {
+      "path": "sources/tools/sdk/check-sdk6-material-checkpoint.py",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/tools/sdk/check-sdk6-material-checkpoint.py",
+      "sha256": "84c692f4c2f5ed5e4ce3c77e6f3b81b2ca47e4e033a9dc191ee7e8eeff8d90cc"
+    },
+    {
+      "path": "sources/tools/sdk/check-sdk6-texture-checkpoint.py",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/tools/sdk/check-sdk6-texture-checkpoint.py",
+      "sha256": "cfac282add3e6114305021bb9766927453440c5a8812b869d2e2f2b8dd9e5342"
+    },
+    {
+      "path": "sources/tools/sdk/collect-sdk5-acceptance.py",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/tools/sdk/collect-sdk5-acceptance.py",
+      "sha256": "74b8aca1dfbce6128347573b186c7da8059c0a6958464d43fdc74a8d2b341cd9"
+    },
+    {
+      "path": "sources/tools/sdk/collect-sdk5-gizmos.py",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/tools/sdk/collect-sdk5-gizmos.py",
+      "sha256": "2453b0aa0e77f3356fc9e9d87760dd5b13a24dc7cefccd87af7e931f88bc3ecb"
+    },
+    {
+      "path": "sources/tools/sdk/collect-sdk6-acceptance.py",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/tools/sdk/collect-sdk6-acceptance.py",
+      "sha256": "8c741b64931cea8c6e364c07d962db59fd9b3717ce245c6a91b562dc522d1839"
+    },
+    {
+      "path": "sources/tools/sdk/collect-sdk6-material-checkpoint.py",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/tools/sdk/collect-sdk6-material-checkpoint.py",
+      "sha256": "bce75dc8181fca56ab5147eda28eeb515e67fc65266ce87c20e9ae9b24532fb6"
+    },
+    {
+      "path": "sources/tools/sdk/collect-sdk7-acceptance.py",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/tools/sdk/collect-sdk7-acceptance.py",
+      "sha256": "5918eaffd7333bfaf549cccbdfed96b04f648719d0a91634a8b1d5ca73199272"
+    },
+    {
+      "path": "sources/tools/sdk/collect-sdk8-acceptance.py",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/tools/sdk/collect-sdk8-acceptance.py",
+      "sha256": "6117a1593c2a8eed0cceaabec5faf16d8fb0aa7ab90ed3efd466104a0984424c"
+    },
+    {
+      "path": "sources/tools/sdk/inspect-sdk-binaries.ps1",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/tools/sdk/inspect-sdk-binaries.ps1",
+      "sha256": "7f8417241abeaac1f62d1a8bc038613a5cbc7d9b599a2647d0b8c2f5ced7c212"
+    },
+    {
+      "path": "sources/tools/sdk/inspect-sdk0-events.py",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/tools/sdk/inspect-sdk0-events.py",
+      "sha256": "68e4af2760cffc407e55145c249b94b2ad6ac54e4e74a89efa98f59dd4c2fa40"
+    },
+    {
+      "path": "sources/tools/sdk/inspect-sdk0-images.py",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/tools/sdk/inspect-sdk0-images.py",
+      "sha256": "3a6ff965cc8e9f9232aa40fc7257b0cc6bc3a56eb4011b930a0c6b6e7690d03f"
+    },
+    {
+      "path": "sources/tools/sdk/inventory-sdk0.py",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/tools/sdk/inventory-sdk0.py",
+      "sha256": "3783b14e847fe7997164ee0e7238f449627a63b36fa7614291acfd50146ec92a"
+    },
+    {
+      "path": "sources/tools/sdk/map-sdk0.py",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/tools/sdk/map-sdk0.py",
+      "sha256": "af6f9b08839297d7ed507b681e39048542cdaffda1dbfbdc5ff54b970aee9cb2"
+    },
+    {
+      "path": "sources/tools/sdk/prepare-sdk0-reference.ps1",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/tools/sdk/prepare-sdk0-reference.ps1",
+      "sha256": "58f579e3f36612af08b9424b29b76600c189cc547b9d2543a9ad9f5b457c1e60"
+    },
+    {
+      "path": "sources/tools/sdk/prepare-sdk3-fixtures.py",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/tools/sdk/prepare-sdk3-fixtures.py",
+      "sha256": "341e3cf3f9c92b7bcc656cd2afefc3338cc1489758af25738d74390e325a93b9"
+    },
+    {
+      "path": "sources/tools/sdk/prepare-sdk6-material-fixtures.py",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/tools/sdk/prepare-sdk6-material-fixtures.py",
+      "sha256": "304b2f6975a0992b2ad4543c92bdd97d3ab933a015081dc179c75ed5cb7bbce4"
+    },
+    {
+      "path": "sources/tools/sdk/prepare-sdk6-maya-preview.py",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/tools/sdk/prepare-sdk6-maya-preview.py",
+      "sha256": "cba3808c115ad0488d6ea7dcc6b19379af858fbbd09113f2a50438a835267ef7"
+    },
+    {
+      "path": "sources/tools/sdk/prepare-sdk8-fixtures.py",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/tools/sdk/prepare-sdk8-fixtures.py",
+      "sha256": "f6baa96b580e4d057813f63deab199465a2421a86a06b5aa6a4cc5ec01341640"
+    },
+    {
+      "path": "sources/tools/sdk/prepare-sdk8-viewer-fixtures.py",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/tools/sdk/prepare-sdk8-viewer-fixtures.py",
+      "sha256": "500e052ad301f27e085a94239e88ec18029c37c6b8fd8ebc064bf853b5cd163a"
+    },
+    {
+      "path": "sources/tools/sdk/probe-sdk0-reference.ps1",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/tools/sdk/probe-sdk0-reference.ps1",
+      "sha256": "985af6e4a75ba545d392b95d6b40e29567dd0415c97d4dc61c4a897ed113a5e6"
+    },
+    {
+      "path": "sources/tools/sdk/review-sdk0-routes.py",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/tools/sdk/review-sdk0-routes.py",
+      "sha256": "cdddaed33286f054cfd66aba8e63c427ee2d3c34ceb94165dce7a19cefb874c5"
+    },
+    {
+      "path": "sources/tools/sdk/review-sdk0.py",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/tools/sdk/review-sdk0.py",
+      "sha256": "a873e1cab21bcdd8315fe4fe3aa3821fa633fc87b7dd7da1dd939e24ef9b9d85"
+    },
+    {
+      "path": "sources/tools/sdk/test-sdk-dcc.ps1",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/tools/sdk/test-sdk-dcc.ps1",
+      "sha256": "1e2e3f17844df1a86c942a957e921fba7b645cc788dfa86d35c697b19725e9a0"
+    },
+    {
+      "path": "sources/tools/sdk/test-sdk-property.ps1",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/tools/sdk/test-sdk-property.ps1",
+      "sha256": "9a71f166360b08b73b789bbee9666da3811948b82b3638e732beb3d48681fbe6"
+    },
+    {
+      "path": "sources/tools/sdk/test-sdk5.ps1",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/tools/sdk/test-sdk5.ps1",
+      "sha256": "1bdbdb537b871d194233c4c3a7312c53c6656c761444feb4dd2585706cb6083a"
+    },
+    {
+      "path": "sources/tools/sdk/verify-sdk-animation.py",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/tools/sdk/verify-sdk-animation.py",
+      "sha256": "b651a112906df212582885fc41eae6846a1938ff6a794726922c975eb0ed7be3"
+    },
+    {
+      "path": "sources/tools/sdk/verify-sdk-collection-playback.py",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/tools/sdk/verify-sdk-collection-playback.py",
+      "sha256": "ae6c7114e43b757e7015b66dc6e617c4af5be4061225d520a0f76543661782df"
+    },
+    {
+      "path": "sources/tools/sdk/verify-sdk-completion.py",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/tools/sdk/verify-sdk-completion.py",
+      "sha256": "d2de866a2289b1143db64022ef82f4af3fb0d7fa1475274c45e7c872d98f5247"
+    },
+    {
+      "path": "sources/tools/sdk/verify-sdk-cube.py",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/tools/sdk/verify-sdk-cube.py",
+      "sha256": "a974d3475e59da8a2e016f01323388aacb9ae7804925ade9f71760a64eb86ccf"
+    },
+    {
+      "path": "sources/tools/sdk/verify-sdk-dcc.py",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/tools/sdk/verify-sdk-dcc.py",
+      "sha256": "f886dde9067fe4debcd3d120d08ead28b637a62f1fd7527ca7c39bdae860f110"
+    },
+    {
+      "path": "sources/tools/sdk/verify-sdk-gizmos.py",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/tools/sdk/verify-sdk-gizmos.py",
+      "sha256": "5d9ea1400c031fd20d1ffd3b03573ee5ba54ebc9878ad4ae97a4f00cfe6905f2"
+    },
+    {
+      "path": "sources/tools/sdk/verify-sdk-material.py",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/tools/sdk/verify-sdk-material.py",
+      "sha256": "c2fb52e7233fd14fe471efdff1263c2c51adc20fbc924a1deb6a0abd7c9c0549"
+    },
+    {
+      "path": "sources/tools/sdk/verify-sdk-model.py",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/tools/sdk/verify-sdk-model.py",
+      "sha256": "583efb5b43d7fd38d7d2a275a5b08061c8efe9cd5861f4bf4c78394465906cf8"
+    },
+    {
+      "path": "sources/tools/sdk/verify-sdk-outputs.py",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/tools/sdk/verify-sdk-outputs.py",
+      "sha256": "36655a4e9ee5f69b038ff588c19a6c124cbe07d71d2c5895536eb829ee2bc499"
+    },
+    {
+      "path": "sources/tools/sdk/verify-sdk-physics.py",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/tools/sdk/verify-sdk-physics.py",
+      "sha256": "c6bc64cec2f5ac8006a51074c7192ecdd21bc2a6197a2180cfaf9bc9a4a5b14b"
+    },
+    {
+      "path": "sources/tools/sdk/verify-sdk-property.py",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/tools/sdk/verify-sdk-property.py",
+      "sha256": "7d021bdcd69cd889d13b10a90325b44f16a14deaefc682b859cb8f744a19cc1c"
+    },
+    {
+      "path": "sources/tools/sdk/verify-sdk-render-options.py",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/tools/sdk/verify-sdk-render-options.py",
+      "sha256": "56f398202cffae088c8ba3a2ed77cb8c117c16ded533d5c6471fcc9728f48bdd"
+    },
+    {
+      "path": "sources/tools/sdk/verify-sdk-scene.py",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/tools/sdk/verify-sdk-scene.py",
+      "sha256": "9587eea6ccd68b111746aa93fe51c9a98fced1e3ae917fcde02f22dea08fa8cf"
+    },
+    {
+      "path": "sources/tools/sdk/verify-sdk-selection.py",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/tools/sdk/verify-sdk-selection.py",
+      "sha256": "90636d8601e4122e72bad56917518f2f2fbf0ff2d739079e2fc56f9227f95f9c"
+    },
+    {
+      "path": "sources/tools/sdk/verify-sdk-skeletal.py",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/tools/sdk/verify-sdk-skeletal.py",
+      "sha256": "d71d2f72737b5abced8c28bf1731037b3e20960cf6125bb05e942602b951eb93"
+    },
+    {
+      "path": "sources/tools/sdk/verify-sdk-texture.py",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/tools/sdk/verify-sdk-texture.py",
+      "sha256": "c30f9a2697745a756579e9809a14188bf09b4ad5770a1afc7fd6a2098a81bfb6"
+    },
+    {
+      "path": "sources/tools/sdk/verify-sdk-viewer.py",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/tools/sdk/verify-sdk-viewer.py",
+      "sha256": "99429d24215516cedc6776cb042963b5a8ea3f7c48066c05a8872cd26736d837"
+    },
+    {
+      "path": "sources/tools/sdk/verify-sdk-viewport.py",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/tools/sdk/verify-sdk-viewport.py",
+      "sha256": "72ded857f15f61c14bef9edc0f0dfdd3febf4bcc8f5a6249681775516018b394"
+    },
+    {
+      "path": "sources/tools/sdk/verify-sdk-world-tools.py",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/tools/sdk/verify-sdk-world-tools.py",
+      "sha256": "8a5b59b21f6f644a79245e5837cfd2cbd356dfec2be376332062052cc0a87d3c"
+    },
+    {
+      "path": "sources/xray/editor/base/Action.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/Action.cs",
+      "sha256": "139e839411c403ba884c3331cbe0682daaedcd12c7160d4f32a51a88bd2daaa3"
+    },
+    {
+      "path": "sources/xray/editor/base/ActionContinuous.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/ActionContinuous.cs",
+      "sha256": "4323358ec1e23346a392ba4d6cb7fd81317858d232feebaf3e8a302b774f9370"
+    },
+    {
+      "path": "sources/xray/editor/base/ActionShortcut.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/ActionShortcut.cs",
+      "sha256": "4ecd02f030456c7feac4647aebf1cefe14ab403d1dde8c3d285c2d015afca25b"
+    },
+    {
+      "path": "sources/xray/editor/base/ActionsLayer.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/ActionsLayer.cs",
+      "sha256": "16adcb526c6236bc92420519a3ee375662fed3ddf2cc2c830895f897821fae75"
+    },
+    {
+      "path": "sources/xray/editor/base/Bridge.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/Bridge.cs",
+      "sha256": "4dd4453349183e8ea362532c2787867909a68255b030533fadcc4f373a9481c7"
+    },
+    {
+      "path": "sources/xray/editor/base/CMakeLists.txt",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/CMakeLists.txt",
+      "sha256": "8dbf4fbe3a2ef632a659b5a4eaa67d808bf4f75f60e7c256c374c2e143b5fd2d"
+    },
+    {
+      "path": "sources/xray/editor/base/Command.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/Command.cs",
+      "sha256": "3538095cfb0707feae733ed0e722f64b9d7dd76c75aa2f3c185390029d0181cd"
+    },
+    {
+      "path": "sources/xray/editor/base/CommandEngine.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/CommandEngine.cs",
+      "sha256": "f038bcb113514424594634047d3a49cdd29fa5ec674f692f7b53e46cdcd8b4d1"
+    },
+    {
+      "path": "sources/xray/editor/base/Converting.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/Converting.cs",
+      "sha256": "5b98ea98780dd72957a683b79a51c48b1572db155e340b49c82e2898645b2ad1"
+    },
+    {
+      "path": "sources/xray/editor/base/Delegates.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/Delegates.cs",
+      "sha256": "d0f07f1dd1bad8f641c93bdb75e96fa73afe9321185b58535971f6324ffac2ba"
+    },
+    {
+      "path": "sources/xray/editor/base/EditorControlBase.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/EditorControlBase.cs",
+      "sha256": "3c62b62e4cb9b7b5f7c8cfb90f3ea2cef0c958106cb9ec7baf321c77b2364ebb"
+    },
+    {
+      "path": "sources/xray/editor/base/EditorHost.csproj.in",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/EditorHost.csproj.in",
+      "sha256": "d79ed8bbd63e5cc5fd42f60edeb32935135eeb0d1bfaf52f9cbf0892d2f80ca3"
+    },
+    {
+      "path": "sources/xray/editor/base/EditorHost.packages.lock.json",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/EditorHost.packages.lock.json",
+      "sha256": "5032deccbab61401801cb298f8211c67ec15f84276b25a09eed1f67c4defcb4f"
+    },
+    {
+      "path": "sources/xray/editor/base/EditorWorld.AdvancedChecks.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/EditorWorld.AdvancedChecks.cs",
+      "sha256": "178b0f0f109771798650f7254f87404df4dd35620bf70cc069326562ffda5758"
+    },
+    {
+      "path": "sources/xray/editor/base/EditorWorld.AnimationChecks.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/EditorWorld.AnimationChecks.cs",
+      "sha256": "123a52ff2cc6bb509f4a7adfedef41bd2a82053ef69581689fdb85d67da84d4f"
+    },
+    {
+      "path": "sources/xray/editor/base/EditorWorld.CollectionChecks.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/EditorWorld.CollectionChecks.cs",
+      "sha256": "cb67fb3d33a8f1ef39bcbe567beec91d0589a08f71a58a32bda632a5033f9c6b"
+    },
+    {
+      "path": "sources/xray/editor/base/EditorWorld.CubeChecks.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/EditorWorld.CubeChecks.cs",
+      "sha256": "8d38087179a0e9fb65f73ba948086a19e10051ee131b50655a54aa7ed47c2036"
+    },
+    {
+      "path": "sources/xray/editor/base/EditorWorld.DccChecks.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/EditorWorld.DccChecks.cs",
+      "sha256": "0f77bc99cd5658bb315dbea27116cd2e94728064a9c25ac78da67b3c46b5ddfb"
+    },
+    {
+      "path": "sources/xray/editor/base/EditorWorld.GizmoChecks.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/EditorWorld.GizmoChecks.cs",
+      "sha256": "4c205bc3d850c85884948795e821b5943c54677b5afbc1926510db34096365bd"
+    },
+    {
+      "path": "sources/xray/editor/base/EditorWorld.HostingChecks.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/EditorWorld.HostingChecks.cs",
+      "sha256": "e9826828b562b186d3f98c21f0f307437d0eedc2162fe04c016cd4c02b309e07"
+    },
+    {
+      "path": "sources/xray/editor/base/EditorWorld.MaterialChecks.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/EditorWorld.MaterialChecks.cs",
+      "sha256": "73afc9e97e8b032c6b07f2584bb02340a3f8d56f1601cce9a72bceb8ed6356cf"
+    },
+    {
+      "path": "sources/xray/editor/base/EditorWorld.ModeChecks.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/EditorWorld.ModeChecks.cs",
+      "sha256": "faba643eee5e43fc19d7ca95f7b5b6f015cb27f0ffdc7ef89a54a37d2d5c5d40"
+    },
+    {
+      "path": "sources/xray/editor/base/EditorWorld.ModelChecks.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/EditorWorld.ModelChecks.cs",
+      "sha256": "a7d8da4cfc8831959e4da7ef3e0a8465edbd40d85454e5895003219371e11c76"
+    },
+    {
+      "path": "sources/xray/editor/base/EditorWorld.OutputChecks.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/EditorWorld.OutputChecks.cs",
+      "sha256": "aacbe16caeaa2ea3d2e098eeec4acaff3d6107cbb9d07bdc9ad71e367b4f4697"
+    },
+    {
+      "path": "sources/xray/editor/base/EditorWorld.PhysicsChecks.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/EditorWorld.PhysicsChecks.cs",
+      "sha256": "6a824e3c3bbfe192ccd32914159afa45e10d8bd8a60b85d4f957af94a4319473"
+    },
+    {
+      "path": "sources/xray/editor/base/EditorWorld.ReloadChecks.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/EditorWorld.ReloadChecks.cs",
+      "sha256": "a2ff7ce528c88f827a31804f0d0e9326db087a60d98c1beb6548924fa84c191c"
+    },
+    {
+      "path": "sources/xray/editor/base/EditorWorld.RenderOptionChecks.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/EditorWorld.RenderOptionChecks.cs",
+      "sha256": "bb765ca59374f73de9b65081bbc2c70b50a771e82478ce759c964c90a9579348"
+    },
+    {
+      "path": "sources/xray/editor/base/EditorWorld.RuntimeChecks.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/EditorWorld.RuntimeChecks.cs",
+      "sha256": "b3869542f69d0f797004b7b486a940e6e2066d32357b92b78267084060f21342"
+    },
+    {
+      "path": "sources/xray/editor/base/EditorWorld.SceneChecks.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/EditorWorld.SceneChecks.cs",
+      "sha256": "3c1c2c6cbf6785ff7199252f18d3a010dbec010d8f2a80fbf248bcafc2fd0d64"
+    },
+    {
+      "path": "sources/xray/editor/base/EditorWorld.Sdk.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/EditorWorld.Sdk.cs",
+      "sha256": "5976be2727c36313cbab69e4031d2e15fc9cbe31d668abc0395cc698bc88018e"
+    },
+    {
+      "path": "sources/xray/editor/base/EditorWorld.SelectionChecks.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/EditorWorld.SelectionChecks.cs",
+      "sha256": "cab16ae8f99c579cd25e3ec5f4fb1eb1e8e55282ff43177fa0618a7ca2c983cb"
+    },
+    {
+      "path": "sources/xray/editor/base/EditorWorld.TextureChecks.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/EditorWorld.TextureChecks.cs",
+      "sha256": "5463d1c856d19c008a8faab73d89d1159a5027cbcbb8129d458ee5dabacb6aba"
+    },
+    {
+      "path": "sources/xray/editor/base/EditorWorld.ViewerChecks.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/EditorWorld.ViewerChecks.cs",
+      "sha256": "4422b1a0b324f4919ac77e7986ccf453dd41ed5a4af7f8cf77be915a6b3a0fa6"
+    },
+    {
+      "path": "sources/xray/editor/base/EditorWorld.ViewportChecks.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/EditorWorld.ViewportChecks.cs",
+      "sha256": "d83ec5aaf3579992f1eb7975675a3a8e72cdcd6d5d0b7746575f8b81e2e2baee"
+    },
+    {
+      "path": "sources/xray/editor/base/EditorWorld.WorldToolsChecks.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/EditorWorld.WorldToolsChecks.cs",
+      "sha256": "ea4156944a837ad29303230807158755e8fd4fd2f9d4b51030260423b452e2b5"
+    },
+    {
+      "path": "sources/xray/editor/base/EditorWorld.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/EditorWorld.cs",
+      "sha256": "a5fccca203a614c43e5f53417eabea5f99ff6b85ca1ba1da317d40b4b6bbeab2"
+    },
+    {
+      "path": "sources/xray/editor/base/GuiBinder.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/GuiBinder.cs",
+      "sha256": "aae5e687ba78d5f35a79f76532589bd81e0cc09f8cdaaad542087e3285957152"
+    },
+    {
+      "path": "sources/xray/editor/base/IActionEngine.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/IActionEngine.cs",
+      "sha256": "e895f7c6c138ab1b0ebe73c6eb9ab63048b52aebfc2cb6c466d930b78fd5a20c"
+    },
+    {
+      "path": "sources/xray/editor/base/IEditorBase.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/IEditorBase.cs",
+      "sha256": "6a89d097020b0bbd0a052ab92696a92042ae036e51945be97774f65df1175d54"
+    },
+    {
+      "path": "sources/xray/editor/base/IEditorWorld.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/IEditorWorld.cs",
+      "sha256": "8a71e03cc2ec380e27df6603bceafa948b62cd25101a598f86cd2becbd6b57ad"
+    },
+    {
+      "path": "sources/xray/editor/base/ImageLoader.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/ImageLoader.cs",
+      "sha256": "a691bc46f3c7cd8a2bfafe8293fd4c3070e94e9ed05be4bd8fb6552d7fdc1226"
+    },
+    {
+      "path": "sources/xray/editor/base/InputEngine.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/InputEngine.cs",
+      "sha256": "1266d6187f1c4f1d50be0eb8b82ba7932445e1611496b8647703dc388c2cc3cb"
+    },
+    {
+      "path": "sources/xray/editor/base/InputKeysHolder.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/InputKeysHolder.cs",
+      "sha256": "9e9ba27eab3bb146e366093618d8c61cc0c25ddd746bde1b8e42967796cc683e"
+    },
+    {
+      "path": "sources/xray/editor/base/Interfaces.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/Interfaces.cs",
+      "sha256": "da82259c4d674d2a70fe6383bc169ef5bb0a76031d229c3af66f15cd75727211"
+    },
+    {
+      "path": "sources/xray/editor/base/LuaConfig.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/LuaConfig.cs",
+      "sha256": "b697e15d066ac0d0d5183ac7e182e8aa7dce269503e6884372148a8ac7b0ab1d"
+    },
+    {
+      "path": "sources/xray/editor/base/ObjectInspectorTab.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/ObjectInspectorTab.cs",
+      "sha256": "d4ed2f2d775733367dd498cb46afaa3f96d76b2b1c771d21db92537c7947e6fd"
+    },
+    {
+      "path": "sources/xray/editor/base/ObjectsLibrary.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/ObjectsLibrary.cs",
+      "sha256": "572676146b5ad9ad60c3583b6390d8f31b2349557765716f1d429b21c780db83"
+    },
+    {
+      "path": "sources/xray/editor/base/Project.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/Project.cs",
+      "sha256": "47427d924fc5c1f92297e8bfcf4a8a580a209d7c30877fa4e19ab0a9bfba9a71"
+    },
+    {
+      "path": "sources/xray/editor/base/ProjectBrowserDialog.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/ProjectBrowserDialog.cs",
+      "sha256": "c2893d65ef62e70a28a3533def8c4953e21972405b29e540df193f16d79f4eec"
+    },
+    {
+      "path": "sources/xray/editor/base/ProjectClipboard.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/ProjectClipboard.cs",
+      "sha256": "62647445ecef846dbf5985be36b616ada26d8b6ca20e822954947074d9093737"
+    },
+    {
+      "path": "sources/xray/editor/base/ProjectEditing.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/ProjectEditing.cs",
+      "sha256": "9bb07e4c9d349b2a32ee257f695d1ecf1adba6ca47687dc81aec3ec9dcdc2bbe"
+    },
+    {
+      "path": "sources/xray/editor/base/ProjectItems.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/ProjectItems.cs",
+      "sha256": "705b341804c5e9e1ed7cf2cd9ffa566aeafef1b0b3a20ee678eafedd5812916e"
+    },
+    {
+      "path": "sources/xray/editor/base/ProjectPropertyAdapters.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/ProjectPropertyAdapters.cs",
+      "sha256": "9ea6ad7e1e66e9c9b8151d22c231468b064a817609e871ea19a7bb9db992eb0d"
+    },
+    {
+      "path": "sources/xray/editor/base/ProjectTab.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/ProjectTab.cs",
+      "sha256": "a027d6b232d9186d2aa9980e957c13afff765fb147a5eff6aa6ce386cbb0f8e5"
+    },
+    {
+      "path": "sources/xray/editor/base/ProjectViewportEditing.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/ProjectViewportEditing.cs",
+      "sha256": "2c3175d94c8874687652820c0e4c8c787446dcbdf0c6359414eaac7bb25e1d7b"
+    },
+    {
+      "path": "sources/xray/editor/base/ProjectViewportGizmos.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/ProjectViewportGizmos.cs",
+      "sha256": "94ee09b97c4877999393d07e65e22e2366ee6d6e6a7bd5fcd6c67dfe587c0a51"
+    },
+    {
+      "path": "sources/xray/editor/base/ProjectViewportOutputs.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/ProjectViewportOutputs.cs",
+      "sha256": "738783b63b19e29c0da50495fa7bb2171900cb415608acf99153b8010a18fc47"
+    },
+    {
+      "path": "sources/xray/editor/base/Properties.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/Properties.cs",
+      "sha256": "194e4c58ad24d43bcf778372a57142468f4b140f47183f8ff47a3f20e70cb995"
+    },
+    {
+      "path": "sources/xray/editor/base/ResourceChooser.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/ResourceChooser.cs",
+      "sha256": "802912885bf4ba4c334632f36d12c0119b16b75f55d89c7b713cd1c99767ea07"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkAdvancedGizmo.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/SdkAdvancedGizmo.cs",
+      "sha256": "d47b566940ecc99cff3a06eb34af8bd1e74677291574294de0f26f29238c6b48"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkAnimationCollection.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/SdkAnimationCollection.cs",
+      "sha256": "2e8fdd3c55a353e6b98c429c2ea4d5bc692cfc438e923cc2b2fa5acdf40baab5"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkAnimationCollectionEditor.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/SdkAnimationCollectionEditor.cs",
+      "sha256": "0178dc5417e0f31dd5879543d45428780fc036280464fbbeca83318875cb3fd8"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkAnimationGroups.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/SdkAnimationGroups.cs",
+      "sha256": "90e7ae528fb28f75751b6decc031140e061adcb25ec030afe166df133f4b9df0"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkAnimationPlacement.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/SdkAnimationPlacement.cs",
+      "sha256": "b715895838a8cbe2cf10e00ce54b1a5f148757052e1a133c7871846d7a30b77d"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkAnimationPlayback.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/SdkAnimationPlayback.cs",
+      "sha256": "9b82e745abb3c3aba13f3d6039210f7f4058c43f283abd0f17fa706322fb4393"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkAnimationPreview.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/SdkAnimationPreview.cs",
+      "sha256": "a91208908f44e285d60a683072074fa071375f176481359512c524da56e37a41"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkAnimationSetup.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/SdkAnimationSetup.cs",
+      "sha256": "56e6b1dadb77c2c8beedc3f469a8f1a594fa4e4d58dc55cb00cf74e336b9a488"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkAnimationViewerDocument.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/SdkAnimationViewerDocument.cs",
+      "sha256": "244a15c2092c8c9c2523eb1c26b25b89fe1db70fa7dd73b728c215d284457e53"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkAnimationViewerEditor.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/SdkAnimationViewerEditor.cs",
+      "sha256": "3c78e6d8cf6d6c4eafd908794e803c28cd100eae997c2ea5c0d18ddd939116e6"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkAnimationViewerGraph.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/SdkAnimationViewerGraph.cs",
+      "sha256": "c0337f75f33da10ee4ebfa4b38bcf69a09408f829b02b195645f85dca3c17141"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkAssetSources.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/SdkAssetSources.cs",
+      "sha256": "8328301ca7528b89e1e65cb38bff1da9b99101de326ee3d63086cfc92e397259"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkControls.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/SdkControls.cs",
+      "sha256": "416652d90e838bb9dd5fc82bc9e1da13fbd784aa6f11721a6d55bfbfb7d274e5"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkDcc.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/SdkDcc.cs",
+      "sha256": "5d78c8aebf82718666b58d97ca1f9242d0f65301cbf96b8c9f1d7b43433206d0"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkDccImport.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/SdkDccImport.cs",
+      "sha256": "10fab7fdfd43a64ed81b1fba66fa0b6f99c102099a59967feee4918cb671775f"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkDccPublisher.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/SdkDccPublisher.cs",
+      "sha256": "a792a27c0af5aa2e4b0fd11b181dbac03226795f8fb9add5654ee41363d87b83"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkDccResources.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/SdkDccResources.cs",
+      "sha256": "dbed92075af0b9651f56f18dd442cf070c7df026cd9b7cdacc0acb20535c4437"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkDccWindow.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/SdkDccWindow.cs",
+      "sha256": "050303272e164be611767bc13b4f9cb2324eabaa33ca3b83fe92de78a55c8bd9"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkDockLayout.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/SdkDockLayout.cs",
+      "sha256": "6ededfabcede8494ea9ed9b14e09c8b2556778b908d210f9cd3a1035f4763ea3"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkGizmo.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/SdkGizmo.cs",
+      "sha256": "477f3aa87f60ffef0f27df38fa4591a80c01d2129ef4c7b1a47a240579948802"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkIdePanels.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/SdkIdePanels.cs",
+      "sha256": "3bdd9cef740426b24c5e6d08ab9d153321b34aea97caa642aa20afa6b8b810da"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkMaterialDocument.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/SdkMaterialDocument.cs",
+      "sha256": "3c3f285e12b897a29a2418658b41de6f6142d0160fbb76b785f97d6fa1e0d4e6"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkMaterialEditor.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/SdkMaterialEditor.cs",
+      "sha256": "2b4e2f687e5bf61160a213127b077dde1cda2e783991696e58dc042eff26b998"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkMaterialGraph.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/SdkMaterialGraph.cs",
+      "sha256": "61d300fa576067b612966e940808d5ae7fd8c4acaf3222d2ef4b7971e3fe4810"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkMaterialPalette.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/SdkMaterialPalette.cs",
+      "sha256": "26045fc8ec20fd0711fe7d71ae0a7b7f435937a97c8e890cb4ee4c7b6e86e368"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkMaterialSources.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/SdkMaterialSources.cs",
+      "sha256": "30940bf1f080948624ea85a26300ddd3b3471879e779da4388c6ae2042867528"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkModelDocument.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/SdkModelDocument.cs",
+      "sha256": "d43e0d52e632b9ded79d7e3a921ee9541e424dfedf47b3486b7576c6430430f8"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkModelEditor.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/SdkModelEditor.cs",
+      "sha256": "36f3968c816c08c71cea1d99b1057bd90efe67a8fbe12d98f71af534e7d2aaa3"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkModelPhysics.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/SdkModelPhysics.cs",
+      "sha256": "5e17efe50fd61c20e54dfdf8c751ab0c32b4781ca27b17dcaf07a4bd0e97d68a"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkModelSources.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/SdkModelSources.cs",
+      "sha256": "0febc2eaa092b1cbf0fd683922b6d6f4b3f8828025c539c01184217fd640fd2e"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkNativeResources.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/SdkNativeResources.cs",
+      "sha256": "d286ae55ad18f8a35d70b86137de4bc50325387048ce1677effa2371652bb19e"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkObjExporter.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/SdkObjExporter.cs",
+      "sha256": "a25fbc82459b340c31146d37c5622cc7c920a56d3d244229b2af14afddf4945b"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkOutputs.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/SdkOutputs.cs",
+      "sha256": "5d493e51df7812e3bd0340259e434bf4d5d183e373f2174a9d5f31ecf1ecb4d7"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkProperties.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/SdkProperties.cs",
+      "sha256": "24e888332fd557bdd0482e1e8765701bdd5304e8ae3d4a2125d343959dfda85d"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkRenderOptions.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/SdkRenderOptions.cs",
+      "sha256": "655cea0d9b4961d8e919d7337b19f30c10fc21ac3ba538d3e818115e369ddf0a"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkResourceBrowser.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/SdkResourceBrowser.cs",
+      "sha256": "e1f6b1b4c45b05372da73d00ef58df9e4e619f6e6e23ec8a7b8dfeea33dad8ff"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkResourcePipeline.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/SdkResourcePipeline.cs",
+      "sha256": "837313b49721ea6894df9b63dd747a6176d8e235f2df6a92bb12ac15175f6319"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkResourceReload.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/SdkResourceReload.cs",
+      "sha256": "e12b7d379abec1ba7bc28752909d3eec3c1fa09b67deee71269b886e24041547"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkRuntime.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/SdkRuntime.cs",
+      "sha256": "834a37ea9952a79ad804de9130854b7bffd0c864579131498ff61f43665d314a"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkScene.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/SdkScene.cs",
+      "sha256": "99c4eba274d7893fa0a73a0400d80daa5c5647ddd4fdf1a8dbe93c25cd7afb0a"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkSelection.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/SdkSelection.cs",
+      "sha256": "12f47006584c0798f14233ecdedc77defcb506b61b49673bb5a4c3beb4e8277b"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkTerrain.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/SdkTerrain.cs",
+      "sha256": "4dba63937a59385aa07a6805ca489fec2b7c92ec15b9915134255212531986ef"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkTextureDocument.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/SdkTextureDocument.cs",
+      "sha256": "bbba8e48510c42709e26d7e68974f02eb5df27e08ee21bd9085fe7f8420bbb59"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkTextureEditor.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/SdkTextureEditor.cs",
+      "sha256": "7458b32172d363709bfde6baeb3287df2243f3e7c11da4398cdaf109e3face4e"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkViewport.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/SdkViewport.cs",
+      "sha256": "a15859944257546eee8b99eb4df29d70bc9e78cc4e4da9a3984657c2919e4eaa"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkViewportHost.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/SdkViewportHost.cs",
+      "sha256": "deab6e7d723f2c645b380741867b7c07253106af3c3181f2b39b13dd6f8cc91b"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkWorldTools.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/SdkWorldTools.cs",
+      "sha256": "87401ac2d4bfa4cee874da4eb7e72cbfaf94b13ac66ec20f6405586dbd9bfcc7"
+    },
+    {
+      "path": "sources/xray/editor/base/ToolsTab.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/ToolsTab.cs",
+      "sha256": "8f0ef8ee97779aed456c2ace36c257f016b9087c8dbbe251abbca2204f8396b7"
+    },
+    {
+      "path": "sources/xray/editor/base/TransformControlDefines.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/TransformControlDefines.cs",
+      "sha256": "b1c0d8ddd6b902ed4654b2b6a81ace40afc04ec571143fb09d3173e27161c6e4"
+    },
+    {
+      "path": "sources/xray/editor/base/TransformControlObject.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/TransformControlObject.cs",
+      "sha256": "63d51129c047f94a9cb7ded6ca9f1e926894bf47c4f1b661e29945f0bd8cc269"
+    },
+    {
+      "path": "sources/xray/editor/base/TransformControlTranslation.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/TransformControlTranslation.cs",
+      "sha256": "a4a5c65147d0d938c9dc3c5f9c4030373ea9ffe0aa48bf70adba77b3811719f0"
+    },
+    {
+      "path": "sources/xray/editor/base/ViewportNavigation.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/ViewportNavigation.cs",
+      "sha256": "8635e3adbf3ce7325336e233afd5b705d75a26ae0d6d11ddb43a81cea7854a5f"
+    },
+    {
+      "path": "sources/xray/editor/base/WindowIde.Animation.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/WindowIde.Animation.cs",
+      "sha256": "74a2610300785143aa8e9198cbfd304a8424ae43b0bda563fc4071a6bd3b1337"
+    },
+    {
+      "path": "sources/xray/editor/base/WindowIde.Assets.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/WindowIde.Assets.cs",
+      "sha256": "c24525a6a6a50e72bc0b27c622a012f044748fa7983e3b0f8aa5d8c8dd565bfc"
+    },
+    {
+      "path": "sources/xray/editor/base/WindowIde.Dcc.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/WindowIde.Dcc.cs",
+      "sha256": "2ce65f20d3b6a6b4073dc75915b459d43a10623d99562d712e77156e88683791"
+    },
+    {
+      "path": "sources/xray/editor/base/WindowIde.Editing.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/WindowIde.Editing.cs",
+      "sha256": "2777bad226535a6d66a22241927b59e717e0fa291bc086426524bc9f1119b963"
+    },
+    {
+      "path": "sources/xray/editor/base/WindowIde.Materials.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/WindowIde.Materials.cs",
+      "sha256": "6e14c128b346310517723c82355c25972906fae1fd01eef0654cb4d5dbe4ab53"
+    },
+    {
+      "path": "sources/xray/editor/base/WindowIde.Models.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/WindowIde.Models.cs",
+      "sha256": "fe889287d9a226e8f497653d030ca90d8cd1abcf2c38442fa968022d2c35c572"
+    },
+    {
+      "path": "sources/xray/editor/base/WindowIde.Projects.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/WindowIde.Projects.cs",
+      "sha256": "d414cbebf3e07805705a1e40b905032b0fbc9b2d28ecf72e41395588c42ba93d"
+    },
+    {
+      "path": "sources/xray/editor/base/WindowIde.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/WindowIde.cs",
+      "sha256": "0f16b69d39cd2893ccc04fec74abfef00767f400878f0783cbf5c92ede8e3519"
+    },
+    {
+      "path": "sources/xray/editor/base/action_engine_interface.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/action_engine_interface.h",
+      "sha256": "c52fec9e34bb4bde79f5739a3ede98b2a605d4efe5adaaaad6882baad5faad22"
+    },
+    {
+      "path": "sources/xray/editor/base/api.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/api.h",
+      "sha256": "72c196897950a8a7b6ffbc8c44b941bb5ce24d78db5d4d66c714c0c6d833682f"
+    },
+    {
+      "path": "sources/xray/editor/base/collision_object_control.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/collision_object_control.h",
+      "sha256": "d7fa5ba6eb6d0bd139cc2269f053610d9af311b425307539d2919c5c317805b1"
+    },
+    {
+      "path": "sources/xray/editor/base/collision_object_types.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/collision_object_types.h",
+      "sha256": "1dc1fdb008d5878b14f1bc887d3ff8ca247be504b923f046e2b3cfcfd9a1ece2"
+    },
+    {
+      "path": "sources/xray/editor/base/converting.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/converting.h",
+      "sha256": "daaf270929bde7ae1fba3605e77a07facc06cbb465de1b1da4afa43063e9f406"
+    },
+    {
+      "path": "sources/xray/editor/base/editor_base.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/editor_base.h",
+      "sha256": "125b439541935491c7feee81ca13117f8c7a4e87720495fa1fa01b5a3c83ba57"
+    },
+    {
+      "path": "sources/xray/editor/base/editor_extensions.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/editor_extensions.h",
+      "sha256": "a6ac9a55cc72ea12790fbcaff952952446b01a44b18972ca58c5d5e4b7e0bf45"
+    },
+    {
+      "path": "sources/xray/editor/base/editor_intrusive_base.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/editor_intrusive_base.h",
+      "sha256": "adf2e9b3c8dd8a614a97404aaa60438f601c3edd77a4eb9efa65001de9cfd747"
+    },
+    {
+      "path": "sources/xray/editor/base/editor_intrusive_base_inline.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/editor_intrusive_base_inline.h",
+      "sha256": "f92e58a385436ec1a78035a962cfc0d0cb4236aa6eaf2f3db9ec89ab24c142f7"
+    },
+    {
+      "path": "sources/xray/editor/base/i_context_manager.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/i_context_manager.h",
+      "sha256": "fb74b59758f90fd0fe92210e8a7a9f5b2ecaff4e540164aeafaf909b8317670e"
+    },
+    {
+      "path": "sources/xray/editor/base/images/folder_icons.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/images/folder_icons.h",
+      "sha256": "ac0f52d7abad9f93b7ab6f715f44736294d9a32a28e5304ebc44763f4e56813f"
+    },
+    {
+      "path": "sources/xray/editor/base/images/images104x8.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/images/images104x8.h",
+      "sha256": "8b22f68a591789e110e810aaf74f0640ac8ba6af12bf042ac7e4f02983492f20"
+    },
+    {
+      "path": "sources/xray/editor/base/images/images16x16.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/images/images16x16.h",
+      "sha256": "e50111e927f810249acc77f2447c84844e5d0ffd3126d94bd6baf8d94a4a2866"
+    },
+    {
+      "path": "sources/xray/editor/base/images/images30x25.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/images/images30x25.h",
+      "sha256": "d0b7679266ad03fce6d6f6992d56d0c98383a71d29850cf29a5524aa49fd8dec"
+    },
+    {
+      "path": "sources/xray/editor/base/images/images70x53.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/images/images70x53.h",
+      "sha256": "a0167ab2aa35339ceb3077e9a83bf106587e36c96861e2ebb1f1a851ab2c9800"
+    },
+    {
+      "path": "sources/xray/editor/base/images/images92x25.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/images/images92x25.h",
+      "sha256": "931e4f0b773ec17fcfb3fe4e9fe0226d798c54d1901786baa59777ef5c3e8b64"
+    },
+    {
+      "path": "sources/xray/editor/base/images/images96x32.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/images/images96x32.h",
+      "sha256": "ae65da8bfd22e8706f555117a099f799054e8ac8903e99560080bf10cea15cc9"
+    },
+    {
+      "path": "sources/xray/editor/base/images/images9x9.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/images/images9x9.h",
+      "sha256": "de5c0aeb649248f69fb5304885a458684457f95ac3c5e22bfb524721ce4b048d"
+    },
+    {
+      "path": "sources/xray/editor/base/images_loading.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/images_loading.h",
+      "sha256": "3978bb6bd11ee35cc654b065f4381938d22511fed0371cd9052a2866736c6efd"
+    },
+    {
+      "path": "sources/xray/editor/base/library_linkage.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/library_linkage.h",
+      "sha256": "d55e617b5d908124c3ae9bd9aaade55bca1e81844c5204f22e55b8bd33e2b3dd"
+    },
+    {
+      "path": "sources/xray/editor/base/managed_delegate.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/managed_delegate.h",
+      "sha256": "619724826642f1eb9947734d713420d9bd86f139b94a32db90a439738c842097"
+    },
+    {
+      "path": "sources/xray/editor/base/sdk_gizmo.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sdk_gizmo.h",
+      "sha256": "3e8e62ca87fd31bf4a5b6e3ab987fc4289a011e0010bfb9597e4239e93551c26"
+    },
+    {
+      "path": "sources/xray/editor/base/sdk_transform.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sdk_transform.h",
+      "sha256": "5fa8ea120a7ab9c430bb1a07c87281dd32b00888f1abe11d78756b5bfbe15a90"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/Float3_to_Vector3D_converter.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/Float3_to_Vector3D_converter.cpp",
+      "sha256": "76dd6a1bb469685b76546b4374f6fce7649e7728502aee7054d24399920f746b"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/Float3_to_Vector3D_converter.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/Float3_to_Vector3D_converter.h",
+      "sha256": "87d4cb8f68e9e482103f638b38237092a676a3a49c53a309a27b2c22b2719b5a"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/action.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/action.cpp",
+      "sha256": "8fcae92010c2510912fdaecf6762b92d81d316899db4f0a4e4e5d4b0bbf90f0e"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/action.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/action.h",
+      "sha256": "1fba08f4dfeeffc52336e8fdbdb2a91d344f1f4295e7d06f694158aaacdb624b"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/action_continuous.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/action_continuous.h",
+      "sha256": "681cf9de8e86c5a7b992037be5ab0cfcf42f29a2530103bcc7aef1876cb2bf0c"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/action_delegate.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/action_delegate.cpp",
+      "sha256": "3a1f7195514a0409954a5deee57641735fc526e85d47a48f00685f4fd2e571d8"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/action_delegate.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/action_delegate.h",
+      "sha256": "25e2f6eb1dd5cfb09c6c760a96cceca3d355acb99fff00e297b81a322db40602"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/action_shortcut.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/action_shortcut.cpp",
+      "sha256": "842c132eac13a15c5d976c2da06cb3c2bb0a928b60edb550a7a8276a9efd109f"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/action_shortcut.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/action_shortcut.h",
+      "sha256": "25cd9d108706f2a99d36c722a644bbece928d0b68b0c050bef1368a75bb516c4"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/action_single.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/action_single.h",
+      "sha256": "867da558bb3946ef1585b9f064f4eb0c75ec4c5c8525879b2564566f5198d63e"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/actions_layer.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/actions_layer.cpp",
+      "sha256": "98827531596896c09b8771a6d1d7fb6190fa70b3da01035634dbdf705f109c6f"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/actions_layer.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/actions_layer.h",
+      "sha256": "072d70cdfe26e0a36ab75805ed14c4f8f0558f0c50f6ef10457f2c84ac1dc6db"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/camera_view_panel.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/camera_view_panel.cpp",
+      "sha256": "03de198497d38291d28c03d5603365903c833c2cb51b0a855bece3e1a6c2eaa9"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/camera_view_panel.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/camera_view_panel.h",
+      "sha256": "49705b6b0b1ba1852fd0d115b33ef7447c3288bb814951123aa4a7df73b49656"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/collision_object_control.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/collision_object_control.cpp",
+      "sha256": "c8aab57bca5d1cf3ab9106c9b06bafab34c0530cf55860839e25ae78299038aa"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/color_curve.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/color_curve.cpp",
+      "sha256": "0d15abfc7212271354556749fec201bd4fbadfb0bbe9983139aae613c3dbe528"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/color_curve.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/color_curve.h",
+      "sha256": "ce1112e4f21daace9823cebeac32629d9a1f6e0586d917ee1c9a253b4e725c82"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/command.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/command.h",
+      "sha256": "339d545747a2e76dcd162187ab72e7403ecf68ea3bcdd4504fd07ee1e603b6ee"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/command_engine.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/command_engine.cpp",
+      "sha256": "4bb62e86ad16d62d491bff80017ab3833eeb666eea340b5e7e9051e017275037"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/command_engine.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/command_engine.h",
+      "sha256": "1f24d4c039aaee14013c1e43936a6d7307382892bf9307e92c4b39827d3c9d3e"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/command_engine_inline.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/command_engine_inline.h",
+      "sha256": "deb74624d2ab8734bf3b6986112354153868c2cc3f02870db355c611b6643328"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/command_transaction.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/command_transaction.cpp",
+      "sha256": "35891bc7c3d3fa174a1e9e0f66f39aa1790a704e6133dcfb8309d8bd748b17bb"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/command_transaction.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/command_transaction.h",
+      "sha256": "9edc86aafdb3ecf18ad305d9362e4d19a453fd82608ffc1519702c7ab09ae96e"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/curves_serializer.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/curves_serializer.cpp",
+      "sha256": "fa43f55fd1f38fce93d46ddf8979a996d18b303712ab1147319b438e2b93fb1c"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/curves_serializer.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/curves_serializer.h",
+      "sha256": "230f7fd12dc053474246984369b9937cbcc788ce473cc0f85538c2c005236b8d"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/editor_base.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/editor_base.h",
+      "sha256": "a70f84544721471834783de41cab9fbe433fb2b0f5ea97d1a847e85b296de728"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/editor_base_entry_point.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/editor_base_entry_point.cpp",
+      "sha256": "d0682d0ca46ef3b078954d90738f7408255bc6a19344c219bed8c34a8f1cfdc0"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/editor_base_library_linkage.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/editor_base_library_linkage.cpp",
+      "sha256": "432b0accd38a7655ee3f1b4de4af88ca3ae2957604ef41a933a49ee39f7884b2"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/editor_base_memory.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/editor_base_memory.h",
+      "sha256": "19ea4c357d95a1174225310235af963009a3098a3a950f2ab69bf2d3edad39f2"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/editor_control_base.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/editor_control_base.cpp",
+      "sha256": "36f9aee7645e7ce682bfd7ecd3fcabffc90f239604c73f3d19001ee71cdad721"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/editor_control_base.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/editor_control_base.h",
+      "sha256": "6ae61380fd6cf03694bf9cc479b04e4f5f10aa379c1f7adcb615482fc3c0ae8f"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/editor_creator.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/editor_creator.cpp",
+      "sha256": "c00b8c3b8db7c7ed734987c1ce9264f7ed44f2784b5c8e534d2786022f619c47"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/editor_creator.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/editor_creator.h",
+      "sha256": "31f3f19c0c8fb35ccf46d4054b8bd54e9b093fb9fe1056c28f01c4f7852dea2d"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/editor_object_collision.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/editor_object_collision.cpp",
+      "sha256": "fa93f9080179bca13e7dabcf0037262ead726564f4b06100d355e0edcabf129a"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/editor_object_collision.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/editor_object_collision.h",
+      "sha256": "c445588e0bf3bbe39667483f9d6d598a7d3ff5a30146c3f10a9dbfbbddd5be72"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/editors_helper.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/editors_helper.cpp",
+      "sha256": "f7beeb3c252b2e271e24407bc5ebf3788eb86b25030048f5c3962de1c6d40976"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/editors_helper.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/editors_helper.h",
+      "sha256": "498c557ca896b021ed896dd2029b8a0b08c586ecbb51ee22c34eaf5728c9b0ca"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/float_curve.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/float_curve.cpp",
+      "sha256": "d4c0125fb537bfd1fd42f6457b5afac2b89e42bda59f337bba4d7ad3c47b54ba"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/float_curve.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/float_curve.h",
+      "sha256": "2b77397e79d10a60ca3516608491b69eab0dc7462eee3bae4eff0a664e709e09"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/fs_helper.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/fs_helper.cpp",
+      "sha256": "69f863532cf035691ce52e80ee201170b1a080eb26d0efce8e16c8564bc9bc6a"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/fs_helper.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/fs_helper.h",
+      "sha256": "e267c8900b5a394e5ebabe0840d4b472ec593e98b80353cb2ff1bb154e4607c8"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/gui_binder.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/gui_binder.cpp",
+      "sha256": "0e69972bbfba70f4c22d26a5181511e1b307c29236476d8f8c5a5941dd29ad45"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/gui_binder.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/gui_binder.h",
+      "sha256": "4b25f94bf5fa204e903bebeaecc768ea3297ac5779e1e39b9124e94cb48285e7"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/images_loading.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/images_loading.h",
+      "sha256": "6c4416bb999a0bfd76be57f92c9fbc49d56e7ed8579c618037e98d1fbb36d4c2"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/input_engine.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/input_engine.cpp",
+      "sha256": "3274328008974d83a4c8a91ad567ca0e4923070deab553dc46ea8ed48b0f81ca"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/input_engine.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/input_engine.h",
+      "sha256": "429549c6a13fb674d9191837b7a88f63a1bf435ef5f4876d407bce4af0752249"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/input_engine_process.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/input_engine_process.cpp",
+      "sha256": "0d170e6dd65039b564d24d196e0c8c07620c612d04bae5b572edafb03f509fa5"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/input_engine_serialize.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/input_engine_serialize.cpp",
+      "sha256": "e4817c7e47d8e539375f85ba590845c5b22dc3683adbf75b500be1a2d0dacf1f"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/input_keys_holder.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/input_keys_holder.cpp",
+      "sha256": "4a895c5af1e6f05f7e40a49bf2a1e25d5d91cb1a5d674b246960be1dea28e373"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/input_keys_holder.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/input_keys_holder.h",
+      "sha256": "21f7efe7b0a4f4c7aa3fb880223675f307ce7ec3d27000bd34f7d2648f57526f"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/lua_converted_property_value.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/lua_converted_property_value.cpp",
+      "sha256": "218009589e9269f1805efcee7c335d93103f9abf1ca0550f56070e2d0680c1c0"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/lua_converted_property_value.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/lua_converted_property_value.h",
+      "sha256": "36083589f819883dbd75968f3154e5a2e26617c429213924738434ac09ca9984"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/lua_property_value.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/lua_property_value.cpp",
+      "sha256": "fd1777f07be8a84a2b838fdeb1a18598b7ff321ede5138e2f957ea545a8f8c14"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/lua_property_value.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/lua_property_value.h",
+      "sha256": "2602765166316b9772c64295f35198f29f8500e80efb7374bec149fd9577aec8"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/make_public_helper.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/make_public_helper.h",
+      "sha256": "7d206af49184489aef8e23c3318b764e4bfd22fed294078eb7dc3bd45fda7025"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/object_properties.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/object_properties.cpp",
+      "sha256": "fe31074582cbce04b630aad6cd9d2d2f81d1eaf463d59d41909b2fc9bc3c91d5"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/object_properties.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/object_properties.h",
+      "sha256": "cc66e56c4ffa87ddabc89a0957483b1461bf90e8e2ffd91bb5307678d3d503e9"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/operators.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/operators.cpp",
+      "sha256": "f4bb4ce64318a5daa1ce6540cc88cb246bee1ed6af60e4cece661ab4c1fcb9db"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/operators.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/operators.h",
+      "sha256": "673f69e8c86bdddf645afcae6120dc31fd4a635b31d75fdc8c3077a9e1480f5a"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/options_dialog.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/options_dialog.cpp",
+      "sha256": "638513ba27fe8804e74dff141e4de15c891abcc019a94f9cc5d08f8fd8642e2b"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/options_dialog.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/options_dialog.h",
+      "sha256": "1a28aef6276cf4a65dd1111f21c3d45eabcbfd37f6da4579b436eee51bf9432e"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/options_page.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/options_page.h",
+      "sha256": "76c6aa6dd64d22e4721794a2d49eb3ac1113c08c03db07ea64831182f76c2a49"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/options_page_input.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/options_page_input.cpp",
+      "sha256": "861b561e04240484c3e1890667d9e38cad25c6573001ebb7fe8c4ae36e24af17"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/options_page_input.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/options_page_input.h",
+      "sha256": "0b2425877ebe5bce65974011c106ca983116e02394be063d6b7b7686bbea0c66"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/pch.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/pch.cpp",
+      "sha256": "3f2d569eb51fd0e18424aa4453509260deb11d0d555f4de3ef67685d8f1d79f1"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/pch.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/pch.h",
+      "sha256": "c856a913ae193e76b6344c48f85a993aaac45bf0f8fbc894a85d7213f4229c33"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/properties_holder.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/properties_holder.cpp",
+      "sha256": "ef3e7fcc8723ff288cb3bf8612c69023227b3bd9e33a44a0602db208188c419a"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/properties_holder.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/properties_holder.h",
+      "sha256": "3bc2b3226dbf600dcafbd60efa1e06c4df9bbb23f2ad199d602629c43069579b"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_boolean.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_boolean.cpp",
+      "sha256": "fdc423a95e2247b775950924b78729065b4eedc472ac949b10a1262c4b1b76da"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_boolean.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_boolean.h",
+      "sha256": "5846b0fdc7b9e4ef02fb89a9e26f1862a347deff14ca092c9989ed2961dd2c97"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_boolean_reference.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_boolean_reference.cpp",
+      "sha256": "5eda7f94aa18f87e69c46e590a614d9852d0aee524dd22d55ad477ffa3f4e110"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_boolean_reference.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_boolean_reference.h",
+      "sha256": "3051bbca68f558fc5d79fec2170523aa128390cde3fd4e411a0d7482aa1fa441"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_boolean_values_value.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_boolean_values_value.cpp",
+      "sha256": "3497a24dca677115838a7775968bb72ca860a86b97e41596d5ae6ee38c870400"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_boolean_values_value.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_boolean_values_value.h",
+      "sha256": "0cf4f78dddd65c9fe010a876fde1636bb0ef5bbb1e14202ee505427cde304472"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_boolean_values_value_reference.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_boolean_values_value_reference.cpp",
+      "sha256": "723ab614fa73f23f2c06766a84165c64f1520f0ccaed9f1941919254205aa0f0"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_boolean_values_value_reference.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_boolean_values_value_reference.h",
+      "sha256": "23e6bc6088cc7b35f62974e8a978114262baec1ead5ca26d0f0adbc0b532e0ca"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_color.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_color.cpp",
+      "sha256": "bc7a58bf4f74dc936969ce700c4de26c2722fdc8321a83505d5d9eabee83c831"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_color.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_color.h",
+      "sha256": "d014a4872b15c78551a61b7a74fd18f424b4a97cb59bae4d7eb4d3b19c1fdc66"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_color_reference.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_color_reference.cpp",
+      "sha256": "014c26102afe40e4e058f103512a499f36c6a44f16858e3aadc5367e72585678"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_color_reference.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_color_reference.h",
+      "sha256": "550f708924e5ff15f29b0fb0d0a345cdd81e7fe0de4ecc081b409b33947e9659"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_float.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_float.cpp",
+      "sha256": "8fd4267ebc8147f00ae4a07bcef777fbe6fa40e231909634090bc2e4f752d77c"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_float.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_float.h",
+      "sha256": "aa0e8dd22d964c64cb4042fde1ada8cca50079db5224c04e0c05f187d47a2330"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_float_enum_value.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_float_enum_value.cpp",
+      "sha256": "f165948764c81821e0686bf9a0407b8bb176d24873662dee97e4fbfebb2545cd"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_float_enum_value.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_float_enum_value.h",
+      "sha256": "2b197fe65076b3b736b25c816b3358050002f26e5924e347ef438031ebac8739"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_float_enum_value_reference.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_float_enum_value_reference.cpp",
+      "sha256": "1b4e63427e3ef652910c5e5918988a3cbe7a071aeb4c2a7cf602defe9c5b9f5a"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_float_enum_value_reference.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_float_enum_value_reference.h",
+      "sha256": "61ab60e8b5c51ed238d9454110e4a5342133011a3da8defa18e9bc9f4881bdbf"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_float_limited.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_float_limited.cpp",
+      "sha256": "0e6f5f937c7010d07fd43dfdc0b234b62a56b869b35f74c6d7520c9ea93bc6d8"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_float_limited.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_float_limited.h",
+      "sha256": "7ef675f0d35c9ac77e1fc17ac6d30cc78ced546cf8f7b5ff3ac8cccaa8b084f2"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_float_limited_reference.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_float_limited_reference.cpp",
+      "sha256": "85ec74abdec9064c399d5ef56339216190f027aa51a04ce54ff78a445cf0d9c5"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_float_limited_reference.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_float_limited_reference.h",
+      "sha256": "9b301c6a43bb277903b76ddf47b884560178fbf7ec2522c1aa79fc736b430519"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_float_reference.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_float_reference.cpp",
+      "sha256": "b1e64b4ec2a4eaa30c4e8edc5c86b9ab7bc188f854c69307c2d0b4e245df0152"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_float_reference.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_float_reference.h",
+      "sha256": "375398539559c739522caed7c33e715baed442ac76a3b3f154d4307a54db0789"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_holder_delegates_types.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_holder_delegates_types.h",
+      "sha256": "614a5ad7b7aecd3f06088393e7e808e923a316769d3a249a79b15d1abef2e89a"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_integer.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_integer.cpp",
+      "sha256": "298ba47b38b89d6ad3a736ac9ddd96c13f2a0192df9d5cb720cbfbdd878a0bcf"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_integer.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_integer.h",
+      "sha256": "e20fae5814f239164a5a87dd6c7f97ca0a3052f99355af536df5da399860982f"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_integer_enum_value.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_integer_enum_value.cpp",
+      "sha256": "183e542e10fa61b1ab7a17939767fe752637fe99479ba2bfaf2da352bcb29f78"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_integer_enum_value.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_integer_enum_value.h",
+      "sha256": "79c0eedcef3342fec04552fcf028d14b4f23e5e811e9266f31b2a9f51a82df69"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_integer_enum_value_reference.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_integer_enum_value_reference.cpp",
+      "sha256": "852a469009c02c0e1cda5dcff2a91dee93e95dddbd775b0c00c64efcaeaf4d9f"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_integer_enum_value_reference.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_integer_enum_value_reference.h",
+      "sha256": "4797f787c72059870f62d0598fcaa4c507f4ab4da3969c9c3a6d21af3ebe6aa8"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_integer_limited.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_integer_limited.cpp",
+      "sha256": "b1647202a87caf1ae1680d15dd790a44a5f054c0222808525d9e2f1dd67fbbe6"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_integer_limited.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_integer_limited.h",
+      "sha256": "ed459425e9133aae112a78ceaf25fee567b0d5c59bbec3315810598062bdd8bb"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_integer_limited_reference.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_integer_limited_reference.cpp",
+      "sha256": "ccfd8e584c4d6a59c17b0d5f309e8d7a1842a24abecc14462310b8e37029d0f5"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_integer_limited_reference.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_integer_limited_reference.h",
+      "sha256": "278ac734cf079301405469416ccb1585a999dcbb222d579258e9e7af3c84b22a"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_integer_reference.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_integer_reference.cpp",
+      "sha256": "f90a2067128ac265f3523ad82dfcc43ecebebbbd3f7ec76c47b4075da473471f"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_integer_reference.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_integer_reference.h",
+      "sha256": "c5f7e7cbf71c292629b20f8503d54629104e1812261375adf802f85b82dd3bf0"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_integer_values_value.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_integer_values_value.cpp",
+      "sha256": "8fb0eff0298e095f1455c9061dde54a5263ff8d952ca470bc67aae737f841db6"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_integer_values_value.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_integer_values_value.h",
+      "sha256": "581839727c311d36a9e7d88b783f162d4f35f2ff89ce15951644cd1f3e307290"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_integer_values_value_base.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_integer_values_value_base.h",
+      "sha256": "18515bda4434b6f68d13853b5a05dff85db661eb49e85c0005ee924e115a748a"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_integer_values_value_getter.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_integer_values_value_getter.cpp",
+      "sha256": "77cf6d99fd468c4509a4d7b3afef0a44d73d23f22c0bb0f3fcd4cf8b1d3057bf"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_integer_values_value_getter.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_integer_values_value_getter.h",
+      "sha256": "96bf35c9dcd5ba2a19b83520728639fb2fdb40ab8feed1afb4532bd3d2520eaa"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_integer_values_value_reference.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_integer_values_value_reference.cpp",
+      "sha256": "e622ba33a6891e72444024eccf8d62e5b901004d7a7f765257e0ee7418ca4cc7"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_integer_values_value_reference.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_integer_values_value_reference.h",
+      "sha256": "3a5ce0a6fbc9f4feeb594273d8730797d98c068505b555763f683c4cd7986a09"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_integer_values_value_reference_getter.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_integer_values_value_reference_getter.cpp",
+      "sha256": "e62c02981811613d578025c3730655c8728d086d45c59daa92d5bf8240eaf9f6"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_integer_values_value_reference_getter.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_integer_values_value_reference_getter.h",
+      "sha256": "ea66911828ae14093bcabc16b0a3d21da42c7554d92bea2040630e4aad92723a"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_string.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_string.cpp",
+      "sha256": "272a8e2621249a446d49be7d64ed02aae655c14cc7a3bcb7dfdff4f16b9e1e5a"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_string.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_string.h",
+      "sha256": "b5bec8c182c382bbbb4649a138306d429e82616ef4c0a769d53042665d549275"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_string_shared_str.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_string_shared_str.cpp",
+      "sha256": "9a4efa56dc2470036e732ac8d7e0af52df127ccc8d04e759489ff7fca001fba8"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_string_shared_str.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_string_shared_str.h",
+      "sha256": "25a8d12a674b6d0de3e015cc1b4ef0f7713e241b6775e0de4565de7953097064"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_string_values_value.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_string_values_value.cpp",
+      "sha256": "2507647589b289e409c8072c6f8f6ff9a0d06070a835c381a1b5e96782de835e"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_string_values_value.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_string_values_value.h",
+      "sha256": "a65931e5f7da375aeb9c1e6c08d32824c0b33bffaf5953575680dbd1fd30e7b8"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_string_values_value_base.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_string_values_value_base.h",
+      "sha256": "44da17ccadfa8497944c8cab6b204bcbc1ecdaeda68adbbbcddd04b951c0b89d"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_string_values_value_getter.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_string_values_value_getter.cpp",
+      "sha256": "0a966fc396013684bbc05288dcccd11a066d77fa2dd65f6effdddc1aad629fb6"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_string_values_value_getter.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_string_values_value_getter.h",
+      "sha256": "8f7d28bede8b7f644f5ff605df51dbf5705132ea92b26043f7ea89c0eea862ff"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_string_values_value_shared_str.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_string_values_value_shared_str.cpp",
+      "sha256": "a2448e6654ab01b5a0bc7027284bd20590268ad3b3fef814eb1f0b60a884744d"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_string_values_value_shared_str.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_string_values_value_shared_str.h",
+      "sha256": "a1caa384443714a26abbcf32b44bd337e4231c40e12637d613da389d72660775"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_string_values_value_shared_str_getter.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_string_values_value_shared_str_getter.cpp",
+      "sha256": "62f453a17aa2bcd86875d1856bb6344c0a76747b455fe36d10ec040d058c01d1"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_string_values_value_shared_str_getter.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_string_values_value_shared_str_getter.h",
+      "sha256": "4dc7640b4c5165716de8a425f4b3ebad9cead782e5152e60742a13a1bc9c1cb2"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_system_color.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_system_color.cpp",
+      "sha256": "faff9b59c586bc433a3af1e5e0bbb90e4158c01ac4ab5d5cb77bf5790ddaa590"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_system_color.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_system_color.h",
+      "sha256": "a25a7c17663e622c3ecd653f47e09cf2b17b1a9eb11717df655b1e53fbe6ce48"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_value_base.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_value_base.h",
+      "sha256": "6bfdf07465bd30558bb3b384b4ec05dc8732c89c15af4bed752d06049d092bec"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_value_bool.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_value_bool.h",
+      "sha256": "26efd09c8cf02fbce3032cb9f9ab1c8abbebe64e613d95b5fd0c1c03ce8e8143"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_value_color.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_value_color.h",
+      "sha256": "ca28213dd3a62fb353404955ce6db8a7536aa55cfedbc9f63b31b60ee5334b25"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_value_editable_collection.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_value_editable_collection.cpp",
+      "sha256": "ac602b7e6a6cf8c0333d76ae82055303cb0a4fb6e4813d3cb8aa85183e7f16bc"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_value_editable_collection.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_value_editable_collection.h",
+      "sha256": "11ea0b5d6df7892412f6923e2bdc3c87d02a0949536218a706d7290bc23e5d42"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_value_float.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_value_float.h",
+      "sha256": "f86546127ab06b24901dbcb3f52af3c7c9e358ee9b8580af5be5e4a2614af455"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_value_float3.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_value_float3.h",
+      "sha256": "72f9f153e83e2b1663367347b5da5dcde627817155861e6a055cd98eb733bb86"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_value_include.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_value_include.h",
+      "sha256": "63fec7235144f99e115d9cbe62ed467173b8455004e95fda9f22c7204c5bd8ea"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_value_integer.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_value_integer.h",
+      "sha256": "e95f991f04d25579c3599a90d723808fa0e0ab441c786cbd7b7f0769dfdaa8a4"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_value_lists_dictionary.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_value_lists_dictionary.cpp",
+      "sha256": "7b9a3891399e1f41fec8c7244a327d17be93f4b2cc31a5953dba67bc0ed1398e"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_value_lists_dictionary.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_value_lists_dictionary.h",
+      "sha256": "1fb65c901b07928d10f506359c8ff89240e09274ba688d0392750d308d6401a8"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_value_string.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_value_string.h",
+      "sha256": "fa1bdf2821f561b8aeb3da287ffd7c87410cf59584e2c9986c5ad6eb3b354d50"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_vec3f.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_vec3f.cpp",
+      "sha256": "b5edd9834dde5bd7dc1cd31e49b66cf1d3915ae892fb712c368e1430469a960e"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_vec3f.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_vec3f.h",
+      "sha256": "07516ee0b9e98f063591f9065a5fd78affda4210e79d36d8ba508d37abadfe8a"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_vec3f_reference.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_vec3f_reference.cpp",
+      "sha256": "857d07653a14788a6ed44fb8cbb0b08a851c19030f31f762c66de57d5b6685a0"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_vec3f_reference.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_vec3f_reference.h",
+      "sha256": "2846a1c8c4297a899a3ce275b57a5e39b8be36c3ddf37e2ddf8f56f4d26d317f"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/property_visualizers.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/property_visualizers.h",
+      "sha256": "b33dca6159084835d5d4e54bbe66a0bcbe31842184d90adf174dc08bec84fd1e"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/resource_chooser.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/resource_chooser.cpp",
+      "sha256": "9dcd939d6b2daa187870d3c6961997c3985fa055cbbb7b92fa10a1c099f3fdd7"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/resource_chooser.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/resource_chooser.h",
+      "sha256": "4d6840f2a70dee6eaa6fc5069c24237255ff967f3b2cfc5671b6b911ba8e4619"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/resource_chooser_external_editor.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/resource_chooser_external_editor.cpp",
+      "sha256": "8a76245147a369834135dbecfa4e1cf9c75637484bc2dda4696bce14edbadbaa"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/resource_chooser_external_editor.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/resource_chooser_external_editor.h",
+      "sha256": "0ee885905b58e072ceb82b21b0f942c3b11d5a3a857591ba737434264d0b7cbc"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/scene_view_panel.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/scene_view_panel.cpp",
+      "sha256": "91441b9e78fb70312d3ad6c286a2cd0ba242c17ffa214bbfe629a83a5ac56822"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/scene_view_panel.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/scene_view_panel.h",
+      "sha256": "7596e6483090257b6f5f6a1f1f8281ac4b55af1d2b667995585f263a8eaaa3ea"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/scene_view_panel_light.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/scene_view_panel_light.cpp",
+      "sha256": "3ac1646c0d1a90281c0112c9b86833d76bff86317c0c4a62eed204ba09f23dec"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/sdk_gizmo.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/sdk_gizmo.cpp",
+      "sha256": "45acd12995a87e3ec4cf5e3c8abebf6906a8d81d2086eb645df94b701a3abcaa"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/sdk_transform.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/sdk_transform.cpp",
+      "sha256": "4169256f2d004fb14cdab6800df603af2e02be7d0a0ef737700ef2e48aec26c1"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/transform_control_actions.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/transform_control_actions.cpp",
+      "sha256": "498348d7c2fe0177119604f202f1393e48abc7bd9cff7aa2a6101c9488091bb8"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/transform_control_actions.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/transform_control_actions.h",
+      "sha256": "32291e0f58527233024ffcbf71f5880ca90b9042ade9bcaa9ce5fe97f3ac091f"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/transform_control_base.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/transform_control_base.cpp",
+      "sha256": "fbfb31c31f67cdcfc75c429b16f5b8da7c4f1d9189a66d6ee451391b8ba61abe"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/transform_control_base.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/transform_control_base.h",
+      "sha256": "7e4623935cdc6844bf4aa294ea0bbb51ff16e3b232793e520a5b323bc0d2ac48"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/transform_control_object.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/transform_control_object.h",
+      "sha256": "7a2ec18a39c4fa6a9897a981fbfff327dc5da7e0018532b48208e00897fe3ccd"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/transform_control_objects_impl.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/transform_control_objects_impl.cpp",
+      "sha256": "e539d79c49e8f00159544560b951843fece44e50c46df7b78d17b3eb5bed3828"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/transform_control_objects_impl.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/transform_control_objects_impl.h",
+      "sha256": "9d757f63f2681d921755aa522b3cec1ec638cb6a408a9342608fff1152090028"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/transform_control_rotation.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/transform_control_rotation.cpp",
+      "sha256": "cf5e047ec7d6c5e4c30c96b2822446c60f777ddddb566bc66151bf81c96b76eb"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/transform_control_rotation.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/transform_control_rotation.h",
+      "sha256": "19af29cc8ec3f0a9e02751825c0d2f591f97b851f5609cec78f57a8cc38cc136"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/transform_control_rotation_draw.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/transform_control_rotation_draw.cpp",
+      "sha256": "a9633c0184954bc03fe4233fe73dd5ed6a18784416daa435b1a13dfb48620d27"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/transform_control_scaling.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/transform_control_scaling.cpp",
+      "sha256": "0aa311727ac84d5a91cbb82571dac87ffdc9ce850ceab9060098def5fc77067d"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/transform_control_scaling.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/transform_control_scaling.h",
+      "sha256": "6d8481ab249011a6ea0223f7c5308e5926cc22116c7e9ad35872cc79201177a9"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/transform_control_scaling_draw.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/transform_control_scaling_draw.cpp",
+      "sha256": "5a85121c60d10bb71560376c719aba6b88a080bb08da56e23cfe8530a10af755"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/transform_control_translation.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/transform_control_translation.cpp",
+      "sha256": "0f17fa392af42d1f79736e24ab06487c7c0e1e893ef387fb65266a3f286ebdb0"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/transform_control_translation.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/transform_control_translation.h",
+      "sha256": "7c8f637cedc8fb5b9ac03317ebf86f8a2d3c370ce680256c1956e40a7502e61e"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/transform_control_translation_draw.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/transform_control_translation_draw.cpp",
+      "sha256": "ff24eb68d77e8348881e4bd0c51f0bb3670c4441f3377b19d80460acf71049b8"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/transform_control_translation_snap.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/transform_control_translation_snap.cpp",
+      "sha256": "eedaf68cec159802fb3f3232a3eb7c64094e5459e44aa07d5d2ce08f6d0c1978"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/value_attribute.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/value_attribute.cpp",
+      "sha256": "093961ccc520371a6037884d6a2543c12a64868bb06371aa4bafb2fabeeca07d"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/value_attribute.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/value_attribute.h",
+      "sha256": "0438a5ac94dcf050b3601e5871510f137e5be00057fee6a4748599e6bd9f597c"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/view_control_actions.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/view_control_actions.cpp",
+      "sha256": "854a96caeb91b9bd6d830925519ba17dafb1a5fa5cbcce9937d021d0dfdc5f31"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/view_control_actions.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/view_control_actions.h",
+      "sha256": "47307cf606a4c87eba5a9b9546bed54a4d9ee9cfd786fe1c5546e7b30265eed2"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/window_tree_values.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/window_tree_values.cpp",
+      "sha256": "8b3e21c357a06842463a7975364da53503a1b8b9ef87260409a1a25c3fd2b288"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/window_tree_values.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/window_tree_values.h",
+      "sha256": "d4836a1cdb90685996e4f118f9fba79324561744d3b8e0a92ea765c2a5647a81"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/wpf_controls_page.cpp",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/wpf_controls_page.cpp",
+      "sha256": "48adbc4b6f6f1d4ac85a638c541d55d549cfa4788caa00d553a7ca932a916243"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/wpf_controls_page.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/sources/wpf_controls_page.h",
+      "sha256": "286a96ff89b295378858ec3ca69c57404549f5daa0562b3588dd71addea4bb0a"
+    },
+    {
+      "path": "sources/xray/editor/base/transform_control_defines.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/transform_control_defines.h",
+      "sha256": "3b95af4c339ee13a3aa30b9a78475d51464ef983ca9c0fcfa71c05bdcbb51df3"
+    },
+    {
+      "path": "sources/xray/editor/base/unmanaged_string.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/unmanaged_string.h",
+      "sha256": "63e26e128e30dd04e6672d483c79c4c596d5de61551706f4f9098d65a816bd87"
+    },
+    {
+      "path": "sources/xray/editor/base/unmanaged_string_inline.h",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/base/unmanaged_string_inline.h",
+      "sha256": "337baf8ae28aaf0d9aaf5cad7ac4e3cb1912e34b1c85dee42f8aa11afbdfe8f1"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/CMakeLists.txt",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/sdk_ui/CMakeLists.txt",
+      "sha256": "ac6a96a7c1eba78d6654f1ce2a3f9beda9633cfceb59cd08efed6a7ada36f915"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/Program.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/sdk_ui/Program.cs",
+      "sha256": "3da82415535fbd74dedaea5f9f65dab8e0567759daa58f6efebbbc4b70697d40"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/README.md",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/sdk_ui/README.md",
+      "sha256": "2460791b3e14d1303425771516daa41ea0ee9a0da20015f20341795847ac3382"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/SDKUI.Compatibility.csproj",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/sdk_ui/SDKUI.Compatibility.csproj",
+      "sha256": "0c2b39ad406abe75bdca2876f85cedbec53e35005bc5db081b3ed1f19229ffed"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/SdkAnimationChecks.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/sdk_ui/SdkAnimationChecks.cs",
+      "sha256": "31dfc655607929f755483ef74a3a7d95bd9f3f07efcaaaabc14dcfce48d869f6"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/SdkCommandChecks.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/sdk_ui/SdkCommandChecks.cs",
+      "sha256": "1bef42491c410e3a7b71b1f9d8bd140f539a9699306874a3434c4fc2aa90054d"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/SdkContractChecks.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/sdk_ui/SdkContractChecks.cs",
+      "sha256": "c12c014a4d24af8d99e2f3eb9b35af13b008d6d49736c0253f9d05a96c50ca26"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/SdkDccChecks.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/sdk_ui/SdkDccChecks.cs",
+      "sha256": "5dea2858f548e8cd1e665850851fba27df2ef2b607a41400b02d7cb450f4942a"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/SdkGizmoChecks.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/sdk_ui/SdkGizmoChecks.cs",
+      "sha256": "9f55c4bc2d9f7f3a6771ce5226ba7377b913f68c3799d4c760c7f969ecc6ca0c"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/SdkMaterialChecks.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/sdk_ui/SdkMaterialChecks.cs",
+      "sha256": "12d4bbf28be9b892f14530f97534c39c6d7e378c197af81b16f71ce4a9a789c9"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/SdkModelChecks.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/sdk_ui/SdkModelChecks.cs",
+      "sha256": "63289bba787473354403d24f1c0d600ef1754ceee75babe433f477aaf025690b"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/SdkOutputChecks.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/sdk_ui/SdkOutputChecks.cs",
+      "sha256": "480d11fe7a09b748f9e5a27f4e33e913591b9b7173bbfb1b5e897741d27df553"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/SdkProjectChecks.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/sdk_ui/SdkProjectChecks.cs",
+      "sha256": "aeedd5318234b7e0c3a0ffae7833b75ca8db5d00d135be5b40624e5f7cacdfb2"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/SdkProjectCommandChecks.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/sdk_ui/SdkProjectCommandChecks.cs",
+      "sha256": "36f557ffad4d4091c86d270ea62b84bccff0ef73fa4b49898dc6c7522467b2cf"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/SdkRenderOptionChecks.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/sdk_ui/SdkRenderOptionChecks.cs",
+      "sha256": "683f0e37387eb7354ffabfb05ea47e4e043a12342e3d952a08d3d37a888aff15"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/SdkRuntimeChecks.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/sdk_ui/SdkRuntimeChecks.cs",
+      "sha256": "68399c7e92087a77141a0f616876f116e6c2c3f29521a455d0552ccc061a87be"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/SdkSceneCommandChecks.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/sdk_ui/SdkSceneCommandChecks.cs",
+      "sha256": "0d6987afb677efd9ed2d08f69d00065dcf505defd798416b09b700d4ecc5f21f"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/SdkTextureChecks.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/sdk_ui/SdkTextureChecks.cs",
+      "sha256": "8574fe9d4ede521165c67088be55c7a72a4cac552f905c90b8b3f1db27b8c013"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/SdkViewerChecks.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/sdk_ui/SdkViewerChecks.cs",
+      "sha256": "83ccfcfcd84a69330cf18528344b2810119ccdad45a9d5a5e4f5d4e819e65ba3"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/SdkViewportChecks.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/sdk_ui/SdkViewportChecks.cs",
+      "sha256": "67d5cde16064b0e75cebec2d38c7643a0722bf59bb7b446a79de86b0b93166fc"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/SdkWorldToolsChecks.cs",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/sdk_ui/SdkWorldToolsChecks.cs",
+      "sha256": "1eb4493037fb97d38bb3b44ff76aa14d4fa8f6c6beb3f7cd032db5f46895804b"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/dcc/acceptance.json",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/sdk_ui/dcc/acceptance.json",
+      "sha256": "ca09cf9f0e0dfad51684fdefc08a8d70b5e627a9c61170acc10e23b417dc8fba"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/packages.lock.json",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/sdk_ui/packages.lock.json",
+      "sha256": "5032deccbab61401801cb298f8211c67ec15f84276b25a09eed1f67c4defcb4f"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk0/README.md",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/sdk_ui/sdk0/README.md",
+      "sha256": "d988205d5e826a1107e5e87d262c69f31541784b26f50a4014aa1d49bf3b5e05"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk0/acceptance.md",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/sdk_ui/sdk0/acceptance.md",
+      "sha256": "ba95c8a269a9766660c4e7f880bb7a2dfd70208ab58f4e2912942c757546614c"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk0/function-matrix.json",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/sdk_ui/sdk0/function-matrix.json",
+      "sha256": "21d4269e84b37ec2c20ae251b710d3f618a7de2ba03fbd4d518849d8656e641e"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk0/review-findings.md",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/sdk_ui/sdk0/review-findings.md",
+      "sha256": "69bf6178ef9629a01712db880a6cdf620f2012ea288cb1df6bf82032ec169212"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk3/acceptance.json",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/sdk_ui/sdk3/acceptance.json",
+      "sha256": "5cf621b74f25590ca4ad1e162bc7ad7a5131153f82be295d4ef0f949ddb568dc"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk3/acceptance.md",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/sdk_ui/sdk3/acceptance.md",
+      "sha256": "180f1bebb83d3377be025a3932710571e70ea217d564d5fe4669749e7be45724"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk4/README.md",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/sdk_ui/sdk4/README.md",
+      "sha256": "56d3e55d20e62b27596c50982d939479cdd4a459a7f5736cc23f605e97086dd9"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk4/acceptance.json",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/sdk_ui/sdk4/acceptance.json",
+      "sha256": "4520a67fb290a55d16e640fe812003ef7f4fd54c7332a18aea18aa78b304afa1"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk4/acceptance.md",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/sdk_ui/sdk4/acceptance.md",
+      "sha256": "92cfd63073c2f85c2f158607b382d020fae3f61c4d0b65c8beb488eaf2ecfbf4"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk4/command-foundation.json",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/sdk_ui/sdk4/command-foundation.json",
+      "sha256": "eb6ad1223e1dde1e0af3abdd807fe3d22abf4b70ae570ab5042d476383c83f4b"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk4/project-commands.json",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/sdk_ui/sdk4/project-commands.json",
+      "sha256": "441aeb0079f718c486ed357448e1a28e394540245d720866db1faa8e3d76ee17"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk4/project-commands.md",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/sdk_ui/sdk4/project-commands.md",
+      "sha256": "41857736cf6d8e2f39d6b8d8460f168e1a6faf5316455870d2e0f3d1dde191a5"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk5/README.md",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/sdk_ui/sdk5/README.md",
+      "sha256": "9f15cd2b74abd127ebe923d2363e8a549f288ddeea3cfc5f6f5c034f98510ba5"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk5/acceptance.json",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/sdk_ui/sdk5/acceptance.json",
+      "sha256": "d24220b8836d6cc8520b52c9272433ea8ba26a6ef590101b177591e367687626"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk5/gizmos.json",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/sdk_ui/sdk5/gizmos.json",
+      "sha256": "3ebca1965257760303aa6cfdeacaa241131e1e62a808e84f4a1fc7ec9b6828cc"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk5/main-viewport.json",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/sdk_ui/sdk5/main-viewport.json",
+      "sha256": "eee3671275a3a2b98e54e07b9402fcd505bb88ac1cb18f4645130f63e61ec1bf"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk5/renderer-mapping.json",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/sdk_ui/sdk5/renderer-mapping.json",
+      "sha256": "1ebe880788cb4baae4667f0db500e387b70418a36820d6984079844774863cf5"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk6/README.md",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/sdk_ui/sdk6/README.md",
+      "sha256": "1b8e865957b068765f821204332db37114520d14069370f00b178da30eb81eba"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk6/acceptance.json",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/sdk_ui/sdk6/acceptance.json",
+      "sha256": "cf7e5e16f2468c5d60f16470f7d6981d62f0ed7dc211194332ae3fdd678b7416"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk6/material-source-checkpoint.json",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/sdk_ui/sdk6/material-source-checkpoint.json",
+      "sha256": "5d80e2e6d7fc94e1899dc412e3301066f9aa61ab813421c595877ba14571ac40"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk6/material-source.md",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/sdk_ui/sdk6/material-source.md",
+      "sha256": "be79180a4dfaf87c223fa3f1772db180e0e6c1bf5c4afdf0b6728024beee6673"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk6/model-physics-skeletal.md",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/sdk_ui/sdk6/model-physics-skeletal.md",
+      "sha256": "ec0b46faeed685f8d404d1ee6b6d76fdd6a41aa8a4c3f833257cac6dc29c806a"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk6/texture-source-checkpoint.json",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/sdk_ui/sdk6/texture-source-checkpoint.json",
+      "sha256": "e211eda43f0cbce2a6beb51dcb893716d857988fefff58a3c9872bbd352055b0"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk7/README.md",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/sdk_ui/sdk7/README.md",
+      "sha256": "55ff2dde4fc73913638a4450d3c2bc13148651095cc8d3543c5216e7bd4ec9e0"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk7/acceptance.json",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/sdk_ui/sdk7/acceptance.json",
+      "sha256": "6d2c7c2f38cf8183462ecbf30a592291253682b23b300c9d16bbead21572001a"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk8/README.md",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/sdk_ui/sdk8/README.md",
+      "sha256": "05369536effd31806e87a276e16753f8db4ef6322338371bbd35d364869abf58"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk8/collection-playback-checkpoint.json",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/sdk_ui/sdk8/collection-playback-checkpoint.json",
+      "sha256": "7445bea953ca259ad0a49333b11ac9a0e665f6b229489280098c3b60d535aa95"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk8/collection-playback.md",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/sdk_ui/sdk8/collection-playback.md",
+      "sha256": "2c7640a4341c4fef85fdcdc32ccd141cca25ca5d9943b17bedf160cb5bbc6997"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk8/fixtures/controllers/groups/crouch/fast_walk_arc_fwd_left_idle_1_l.lua",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/sdk_ui/sdk8/fixtures/controllers/groups/crouch/fast_walk_arc_fwd_left_idle_1_l.lua",
+      "sha256": "dc318dedd483eb5048a0737f7671e439ed81fa31dccc87afa13a6a67e7436a7b"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk8/fixtures/controllers/groups/crouch/fast_walk_arc_fwd_left_idle_1_r.lua",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/sdk_ui/sdk8/fixtures/controllers/groups/crouch/fast_walk_arc_fwd_left_idle_1_r.lua",
+      "sha256": "dffb77010c441ba7dbe16bc76b4c6d6777e53343cb8a3bc6fb6fac0a246288af"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk8/fixtures/controllers/groups/crouch/fast_walk_arc_fwd_right_idle_1_l.lua",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/sdk_ui/sdk8/fixtures/controllers/groups/crouch/fast_walk_arc_fwd_right_idle_1_l.lua",
+      "sha256": "67a036751cb47274ee0a60a46e9cbbb5cb90e865188a1a31811a6fc06cdabb89"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk8/fixtures/controllers/groups/crouch/fast_walk_arc_fwd_right_idle_1_r.lua",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/sdk_ui/sdk8/fixtures/controllers/groups/crouch/fast_walk_arc_fwd_right_idle_1_r.lua",
+      "sha256": "cc41f365a1c3e43b2745ec8953ada9c0f192a02c7f9f58ae1580cfa6cf7c86ca"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk8/fixtures/controllers/groups/crouch/walk_arc_fwd_left_idle_1_l.lua",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/sdk_ui/sdk8/fixtures/controllers/groups/crouch/walk_arc_fwd_left_idle_1_l.lua",
+      "sha256": "f61da0069b08c750d1c1994051bf1d43622644254ddc1cc589e7b4244fc8f549"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk8/fixtures/controllers/groups/crouch/walk_arc_fwd_left_idle_1_r.lua",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/sdk_ui/sdk8/fixtures/controllers/groups/crouch/walk_arc_fwd_left_idle_1_r.lua",
+      "sha256": "277cb658dbd62614d268af2b6658f32c79cdd25f7ee24690e387625421e46ad3"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk8/fixtures/controllers/groups/crouch/walk_arc_fwd_right_idle_1_l.lua",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/sdk_ui/sdk8/fixtures/controllers/groups/crouch/walk_arc_fwd_right_idle_1_l.lua",
+      "sha256": "612592480893cd29c53440eb51c25b7096423d95dc51a06e711813e735ce558d"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk8/fixtures/controllers/groups/crouch/walk_arc_fwd_right_idle_1_r.lua",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/sdk_ui/sdk8/fixtures/controllers/groups/crouch/walk_arc_fwd_right_idle_1_r.lua",
+      "sha256": "86677358276c79e06bebe3034e9fc0c461f27f7aa6354e9c82790f62bdaa1a2c"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk8/fixtures/controllers/human_controller_set_crouch.lua",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/sdk_ui/sdk8/fixtures/controllers/human_controller_set_crouch.lua",
+      "sha256": "6e451882769cc88bc322158a520976e577f5103c735875c62918fbe60969db83"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk8/fixtures/controllers/human_controller_set_crouch.options",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/sdk_ui/sdk8/fixtures/controllers/human_controller_set_crouch.options",
+      "sha256": "7f370420b446f599f0d0a9fb8dd56390afa8681cdb64a25c6e23370d8b6a46fd"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk8/fixtures/inspect.anim_collection",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/sdk_ui/sdk8/fixtures/inspect.anim_collection",
+      "sha256": "16fc4daab718fe00cf23ab2cab15bcbc6b3d3ac17af407ec6cd655ae49d21c75"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk8/fixtures/provenance.json",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/sdk_ui/sdk8/fixtures/provenance.json",
+      "sha256": "93e960b43b28efd536d6590db020673dec993f8e73f3f293dac4ab92b16a2aea"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk8/fixtures/sit_high_guitar_play.anim_collection",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/sdk_ui/sdk8/fixtures/sit_high_guitar_play.anim_collection",
+      "sha256": "048d8ef17539761676abdf126a2b0b262d5e3afec294e38dbdaa00eced813c32"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk8/initial-checkpoint.json",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/sdk_ui/sdk8/initial-checkpoint.json",
+      "sha256": "b6aa8f152f38dc76147672e442929e613c3549427307cab3a89d4c4c1594462c"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk8/viewer-checkpoint.json",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/sdk_ui/sdk8/viewer-checkpoint.json",
+      "sha256": "594cbab9418905a1cbf4e079e8f62be6d06c913beab45885034d853d4d5f2e49"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk8/viewer.md",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/sdk_ui/sdk8/viewer.md",
+      "sha256": "b304f647cc0492d47c5d6981567324943d7894ce1ef6d3f82e50a1b17f965240"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/upstream-files.json",
+      "snapshot": "build/sdk8-acceptance-20261119/checkpoint/source/sources/xray/editor/sdk_ui/upstream-files.json",
+      "sha256": "f75a93273d180ac192137e1c793b4e9ac80fcb5fde5d83ba8effbf8b7f9b1105"
+    }
+  ],
+  "remainingSdk8": []
+}

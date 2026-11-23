@@ -1,0 +1,1450 @@
+{
+  "schemaVersion": 1,
+  "stage": "SDK-5",
+  "stageComplete": false,
+  "checkpoint": "native-xyz-uniform-gizmos",
+  "checkpointAccepted": true,
+  "date": "2026-11-11",
+  "evidenceRoot": "build/sdk5-gizmo-20261111",
+  "scope": "Native XYZ move/rotation/axis scale and uniform scale renderer geometry, shared native picking and frozen-origin drag, existing transform controls and shared command history.",
+  "previousCheckpoint": {
+    "path": "sources/xray/editor/sdk_ui/sdk5/main-viewport.json",
+    "sha256": "eee3671275a3a2b98e54e07b9402fcd505bb88ac1cb18f4645130f63e61ec1bf"
+  },
+  "checks": [
+    {
+      "configuration": "debug",
+      "build": {
+        "path": "build/sdk5-gizmo-20261111/build-debug.log",
+        "sha256": "26e22d6d477cf5a89023936274b73caf96e90689ef403d3618b66f1bae979762"
+      },
+      "ctest": {
+        "path": "build/sdk5-gizmo-20261111/ctest-debug.log",
+        "sha256": "4864c7c441e7f603b0171ee570511af67f108e98934c0c7b579a139d5ee861d9",
+        "passed": 6,
+        "total": 6
+      },
+      "compatibility": {
+        "path": "build/sdk5-gizmo-20261111/compatibility-debug.json",
+        "sha256": "4ca4d88eeb8e30d7e474998f0227f5855dad6d22df5d82152aca397996a68933",
+        "groups": 16,
+        "runtime": "10.0.13"
+      }
+    },
+    {
+      "configuration": "release",
+      "build": {
+        "path": "build/sdk5-gizmo-20261111/build-release.log",
+        "sha256": "77dea7aaee284f28ee732e8a13dbe3eb23f6929b0bb211523269c0a7d127860f"
+      },
+      "ctest": {
+        "path": "build/sdk5-gizmo-20261111/ctest-release.log",
+        "sha256": "0272605728e55871504b73b3321808f45f046db45ef28c67a3a2fa4cad71a9e4",
+        "passed": 6,
+        "total": 6
+      },
+      "compatibility": {
+        "path": "build/sdk5-gizmo-20261111/compatibility-release.json",
+        "sha256": "4ca4d88eeb8e30d7e474998f0227f5855dad6d22df5d82152aca397996a68933",
+        "groups": 16,
+        "runtime": "10.0.13"
+      }
+    }
+  ],
+  "native": [
+    {
+      "configuration": "debug",
+      "workflow": "gizmos",
+      "validationErrors": 0,
+      "validationWarnings": 0,
+      "runtime": {
+        "path": "build/sdk5-gizmo-20261111/gizmos-final-debug/runtime-result.json",
+        "sha256": "e9246dc99b484475438d60dbf56a2fdc380f8baf1b8e860bf0696eebfcb36681"
+      },
+      "log": {
+        "path": "build/sdk5-gizmo-20261111/gizmos-final-debug/stderr.log",
+        "sha256": "4f51b340816f88691add9b5e24e948e1405df454bb10f901dba404b5ec4184da"
+      },
+      "launch": {
+        "path": "build/sdk5-gizmo-20261111/gizmos-final-debug/launch.json",
+        "sha256": "fd323a9ee3f762bed31d830d4d84b34b263a4934de0ec34c2771bfcfbb7aa1b3"
+      },
+      "readbacks": {
+        "path": "build/sdk5-gizmo-20261111/gizmos-final-debug/capture-result.json",
+        "sha256": "a18b85914dee1a8bfb4e598f9de390dc92900fd67ddfad2dc2e0e88325f71cc4"
+      },
+      "images": [
+        {
+          "path": "build/sdk5-gizmo-20261111/gizmos-final-debug/captures/sdk_layout_edited.bmp",
+          "sha256": "a27e3f8d21c944db853fbac2eed71ce2dc40ca024523ea4ec1c572ef0092d936"
+        },
+        {
+          "path": "build/sdk5-gizmo-20261111/gizmos-final-debug/captures/sdk_layout_redo.bmp",
+          "sha256": "a27e3f8d21c944db853fbac2eed71ce2dc40ca024523ea4ec1c572ef0092d936"
+        },
+        {
+          "path": "build/sdk5-gizmo-20261111/gizmos-final-debug/captures/sdk_layout_restored.bmp",
+          "sha256": "d0e2b453a750c7910dc262ee5964e88cd04ab78acde964da8645cf2b88880510"
+        },
+        {
+          "path": "build/sdk5-gizmo-20261111/gizmos-final-debug/captures/sdk_layout_undo.bmp",
+          "sha256": "a27e3f8d21c944db853fbac2eed71ce2dc40ca024523ea4ec1c572ef0092d936"
+        },
+        {
+          "path": "build/sdk5-gizmo-20261111/gizmos-final-debug/captures/sdk_property_baseline.bmp",
+          "sha256": "d0e2b453a750c7910dc262ee5964e88cd04ab78acde964da8645cf2b88880510"
+        },
+        {
+          "path": "build/sdk5-gizmo-20261111/gizmos-final-debug/captures/sdk_property_edited.bmp",
+          "sha256": "a3d9ab5242925b2fe6dbdd4a5174d3ff82c95183ef469adf52adebe52742d69a"
+        },
+        {
+          "path": "build/sdk5-gizmo-20261111/gizmos-final-debug/captures/sdk_property_redo.bmp",
+          "sha256": "d0e2b453a750c7910dc262ee5964e88cd04ab78acde964da8645cf2b88880510"
+        },
+        {
+          "path": "build/sdk5-gizmo-20261111/gizmos-final-debug/captures/sdk_property_restored.bmp",
+          "sha256": "b1c11a7039b4868b2c0f3515c07817bda52413a093c0ed3a639c3d470da939b9"
+        },
+        {
+          "path": "build/sdk5-gizmo-20261111/gizmos-final-debug/captures/sdk_property_undo.bmp",
+          "sha256": "369bce8cf78deaf0068424a03d528ce3836e5f971837b8aa26cd548334d86b2b"
+        }
+      ]
+    },
+    {
+      "configuration": "debug",
+      "workflow": "viewport",
+      "validationErrors": 0,
+      "validationWarnings": 0,
+      "runtime": {
+        "path": "build/sdk5-gizmo-20261111/viewport-final-debug/runtime-result.json",
+        "sha256": "78936d9765eead00528f69b99b5085c626aadb338d6d11b4ad64910f3e4e4f10"
+      },
+      "log": {
+        "path": "build/sdk5-gizmo-20261111/viewport-final-debug/stderr.log",
+        "sha256": "58910cc564d3c3f8a7d58cf1e30ddae852f181c2b6af49d4d3d42b3f003016bb"
+      },
+      "launch": {
+        "path": "build/sdk5-gizmo-20261111/viewport-final-debug/launch.json",
+        "sha256": "7da9754720c4177040611875d1e8c5609d0d4ded82068eab50b106e46ca7e136"
+      },
+      "readbacks": {
+        "path": "build/sdk5-gizmo-20261111/viewport-final-debug/capture-result.json",
+        "sha256": "6ac8437d67fa50736c6115fe1d5c4c59ba408bb768889e62e582072501d5c6b5"
+      },
+      "images": [
+        {
+          "path": "build/sdk5-gizmo-20261111/viewport-final-debug/captures/sdk_layout_edited.bmp",
+          "sha256": "5dbe4c9b635ac3eda9a0051ab5abb85ac3abb593567f78531d6b609a30fbc4aa"
+        },
+        {
+          "path": "build/sdk5-gizmo-20261111/viewport-final-debug/captures/sdk_layout_redo.bmp",
+          "sha256": "2f6f29943ff1ac92d06d2b7b3c7bba6c31ced85b03649ba1f7d93d558f168f0f"
+        },
+        {
+          "path": "build/sdk5-gizmo-20261111/viewport-final-debug/captures/sdk_layout_restored.bmp",
+          "sha256": "924be7b2e9df8a2a9deb2dc96af023fb35fb767adf0f4bd738df548e4b64cc2d"
+        },
+        {
+          "path": "build/sdk5-gizmo-20261111/viewport-final-debug/captures/sdk_layout_undo.bmp",
+          "sha256": "924be7b2e9df8a2a9deb2dc96af023fb35fb767adf0f4bd738df548e4b64cc2d"
+        },
+        {
+          "path": "build/sdk5-gizmo-20261111/viewport-final-debug/captures/sdk_property_baseline.bmp",
+          "sha256": "924be7b2e9df8a2a9deb2dc96af023fb35fb767adf0f4bd738df548e4b64cc2d"
+        },
+        {
+          "path": "build/sdk5-gizmo-20261111/viewport-final-debug/captures/sdk_property_edited.bmp",
+          "sha256": "8fc3c5337d10b9772fbb8121965f18a7c717699bfde5902a7ea08cd4209aa0c0"
+        },
+        {
+          "path": "build/sdk5-gizmo-20261111/viewport-final-debug/captures/sdk_property_redo.bmp",
+          "sha256": "294ad9146a7095bafcebd177453c3c3083347ec79418b0663dc6889a1b7ae7cc"
+        },
+        {
+          "path": "build/sdk5-gizmo-20261111/viewport-final-debug/captures/sdk_property_restored.bmp",
+          "sha256": "bad174eec7f46f94a960e04ce4638bbdbcff10d7aff7744751ba086b2caa97b5"
+        },
+        {
+          "path": "build/sdk5-gizmo-20261111/viewport-final-debug/captures/sdk_property_undo.bmp",
+          "sha256": "0fd69ba8fc206a6b18ccf8b601b659eb4f295f2ecf5eb57c195f786f3c8b7e62"
+        }
+      ],
+      "previousCheckpointImages": {
+        "sdk_layout_edited.bmp": {
+          "mean_absolute_channel_error": 0.0,
+          "changed_pixels": 0,
+          "changed_fraction": 0.0,
+          "maximum_channel_error": 0
+        },
+        "sdk_layout_redo.bmp": {
+          "mean_absolute_channel_error": 0.0,
+          "changed_pixels": 0,
+          "changed_fraction": 0.0,
+          "maximum_channel_error": 0
+        },
+        "sdk_layout_restored.bmp": {
+          "mean_absolute_channel_error": 0.0,
+          "changed_pixels": 0,
+          "changed_fraction": 0.0,
+          "maximum_channel_error": 0
+        },
+        "sdk_layout_undo.bmp": {
+          "mean_absolute_channel_error": 0.0,
+          "changed_pixels": 0,
+          "changed_fraction": 0.0,
+          "maximum_channel_error": 0
+        },
+        "sdk_property_baseline.bmp": {
+          "mean_absolute_channel_error": 0.0,
+          "changed_pixels": 0,
+          "changed_fraction": 0.0,
+          "maximum_channel_error": 0
+        },
+        "sdk_property_edited.bmp": {
+          "mean_absolute_channel_error": 0.0,
+          "changed_pixels": 0,
+          "changed_fraction": 0.0,
+          "maximum_channel_error": 0
+        },
+        "sdk_property_redo.bmp": {
+          "mean_absolute_channel_error": 0.0,
+          "changed_pixels": 0,
+          "changed_fraction": 0.0,
+          "maximum_channel_error": 0
+        },
+        "sdk_property_restored.bmp": {
+          "mean_absolute_channel_error": 0.0,
+          "changed_pixels": 0,
+          "changed_fraction": 0.0,
+          "maximum_channel_error": 0
+        },
+        "sdk_property_undo.bmp": {
+          "mean_absolute_channel_error": 0.0,
+          "changed_pixels": 0,
+          "changed_fraction": 0.0,
+          "maximum_channel_error": 0
+        }
+      }
+    },
+    {
+      "configuration": "debug",
+      "workflow": "scene",
+      "validationErrors": 0,
+      "validationWarnings": 0,
+      "runtime": {
+        "path": "build/sdk5-gizmo-20261111/scene-final-debug/runtime-result.json",
+        "sha256": "05f9b47138c75386fb79225280987f924c7c83d6e47d1e5ca3ea8b72961baf8d"
+      },
+      "log": {
+        "path": "build/sdk5-gizmo-20261111/scene-final-debug/stderr.log",
+        "sha256": "f5c4b16fb8fafd64ea2f40a884ab4d911b51989062ee053107bae8af5371a710"
+      },
+      "launch": {
+        "path": "build/sdk5-gizmo-20261111/scene-final-debug/launch.json",
+        "sha256": "f138608e50fe0bb1dc8eb743d1b0a8dfec614ab59e4a06069725089a4fd5b30b"
+      },
+      "readbacks": {
+        "path": "build/sdk5-gizmo-20261111/scene-final-debug/capture-result.json",
+        "sha256": "3f8b91b3898a554b14e13dd2df842b7f5179e4362d29b394c869f93c12cbeb22"
+      },
+      "images": [
+        {
+          "path": "build/sdk5-gizmo-20261111/scene-final-debug/captures/sdk_layout_edited.bmp",
+          "sha256": "434722f3e1f389d877017e2b9fecd580c4c716327f5bf7d8092582bbc26a4c1c"
+        },
+        {
+          "path": "build/sdk5-gizmo-20261111/scene-final-debug/captures/sdk_layout_redo.bmp",
+          "sha256": "434722f3e1f389d877017e2b9fecd580c4c716327f5bf7d8092582bbc26a4c1c"
+        },
+        {
+          "path": "build/sdk5-gizmo-20261111/scene-final-debug/captures/sdk_layout_restored.bmp",
+          "sha256": "434722f3e1f389d877017e2b9fecd580c4c716327f5bf7d8092582bbc26a4c1c"
+        },
+        {
+          "path": "build/sdk5-gizmo-20261111/scene-final-debug/captures/sdk_layout_undo.bmp",
+          "sha256": "9af0c8a9f63ab2769f2060a1d498b4cccc30dd0eeae233fa388bba163599e1f2"
+        },
+        {
+          "path": "build/sdk5-gizmo-20261111/scene-final-debug/captures/sdk_property_baseline.bmp",
+          "sha256": "04fbae8593faf30e74623fc4959b5b2d56e914d4aed6f72fa05bed324ffde6c6"
+        },
+        {
+          "path": "build/sdk5-gizmo-20261111/scene-final-debug/captures/sdk_property_edited.bmp",
+          "sha256": "f6a48bffd00262435226abdf946f8b17e7144b7f8a35f6b726457d523aee4298"
+        },
+        {
+          "path": "build/sdk5-gizmo-20261111/scene-final-debug/captures/sdk_property_redo.bmp",
+          "sha256": "f6a48bffd00262435226abdf946f8b17e7144b7f8a35f6b726457d523aee4298"
+        },
+        {
+          "path": "build/sdk5-gizmo-20261111/scene-final-debug/captures/sdk_property_restored.bmp",
+          "sha256": "f6a48bffd00262435226abdf946f8b17e7144b7f8a35f6b726457d523aee4298"
+        },
+        {
+          "path": "build/sdk5-gizmo-20261111/scene-final-debug/captures/sdk_property_undo.bmp",
+          "sha256": "04fbae8593faf30e74623fc4959b5b2d56e914d4aed6f72fa05bed324ffde6c6"
+        }
+      ],
+      "previousCheckpointImages": {
+        "sdk_layout_edited.bmp": {
+          "mean_absolute_channel_error": 0.0005706472358512727,
+          "changed_pixels": 37,
+          "changed_fraction": 6.149693512571968e-05,
+          "maximum_channel_error": 24
+        },
+        "sdk_layout_redo.bmp": {
+          "mean_absolute_channel_error": 0.0005706472358512727,
+          "changed_pixels": 37,
+          "changed_fraction": 6.149693512571968e-05,
+          "maximum_channel_error": 24
+        },
+        "sdk_layout_restored.bmp": {
+          "mean_absolute_channel_error": 0.0005706472358512727,
+          "changed_pixels": 37,
+          "changed_fraction": 6.149693512571968e-05,
+          "maximum_channel_error": 24
+        },
+        "sdk_layout_undo.bmp": {
+          "mean_absolute_channel_error": 0.0,
+          "changed_pixels": 0,
+          "changed_fraction": 0.0,
+          "maximum_channel_error": 0
+        },
+        "sdk_property_baseline.bmp": {
+          "mean_absolute_channel_error": 0.0,
+          "changed_pixels": 0,
+          "changed_fraction": 0.0,
+          "maximum_channel_error": 0
+        },
+        "sdk_property_edited.bmp": {
+          "mean_absolute_channel_error": 0.0,
+          "changed_pixels": 0,
+          "changed_fraction": 0.0,
+          "maximum_channel_error": 0
+        },
+        "sdk_property_redo.bmp": {
+          "mean_absolute_channel_error": 0.0,
+          "changed_pixels": 0,
+          "changed_fraction": 0.0,
+          "maximum_channel_error": 0
+        },
+        "sdk_property_restored.bmp": {
+          "mean_absolute_channel_error": 0.0,
+          "changed_pixels": 0,
+          "changed_fraction": 0.0,
+          "maximum_channel_error": 0
+        },
+        "sdk_property_undo.bmp": {
+          "mean_absolute_channel_error": 0.0,
+          "changed_pixels": 0,
+          "changed_fraction": 0.0,
+          "maximum_channel_error": 0
+        }
+      },
+      "previousCheckpointAuthoredTransform": {
+        "current": {
+          "path": "build/sdk5-gizmo-20261111/scene-final-debug/user-data/workspace/sources/projects/SDK4/сцена/project.xprj",
+          "sha256": "9af5ecfc04141a4c9520f2f5d95b37318fbf99103ee55b4095476248a0b8a875"
+        },
+        "previous": {
+          "path": "build/sdk5-viewport-20261111/scene-final-debug/user-data/workspace/sources/projects/SDK4/сцена/project.xprj",
+          "sha256": "ef552e41954c5f668e3e4c13c39c2584e112ce3706189e3337898915d71233ec"
+        },
+        "exact": true
+      }
+    },
+    {
+      "configuration": "debug",
+      "workflow": "property",
+      "validationErrors": 0,
+      "validationWarnings": 0,
+      "runtime": {
+        "path": "build/sdk5-gizmo-20261111/property-final-debug/runtime-result.json",
+        "sha256": "f00dd4c2cf9f09313f3a87af8c843b7c5cb0a906f977022f7724b841defe44cb"
+      },
+      "log": {
+        "path": "build/sdk5-gizmo-20261111/property-final-debug/stderr.log",
+        "sha256": "ac35dc40e6ade3a3fb038382fde1c0f9c2dd3c4d2d2cdc7da45a98b72f1d35b1"
+      },
+      "launch": {
+        "path": "build/sdk5-gizmo-20261111/property-final-debug/launch.json",
+        "sha256": "fbb32eb1a9cada57f6eaf8a2e12e8dc18aa1cf38ae1b0276d065142fa6d9a2d8"
+      },
+      "readbacks": {
+        "path": "build/sdk5-gizmo-20261111/property-final-debug/capture-result.json",
+        "sha256": "9707b5e2b010c9458d4c7c2b926fb5b14939fb4a6636520fca787c5eec1a66e6"
+      },
+      "images": [
+        {
+          "path": "build/sdk5-gizmo-20261111/property-final-debug/captures/sdk_layout_edited.bmp",
+          "sha256": "75880822bf6b7af49310bbd6d3540f76c35b7133c3ddb41f8e1783f8b16353e7"
+        },
+        {
+          "path": "build/sdk5-gizmo-20261111/property-final-debug/captures/sdk_layout_redo.bmp",
+          "sha256": "75880822bf6b7af49310bbd6d3540f76c35b7133c3ddb41f8e1783f8b16353e7"
+        },
+        {
+          "path": "build/sdk5-gizmo-20261111/property-final-debug/captures/sdk_layout_restored.bmp",
+          "sha256": "5ac2344137e0f7a6e703ef2f418909742094dac355ec3aa7435a074a0acadae9"
+        },
+        {
+          "path": "build/sdk5-gizmo-20261111/property-final-debug/captures/sdk_layout_undo.bmp",
+          "sha256": "5ac2344137e0f7a6e703ef2f418909742094dac355ec3aa7435a074a0acadae9"
+        },
+        {
+          "path": "build/sdk5-gizmo-20261111/property-final-debug/captures/sdk_property_baseline.bmp",
+          "sha256": "5ac2344137e0f7a6e703ef2f418909742094dac355ec3aa7435a074a0acadae9"
+        },
+        {
+          "path": "build/sdk5-gizmo-20261111/property-final-debug/captures/sdk_property_edited.bmp",
+          "sha256": "75880822bf6b7af49310bbd6d3540f76c35b7133c3ddb41f8e1783f8b16353e7"
+        },
+        {
+          "path": "build/sdk5-gizmo-20261111/property-final-debug/captures/sdk_property_redo.bmp",
+          "sha256": "75880822bf6b7af49310bbd6d3540f76c35b7133c3ddb41f8e1783f8b16353e7"
+        },
+        {
+          "path": "build/sdk5-gizmo-20261111/property-final-debug/captures/sdk_property_restored.bmp",
+          "sha256": "5ac2344137e0f7a6e703ef2f418909742094dac355ec3aa7435a074a0acadae9"
+        },
+        {
+          "path": "build/sdk5-gizmo-20261111/property-final-debug/captures/sdk_property_undo.bmp",
+          "sha256": "5ac2344137e0f7a6e703ef2f418909742094dac355ec3aa7435a074a0acadae9"
+        }
+      ],
+      "previousCheckpointImages": {
+        "sdk_layout_edited.bmp": {
+          "mean_absolute_channel_error": 0.0,
+          "changed_pixels": 0,
+          "changed_fraction": 0.0,
+          "maximum_channel_error": 0
+        },
+        "sdk_layout_redo.bmp": {
+          "mean_absolute_channel_error": 0.0,
+          "changed_pixels": 0,
+          "changed_fraction": 0.0,
+          "maximum_channel_error": 0
+        },
+        "sdk_layout_restored.bmp": {
+          "mean_absolute_channel_error": 0.0,
+          "changed_pixels": 0,
+          "changed_fraction": 0.0,
+          "maximum_channel_error": 0
+        },
+        "sdk_layout_undo.bmp": {
+          "mean_absolute_channel_error": 0.0,
+          "changed_pixels": 0,
+          "changed_fraction": 0.0,
+          "maximum_channel_error": 0
+        },
+        "sdk_property_baseline.bmp": {
+          "mean_absolute_channel_error": 0.0,
+          "changed_pixels": 0,
+          "changed_fraction": 0.0,
+          "maximum_channel_error": 0
+        },
+        "sdk_property_edited.bmp": {
+          "mean_absolute_channel_error": 0.0,
+          "changed_pixels": 0,
+          "changed_fraction": 0.0,
+          "maximum_channel_error": 0
+        },
+        "sdk_property_redo.bmp": {
+          "mean_absolute_channel_error": 0.0,
+          "changed_pixels": 0,
+          "changed_fraction": 0.0,
+          "maximum_channel_error": 0
+        },
+        "sdk_property_restored.bmp": {
+          "mean_absolute_channel_error": 0.0,
+          "changed_pixels": 0,
+          "changed_fraction": 0.0,
+          "maximum_channel_error": 0
+        },
+        "sdk_property_undo.bmp": {
+          "mean_absolute_channel_error": 0.0,
+          "changed_pixels": 0,
+          "changed_fraction": 0.0,
+          "maximum_channel_error": 0
+        }
+      }
+    },
+    {
+      "configuration": "debug",
+      "workflow": "legacy",
+      "validationErrors": 0,
+      "validationWarnings": 0,
+      "runtime": {
+        "path": "build/sdk5-gizmo-20261111/legacy-final-debug/runtime-result.json",
+        "sha256": "cd48b1cdb5a101d061c23dd1f35425eb315a212992ead6a3d541f118d874777b"
+      },
+      "log": {
+        "path": "build/sdk5-gizmo-20261111/legacy-final-debug/stderr.log",
+        "sha256": "57b84ad3e7d51604eb4378f91663872752289ece6fb2eca2c0efba6249cea08f"
+      },
+      "launch": {
+        "path": "build/sdk5-gizmo-20261111/legacy-final-debug/launch.json",
+        "sha256": "b36b097b330cb4c17a91ed0d4298a2a57d7024ce69e7c6450d2a9f8ddf0f7fda"
+      },
+      "images": [
+        {
+          "path": "build/sdk5-gizmo-20261111/legacy-final-debug/captures/game.bmp",
+          "sha256": "42998866793f892c57383c758ddd6bf5916fb3b97152e8b14234d7723a88d76f"
+        }
+      ],
+      "previousCheckpointImages": {
+        "game.bmp": {
+          "mean_absolute_channel_error": 0.0,
+          "changed_pixels": 0,
+          "changed_fraction": 0.0,
+          "maximum_channel_error": 0
+        }
+      }
+    },
+    {
+      "configuration": "release",
+      "workflow": "gizmos",
+      "validationErrors": 0,
+      "validationWarnings": 0,
+      "runtime": {
+        "path": "build/sdk5-gizmo-20261111/gizmos-final-release/runtime-result.json",
+        "sha256": "d4c025974c97094255ea2500bca3787a2b3150257b620e5a7963fe7e4709c840"
+      },
+      "log": {
+        "path": "build/sdk5-gizmo-20261111/gizmos-final-release/stderr.log",
+        "sha256": "1d72253c385c9379a8858fa3d8bb9cd0f9bc126acb4dec62c11657f06401112a"
+      },
+      "launch": {
+        "path": "build/sdk5-gizmo-20261111/gizmos-final-release/launch.json",
+        "sha256": "a7f0ce720f9322ffa086f8690a8dd422a911932f3b70f8eacf353207348e8ecc"
+      },
+      "readbacks": {
+        "path": "build/sdk5-gizmo-20261111/gizmos-final-release/capture-result.json",
+        "sha256": "a18b85914dee1a8bfb4e598f9de390dc92900fd67ddfad2dc2e0e88325f71cc4"
+      },
+      "images": [
+        {
+          "path": "build/sdk5-gizmo-20261111/gizmos-final-release/captures/sdk_layout_edited.bmp",
+          "sha256": "a27e3f8d21c944db853fbac2eed71ce2dc40ca024523ea4ec1c572ef0092d936"
+        },
+        {
+          "path": "build/sdk5-gizmo-20261111/gizmos-final-release/captures/sdk_layout_redo.bmp",
+          "sha256": "a27e3f8d21c944db853fbac2eed71ce2dc40ca024523ea4ec1c572ef0092d936"
+        },
+        {
+          "path": "build/sdk5-gizmo-20261111/gizmos-final-release/captures/sdk_layout_restored.bmp",
+          "sha256": "d0e2b453a750c7910dc262ee5964e88cd04ab78acde964da8645cf2b88880510"
+        },
+        {
+          "path": "build/sdk5-gizmo-20261111/gizmos-final-release/captures/sdk_layout_undo.bmp",
+          "sha256": "a27e3f8d21c944db853fbac2eed71ce2dc40ca024523ea4ec1c572ef0092d936"
+        },
+        {
+          "path": "build/sdk5-gizmo-20261111/gizmos-final-release/captures/sdk_property_baseline.bmp",
+          "sha256": "d0e2b453a750c7910dc262ee5964e88cd04ab78acde964da8645cf2b88880510"
+        },
+        {
+          "path": "build/sdk5-gizmo-20261111/gizmos-final-release/captures/sdk_property_edited.bmp",
+          "sha256": "a3d9ab5242925b2fe6dbdd4a5174d3ff82c95183ef469adf52adebe52742d69a"
+        },
+        {
+          "path": "build/sdk5-gizmo-20261111/gizmos-final-release/captures/sdk_property_redo.bmp",
+          "sha256": "d0e2b453a750c7910dc262ee5964e88cd04ab78acde964da8645cf2b88880510"
+        },
+        {
+          "path": "build/sdk5-gizmo-20261111/gizmos-final-release/captures/sdk_property_restored.bmp",
+          "sha256": "b1c11a7039b4868b2c0f3515c07817bda52413a093c0ed3a639c3d470da939b9"
+        },
+        {
+          "path": "build/sdk5-gizmo-20261111/gizmos-final-release/captures/sdk_property_undo.bmp",
+          "sha256": "369bce8cf78deaf0068424a03d528ce3836e5f971837b8aa26cd548334d86b2b"
+        }
+      ]
+    },
+    {
+      "configuration": "release",
+      "workflow": "viewport",
+      "validationErrors": 0,
+      "validationWarnings": 0,
+      "runtime": {
+        "path": "build/sdk5-gizmo-20261111/viewport-final-release/runtime-result.json",
+        "sha256": "78936d9765eead00528f69b99b5085c626aadb338d6d11b4ad64910f3e4e4f10"
+      },
+      "log": {
+        "path": "build/sdk5-gizmo-20261111/viewport-final-release/stderr.log",
+        "sha256": "79cd71fcb0416d78ac37409ca7b503a85e4cdda6fe1e5e30aab1e2b1de5bb6cd"
+      },
+      "launch": {
+        "path": "build/sdk5-gizmo-20261111/viewport-final-release/launch.json",
+        "sha256": "a6ee84bd38f559f5bfdac5e39d34be2ddf3a1422f6728e79c92e4b6c358a5cae"
+      },
+      "readbacks": {
+        "path": "build/sdk5-gizmo-20261111/viewport-final-release/capture-result.json",
+        "sha256": "6ac8437d67fa50736c6115fe1d5c4c59ba408bb768889e62e582072501d5c6b5"
+      },
+      "images": [
+        {
+          "path": "build/sdk5-gizmo-20261111/viewport-final-release/captures/sdk_layout_edited.bmp",
+          "sha256": "5dbe4c9b635ac3eda9a0051ab5abb85ac3abb593567f78531d6b609a30fbc4aa"
+        },
+        {
+          "path": "build/sdk5-gizmo-20261111/viewport-final-release/captures/sdk_layout_redo.bmp",
+          "sha256": "2f6f29943ff1ac92d06d2b7b3c7bba6c31ced85b03649ba1f7d93d558f168f0f"
+        },
+        {
+          "path": "build/sdk5-gizmo-20261111/viewport-final-release/captures/sdk_layout_restored.bmp",
+          "sha256": "924be7b2e9df8a2a9deb2dc96af023fb35fb767adf0f4bd738df548e4b64cc2d"
+        },
+        {
+          "path": "build/sdk5-gizmo-20261111/viewport-final-release/captures/sdk_layout_undo.bmp",
+          "sha256": "924be7b2e9df8a2a9deb2dc96af023fb35fb767adf0f4bd738df548e4b64cc2d"
+        },
+        {
+          "path": "build/sdk5-gizmo-20261111/viewport-final-release/captures/sdk_property_baseline.bmp",
+          "sha256": "924be7b2e9df8a2a9deb2dc96af023fb35fb767adf0f4bd738df548e4b64cc2d"
+        },
+        {
+          "path": "build/sdk5-gizmo-20261111/viewport-final-release/captures/sdk_property_edited.bmp",
+          "sha256": "8fc3c5337d10b9772fbb8121965f18a7c717699bfde5902a7ea08cd4209aa0c0"
+        },
+        {
+          "path": "build/sdk5-gizmo-20261111/viewport-final-release/captures/sdk_property_redo.bmp",
+          "sha256": "294ad9146a7095bafcebd177453c3c3083347ec79418b0663dc6889a1b7ae7cc"
+        },
+        {
+          "path": "build/sdk5-gizmo-20261111/viewport-final-release/captures/sdk_property_restored.bmp",
+          "sha256": "bad174eec7f46f94a960e04ce4638bbdbcff10d7aff7744751ba086b2caa97b5"
+        },
+        {
+          "path": "build/sdk5-gizmo-20261111/viewport-final-release/captures/sdk_property_undo.bmp",
+          "sha256": "0fd69ba8fc206a6b18ccf8b601b659eb4f295f2ecf5eb57c195f786f3c8b7e62"
+        }
+      ],
+      "previousCheckpointImages": {
+        "sdk_layout_edited.bmp": {
+          "mean_absolute_channel_error": 0.0,
+          "changed_pixels": 0,
+          "changed_fraction": 0.0,
+          "maximum_channel_error": 0
+        },
+        "sdk_layout_redo.bmp": {
+          "mean_absolute_channel_error": 0.0,
+          "changed_pixels": 0,
+          "changed_fraction": 0.0,
+          "maximum_channel_error": 0
+        },
+        "sdk_layout_restored.bmp": {
+          "mean_absolute_channel_error": 0.0,
+          "changed_pixels": 0,
+          "changed_fraction": 0.0,
+          "maximum_channel_error": 0
+        },
+        "sdk_layout_undo.bmp": {
+          "mean_absolute_channel_error": 0.0,
+          "changed_pixels": 0,
+          "changed_fraction": 0.0,
+          "maximum_channel_error": 0
+        },
+        "sdk_property_baseline.bmp": {
+          "mean_absolute_channel_error": 0.0,
+          "changed_pixels": 0,
+          "changed_fraction": 0.0,
+          "maximum_channel_error": 0
+        },
+        "sdk_property_edited.bmp": {
+          "mean_absolute_channel_error": 0.0,
+          "changed_pixels": 0,
+          "changed_fraction": 0.0,
+          "maximum_channel_error": 0
+        },
+        "sdk_property_redo.bmp": {
+          "mean_absolute_channel_error": 0.0,
+          "changed_pixels": 0,
+          "changed_fraction": 0.0,
+          "maximum_channel_error": 0
+        },
+        "sdk_property_restored.bmp": {
+          "mean_absolute_channel_error": 0.0,
+          "changed_pixels": 0,
+          "changed_fraction": 0.0,
+          "maximum_channel_error": 0
+        },
+        "sdk_property_undo.bmp": {
+          "mean_absolute_channel_error": 0.0,
+          "changed_pixels": 0,
+          "changed_fraction": 0.0,
+          "maximum_channel_error": 0
+        }
+      }
+    },
+    {
+      "configuration": "release",
+      "workflow": "scene",
+      "validationErrors": 0,
+      "validationWarnings": 0,
+      "runtime": {
+        "path": "build/sdk5-gizmo-20261111/scene-final-release/runtime-result.json",
+        "sha256": "05f9b47138c75386fb79225280987f924c7c83d6e47d1e5ca3ea8b72961baf8d"
+      },
+      "log": {
+        "path": "build/sdk5-gizmo-20261111/scene-final-release/stderr.log",
+        "sha256": "04459df825114ac9c9ede287af1b83f9272b5abab404fcfade195c5e45e81b72"
+      },
+      "launch": {
+        "path": "build/sdk5-gizmo-20261111/scene-final-release/launch.json",
+        "sha256": "51dfc76b4d99d680d241593db4e525e33cfdb23d6ec8f12853c70ca8b8d18bf6"
+      },
+      "readbacks": {
+        "path": "build/sdk5-gizmo-20261111/scene-final-release/capture-result.json",
+        "sha256": "b5f6cd730e26898446fe70fe5e283ebfa4fef19b58238fed708f1cf25eb21e6f"
+      },
+      "images": [
+        {
+          "path": "build/sdk5-gizmo-20261111/scene-final-release/captures/sdk_layout_edited.bmp",
+          "sha256": "922d0339cc041fc49665fecc6d1fc0a8e2548592bffa398d6b66af565cf550f6"
+        },
+        {
+          "path": "build/sdk5-gizmo-20261111/scene-final-release/captures/sdk_layout_redo.bmp",
+          "sha256": "922d0339cc041fc49665fecc6d1fc0a8e2548592bffa398d6b66af565cf550f6"
+        },
+        {
+          "path": "build/sdk5-gizmo-20261111/scene-final-release/captures/sdk_layout_restored.bmp",
+          "sha256": "922d0339cc041fc49665fecc6d1fc0a8e2548592bffa398d6b66af565cf550f6"
+        },
+        {
+          "path": "build/sdk5-gizmo-20261111/scene-final-release/captures/sdk_layout_undo.bmp",
+          "sha256": "9af0c8a9f63ab2769f2060a1d498b4cccc30dd0eeae233fa388bba163599e1f2"
+        },
+        {
+          "path": "build/sdk5-gizmo-20261111/scene-final-release/captures/sdk_property_baseline.bmp",
+          "sha256": "04fbae8593faf30e74623fc4959b5b2d56e914d4aed6f72fa05bed324ffde6c6"
+        },
+        {
+          "path": "build/sdk5-gizmo-20261111/scene-final-release/captures/sdk_property_edited.bmp",
+          "sha256": "f6a48bffd00262435226abdf946f8b17e7144b7f8a35f6b726457d523aee4298"
+        },
+        {
+          "path": "build/sdk5-gizmo-20261111/scene-final-release/captures/sdk_property_redo.bmp",
+          "sha256": "f6a48bffd00262435226abdf946f8b17e7144b7f8a35f6b726457d523aee4298"
+        },
+        {
+          "path": "build/sdk5-gizmo-20261111/scene-final-release/captures/sdk_property_restored.bmp",
+          "sha256": "f6a48bffd00262435226abdf946f8b17e7144b7f8a35f6b726457d523aee4298"
+        },
+        {
+          "path": "build/sdk5-gizmo-20261111/scene-final-release/captures/sdk_property_undo.bmp",
+          "sha256": "04fbae8593faf30e74623fc4959b5b2d56e914d4aed6f72fa05bed324ffde6c6"
+        }
+      ],
+      "previousCheckpointImages": {
+        "sdk_layout_edited.bmp": {
+          "mean_absolute_channel_error": 0.0005706472358512727,
+          "changed_pixels": 37,
+          "changed_fraction": 6.149693512571968e-05,
+          "maximum_channel_error": 24
+        },
+        "sdk_layout_redo.bmp": {
+          "mean_absolute_channel_error": 0.0005706472358512727,
+          "changed_pixels": 37,
+          "changed_fraction": 6.149693512571968e-05,
+          "maximum_channel_error": 24
+        },
+        "sdk_layout_restored.bmp": {
+          "mean_absolute_channel_error": 0.0005706472358512727,
+          "changed_pixels": 37,
+          "changed_fraction": 6.149693512571968e-05,
+          "maximum_channel_error": 24
+        },
+        "sdk_layout_undo.bmp": {
+          "mean_absolute_channel_error": 0.0,
+          "changed_pixels": 0,
+          "changed_fraction": 0.0,
+          "maximum_channel_error": 0
+        },
+        "sdk_property_baseline.bmp": {
+          "mean_absolute_channel_error": 0.0,
+          "changed_pixels": 0,
+          "changed_fraction": 0.0,
+          "maximum_channel_error": 0
+        },
+        "sdk_property_edited.bmp": {
+          "mean_absolute_channel_error": 0.0,
+          "changed_pixels": 0,
+          "changed_fraction": 0.0,
+          "maximum_channel_error": 0
+        },
+        "sdk_property_redo.bmp": {
+          "mean_absolute_channel_error": 0.0,
+          "changed_pixels": 0,
+          "changed_fraction": 0.0,
+          "maximum_channel_error": 0
+        },
+        "sdk_property_restored.bmp": {
+          "mean_absolute_channel_error": 0.0,
+          "changed_pixels": 0,
+          "changed_fraction": 0.0,
+          "maximum_channel_error": 0
+        },
+        "sdk_property_undo.bmp": {
+          "mean_absolute_channel_error": 0.0,
+          "changed_pixels": 0,
+          "changed_fraction": 0.0,
+          "maximum_channel_error": 0
+        }
+      },
+      "previousCheckpointAuthoredTransform": {
+        "current": {
+          "path": "build/sdk5-gizmo-20261111/scene-final-release/user-data/workspace/sources/projects/SDK4/сцена/project.xprj",
+          "sha256": "19e498b614a21e11f9d68ab81d4ec47be4c9740b90efe895dfddc53035cb8eb1"
+        },
+        "previous": {
+          "path": "build/sdk5-viewport-20261111/scene-final-release/user-data/workspace/sources/projects/SDK4/сцена/project.xprj",
+          "sha256": "27bdc0e1c1ebcacaf6198270f75f41b6b4f51b1ba4a01259673203a6b689880b"
+        },
+        "exact": true
+      }
+    },
+    {
+      "configuration": "release",
+      "workflow": "property",
+      "validationErrors": 0,
+      "validationWarnings": 0,
+      "runtime": {
+        "path": "build/sdk5-gizmo-20261111/property-final-release/runtime-result.json",
+        "sha256": "f00dd4c2cf9f09313f3a87af8c843b7c5cb0a906f977022f7724b841defe44cb"
+      },
+      "log": {
+        "path": "build/sdk5-gizmo-20261111/property-final-release/stderr.log",
+        "sha256": "af552008091acb0789c43d38de97ed2e1240f75b8d888df60fd7304d63a774ee"
+      },
+      "launch": {
+        "path": "build/sdk5-gizmo-20261111/property-final-release/launch.json",
+        "sha256": "c5df9f04493c4f83b3c26b3e95364956b996dfc1e74133897be139cd804f6b8e"
+      },
+      "readbacks": {
+        "path": "build/sdk5-gizmo-20261111/property-final-release/capture-result.json",
+        "sha256": "9707b5e2b010c9458d4c7c2b926fb5b14939fb4a6636520fca787c5eec1a66e6"
+      },
+      "images": [
+        {
+          "path": "build/sdk5-gizmo-20261111/property-final-release/captures/sdk_layout_edited.bmp",
+          "sha256": "75880822bf6b7af49310bbd6d3540f76c35b7133c3ddb41f8e1783f8b16353e7"
+        },
+        {
+          "path": "build/sdk5-gizmo-20261111/property-final-release/captures/sdk_layout_redo.bmp",
+          "sha256": "75880822bf6b7af49310bbd6d3540f76c35b7133c3ddb41f8e1783f8b16353e7"
+        },
+        {
+          "path": "build/sdk5-gizmo-20261111/property-final-release/captures/sdk_layout_restored.bmp",
+          "sha256": "5ac2344137e0f7a6e703ef2f418909742094dac355ec3aa7435a074a0acadae9"
+        },
+        {
+          "path": "build/sdk5-gizmo-20261111/property-final-release/captures/sdk_layout_undo.bmp",
+          "sha256": "5ac2344137e0f7a6e703ef2f418909742094dac355ec3aa7435a074a0acadae9"
+        },
+        {
+          "path": "build/sdk5-gizmo-20261111/property-final-release/captures/sdk_property_baseline.bmp",
+          "sha256": "5ac2344137e0f7a6e703ef2f418909742094dac355ec3aa7435a074a0acadae9"
+        },
+        {
+          "path": "build/sdk5-gizmo-20261111/property-final-release/captures/sdk_property_edited.bmp",
+          "sha256": "75880822bf6b7af49310bbd6d3540f76c35b7133c3ddb41f8e1783f8b16353e7"
+        },
+        {
+          "path": "build/sdk5-gizmo-20261111/property-final-release/captures/sdk_property_redo.bmp",
+          "sha256": "75880822bf6b7af49310bbd6d3540f76c35b7133c3ddb41f8e1783f8b16353e7"
+        },
+        {
+          "path": "build/sdk5-gizmo-20261111/property-final-release/captures/sdk_property_restored.bmp",
+          "sha256": "5ac2344137e0f7a6e703ef2f418909742094dac355ec3aa7435a074a0acadae9"
+        },
+        {
+          "path": "build/sdk5-gizmo-20261111/property-final-release/captures/sdk_property_undo.bmp",
+          "sha256": "5ac2344137e0f7a6e703ef2f418909742094dac355ec3aa7435a074a0acadae9"
+        }
+      ],
+      "previousCheckpointImages": {
+        "sdk_layout_edited.bmp": {
+          "mean_absolute_channel_error": 0.0,
+          "changed_pixels": 0,
+          "changed_fraction": 0.0,
+          "maximum_channel_error": 0
+        },
+        "sdk_layout_redo.bmp": {
+          "mean_absolute_channel_error": 0.0,
+          "changed_pixels": 0,
+          "changed_fraction": 0.0,
+          "maximum_channel_error": 0
+        },
+        "sdk_layout_restored.bmp": {
+          "mean_absolute_channel_error": 0.0,
+          "changed_pixels": 0,
+          "changed_fraction": 0.0,
+          "maximum_channel_error": 0
+        },
+        "sdk_layout_undo.bmp": {
+          "mean_absolute_channel_error": 0.0,
+          "changed_pixels": 0,
+          "changed_fraction": 0.0,
+          "maximum_channel_error": 0
+        },
+        "sdk_property_baseline.bmp": {
+          "mean_absolute_channel_error": 0.0,
+          "changed_pixels": 0,
+          "changed_fraction": 0.0,
+          "maximum_channel_error": 0
+        },
+        "sdk_property_edited.bmp": {
+          "mean_absolute_channel_error": 0.0,
+          "changed_pixels": 0,
+          "changed_fraction": 0.0,
+          "maximum_channel_error": 0
+        },
+        "sdk_property_redo.bmp": {
+          "mean_absolute_channel_error": 0.0,
+          "changed_pixels": 0,
+          "changed_fraction": 0.0,
+          "maximum_channel_error": 0
+        },
+        "sdk_property_restored.bmp": {
+          "mean_absolute_channel_error": 0.0,
+          "changed_pixels": 0,
+          "changed_fraction": 0.0,
+          "maximum_channel_error": 0
+        },
+        "sdk_property_undo.bmp": {
+          "mean_absolute_channel_error": 0.0,
+          "changed_pixels": 0,
+          "changed_fraction": 0.0,
+          "maximum_channel_error": 0
+        }
+      }
+    },
+    {
+      "configuration": "release",
+      "workflow": "legacy",
+      "validationErrors": 0,
+      "validationWarnings": 0,
+      "runtime": {
+        "path": "build/sdk5-gizmo-20261111/legacy-final-release/runtime-result.json",
+        "sha256": "cd48b1cdb5a101d061c23dd1f35425eb315a212992ead6a3d541f118d874777b"
+      },
+      "log": {
+        "path": "build/sdk5-gizmo-20261111/legacy-final-release/stderr.log",
+        "sha256": "a1df6079c14c79ed3c696c2771677273c267fc46299c35dda9ff6484d65f18ab"
+      },
+      "launch": {
+        "path": "build/sdk5-gizmo-20261111/legacy-final-release/launch.json",
+        "sha256": "ccb57d60e64820da26ed676a534d365ab9d5f839f1890bff73d9d726f35fd867"
+      },
+      "images": [
+        {
+          "path": "build/sdk5-gizmo-20261111/legacy-final-release/captures/game.bmp",
+          "sha256": "42998866793f892c57383c758ddd6bf5916fb3b97152e8b14234d7723a88d76f"
+        }
+      ],
+      "previousCheckpointImages": {
+        "game.bmp": {
+          "mean_absolute_channel_error": 0.0,
+          "changed_pixels": 0,
+          "changed_fraction": 0.0,
+          "maximum_channel_error": 0
+        }
+      }
+    }
+  ],
+  "implementation": [
+    {
+      "path": "sources/tools/sdk/collect-sdk5-gizmos.py",
+      "sha256": "2453b0aa0e77f3356fc9e9d87760dd5b13a24dc7cefccd87af7e931f88bc3ecb"
+    },
+    {
+      "path": "sources/tools/sdk/test-sdk-property.ps1",
+      "sha256": "6192e866a6ce2b24e90acf32c31f0b2ad5463d3b577a352a4cab5d0fb2bd646f"
+    },
+    {
+      "path": "sources/tools/sdk/verify-sdk-gizmos.py",
+      "sha256": "5d9ea1400c031fd20d1ffd3b03573ee5ba54ebc9878ad4ae97a4f00cfe6905f2"
+    },
+    {
+      "path": "sources/tools/sdk/verify-sdk-property.py",
+      "sha256": "7d021bdcd69cd889d13b10a90325b44f16a14deaefc682b859cb8f744a19cc1c"
+    },
+    {
+      "path": "sources/tools/sdk/verify-sdk-scene.py",
+      "sha256": "9587eea6ccd68b111746aa93fe51c9a98fced1e3ae917fcde02f22dea08fa8cf"
+    },
+    {
+      "path": "sources/tools/sdk/verify-sdk-viewport.py",
+      "sha256": "72ded857f15f61c14bef9edc0f0dfdd3febf4bcc8f5a6249681775516018b394"
+    },
+    {
+      "path": "sources/tools/tests/sdk_gizmo_contract.cpp",
+      "sha256": "b534b0bf695fe820dff64221734bac691f5a563382255398d2666b720a0b1717"
+    },
+    {
+      "path": "sources/xray/editor/base/CMakeLists.txt",
+      "sha256": "1b209dc76f4c021b986fb10762ab70c63f22899f66e1e2cef8661844724069c9"
+    },
+    {
+      "path": "sources/xray/editor/base/Command.cs",
+      "sha256": "3538095cfb0707feae733ed0e722f64b9d7dd76c75aa2f3c185390029d0181cd"
+    },
+    {
+      "path": "sources/xray/editor/base/CommandEngine.cs",
+      "sha256": "01dfd1526886ecef63c40af7e0d9f2b81e61391f27c13a49ab7cdba854c1535d"
+    },
+    {
+      "path": "sources/xray/editor/base/EditorHost.csproj.in",
+      "sha256": "2d7d7568c926c0fcd00d61cb793e905c4f30e09ce7cca81c76d84ff8d26f892c"
+    },
+    {
+      "path": "sources/xray/editor/base/EditorWorld.GizmoChecks.cs",
+      "sha256": "68de64c64675b5259f21cdd194312a14e9a83f52da441ba344c4bebcd192cc09"
+    },
+    {
+      "path": "sources/xray/editor/base/EditorWorld.SceneChecks.cs",
+      "sha256": "3c1c2c6cbf6785ff7199252f18d3a010dbec010d8f2a80fbf248bcafc2fd0d64"
+    },
+    {
+      "path": "sources/xray/editor/base/EditorWorld.Sdk.cs",
+      "sha256": "69433021b911fbf9d6105ed5df90e9adec1d33c72ba71fb6e733958eeaedf575"
+    },
+    {
+      "path": "sources/xray/editor/base/EditorWorld.ViewportChecks.cs",
+      "sha256": "b3a45987eb590d06883e56398896a35f527277fcbefc857375b874501ab2308b"
+    },
+    {
+      "path": "sources/xray/editor/base/EditorWorld.cs",
+      "sha256": "cfa2d4233aa4380ec96acf692d082bbdec1c5226419efa821750adb73c586412"
+    },
+    {
+      "path": "sources/xray/editor/base/Project.cs",
+      "sha256": "f9a11c09515a631b4575fee9f2f2d1bc56f198019f67cab7a8509f8d03353ebb"
+    },
+    {
+      "path": "sources/xray/editor/base/ProjectClipboard.cs",
+      "sha256": "62647445ecef846dbf5985be36b616ada26d8b6ca20e822954947074d9093737"
+    },
+    {
+      "path": "sources/xray/editor/base/ProjectEditing.cs",
+      "sha256": "5c808a8e24cb52e9f2f42d8ea2acdccf9e076568fa2615afefee256d35b4ab57"
+    },
+    {
+      "path": "sources/xray/editor/base/ProjectItems.cs",
+      "sha256": "a03c3cda0c86a65d593f73364bdebe250ee5cffd7c0ecc4eb7ea8ca0c9007cfb"
+    },
+    {
+      "path": "sources/xray/editor/base/ProjectPropertyAdapters.cs",
+      "sha256": "6011d1aa6fc59f2c922d9faa2e154f46fb9f623a807340e75794fbed548bca7a"
+    },
+    {
+      "path": "sources/xray/editor/base/ProjectTab.cs",
+      "sha256": "a027d6b232d9186d2aa9980e957c13afff765fb147a5eff6aa6ce386cbb0f8e5"
+    },
+    {
+      "path": "sources/xray/editor/base/ProjectViewportEditing.cs",
+      "sha256": "f5b10946b740b5ccba1c0ff084e86ea16c1759d20baf7e2703085a3ee03787de"
+    },
+    {
+      "path": "sources/xray/editor/base/ProjectViewportGizmos.cs",
+      "sha256": "01ce23de93da67569096dc33ae69e7a3f57b4cfb4dd9ec082b78438535cf3e45"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkGizmo.cs",
+      "sha256": "6030db7af522c75e1e0a40bc406d197e0b43498ae5bb97c46f93e2f40380f291"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkIdePanels.cs",
+      "sha256": "80319953bd55991b80e3041206ca4ebecc315a90e9f4130c327e279714f0af66"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkNativeResources.cs",
+      "sha256": "ea1a90ddfd48987bfdee76b94259188960128cc877052e7e124215fd4efa0b82"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkProperties.cs",
+      "sha256": "24e888332fd557bdd0482e1e8765701bdd5304e8ae3d4a2125d343959dfda85d"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkScene.cs",
+      "sha256": "c92bb6da8e26c51e0689ae98180d145f3ce15754f5a4f6ef86b695d553142d85"
+    },
+    {
+      "path": "sources/xray/editor/base/SdkViewport.cs",
+      "sha256": "f011eae02461018e0c7978e824adcbcd3dc70f539f31d2cd8d331f8be075b271"
+    },
+    {
+      "path": "sources/xray/editor/base/ViewportNavigation.cs",
+      "sha256": "377753cdd13bb648569e3e0fc8c2d71edba30d3455bebb66bac788d8c24ce3ea"
+    },
+    {
+      "path": "sources/xray/editor/base/WindowIde.Editing.cs",
+      "sha256": "202b1004e4f5e465beff246df02485d50d7c5620de13eabd6600648f35fbf034"
+    },
+    {
+      "path": "sources/xray/editor/base/WindowIde.Projects.cs",
+      "sha256": "363a16b20fcf540e8bca808dd2ecd0b3e9664847d1e447bb1cdf04958746e2ba"
+    },
+    {
+      "path": "sources/xray/editor/base/WindowIde.cs",
+      "sha256": "83def4446fc84c26f0c0113cbdc5e5de572f05075cd84c3edfa31dafd6c47f41"
+    },
+    {
+      "path": "sources/xray/editor/base/sdk_gizmo.h",
+      "sha256": "1d6513ced6449a1c3a6550a9ef422601c05bb8441bc195bf3e6f046c7f09217a"
+    },
+    {
+      "path": "sources/xray/editor/base/sdk_transform.h",
+      "sha256": "7dcc4ca11d0fe22ac8505780a9e90b997b4a84c2ffe12aeb393630a257842eb2"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/sdk_gizmo.cpp",
+      "sha256": "f24f70601f73217219e08c206699c160b5d93ac308ef22331e59e94e9aa8e59e"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/sdk_transform.cpp",
+      "sha256": "71b188615a5362a80d412cc7ab38d1d89679545f5b5a66432d387b4de081dbd5"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/transform_control_rotation.cpp",
+      "sha256": "cf5e047ec7d6c5e4c30c96b2822446c60f777ddddb566bc66151bf81c96b76eb"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/transform_control_scaling.cpp",
+      "sha256": "0aa311727ac84d5a91cbb82571dac87ffdc9ce850ceab9060098def5fc77067d"
+    },
+    {
+      "path": "sources/xray/editor/base/sources/transform_control_translation.cpp",
+      "sha256": "0f17fa392af42d1f79736e24ab06487c7c0e1e893ef387fb65266a3f286ebdb0"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/CMakeLists.txt",
+      "sha256": "86ee265040b34983109e7406224ba4aff9da6e154ef62eeb42ad368313a14597"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/Program.cs",
+      "sha256": "acec40c92e800518eb6a5918dfdc25376f497a4fb4c5aa60568f5a599c6faa28"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/SDKUI.Compatibility.csproj",
+      "sha256": "9c7fe247a73d41795022c1730e0b5aa78f1c50906f742c42e9396a4171d90a84"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/SdkCommandChecks.cs",
+      "sha256": "1bef42491c410e3a7b71b1f9d8bd140f539a9699306874a3434c4fc2aa90054d"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/SdkContractChecks.cs",
+      "sha256": "567c1c9372ba40333f660059b0822b99182741e03d8959578fbe66d67d431eac"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/SdkGizmoChecks.cs",
+      "sha256": "9f55c4bc2d9f7f3a6771ce5226ba7377b913f68c3799d4c760c7f969ecc6ca0c"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/SdkProjectCommandChecks.cs",
+      "sha256": "36f557ffad4d4091c86d270ea62b84bccff0ef73fa4b49898dc6c7522467b2cf"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/SdkSceneCommandChecks.cs",
+      "sha256": "0d6987afb677efd9ed2d08f69d00065dcf505defd798416b09b700d4ecc5f21f"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/SdkViewportChecks.cs",
+      "sha256": "7b0051225f028ccc786e1c860f9514d4f344a702201fa6416582d2d54a06bf4f"
+    },
+    {
+      "path": "sources/xray/editor/world/sdk_scene_bridge.h",
+      "sha256": "f018ec06f5988fecc130a3ff394fdfd9b1accf742b076b917e897d101ccbe00f"
+    },
+    {
+      "path": "sources/xray/editor/world/sources/editor_entry_point.cpp",
+      "sha256": "2a21b7a0dcf1836562448fb8bed4292c74cd47eac3b7367d89fc93aa2dc2be65"
+    },
+    {
+      "path": "sources/xray/editor/world/sources/managed_host.cpp",
+      "sha256": "bbbbeaf17a891b904a5ee545e4762451840b6b91a080eb4e61cea14a44f1d173"
+    },
+    {
+      "path": "sources/xray/editor/world/sources/managed_host.h",
+      "sha256": "f1c766838d092907f12859108c1a7e62f53ad4681f30b0633aab56cc3c12a6c3"
+    },
+    {
+      "path": "sources/xray/editor/world/sources/sdk_scene.h",
+      "sha256": "403ff4644a95f7b62fd7391a30bdf3f8ff8ce3b319cf9044fb1a6ec3503f646c"
+    },
+    {
+      "path": "sources/xray/render/facade/control_level.h",
+      "sha256": "c0a0ac0d4bf3b7405cac240ebf2deb9226761229c5c2200dbc51b5ce6a1f60e7"
+    }
+  ],
+  "before": [
+    {
+      "path": "build/sdk5-gizmo-20261111/before/sdk_migration_plan.md",
+      "sha256": "f9ee5705796a8f2192bf488c87af4722647246adc7b7753dc8072a58b96af676"
+    },
+    {
+      "path": "build/sdk5-gizmo-20261111/before/sources/tools/sdk/test-sdk-property.ps1",
+      "sha256": "b1ab25052a2d29304c636e42cc2f66cfd14fdd3ceb9c55393b168f4e46504653"
+    },
+    {
+      "path": "build/sdk5-gizmo-20261111/before/sources/tools/sdk/verify-sdk-property.py",
+      "sha256": "7d021bdcd69cd889d13b10a90325b44f16a14deaefc682b859cb8f744a19cc1c"
+    },
+    {
+      "path": "build/sdk5-gizmo-20261111/before/sources/tools/sdk/verify-sdk-scene.py",
+      "sha256": "9587eea6ccd68b111746aa93fe51c9a98fced1e3ae917fcde02f22dea08fa8cf"
+    },
+    {
+      "path": "build/sdk5-gizmo-20261111/before/sources/tools/sdk/verify-sdk-viewport.py",
+      "sha256": "72ded857f15f61c14bef9edc0f0dfdd3febf4bcc8f5a6249681775516018b394"
+    },
+    {
+      "path": "build/sdk5-gizmo-20261111/before/sources/xray/editor/base/CMakeLists.txt",
+      "sha256": "8fd8c21e3ed314a7ee3495745bff2948189334867749d849bc527d6536aae528"
+    },
+    {
+      "path": "build/sdk5-gizmo-20261111/before/sources/xray/editor/base/Command.cs",
+      "sha256": "3538095cfb0707feae733ed0e722f64b9d7dd76c75aa2f3c185390029d0181cd"
+    },
+    {
+      "path": "build/sdk5-gizmo-20261111/before/sources/xray/editor/base/CommandEngine.cs",
+      "sha256": "01dfd1526886ecef63c40af7e0d9f2b81e61391f27c13a49ab7cdba854c1535d"
+    },
+    {
+      "path": "build/sdk5-gizmo-20261111/before/sources/xray/editor/base/EditorHost.csproj.in",
+      "sha256": "1b9759c43a7f6aba3286063700e494833719684f4e38e6793362975fbde17461"
+    },
+    {
+      "path": "build/sdk5-gizmo-20261111/before/sources/xray/editor/base/EditorWorld.cs",
+      "sha256": "4578f957d8e1890f3d813d818abdd1eed897d57ace33c90e409c36f6e1448ee0"
+    },
+    {
+      "path": "build/sdk5-gizmo-20261111/before/sources/xray/editor/base/EditorWorld.SceneChecks.cs",
+      "sha256": "3c1c2c6cbf6785ff7199252f18d3a010dbec010d8f2a80fbf248bcafc2fd0d64"
+    },
+    {
+      "path": "build/sdk5-gizmo-20261111/before/sources/xray/editor/base/EditorWorld.Sdk.cs",
+      "sha256": "38e009b22da6b960b73f9a3c6dfd41e65cf54e21a47edd64faccfabe44e922d6"
+    },
+    {
+      "path": "build/sdk5-gizmo-20261111/before/sources/xray/editor/base/EditorWorld.ViewportChecks.cs",
+      "sha256": "8f05025d69c4d9d7daecb6e1482ae3611a5156626dfc9fec7f9b56b2723eafec"
+    },
+    {
+      "path": "build/sdk5-gizmo-20261111/before/sources/xray/editor/base/Project.cs",
+      "sha256": "f9a11c09515a631b4575fee9f2f2d1bc56f198019f67cab7a8509f8d03353ebb"
+    },
+    {
+      "path": "build/sdk5-gizmo-20261111/before/sources/xray/editor/base/ProjectClipboard.cs",
+      "sha256": "62647445ecef846dbf5985be36b616ada26d8b6ca20e822954947074d9093737"
+    },
+    {
+      "path": "build/sdk5-gizmo-20261111/before/sources/xray/editor/base/ProjectEditing.cs",
+      "sha256": "5c808a8e24cb52e9f2f42d8ea2acdccf9e076568fa2615afefee256d35b4ab57"
+    },
+    {
+      "path": "build/sdk5-gizmo-20261111/before/sources/xray/editor/base/ProjectItems.cs",
+      "sha256": "a03c3cda0c86a65d593f73364bdebe250ee5cffd7c0ecc4eb7ea8ca0c9007cfb"
+    },
+    {
+      "path": "build/sdk5-gizmo-20261111/before/sources/xray/editor/base/ProjectPropertyAdapters.cs",
+      "sha256": "6011d1aa6fc59f2c922d9faa2e154f46fb9f623a807340e75794fbed548bca7a"
+    },
+    {
+      "path": "build/sdk5-gizmo-20261111/before/sources/xray/editor/base/ProjectTab.cs",
+      "sha256": "a027d6b232d9186d2aa9980e957c13afff765fb147a5eff6aa6ce386cbb0f8e5"
+    },
+    {
+      "path": "build/sdk5-gizmo-20261111/before/sources/xray/editor/base/ProjectViewportEditing.cs",
+      "sha256": "58e466c62d00641dd6730632dbfe5cf9a04b1bccfd7603ff6c8606cd4e13ee85"
+    },
+    {
+      "path": "build/sdk5-gizmo-20261111/before/sources/xray/editor/base/sdk_transform.h",
+      "sha256": "7dcc4ca11d0fe22ac8505780a9e90b997b4a84c2ffe12aeb393630a257842eb2"
+    },
+    {
+      "path": "build/sdk5-gizmo-20261111/before/sources/xray/editor/base/SdkIdePanels.cs",
+      "sha256": "e4d23ae9eb924ad65f15c4edb61a27018e3e7148463223535af2a91403831bb9"
+    },
+    {
+      "path": "build/sdk5-gizmo-20261111/before/sources/xray/editor/base/SdkNativeResources.cs",
+      "sha256": "ea1a90ddfd48987bfdee76b94259188960128cc877052e7e124215fd4efa0b82"
+    },
+    {
+      "path": "build/sdk5-gizmo-20261111/before/sources/xray/editor/base/SdkProperties.cs",
+      "sha256": "24e888332fd557bdd0482e1e8765701bdd5304e8ae3d4a2125d343959dfda85d"
+    },
+    {
+      "path": "build/sdk5-gizmo-20261111/before/sources/xray/editor/base/SdkScene.cs",
+      "sha256": "c92bb6da8e26c51e0689ae98180d145f3ce15754f5a4f6ef86b695d553142d85"
+    },
+    {
+      "path": "build/sdk5-gizmo-20261111/before/sources/xray/editor/base/SdkViewport.cs",
+      "sha256": "f011eae02461018e0c7978e824adcbcd3dc70f539f31d2cd8d331f8be075b271"
+    },
+    {
+      "path": "build/sdk5-gizmo-20261111/before/sources/xray/editor/base/sources/sdk_transform.cpp",
+      "sha256": "71b188615a5362a80d412cc7ab38d1d89679545f5b5a66432d387b4de081dbd5"
+    },
+    {
+      "path": "build/sdk5-gizmo-20261111/before/sources/xray/editor/base/sources/transform_control_rotation.cpp",
+      "sha256": "cf5e047ec7d6c5e4c30c96b2822446c60f777ddddb566bc66151bf81c96b76eb"
+    },
+    {
+      "path": "build/sdk5-gizmo-20261111/before/sources/xray/editor/base/sources/transform_control_scaling.cpp",
+      "sha256": "0aa311727ac84d5a91cbb82571dac87ffdc9ce850ceab9060098def5fc77067d"
+    },
+    {
+      "path": "build/sdk5-gizmo-20261111/before/sources/xray/editor/base/sources/transform_control_translation.cpp",
+      "sha256": "0f17fa392af42d1f79736e24ab06487c7c0e1e893ef387fb65266a3f286ebdb0"
+    },
+    {
+      "path": "build/sdk5-gizmo-20261111/before/sources/xray/editor/base/ViewportNavigation.cs",
+      "sha256": "7ba52d15f8acd3ed85fb8a0df6609c1626e3f5a5fd021a623a33fd731fe7961d"
+    },
+    {
+      "path": "build/sdk5-gizmo-20261111/before/sources/xray/editor/base/WindowIde.cs",
+      "sha256": "91c517e03f19f5c0ed72a75814c014184a71daad6b53e58142d4963534252a35"
+    },
+    {
+      "path": "build/sdk5-gizmo-20261111/before/sources/xray/editor/base/WindowIde.Editing.cs",
+      "sha256": "202b1004e4f5e465beff246df02485d50d7c5620de13eabd6600648f35fbf034"
+    },
+    {
+      "path": "build/sdk5-gizmo-20261111/before/sources/xray/editor/base/WindowIde.Projects.cs",
+      "sha256": "363a16b20fcf540e8bca808dd2ecd0b3e9664847d1e447bb1cdf04958746e2ba"
+    },
+    {
+      "path": "build/sdk5-gizmo-20261111/before/sources/xray/editor/sdk_ui/CMakeLists.txt",
+      "sha256": "038744c9c0290e7c406994d75270701585d834212088e48fac2e231bef08f5e2"
+    },
+    {
+      "path": "build/sdk5-gizmo-20261111/before/sources/xray/editor/sdk_ui/Program.cs",
+      "sha256": "87667ef32b4c21ac3c63ce94cfc6d4ece22806693d5164851598d54c8a55b3d1"
+    },
+    {
+      "path": "build/sdk5-gizmo-20261111/before/sources/xray/editor/sdk_ui/sdk0/function-matrix.json",
+      "sha256": "908c9d922e85651e26c83a9c6a2206f5dddcf453da34d6e125ea772325c50f79"
+    },
+    {
+      "path": "build/sdk5-gizmo-20261111/before/sources/xray/editor/sdk_ui/sdk5/README.md",
+      "sha256": "90706c264ab57025d0d788cf890d5d9a5091d72d6b03ff0e43d28d6f87e70ec6"
+    },
+    {
+      "path": "build/sdk5-gizmo-20261111/before/sources/xray/editor/sdk_ui/sdk5/renderer-mapping.json",
+      "sha256": "c7c1a1a478cad8285aa1e127ece2e698e94801a4ce5d8e377a50c4700b3d5e62"
+    },
+    {
+      "path": "build/sdk5-gizmo-20261111/before/sources/xray/editor/sdk_ui/SdkCommandChecks.cs",
+      "sha256": "1bef42491c410e3a7b71b1f9d8bd140f539a9699306874a3434c4fc2aa90054d"
+    },
+    {
+      "path": "build/sdk5-gizmo-20261111/before/sources/xray/editor/sdk_ui/SdkContractChecks.cs",
+      "sha256": "567c1c9372ba40333f660059b0822b99182741e03d8959578fbe66d67d431eac"
+    },
+    {
+      "path": "build/sdk5-gizmo-20261111/before/sources/xray/editor/sdk_ui/SdkProjectCommandChecks.cs",
+      "sha256": "36f557ffad4d4091c86d270ea62b84bccff0ef73fa4b49898dc6c7522467b2cf"
+    },
+    {
+      "path": "build/sdk5-gizmo-20261111/before/sources/xray/editor/sdk_ui/SdkSceneCommandChecks.cs",
+      "sha256": "0d6987afb677efd9ed2d08f69d00065dcf505defd798416b09b700d4ecc5f21f"
+    },
+    {
+      "path": "build/sdk5-gizmo-20261111/before/sources/xray/editor/sdk_ui/SDKUI.Compatibility.csproj",
+      "sha256": "95a217769e754647e24748ed1a7c66e3fd61f275f972e1229d3d5a2956492225"
+    },
+    {
+      "path": "build/sdk5-gizmo-20261111/before/sources/xray/editor/sdk_ui/SdkViewportChecks.cs",
+      "sha256": "7b0051225f028ccc786e1c860f9514d4f344a702201fa6416582d2d54a06bf4f"
+    },
+    {
+      "path": "build/sdk5-gizmo-20261111/before/sources/xray/editor/world/sdk_scene_bridge.h",
+      "sha256": "8c6214237320ae225f3576e7f400004247a9376d8128c1abf71047eda47fcdb4"
+    },
+    {
+      "path": "build/sdk5-gizmo-20261111/before/sources/xray/editor/world/sources/editor_entry_point.cpp",
+      "sha256": "2a21b7a0dcf1836562448fb8bed4292c74cd47eac3b7367d89fc93aa2dc2be65"
+    },
+    {
+      "path": "build/sdk5-gizmo-20261111/before/sources/xray/editor/world/sources/managed_host.cpp",
+      "sha256": "bbbbeaf17a891b904a5ee545e4762451840b6b91a080eb4e61cea14a44f1d173"
+    },
+    {
+      "path": "build/sdk5-gizmo-20261111/before/sources/xray/editor/world/sources/managed_host.h",
+      "sha256": "f1c766838d092907f12859108c1a7e62f53ad4681f30b0633aab56cc3c12a6c3"
+    },
+    {
+      "path": "build/sdk5-gizmo-20261111/before/sources/xray/editor/world/sources/sdk_scene.h",
+      "sha256": "981e2fd547309b05c157a9e60277e5605fe2f2f10ae95307b508d86fbe8292c1"
+    },
+    {
+      "path": "build/sdk5-gizmo-20261111/before/sources/xray/render/facade/control_level.h",
+      "sha256": "c0a0ac0d4bf3b7405cac240ebf2deb9226761229c5c2200dbc51b5ce6a1f60e7"
+    }
+  ],
+  "resolvedDependencies": [
+    "One native mesh supplies depth-disabled renderer triangles and Moller-Trumbore picking; no global clear-Z/legacy rotation state.",
+    "Perspective pixel sizing, near/far suppression and camera-aligned translation/scaling suppression.",
+    "Native ray/axis move/scale, ray/plane rotation and uniform camera-plane scale constraints with native angle convention.",
+    "Versioned settings/hit/drag/delta, owner/session checks and 14 native malformed/stale rejections preserving live mesh and output sentinels.",
+    "Real HWND mouse handlers, handle priority/hover, World/Local, one multi-object command, exact undo/redo/saved marker, Escape/no-op/camera cancellation.",
+    "Exact Vulkan restores after undo, Escape, Cyrillic save/reopen and final baseline; ten workflows drain pending queries/frames with validation 0/0."
+  ],
+  "remaining": [
+    "Native silhouette outlines and original glow/pulse selection parameters (current overlay is bounds only).",
+    "Camera-plane translate/scale and camera/arcball rotation handles, full original draw-style parity and remaining 16 legacy render modes.",
+    "Generic selected camera/model/asset preview view/output binding and isolation; fixed M8 woodbox preview is a regression control.",
+    "Resize/DPI/minimize, dock/float/redock, HWND recreation release/reattach and hide/destroy coverage in generic SDK views.",
+    "Active scene/preview resource reload, pending frames/queries coverage and measured incremental scene synchronization.",
+    "Real edit/play/simulate transition; shell flag is not runtime simulation acceptance."
+  ],
+  "limitations": [
+    "XYZ and uniform scale subset; original camera-plane translate/scale and camera/arcball rotation handles remain open.",
+    "Native geometry is a typed renderer port, not original draw-style parity or a reuse claim for guarded legacy render calls.",
+    "Automated in-process WinForms mouse/key handlers on hidden HWNDs; physical desktop/manual smoke is not claimed.",
+    "SDK-4 scene fixtures use fresh GUIDs per run. Cross-checkpoint image differences are reported separately; saved transforms and each run's history/reopen readbacks must restore exactly.",
+    "Gizmo mesh is cached for unchanged anchor/camera/projection/size. Per-edit scene candidate rebuild remains a measured performance dependency.",
+    "Full SDK-5 stays unchecked; generic previews/output lifecycle, silhouettes, remaining modes, reload and runtime transitions remain unaccepted."
+  ],
+  "developmentFailures": [
+    {
+      "evidence": {
+        "path": "build/sdk5-gizmo-20261111/gizmos-debug-first/stderr.log",
+        "sha256": "7f051d160675bad123e06d3db82b13e896b43730512aac6b9f87d7d06ac62f6e"
+      },
+      "issue": "Initial diagnostic restored content but left it dirty; background close repeatedly declined the save prompt and the harness timed out.",
+      "resolution": "Diagnostic explicitly saves its final baseline. Final Debug/Release workflows verify clean pending-close drain."
+    },
+    {
+      "evidence": {
+        "path": "build/sdk5-gizmo-20261111/build-debug-locked-file-failure.log",
+        "sha256": "b8243c663c219602f21f829f87795d7eaa25dc68564e4c03e196768e25b8f39d"
+      },
+      "issue": "A rebuild attempted to replace the managed host while that diagnostic still held its DLL.",
+      "resolution": "Waited for the bounded harness to terminate the test process; rebuilt successfully before final runtime launches."
+    }
+  ],
+  "documentation": [
+    {
+      "path": "sdk_migration_plan.md",
+      "sha256": "7b37e1ed32b4a3283851262d83a877f3b7db097554db2decc67ec47e4bb46a42"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk0/function-matrix.json",
+      "sha256": "4ea397f9062cdda982210dd407f980ea895c3d09b0971afe6204472f275c23ed"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk5/README.md",
+      "sha256": "a451515d4e593be547029b83125de9aaf501d1f022eaf3a2c9a1e2f2fd64d7c6"
+    },
+    {
+      "path": "sources/xray/editor/sdk_ui/sdk5/renderer-mapping.json",
+      "sha256": "719819b992d08feafc144807bd0091ab6aea2fb5b704f9856d509381fecf2482"
+    }
+  ]
+}

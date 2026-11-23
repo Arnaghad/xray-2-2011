@@ -1,0 +1,22 @@
+dialog = {
+	nodes = {
+	    {
+	        id = 0,
+	        is_dialog = false,
+	        is_root = true,
+	        string_table = "",
+	    }, -- 1
+
+	}, -- nodes
+
+} -- dialog
+
+layout = {
+		{
+			id = 0,
+			x = -100,
+			y = -25,
+		}, -- 1
+
+} -- layout
+

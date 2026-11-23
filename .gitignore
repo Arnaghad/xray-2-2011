@@ -1,0 +1,95 @@
+# =============================================================================
+# X-Ray Engine 2.0 (Modern C++26 / Vulkan / .NET 10 / Blender & Maya DCC)
+# =============================================================================
+
+# CMake / Ninja / Native build & runtime output directories
+/build/
+/binaries/
+/out/
+/cmake-build-*/
+/stage8-terrain-profile/
+
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+CTestTestfile.cmake
+compile_commands.json
+.ninja_deps
+.ninja_log
+install_manifest.txt
+
+# Compiled native binaries & symbols
+*.exe
+*.dll
+*.so
+*.dylib
+*.a
+*.lib
+*.o
+*.obj
+*.pdb
+*.ilk
+*.idb
+*.tlog
+*.pch
+*.ipch
+*.spv
+
+# Keep legacy macOS .exp/.pch files shipped inside bundled Ogg/Vorbis sources
+!sources/ogg/sources/macos/*.exp
+!sources/ogg/sources/macosx/*.pch
+!sources/vorbis/sources/macos/*.exp
+
+# Visual Studio / Rider / VS Code / IDE state
+.vs/
+.idea/
+.vscode/
+ipch/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.ncb
+*.aps
+*.VC.db
+*.VC.db-shm
+*.VC.db-wal
+*.VC.opendb
+/sources/UpgradeLog.htm
+/sources/_UpgradeReport_Files/
+
+# .NET / MSBuild / WPF build & NuGet artifacts
+sources/xray/wpf_controls/bin/
+sources/xray/wpf_controls/obj/
+sources/xray/editor/**/bin/
+sources/xray/editor/**/obj/
+*_wpftmp.csproj
+*.nuget.cache
+project.assets.json
+project.lock.json
+
+# Python & DCC tooling caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+*.egg-info/
+
+# Blender backup files
+*.blend1
+*.blend2
+
+# Local temporary archives, logs & crash dumps
+/sources/asio.zip
+/sources/build_log*.txt
+/file_tree.txt
+*.log
+*.dmp
+*.tmp
+*.bak
+*~
+
+# OS metadata
+.DS_Store
+Thumbs.db
+Desktop.ini

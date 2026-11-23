@@ -1,0 +1,23 @@
+﻿<UserControl 
+	x:Class="xray.editor.wpf_controls.curve_editor.panel_curve_item"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:sdk="clr-namespace:xray.editor.wpf_controls"
+	Name="this" 
+	MouseDown="mouse_down"
+	MouseMove="mouse_move">
+	
+	<StackPanel>
+		<DockPanel>
+			<DockPanel.ContextMenu>
+				<ContextMenu>
+					<MenuItem Header="add effect" Click="add_effect_click"/>
+				</ContextMenu>
+			</DockPanel.ContextMenu>
+			<Border Name="m_curve_color_rect" x:FieldModifier="private" DockPanel.Dock="Right" Width="9" Height="9" Margin="5,0,6,0"
+			        VerticalAlignment="Center" BorderBrush="{x:Static sdk:SdkWorkspaceTheme.Axis}" BorderThickness="1" CornerRadius="2" />
+			<TextBlock Name="m_text_box" x:FieldModifier="private" Padding="6,3" Text="{Binding header, ElementName=this}" />
+		</DockPanel>
+		<ItemsControl Name="m_effects" Margin="15, 0, 0, 0"/>
+	</StackPanel>
+</UserControl>

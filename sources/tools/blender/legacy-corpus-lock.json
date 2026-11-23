@@ -1,0 +1,51 @@
+{
+  "schema": "xray-legacy-corpus-lock/v1",
+  "inventory_schema": "xray-legacy-corpus/v1",
+  "source_root": "C:/Stalker2_2011",
+  "inventory": "build/blender-b0/legacy-corpus.json",
+  "inventory_sha256": "ad4f49c22ddae571d4e6afe2bedf5350846eca20ee9706ffdc510f9fe7c6d041",
+  "content_sha256": "ce5c2dfc5fff9da7dc797e31df3e65ea682354930392e37bf08cd5a1e9d2d9e9",
+  "summary": {
+    "assets": 3836,
+    "counts": {
+      "clip": 347,
+      "clip_check_data": 346,
+      "maya_ascii": 5,
+      "maya_binary": 975,
+      "model": 2144,
+      "physics": 5,
+      "skeleton": 3,
+      "skinned_model": 11
+    },
+    "size_bytes": 3404817280,
+    "clips_with_check_data": 346,
+    "temporary_scenes": 374,
+    "blend_size_estimate": {
+      "status": "provisional_unmeasured",
+      "source_scene_bytes": 2984259933,
+      "low_bytes": 2984259933,
+      "high_bytes": 8952779799,
+      "method": "Planning range of 1-3x source scene bytes; excludes packed textures. Recalibrate after B4/B5 sample migration.",
+      "distribution_decision": "pending_measured_blend_samples"
+    }
+  },
+  "missing_check_data": [
+    "xr2-dsgn/resources/tests/rtp/navgation_controller/animation/test_animations/walk_01_turn_left_small - êîïèÿ.clip"
+  ],
+  "scene_link_counts": {
+    "ambiguous": 176,
+    "unmatched": 100,
+    "unverified": 71
+  },
+  "scope_notes": [
+    "Includes xr2-dsgn/resources and 25 Maya binary scenes in s2_2011_documentation.",
+    "Scene-to-clip links are filename candidates, not proven migration relationships."
+  ],
+  "blender": {
+    "version": "5.0.1",
+    "platform": "windows-x64",
+    "url": "https://download.blender.org/release/Blender5.0/blender-5.0.1-windows-x64.zip",
+    "archive_sha256": "921d77f6c505a35b2c2f6e67d4ad1c10b72418338ba0e0d3ea7f582a5e5fe46e",
+    "executable_sha256": "310aa060203252a10269ff86310d2660fd91d8d6af6dbbe20cfe1752b3349565"
+  }
+}

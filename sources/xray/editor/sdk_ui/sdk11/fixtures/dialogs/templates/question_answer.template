@@ -1,0 +1,43 @@
+dialog = {
+	links = {
+	    {
+	        dst_id = 1,
+	        src_id = 0,
+	    }, -- 1
+
+	}, -- links
+
+	nodes = {
+	    {
+	        id = 0,
+	        is_dialog = false,
+	        is_root = true,
+	        string_table = "",
+	    }, -- 1
+
+	    {
+	        id = 1,
+	        is_dialog = false,
+	        is_root = false,
+	        string_table = "",
+	    }, -- 2
+
+	}, -- nodes
+
+} -- dialog
+
+layout = {
+    {
+        id = 0,
+        x = -100,
+        y = -75,
+    }, -- 1
+
+    {
+        id = 1,
+        x = -100,
+        y = 25,
+    }, -- 1
+
+} -- layout
+

@@ -1,0 +1,20 @@
+dialog = {
+	nodes = {
+		{
+			id = 0,
+			is_dialog = false,
+			is_root = true,
+			string_table = "new_file1_string_table_id_0",
+		}, -- 1
+
+		{
+			id = 1,
+			is_dialog = false,
+			is_root = true,
+			string_table = "new_file1_string_table_id_1",
+		}, -- 2
+
+	}, -- nodes
+
+} -- dialog
+

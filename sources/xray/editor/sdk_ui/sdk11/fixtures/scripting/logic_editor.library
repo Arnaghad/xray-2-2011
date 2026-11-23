@@ -1,0 +1,207 @@
+behaviours_types_by_objects_types = {
+	camera = 
+	{	
+		camera_track = {			
+			properties_config = {
+				{
+					type = "string",
+					name = "Name",
+					description = "Description",
+					readonly = false,
+					category = "General",				
+				},
+				{
+					type = "float",
+					name = "FovX",
+					description = "Description",
+					readonly = false,
+					category = "General",				
+				},	
+				{
+					type = "float",
+					name = "FovY",
+					description = "Description",
+					readonly = false,
+					category = "General",				
+				},	
+				{
+					type = "float",
+					name = "NearPlane",
+					description = "Description",
+					readonly = false,
+					category = "General",				
+				},	
+				{
+					type = "float",
+					name = "FarPlane",
+					description = "Description",
+					readonly = false,
+					category = "General",				
+				},	
+				{
+					type = "object_reference",
+					name = "CameraTrack",
+					description = "Description",
+					readonly = false,
+					category = "General",						
+				},		
+				{
+					type = "list",
+					name = "Transition",
+					description = "Description",
+					readonly = false,
+					category = "General",	
+					values_list = {"immediate","interpolation",},			
+				},
+				{
+					type = "events_container",
+					name = "EventHandlers",
+					description = "Description",
+					readonly = false,
+					category = "",					
+				},	
+			}, --properties_config
+			default_values = 
+			{
+				Name		= "Camera",
+				FovX		= 0.1,		
+				FovY		= 0.1,
+				NearPlane	= 0.1,
+				FarPlane	= 0.1,
+				CameraTrack = "Track1",
+				Transition	= "immediate",
+				
+				EventHandlers = 
+				{ 
+				}, --EventHandlers
+					
+			}, -- default_values	    		    
+			
+		}, -- default_behaviour
+		
+		from_object = {			
+			properties_config = {
+				{
+					type = "string",
+					name = "Name",
+					description = "Description",
+					readonly = false,
+					category = "General",				
+				},
+				{
+					type = "float",
+					name = "FovX",
+					description = "Description",
+					readonly = false,
+					category = "General",				
+				},	
+				{
+					type = "float",
+					name = "FovY",
+					description = "Description",
+					readonly = false,
+					category = "General",				
+				},	
+				{
+					type = "list",
+					name = "CameraTrack",
+					description = "Description",
+					readonly = false,
+					category = "General",	
+					values_list = {"Track1","Track2",},			
+				},		
+				{
+					type = "list",
+					name = "Transition",
+					description = "Description",
+					readonly = false,
+					category = "General",	
+					values_list = {"immediate","interpolation",},			
+				},
+				{
+					type = "events_container",
+					name = "EventHandlers",
+					description = "Description",
+					readonly = false,
+					category = "",					
+				},		
+			}, --properties_config
+			default_values = 
+			{
+				Name		= "Camera",
+				FovX		= 0.1,		
+				FovY		= 0.1,
+				CameraTrack = "Track1",
+				Transition	= "immediate",
+				
+				EventHandlers = 
+				{ 
+				}, --EventHandlers
+					
+			}, -- default_values	    		    
+			
+		}, -- test_behaviour
+	}, -- camera	
+	camera_director = 
+	{	
+		default_behaviour = {			
+			properties_config = {
+				{
+					type = "string",
+					name = "Name",
+					description = "Description",
+					readonly = false,
+					category = "General",				
+				},			
+				{
+					type = "list",
+					name = "ActiveCamera",
+					description = "Description",
+					readonly = false,
+					category = "General",	
+					values_list = {"Camera1","Camera2",},			
+				},		
+				{
+					type = "list",
+					name = "Transition",
+					description = "Description",
+					readonly = false,
+					category = "General",	
+					values_list = {"immediate","fade","mixed"},			
+				},
+				{
+					type = "holder",
+					special = "collection",
+					items_name_template = "on_animation_end{0}",
+					name = "EventHandlers",
+					description = "Description",
+					readonly = false,
+					category = "EventHandlers Properties",
+					children_properties = 
+					{					
+						{
+							type = "string",
+							name = "",
+							description = "Description",
+							readonly = false,
+							category = "General",	
+							initialize_config = "none",			
+						},
+					},--children_properties
+				},		
+			}, --properties_config
+			default_values = 
+			{
+				Name		= "CameraDirector",
+				ActiveCamera = "Camera1",
+				Transition	= "immediate",
+				
+				EventHandlers = 
+				{ 
+				}, --EventHandlers
+					
+			}, -- default_values	    		    
+			
+		}, -- default_behaviour
+	}, -- camera_director	
+} -- schemes_types
