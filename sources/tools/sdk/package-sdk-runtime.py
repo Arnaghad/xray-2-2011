@@ -64,6 +64,8 @@ MINGW_RUNTIME_DLLS = (
     'libvorbis-0.dll',
     'libvorbisenc-2.dll',
     'libvorbisfile-3.dll',
+    'SDL3.dll',
+    'libiconv-2.dll',
 )
 
 DXC_RUNTIME_DLLS = (
@@ -82,7 +84,7 @@ VALIDATION_FILES = (
 SYSTEM_DLL_EXACT = {
     'kernel32.dll', 'user32.dll', 'gdi32.dll', 'advapi32.dll', 'ole32.dll', 'oleaut32.dll',
     'shlwapi.dll', 'shell32.dll', 'winmm.dll', 'ws2_32.dll', 'msvcrt.dll', 'mscoree.dll',
-    'vulkan-1.dll', 'xaudio2_8.dll', 'xinput1_3.dll', 'ucrtbase.dll', 'rpcrt4.dll',
+    'vulkan-1.dll', 'xaudio2_9.dll', 'ucrtbase.dll', 'rpcrt4.dll', 'imm32.dll',
     'comctl32.dll', 'bcrypt.dll', 'crypt32.dll', 'version.dll', 'dbghelp.dll', 'psapi.dll',
     'ntdll.dll', 'shcore.dll', 'uxtheme.dll', 'dwmapi.dll', 'setupapi.dll', 'cfgmgr32.dll',
 }

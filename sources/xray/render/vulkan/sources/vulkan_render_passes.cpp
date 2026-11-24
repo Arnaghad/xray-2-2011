@@ -2,6 +2,7 @@
 #include "vulkan_creation.h"
 #include "attachment_contract.h"
 #include <algorithm>
+#include <array>
 #include <cmath>
 #include <cstring>
 
@@ -13,28 +14,31 @@ void check(VkResult result, char const* operation) {
 VkImageAspectFlags aspects(rhi::format f) {
     return depth_format(f) ? VK_IMAGE_ASPECT_DEPTH_BIT | (f == rhi::format::d24_s8_unorm ? VK_IMAGE_ASPECT_STENCIL_BIT : 0) : VK_IMAGE_ASPECT_COLOR_BIT;
 }
-struct access_scope { VkImageLayout layout; VkPipelineStageFlags stages; VkAccessFlags access; };
+bool has_stencil_aspect(VkFormat f) {
+    return f == VK_FORMAT_D24_UNORM_S8_UINT || f == VK_FORMAT_D32_SFLOAT_S8_UINT;
+}
+struct access_scope { VkImageLayout layout; VkPipelineStageFlags2 stages; VkAccessFlags2 access; };
 access_scope scope(rhi::resource_state s, bool depth) {
     switch (s) {
-        case rhi::resource_state::undefined: return {VK_IMAGE_LAYOUT_UNDEFINED, VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT, 0};
+        case rhi::resource_state::undefined: return {VK_IMAGE_LAYOUT_UNDEFINED, VK_PIPELINE_STAGE_2_NONE, VK_ACCESS_2_NONE};
         case rhi::resource_state::render_target:
-            if (!depth) return {VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL, VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT, VK_ACCESS_COLOR_ATTACHMENT_READ_BIT | VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT};
+            if (!depth) return {VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL, VK_PIPELINE_STAGE_2_COLOR_ATTACHMENT_OUTPUT_BIT, VK_ACCESS_2_COLOR_ATTACHMENT_READ_BIT | VK_ACCESS_2_COLOR_ATTACHMENT_WRITE_BIT};
             break;
         case rhi::resource_state::depth_write:
-            if (depth) return {VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL, VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT | VK_PIPELINE_STAGE_LATE_FRAGMENT_TESTS_BIT, VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_READ_BIT | VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT};
+            if (depth) return {VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL, VK_PIPELINE_STAGE_2_EARLY_FRAGMENT_TESTS_BIT | VK_PIPELINE_STAGE_2_LATE_FRAGMENT_TESTS_BIT, VK_ACCESS_2_DEPTH_STENCIL_ATTACHMENT_READ_BIT | VK_ACCESS_2_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT};
             break;
         case rhi::resource_state::depth_read:
             if (!depth) break;
             return {VK_IMAGE_LAYOUT_DEPTH_STENCIL_READ_ONLY_OPTIMAL,
-                VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT | VK_PIPELINE_STAGE_LATE_FRAGMENT_TESTS_BIT | VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT,
-                VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_READ_BIT | VK_ACCESS_SHADER_READ_BIT};
+                VK_PIPELINE_STAGE_2_EARLY_FRAGMENT_TESTS_BIT | VK_PIPELINE_STAGE_2_LATE_FRAGMENT_TESTS_BIT | VK_PIPELINE_STAGE_2_FRAGMENT_SHADER_BIT,
+                VK_ACCESS_2_DEPTH_STENCIL_ATTACHMENT_READ_BIT | VK_ACCESS_2_SHADER_SAMPLED_READ_BIT};
         case rhi::resource_state::shader_resource:
-            return {depth ? VK_IMAGE_LAYOUT_DEPTH_STENCIL_READ_ONLY_OPTIMAL : VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT, VK_ACCESS_SHADER_READ_BIT};
+            return {depth ? VK_IMAGE_LAYOUT_DEPTH_STENCIL_READ_ONLY_OPTIMAL : VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, VK_PIPELINE_STAGE_2_FRAGMENT_SHADER_BIT, VK_ACCESS_2_SHADER_SAMPLED_READ_BIT};
         case rhi::resource_state::copy_src:
-            if (!depth) return {VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,VK_PIPELINE_STAGE_TRANSFER_BIT,VK_ACCESS_TRANSFER_READ_BIT};
+            if (!depth) return {VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, VK_PIPELINE_STAGE_2_TRANSFER_BIT, VK_ACCESS_2_TRANSFER_READ_BIT};
             break;
         case rhi::resource_state::copy_dst:
-            if (!depth) return {VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,VK_PIPELINE_STAGE_TRANSFER_BIT,VK_ACCESS_TRANSFER_WRITE_BIT};
+            if (!depth) return {VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, VK_PIPELINE_STAGE_2_TRANSFER_BIT, VK_ACCESS_2_TRANSFER_WRITE_BIT};
             break;
         default: break;
     }
@@ -112,12 +116,22 @@ void vulkan_backend::transition_texture(rhi::rhi_texture_handle handle, rhi::res
     auto before = scope(t->state, depth), after = scope(next, depth);
     if ((next == rhi::resource_state::shader_resource || next == rhi::resource_state::depth_read || next==rhi::resource_state::copy_src) && !t->contents_valid)
         throw std::runtime_error("Cannot sample undefined/discarded attachment contents");
-    VkImageMemoryBarrier barrier = {}; barrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
-    barrier.oldLayout = before.layout; barrier.newLayout = after.layout;
-    barrier.srcAccessMask = before.access; barrier.dstAccessMask = after.access;
+    VkImageMemoryBarrier2 barrier = {};
+    barrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER_2;
+    barrier.srcStageMask = before.stages;
+    barrier.srcAccessMask = before.access;
+    barrier.dstStageMask = after.stages;
+    barrier.dstAccessMask = after.access;
+    barrier.oldLayout = before.layout;
+    barrier.newLayout = after.layout;
     barrier.srcQueueFamilyIndex = barrier.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
-    barrier.image = t->image; barrier.subresourceRange = {aspects(t->description.pixel_format), 0, 1, 0, 1};
-    vkCmdPipelineBarrier(m_frames->command_buffers[m_frames->current_frame], before.stages, after.stages, 0, 0, nullptr, 0, nullptr, 1, &barrier);
+    barrier.image = t->image;
+    barrier.subresourceRange = {aspects(t->description.pixel_format), 0, 1, 0, 1};
+    VkDependencyInfo dep = {};
+    dep.sType = VK_STRUCTURE_TYPE_DEPENDENCY_INFO;
+    dep.imageMemoryBarrierCount = 1;
+    dep.pImageMemoryBarriers = &barrier;
+    vkCmdPipelineBarrier2(m_frames->command_buffers[m_frames->current_frame], &dep);
     t->state = next;
 }
 void vulkan_backend::set_pass_viewport() {
@@ -129,16 +143,89 @@ void vulkan_backend::set_pass_viewport() {
 void vulkan_backend::begin_presentation_pass(bool preserve_contents) {
     if (!m_recording || m_pass_active) throw std::runtime_error("Presentation pass requires an idle recording frame");
     if (preserve_contents && !m_presentation_contents) throw std::runtime_error("No presentation contents to preserve in this frame");
-    m_pass_color_formats = {u32(m_output->swapchain_format)};
-    VkClearValue clear[2] = {}; std::memcpy(clear[0].color.float32, m_output->clear_color, sizeof(float) * 4);
-    clear[1].depthStencil = {1, 0};
-    VkRenderPassBeginInfo begin = {}; begin.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
-    begin.renderPass = preserve_contents ? m_output->load_render_pass : m_output->render_pass;
-    begin.framebuffer = m_output->framebuffers[m_output->current_image_index];
-    begin.renderArea.extent = m_output->swapchain_extent; begin.clearValueCount = 2; begin.pClearValues = clear;
-    vkCmdBeginRenderPass(m_frames->command_buffers[m_frames->current_frame], &begin, VK_SUBPASS_CONTENTS_INLINE);
-    m_pass_active = m_presentation_pass = true; m_active_render_pass = begin.renderPass;
-    m_pass_extent = begin.renderArea.extent; m_pass_depth_format = m_output->depth_format; m_pass_samples=1;
+    VkCommandBuffer cmd = m_frames->command_buffers[m_frames->current_frame];
+    VkImage color_img = m_output->swapchain_images[m_output->current_image_index];
+    VkImageView color_view = m_output->swapchain_image_views[m_output->current_image_index];
+    auto const& depth_att = m_output->depth_attachments[m_output->current_image_index];
+    bool const depth_has_stencil = has_stencil_aspect(m_output->depth_format);
+    VkImageAspectFlags const depth_aspect = VK_IMAGE_ASPECT_DEPTH_BIT | (depth_has_stencil ? VK_IMAGE_ASPECT_STENCIL_BIT : 0);
+
+    if (!preserve_contents) {
+        VkImageMemoryBarrier2 barriers[2] = {};
+        barriers[0].sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER_2;
+        barriers[0].srcStageMask = VK_PIPELINE_STAGE_2_COLOR_ATTACHMENT_OUTPUT_BIT;
+        barriers[0].srcAccessMask = VK_ACCESS_2_NONE;
+        barriers[0].dstStageMask = VK_PIPELINE_STAGE_2_COLOR_ATTACHMENT_OUTPUT_BIT;
+        barriers[0].dstAccessMask = VK_ACCESS_2_COLOR_ATTACHMENT_READ_BIT | VK_ACCESS_2_COLOR_ATTACHMENT_WRITE_BIT;
+        barriers[0].oldLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+        barriers[0].newLayout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+        barriers[0].srcQueueFamilyIndex = barriers[0].dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+        barriers[0].image = color_img;
+        barriers[0].subresourceRange = {VK_IMAGE_ASPECT_COLOR_BIT, 0, 1, 0, 1};
+
+        barriers[1].sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER_2;
+        barriers[1].srcStageMask = VK_PIPELINE_STAGE_2_NONE;
+        barriers[1].srcAccessMask = VK_ACCESS_2_NONE;
+        barriers[1].dstStageMask = VK_PIPELINE_STAGE_2_EARLY_FRAGMENT_TESTS_BIT | VK_PIPELINE_STAGE_2_LATE_FRAGMENT_TESTS_BIT;
+        barriers[1].dstAccessMask = VK_ACCESS_2_DEPTH_STENCIL_ATTACHMENT_READ_BIT | VK_ACCESS_2_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT;
+        barriers[1].oldLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+        barriers[1].newLayout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
+        barriers[1].srcQueueFamilyIndex = barriers[1].dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+        barriers[1].image = depth_att.image;
+        barriers[1].subresourceRange = {depth_aspect, 0, 1, 0, 1};
+
+        VkDependencyInfo dep = {};
+        dep.sType = VK_STRUCTURE_TYPE_DEPENDENCY_INFO;
+        dep.imageMemoryBarrierCount = 2;
+        dep.pImageMemoryBarriers = barriers;
+        vkCmdPipelineBarrier2(cmd, &dep);
+    } else {
+        VkMemoryBarrier2 mem = {};
+        mem.sType = VK_STRUCTURE_TYPE_MEMORY_BARRIER_2;
+        mem.srcStageMask = VK_PIPELINE_STAGE_2_COLOR_ATTACHMENT_OUTPUT_BIT | VK_PIPELINE_STAGE_2_EARLY_FRAGMENT_TESTS_BIT | VK_PIPELINE_STAGE_2_LATE_FRAGMENT_TESTS_BIT;
+        mem.srcAccessMask = VK_ACCESS_2_COLOR_ATTACHMENT_WRITE_BIT | VK_ACCESS_2_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT;
+        mem.dstStageMask = VK_PIPELINE_STAGE_2_COLOR_ATTACHMENT_OUTPUT_BIT | VK_PIPELINE_STAGE_2_EARLY_FRAGMENT_TESTS_BIT | VK_PIPELINE_STAGE_2_LATE_FRAGMENT_TESTS_BIT;
+        mem.dstAccessMask = VK_ACCESS_2_COLOR_ATTACHMENT_READ_BIT | VK_ACCESS_2_COLOR_ATTACHMENT_WRITE_BIT | VK_ACCESS_2_DEPTH_STENCIL_ATTACHMENT_READ_BIT | VK_ACCESS_2_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT;
+        VkDependencyInfo dep = {};
+        dep.sType = VK_STRUCTURE_TYPE_DEPENDENCY_INFO;
+        dep.memoryBarrierCount = 1;
+        dep.pMemoryBarriers = &mem;
+        vkCmdPipelineBarrier2(cmd, &dep);
+    }
+
+    m_pass_color_formats.resize(1);
+    m_pass_color_formats[0] = u32(m_output->swapchain_format);
+    VkRenderingAttachmentInfo color_info = {};
+    color_info.sType = VK_STRUCTURE_TYPE_RENDERING_ATTACHMENT_INFO;
+    color_info.imageView = color_view;
+    color_info.imageLayout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+    color_info.loadOp = preserve_contents ? VK_ATTACHMENT_LOAD_OP_LOAD : VK_ATTACHMENT_LOAD_OP_CLEAR;
+    color_info.storeOp = VK_ATTACHMENT_STORE_OP_STORE;
+    std::memcpy(color_info.clearValue.color.float32, m_output->clear_color, sizeof(float) * 4);
+
+    VkRenderingAttachmentInfo depth_info = {};
+    depth_info.sType = VK_STRUCTURE_TYPE_RENDERING_ATTACHMENT_INFO;
+    depth_info.imageView = depth_att.view;
+    depth_info.imageLayout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
+    depth_info.loadOp = preserve_contents ? VK_ATTACHMENT_LOAD_OP_LOAD : VK_ATTACHMENT_LOAD_OP_CLEAR;
+    depth_info.storeOp = VK_ATTACHMENT_STORE_OP_STORE;
+    depth_info.clearValue.depthStencil = {1.0f, 0};
+
+    VkRenderingInfo rendering = {};
+    rendering.sType = VK_STRUCTURE_TYPE_RENDERING_INFO;
+    rendering.renderArea = {{0, 0}, m_output->swapchain_extent};
+    rendering.layerCount = 1;
+    rendering.colorAttachmentCount = 1;
+    rendering.pColorAttachments = &color_info;
+    rendering.pDepthAttachment = &depth_info;
+    rendering.pStencilAttachment = depth_has_stencil ? &depth_info : nullptr;
+    vkCmdBeginRendering(cmd, &rendering);
+
+    m_pass_active = m_presentation_pass = true;
+    m_pass_has_stencil = depth_has_stencil;
+    m_pass_extent = m_output->swapchain_extent;
+    m_pass_depth_format = m_output->depth_format;
+    m_pass_samples = 1;
     set_pass_viewport();
 }
 void vulkan_backend::begin_render_pass(rhi::render_pass_desc const& desc) {
@@ -146,18 +233,24 @@ void vulkan_backend::begin_render_pass(rhi::render_pass_desc const& desc) {
         throw std::runtime_error("Invalid render pass boundary/attachment count");
     VkPhysicalDeviceProperties properties; vkGetPhysicalDeviceProperties(m_physical_device, &properties);
     if (desc.colors.size() > properties.limits.maxColorAttachments) throw std::runtime_error("MRT exceeds device limits");
-    std::set<rhi::rhi_texture_handle> unique;
+    std::array<rhi::rhi_texture_handle, 5> unique{};
+    u32 unique_count = 0;
     VkExtent2D extent = {};
     u32 samples=0;
-    std::vector<VkAttachmentDescription> attachments;
-    std::vector<VkImageView> views; std::vector<VkClearValue> clears;
-    std::vector<VkAttachmentReference> colors;
-    std::vector<u32> formats;
-    VkAttachmentReference depth = {};
-    auto append = [&](rhi::rhi_texture_handle handle, rhi::attachment_load load, rhi::attachment_store store, bool is_depth, VkClearValue clear) {
+    std::array<VkRenderingAttachmentInfo, 4> color_infos{};
+    std::array<u32, 4> color_formats{};
+    u32 color_count = 0;
+    VkRenderingAttachmentInfo depth_info = {};
+    VkFormat depth_vk_format = VK_FORMAT_UNDEFINED;
+    bool depth_has_stencil = false;
+    auto build_attachment = [&](rhi::rhi_texture_handle handle, rhi::attachment_load load, rhi::attachment_store store, bool is_depth, VkClearValue clear, VkFormat& fmt_out) {
         auto* t = m_textures.get(handle);
+        bool const duplicate = std::find(unique.begin(), unique.begin() + unique_count, handle) != unique.begin() + unique_count;
+        if (!duplicate && unique_count < unique.size()) {
+            unique[unique_count++] = handle;
+        }
         bool const read_only_depth = is_depth && t && t->state == rhi::resource_state::depth_read && load == rhi::attachment_load::load && store == rhi::attachment_store::store;
-        if (!t || !unique.insert(handle).second || t->description.usage != (is_depth ? rhi::texture_usage::depth_stencil : rhi::texture_usage::render_target)
+        if (!t || duplicate || t->description.usage != (is_depth ? rhi::texture_usage::depth_stencil : rhi::texture_usage::render_target)
             || (!read_only_depth && t->state != (is_depth ? rhi::resource_state::depth_write : rhi::resource_state::render_target)))
             throw std::runtime_error("Invalid/aliased/untransitioned render pass attachment");
         validate_attachment_ops(load, store, t->contents_valid);
@@ -165,80 +258,55 @@ void vulkan_backend::begin_render_pass(rhi::render_pass_desc const& desc) {
         if (extent.width != t->width || extent.height != t->height) throw std::runtime_error("Mismatched attachment dimensions");
         if (samples && samples!=t->description.samples) throw std::runtime_error("Mismatched attachment sample counts");
         samples=t->description.samples;
-        auto layout = scope(t->state, is_depth).layout;
-        VkAttachmentDescription attachment = {}; attachment.format = t->format; attachment.samples = static_cast<VkSampleCountFlagBits>(samples);
-        attachment.loadOp = load_op(load); attachment.storeOp = read_only_depth ? VK_ATTACHMENT_STORE_OP_NONE : store_op(store);
-        attachment.stencilLoadOp = is_depth && t->description.pixel_format == rhi::format::d24_s8_unorm ? attachment.loadOp : VK_ATTACHMENT_LOAD_OP_DONT_CARE;
-        attachment.stencilStoreOp = is_depth && t->description.pixel_format == rhi::format::d24_s8_unorm ? (read_only_depth ? VK_ATTACHMENT_STORE_OP_NONE : store_op(store)) : VK_ATTACHMENT_STORE_OP_DONT_CARE;
-        attachment.initialLayout = attachment.finalLayout = layout;
-        VkAttachmentReference reference = {u32(attachments.size()), layout};
-        attachments.push_back(attachment); views.push_back(t->view); clears.push_back(clear);
-        return reference;
+        fmt_out = t->format;
+        VkRenderingAttachmentInfo att = {};
+        att.sType = VK_STRUCTURE_TYPE_RENDERING_ATTACHMENT_INFO;
+        att.imageView = t->view;
+        att.imageLayout = scope(t->state, is_depth).layout;
+        att.resolveMode = VK_RESOLVE_MODE_NONE;
+        att.loadOp = load_op(load);
+        att.storeOp = read_only_depth ? VK_ATTACHMENT_STORE_OP_NONE : store_op(store);
+        att.clearValue = clear;
+        return att;
     };
     for (auto const& color : desc.colors) {
         VkClearValue clear = {}; for (unsigned i = 0; i < 4; ++i) {
             if (!std::isfinite(color.clear[i])) throw std::runtime_error("Non-finite color clear");
             clear.color.float32[i] = color.clear[i];
         }
-        colors.push_back(append(color.texture, color.load, color.store, false, clear));
-        formats.push_back(attachments.back().format);
+        VkFormat fmt = VK_FORMAT_UNDEFINED;
+        color_infos[color_count] = build_attachment(color.texture, color.load, color.store, false, clear, fmt);
+        color_formats[color_count] = u32(fmt);
+        ++color_count;
     }
     if (desc.depth.texture) {
         if (!std::isfinite(desc.depth.clear_depth) || desc.depth.clear_depth < 0 || desc.depth.clear_depth > 1 || desc.depth.clear_stencil > 255)
             throw std::runtime_error("Invalid depth/stencil clear");
         VkClearValue clear = {}; clear.depthStencil = {desc.depth.clear_depth, desc.depth.clear_stencil};
-        depth = append(desc.depth.texture, desc.depth.load, desc.depth.store, true, clear);
+        depth_info = build_attachment(desc.depth.texture, desc.depth.load, desc.depth.store, true, clear, depth_vk_format);
+        depth_has_stencil = has_stencil_aspect(depth_vk_format);
     }
     auto retained = desc;
-    VkSubpassDescription subpass = {}; subpass.pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
-    subpass.colorAttachmentCount = u32(colors.size()); subpass.pColorAttachments = colors.data();
-    subpass.pDepthStencilAttachment = desc.depth.texture ? &depth : nullptr;
-    VkRenderPassCreateInfo info = {}; info.sType = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
-    info.attachmentCount = u32(attachments.size()); info.pAttachments = attachments.data(); info.subpassCount = 1; info.pSubpasses = &subpass;
-    VkRenderPass pass = VK_NULL_HANDLE; VkFramebuffer framebuffer = VK_NULL_HANDLE;
-    auto cached=std::find_if(m_cached_passes.begin(),m_cached_passes.end(),[&](auto const& value) {
-        return value.owner==m_output.get() && value.extent.width==extent.width && value.extent.height==extent.height
-            && value.attachment_count==attachments.size() && value.color_count==colors.size()
-            && std::equal(views.begin(),views.end(),value.views.begin())
-            && !std::memcmp(attachments.data(),value.attachments.data(),attachments.size()*sizeof(VkAttachmentDescription));
-    });
-    if(cached!=m_cached_passes.end()) {
-        pass=cached->pass;framebuffer=cached->framebuffer;cached->serial=retirement_serial();
-        m_cached_passes.splice(m_cached_passes.end(),m_cached_passes,cached);
-    } else try {
-        check(create_handle(pass, vkCreateRenderPass, m_device, &info, allocation_callbacks()), "Create offscreen render pass");
-        VkFramebufferCreateInfo fb = {}; fb.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
-        fb.renderPass = pass; fb.attachmentCount = u32(views.size()); fb.pAttachments = views.data(); fb.width = extent.width; fb.height = extent.height; fb.layers = 1;
-        check(create_handle(framebuffer, vkCreateFramebuffer, m_device, &fb, allocation_callbacks()), "Create offscreen framebuffer");
-        ++m_pass_pair_creations;
-        retired_pass entry;entry.serial=retirement_serial();entry.pass=pass;entry.framebuffer=framebuffer;
-        entry.owner=m_output.get();entry.extent=extent;entry.attachment_count=u32(attachments.size());entry.color_count=u32(colors.size());
-        std::copy(views.begin(),views.end(),entry.views.begin());std::copy(attachments.begin(),attachments.end(),entry.attachments.begin());
-        m_cached_passes.push_back(std::move(entry));
-        // LRU is bounded per output. Eviction uses the last use serial, just
-        // like attachment destruction, and never inserts an ordinary-frame idle.
-        if(std::count_if(m_cached_passes.begin(),m_cached_passes.end(),[&](auto const& value){return value.owner==m_output.get();})>64) {
-            auto oldest=std::find_if(m_cached_passes.begin(),m_cached_passes.end(),[&](auto const& value){return value.owner==m_output.get();});
-            m_retired_passes.splice(m_retired_passes.end(),m_cached_passes,oldest);
-        }
-    } catch (...) {
-        if (framebuffer) vkDestroyFramebuffer(m_device, framebuffer, allocation_callbacks());
-        if (pass) vkDestroyRenderPass(m_device, pass, allocation_callbacks());
-        throw;
-    }
-    VkRenderPassBeginInfo begin = {}; begin.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
-    begin.renderPass = pass; begin.framebuffer = framebuffer; begin.renderArea.extent = extent;
-    begin.clearValueCount = u32(clears.size()); begin.pClearValues = clears.data();
-    vkCmdBeginRenderPass(m_frames->command_buffers[m_frames->current_frame], &begin, VK_SUBPASS_CONTENTS_INLINE);
-    m_pass_active = true; m_presentation_pass = false; m_active_render_pass = pass; m_pass_extent = extent;
-    m_pass_color_formats = std::move(formats); m_pass_description = std::move(retained);
-    m_pass_depth_format = desc.depth.texture ? attachments.back().format : 0;
+    VkRenderingInfo rendering = {};
+    rendering.sType = VK_STRUCTURE_TYPE_RENDERING_INFO;
+    rendering.renderArea = {{0, 0}, extent};
+    rendering.layerCount = 1;
+    rendering.colorAttachmentCount = color_count;
+    rendering.pColorAttachments = color_count ? color_infos.data() : nullptr;
+    rendering.pDepthAttachment = desc.depth.texture ? &depth_info : nullptr;
+    rendering.pStencilAttachment = depth_has_stencil ? &depth_info : nullptr;
+    vkCmdBeginRendering(m_frames->command_buffers[m_frames->current_frame], &rendering);
+
+    m_pass_active = true; m_presentation_pass = false; m_pass_has_stencil = depth_has_stencil; m_pass_extent = extent;
+    m_pass_color_formats.assign(color_formats.begin(), color_formats.begin() + color_count);
+    m_pass_description = std::move(retained);
+    m_pass_depth_format = desc.depth.texture ? u32(depth_vk_format) : 0;
     m_pass_samples=samples;
     set_pass_viewport();
 }
 void vulkan_backend::end_render_pass() {
     if (!m_recording || !m_pass_active) throw std::runtime_error("No active render pass");
-    vkCmdEndRenderPass(m_frames->command_buffers[m_frames->current_frame]);
+    vkCmdEndRendering(m_frames->command_buffers[m_frames->current_frame]);
     if (!m_presentation_pass) {
         // Without full-coverage tracking, discard-load cannot establish valid
         // whole-image contents even if some pixels were drawn.
@@ -247,7 +315,7 @@ void vulkan_backend::end_render_pass() {
             t->contents_valid = m_pass_description.depth.store == rhi::attachment_store::store && m_pass_description.depth.load != rhi::attachment_load::discard;
     }
     else m_presentation_contents = true;
-    m_pass_active = m_presentation_pass = false; m_active_render_pass = VK_NULL_HANDLE;
+    m_pass_active = m_presentation_pass = m_pass_has_stencil = false;
     m_pass_description = {};
 }
 void vulkan_backend::resolve_texture(rhi::rhi_texture_handle source,rhi::rhi_texture_handle destination) {

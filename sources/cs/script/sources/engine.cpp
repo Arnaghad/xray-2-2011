@@ -353,7 +353,7 @@ bool engine::value_to_string					(cs::lua_studio::backend& backend, char* const 
 				if (!is_script_class(state, index)) {
 					icon_type		= cs::lua_studio::icon_type_unknown;
 					pcvoid			user_data = lua_topointer(state, index);
-					cs::sprintf		(buffer, size, "0x%08x", *(u32 const*)&user_data);
+					cs::sprintf		(buffer, size, "0x%08x", static_cast<u32>(reinterpret_cast<std::uintptr_t>(user_data)));
 					return			true;
 				}
 
@@ -371,7 +371,7 @@ bool engine::value_to_string					(cs::lua_studio::backend& backend, char* const 
 
 				icon_type				= cs::lua_studio::icon_type_unknown;
 				pcvoid					user_data = lua_topointer(state, index);
-				cs::sprintf				(buffer, size, "0x%08x", *(u32 const*)&user_data);
+				cs::sprintf				(buffer, size, "0x%08x", static_cast<u32>(reinterpret_cast<std::uintptr_t>(user_data)));
 				return					true;
 		}
 		default							: NODEFAULT();

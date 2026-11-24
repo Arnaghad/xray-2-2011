@@ -8,9 +8,12 @@
 #include <xray/os_preinclude.h>
 #include <windows.h>
 #include <winuser.h>
+#include <SDL3/SDL.h>
 #include "engine_world.h"
 #include "apc.h"
 #include <xray/input/world.h>
+#include <xray/input/mouse.h>
+#include <xray/input_event_queue.h>
 #include <xray/editor/world/world.h>
 #include <xray/render/facade/engine_renderer.h>
 #include <xray/core/core.h>
@@ -19,6 +22,7 @@
 #include <xray/render/api.h>
 #include <objbase.h>				// for COINIT_MULTITHREADED
 #if defined(USE_VULKAN_RENDERER)
+#include <xray/render/vulkan/platform_surface.h>
 #include <xray/render/vulkan/sources/vulkan_backend.h>
 #include <xray/render/core/sources/rhi/rhi_device.h>
 #include <xray/render/world.h>
@@ -47,7 +51,9 @@ xray::command_line::key	s_no_log_file		("no_log_file", "no_log_file", "logging",
 
 static WNDCLASSEX s_window_class;
 
-static xray::engine::engine_world*			s_world	= 0;
+static xray::engine::engine_world*			s_world			= 0;
+static SDL_Window*							s_sdl_window	= nullptr;
+static bool									s_sdl_owns_subs	= false;
 
 static LRESULT APIENTRY message_processor	( HWND window_handle, UINT message_id, WPARAM w_param, LPARAM l_param )
 {
@@ -104,6 +110,61 @@ static LRESULT APIENTRY message_processor	( HWND window_handle, UINT message_id,
 
 HWND new_window			( )
 {
+	u32 const screen_size_x	= GetSystemMetrics( SM_CXSCREEN );
+	u32 const screen_size_y	= GetSystemMetrics( SM_CYSCREEN );
+	if (s_render_capture.is_set()) {
+		WNDCLASSEX const temp = {
+			sizeof( WNDCLASSEX ), CS_CLASSDC, &message_processor, 0L, 0L,
+			GetModuleHandle( 0 ), nullptr, nullptr, nullptr, nullptr, s_window_class_id, nullptr
+		};
+		s_window_class = temp;
+		RegisterClassEx( &s_window_class );
+		HWND result=CreateWindowExA(WS_EX_NOACTIVATE|WS_EX_TOOLWINDOW|WS_EX_LAYERED|WS_EX_TRANSPARENT,
+			s_window_class_id,s_window_id,WS_POPUP,0,0,960,640,nullptr,nullptr,s_window_class.hInstance,nullptr);
+		CHECK_OR_EXIT(result && SetLayeredWindowAttributes(result,0,0,LWA_ALPHA)
+			&& SetPropA(result,"XRAY_VULKAN_TEST_CAPTURE",HANDLE(1)),"Cannot create background render window");
+		ShowWindow(result,SW_HIDE);
+		return result;
+	}
+
+	if ( SDL_InitSubSystem( SDL_INIT_VIDEO | SDL_INIT_GAMEPAD ) ) {
+		s_sdl_owns_subs = true;
+		int win_w = static_cast<int>( screen_size_x );
+		int win_h = static_cast<int>( screen_size_y );
+		SDL_WindowFlags win_flags = SDL_WINDOW_VULKAN | SDL_WINDOW_HIDDEN;
+
+		if ( bhwWindowed || ( s_world && s_world->command_line_editor() ) ) {
+			u32 const window_sizes_x[] = { 1024, 800, 640 };
+			u32 const window_sizes_y[] = { 768, 600, 480 };
+			for ( u32 i = 0; i < xray::array_size(window_sizes_x); ++i ) {
+				if ( window_sizes_x[i] < screen_size_x && window_sizes_y[i] < screen_size_y ) {
+					win_w = static_cast<int>( window_sizes_x[i] );
+					win_h = static_cast<int>( window_sizes_y[i] );
+					break;
+				}
+			}
+			win_flags |= SDL_WINDOW_RESIZABLE;
+		} else {
+			win_flags |= SDL_WINDOW_FULLSCREEN;
+		}
+
+		s_sdl_window = SDL_CreateWindow( s_window_id, win_w, win_h, win_flags );
+		if ( s_sdl_window ) {
+			SDL_PropertiesID const props = SDL_GetWindowProperties( s_sdl_window );
+			HWND const native_hwnd = static_cast<HWND>(
+				SDL_GetPointerProperty( props, SDL_PROP_WINDOW_WIN32_HWND_POINTER, nullptr )
+			);
+			R_ASSERT( native_hwnd );
+#if defined(USE_VULKAN_RENDERER)
+			xray::render::vulkan::surface_adapter::register_sdl_window( native_hwnd, s_sdl_window );
+#endif
+			return native_hwnd;
+		}
+		LOG_WARNING( "SDL_CreateWindow failed (%s), falling back to Win32 HWND", SDL_GetError() );
+	} else {
+		LOG_WARNING( "SDL_InitSubSystem(VIDEO|GAMEPAD) failed (%s), falling back to Win32 HWND", SDL_GetError() );
+	}
+
 	WNDCLASSEX const temp	=
 	{
 		sizeof( WNDCLASSEX ),
@@ -124,17 +185,6 @@ HWND new_window			( )
 	RegisterClassEx			( &s_window_class );
 
 	HWND result;
-
-	u32 const screen_size_x	= GetSystemMetrics( SM_CXSCREEN );
-	u32 const screen_size_y	= GetSystemMetrics( SM_CYSCREEN );
-	if (s_render_capture.is_set()) {
-		result=CreateWindowExA(WS_EX_NOACTIVATE|WS_EX_TOOLWINDOW|WS_EX_LAYERED|WS_EX_TRANSPARENT,
-			s_window_class_id,s_window_id,WS_POPUP,0,0,960,640,nullptr,nullptr,s_window_class.hInstance,nullptr);
-		CHECK_OR_EXIT(result && SetLayeredWindowAttributes(result,0,0,LWA_ALPHA)
-			&& SetPropA(result,"XRAY_VULKAN_TEST_CAPTURE",HANDLE(1)),"Cannot create background render window");
-		ShowWindow(result,SW_HIDE);
-		return result;
-	}
 
 	if ( bhwWindowed || s_world && s_world->command_line_editor() ) {
 		DWORD const	window_style = WS_OVERLAPPED;// | WS_CAPTION;
@@ -192,10 +242,6 @@ HWND new_window			( )
 			s_window_class.hInstance,
 			0
 			);
-
-		//ShowWindow(result, SW_MAXIMIZE);
-		//UpdateWindow(result);
-		//ShowCursor( FALSE);
 	}
 
 	R_ASSERT				( result );
@@ -252,7 +298,21 @@ void engine_world::destroy_render	( )
 	}
 #endif
 
-	ShowWindow				( m_main_window_handle, SW_HIDE );
+	if ( s_sdl_window ) {
+#if defined(USE_VULKAN_RENDERER)
+		xray::render::vulkan::surface_adapter::unregister_sdl_window( m_render_window_handle );
+#endif
+		SDL_SetWindowRelativeMouseMode( s_sdl_window, false );
+		SDL_DestroyWindow( s_sdl_window );
+		s_sdl_window = nullptr;
+	} else {
+		ShowWindow				( m_main_window_handle, SW_HIDE );
+	}
+
+	if ( s_sdl_owns_subs ) {
+		SDL_QuitSubSystem( SDL_INIT_VIDEO | SDL_INIT_GAMEPAD );
+		s_sdl_owns_subs = false;
+	}
 
 	ASSERT					( s_world );
 	s_world					= 0;
@@ -266,6 +326,16 @@ void engine_world::show_window		( bool call_application_activate )
 		return;
 	}
 
+	if ( s_sdl_window ) {
+		SDL_ShowWindow( s_sdl_window );
+		SDL_RaiseWindow( s_sdl_window );
+		if ( call_application_activate ) {
+			SDL_SetWindowRelativeMouseMode( s_sdl_window, true );
+			on_application_activate( );
+		}
+		return;
+	}
+
 	ShowWindow				( m_main_window_handle, SW_SHOW );
 	SetForegroundWindow		( m_main_window_handle );
 
@@ -276,6 +346,98 @@ void engine_world::show_window		( bool call_application_activate )
 bool engine_world::process_messages( )
 {
 	ASSERT					( !m_editor );
+
+	if ( s_sdl_window ) {
+		using namespace xray::input;
+		SDL_Event ev;
+		while ( SDL_PollEvent( &ev ) ) {
+			switch ( ev.type ) {
+				case SDL_EVENT_QUIT:
+				case SDL_EVENT_WINDOW_CLOSE_REQUESTED:
+					return false;
+
+				case SDL_EVENT_WINDOW_FOCUS_GAINED:
+					SDL_SetWindowRelativeMouseMode( s_sdl_window, true );
+					on_application_activate();
+					push_normalized_input_event( normalized_input_event{ normalized_event_kind::focus_gained } );
+					break;
+
+				case SDL_EVENT_WINDOW_FOCUS_LOST:
+				case SDL_EVENT_WINDOW_MINIMIZED:
+					SDL_SetWindowRelativeMouseMode( s_sdl_window, false );
+					on_application_deactivate();
+					push_normalized_input_event( normalized_input_event{ normalized_event_kind::focus_lost } );
+					break;
+
+				case SDL_EVENT_KEY_DOWN:
+				case SDL_EVENT_KEY_UP:
+					if ( !ev.key.repeat ) {
+						normalized_input_event ne;
+						ne.kind = ( ev.type == SDL_EVENT_KEY_DOWN ) ? normalized_event_kind::key_down : normalized_event_kind::key_up;
+						ne.code = static_cast<s32>( ev.key.scancode );
+						push_normalized_input_event( ne );
+					}
+					break;
+
+				case SDL_EVENT_MOUSE_MOTION: {
+					normalized_input_event ne;
+					ne.kind = normalized_event_kind::mouse_motion;
+					ne.x = ev.motion.xrel;
+					ne.y = ev.motion.yrel;
+					push_normalized_input_event( ne );
+					break;
+				}
+
+				case SDL_EVENT_MOUSE_BUTTON_DOWN:
+				case SDL_EVENT_MOUSE_BUTTON_UP: {
+					xray::input::mouse_button btn = xray::input::mouse_button_left;
+					switch ( ev.button.button ) {
+						case SDL_BUTTON_LEFT:   btn = xray::input::mouse_button_left; break;
+						case SDL_BUTTON_RIGHT:  btn = xray::input::mouse_button_right; break;
+						case SDL_BUTTON_MIDDLE: btn = xray::input::mouse_button_middle; break;
+						case SDL_BUTTON_X1:     btn = xray::input::mouse_button_extended0; break;
+						case SDL_BUTTON_X2:     btn = xray::input::mouse_button_extended1; break;
+						default:                btn = static_cast<xray::input::mouse_button>( 0 ); break;
+					}
+					if ( btn != 0 ) {
+						normalized_input_event ne;
+						ne.kind = ev.button.down ? normalized_event_kind::mouse_button_down : normalized_event_kind::mouse_button_up;
+						ne.code = static_cast<s32>( btn );
+						push_normalized_input_event( ne );
+					}
+					break;
+				}
+
+				case SDL_EVENT_MOUSE_WHEEL: {
+					normalized_input_event ne;
+					ne.kind = normalized_event_kind::mouse_wheel;
+					ne.z = ev.wheel.y * 120.f;
+					push_normalized_input_event( ne );
+					break;
+				}
+
+				case SDL_EVENT_GAMEPAD_ADDED: {
+					normalized_input_event ne;
+					ne.kind = normalized_event_kind::gamepad_added;
+					ne.device_id = static_cast<u32>( ev.gdevice.which );
+					push_normalized_input_event( ne );
+					break;
+				}
+
+				case SDL_EVENT_GAMEPAD_REMOVED: {
+					normalized_input_event ne;
+					ne.kind = normalized_event_kind::gamepad_removed;
+					ne.device_id = static_cast<u32>( ev.gdevice.which );
+					push_normalized_input_event( ne );
+					break;
+				}
+
+				default:
+					break;
+			}
+		}
+		return true;
+	}
 
 	MSG						message;
 	while ( PeekMessage( &message, 0, 0, 0, PM_REMOVE ) ) {

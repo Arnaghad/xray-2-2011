@@ -200,7 +200,9 @@ sound_world::sound_world	(
 
 bool sound_world::initialize_xaudio				( )
 {
-	LOG_INFO									( "Sound initialization..." );
+	LOG_INFO									( "Sound initialization (XAudio2 2.9)..." );
+	m_xaudio									= nullptr;
+	m_master_voice								= nullptr;
 	u32 creation_flags = 0;
 #ifndef MASTER_GOLD
 	if ( s_debug_audio )
@@ -208,11 +210,18 @@ bool sound_world::initialize_xaudio				( )
 #endif
 
 	HRESULT res					= XAudio2Create( &m_xaudio, creation_flags, XAUDIO2_DEFAULT_PROCESSOR );
+	if ( FAILED( res ) && creation_flags != 0 )
+	{
+		LOG_WARNING				( "XAudio2 debug layer unavailable (hr=0x%08x), retrying standard XAudio2 2.9 engine", res );
+		m_xaudio				= nullptr;
+		res						= XAudio2Create( &m_xaudio, 0, XAUDIO2_DEFAULT_PROCESSOR );
+	}
 
-	if ( FAILED( res ) )
+	if ( FAILED( res ) || !m_xaudio )
 	{
 		LOG_ERROR				( "Sound initialization FAILED. Can not create XAudio2 interface. %d", res );
-		R_ASSERT				( 0 );
+		m_xaudio				= nullptr;
+		return false;
 	}
 
 	res							= m_xaudio->CreateMasteringVoice( 
@@ -223,7 +232,14 @@ bool sound_world::initialize_xaudio				( )
 										nullptr, 
 										nullptr 
 										);
-	ASSERT						( !FAILED( res ) );
+	if ( FAILED( res ) || !m_master_voice )
+	{
+		LOG_ERROR				( "Sound initialization FAILED. Can not create XAudio2 mastering voice. %d", res );
+		m_master_voice			= nullptr;
+		m_xaudio->Release		( );
+		m_xaudio				= nullptr;
+		return false;
+	}
 	return true;
 }
 
@@ -248,9 +264,14 @@ sound_world::~sound_world		( )
 	DELETE						( m_voice_factory );
 	DELETE						( m_sound_buffer_factory );
 #if 1
-	if ( m_master_voice )
+	if ( m_master_voice ) {
 		m_master_voice->DestroyVoice( );
-	m_xaudio->Release			( );
+		m_master_voice			= nullptr;
+	}
+	if ( m_xaudio ) {
+		m_xaudio->Release		( );
+		m_xaudio				= nullptr;
+	}
 #endif // #if 1
 
 	sound_order* order			= m_xaudio_callback_orders.pop_null_node();

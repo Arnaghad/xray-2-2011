@@ -284,7 +284,11 @@ static void optimize(memory::base_allocator* allocator,values_type& load_data, b
 
 	load_data.clear						();
 	load_data.push_back					(root);
-	*(u32*)&root->data				= 1; //first child
+	root->data							= nullptr;
+	{
+		u32 const first_child			= 1; //first child
+		std::memcpy						(&root->data, &first_child, sizeof(first_child));
+	}
 
 	vectora<table_item>::iterator tit	= tables.begin();
 	vectora<table_item>::iterator tit_e	= tables.end();
@@ -299,8 +303,9 @@ static void optimize(memory::base_allocator* allocator,values_type& load_data, b
 	for( ;tit!=tit_e; ++tit)
 	{
 		table_item& table		= *tit;
-		u32* val				= (u32*)&table.p_table->data;
-		*val					= load_data.size();// index of first child
+		table.p_table->data		= nullptr;
+		u32 const first_child	= static_cast<u32>(load_data.size()); // index of first child
+		std::memcpy				(&table.p_table->data, &first_child, sizeof(first_child));
 		load_data.insert		(load_data.end(), table.data.begin(), table.data.end());
 	}
 

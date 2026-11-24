@@ -23,6 +23,7 @@ struct pipeline_key {
     u32 color_format = 0, depth_format = 0, samples = 1;
     std::vector<u32> color_formats;
     u32 material_abi = 1;
+    bool has_stencil = false;
     bool operator==(pipeline_key const&) const = default;
     size_t hash() const {
         size_t h = 0;
@@ -31,7 +32,7 @@ struct pipeline_key {
         add(u64(fill)); add(u64(cull)); add(depth_enable); add(depth_write); add(depth_bias_enable); add(u64(depth_func));
         add(stencil_enable); add(stencil_reference); add(stencil_read_mask); add(stencil_write_mask); add(u64(stencil_compare)); add(u64(stencil_pass));
         add(blend_enable); add(u64(src_blend)); add(u64(dst_blend)); add(u64(blend_operation));
-        add(color_format); add(depth_format); add(samples); add(material_abi); add(vertex_layout.stride);
+        add(color_format); add(depth_format); add(samples); add(material_abi); add(has_stencil); add(vertex_layout.stride);
         add(color_formats.size()); for (auto f : color_formats) add(f);
         for (auto const& a : vertex_layout.attributes) { add(a.location); add(u64(a.type)); add(a.offset); }
         return h;

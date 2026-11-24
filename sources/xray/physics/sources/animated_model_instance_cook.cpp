@@ -151,5 +151,15 @@ void animated_model_instance_cook::delete_resource	( resources::resource_base* r
 	XRAY_DELETE_IMPL								( m_allocator, model_instance );
 }
 
+void register_animated_model_instance_cook			( )
+{
+	static bool s_registered						= false;
+	if ( s_registered )
+		return;
+	s_registered									= true;
+	static animated_model_instance_cook				s_animated_model_cook;
+	resources::register_cook						( &s_animated_model_cook );
+}
+
 } // namespace physics
 } // namespace xray

@@ -23,7 +23,11 @@ void	triangle_mesh_base:: t_generate_contact_primitive( on_contact& c, const flo
 	float4x4 const mesh_transform_inverted ( invert4x3 ( mesh_transform ) );
 	math::aabb query_aabb_local = query_aabb; query_aabb_local.modify( mesh_transform_inverted );
 
-	colliders::aabb_geometry( *this, 0, query_aabb_local, results ); 
+#if defined(XRAY_COLLISION_USE_BULLET_BVH) && XRAY_COLLISION_USE_BULLET_BVH
+	aabb_query( 0, query_aabb_local, results );
+#else
+	colliders::aabb_geometry( *this, 0, query_aabb_local, results );
+#endif
 	
 	buffer_vector<triangle_result>	al_res	( ALLOCA( sizeof(triangle_result) * results.size() ), results.size() );
 	al_res.assign( results.begin(), results.end() );

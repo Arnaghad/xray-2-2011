@@ -21,7 +21,6 @@
 #include <xray/type_extensions.h>
 #include <xray/noncopyable.h>
 #include <functional>
-#include <boost/bind.hpp>
 #include <xray/debug/log_callback.h>
 
 #endif // #ifndef PCH_H_INCLUDED

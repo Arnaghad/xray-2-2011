@@ -9,8 +9,6 @@
 
 #include <stdarg.h>
 #include <type_traits>
-#include <type_traits>
-#include <boost/type_traits/is_enum.hpp>
 namespace xray {
 namespace debug {
 namespace detail {

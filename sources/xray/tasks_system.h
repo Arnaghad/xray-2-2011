@@ -9,7 +9,6 @@
 
 #include <xray/text_tree.h>
 #include <functional>
-#include <boost/bind.hpp>
 
 namespace xray {
 namespace tasks {

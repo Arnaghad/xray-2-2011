@@ -107,11 +107,23 @@ vulkan_texture_entry vulkan_backend::upload_texture(rhi::texture_desc const& des
         check(create_handle(cmd, vkAllocateCommandBuffers, m_device, &commands), "Allocate upload commands");
         VkCommandBufferBeginInfo begin = {}; begin.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO; begin.flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
         check(vkBeginCommandBuffer(cmd, &begin), "Begin texture upload");
-        VkImageMemoryBarrier barrier = {}; barrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
-        barrier.oldLayout = VK_IMAGE_LAYOUT_UNDEFINED; barrier.newLayout = VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL;
+        VkImageMemoryBarrier2 barrier = {};
+        barrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER_2;
+        barrier.srcStageMask = VK_PIPELINE_STAGE_2_NONE;
+        barrier.srcAccessMask = VK_ACCESS_2_NONE;
+        barrier.dstStageMask = VK_PIPELINE_STAGE_2_COPY_BIT;
+        barrier.dstAccessMask = VK_ACCESS_2_TRANSFER_WRITE_BIT;
+        barrier.oldLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+        barrier.newLayout = VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL;
         barrier.srcQueueFamilyIndex = barrier.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
-        barrier.image = t.image; barrier.subresourceRange = view.subresourceRange; barrier.dstAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
-        vkCmdPipelineBarrier(cmd, VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT, VK_PIPELINE_STAGE_TRANSFER_BIT, 0, 0, nullptr, 0, nullptr, 1, &barrier);
+        barrier.image = t.image;
+        barrier.subresourceRange = view.subresourceRange;
+        VkDependencyInfo dep = {};
+        dep.sType = VK_STRUCTURE_TYPE_DEPENDENCY_INFO;
+        dep.imageMemoryBarrierCount = 1;
+        dep.pImageMemoryBarriers = &barrier;
+        vkCmdPipelineBarrier2(cmd, &dep);
+
         std::vector<VkBufferImageCopy> regions(size_t(desc.mip_levels)*desc.array_layers);
         for (u32 layer=0;layer<desc.array_layers;++layer)
         for (u32 mip = 0; mip < desc.mip_levels; ++mip) {
@@ -120,14 +132,26 @@ vulkan_texture_entry vulkan_backend::upload_texture(rhi::texture_desc const& des
             regions[index].imageExtent = {std::max(1u, desc.width >> mip), std::max(1u, desc.height >> mip), 1};
         }
         vkCmdCopyBufferToImage(cmd, staging.buffer, t.image, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, u32(regions.size()), regions.data());
-        barrier.oldLayout = VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL; barrier.newLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
-        barrier.srcAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT; barrier.dstAccessMask = VK_ACCESS_SHADER_READ_BIT;
-        vkCmdPipelineBarrier(cmd, VK_PIPELINE_STAGE_TRANSFER_BIT, VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT, 0, 0, nullptr, 0, nullptr, 1, &barrier);
+
+        barrier.srcStageMask = VK_PIPELINE_STAGE_2_COPY_BIT;
+        barrier.srcAccessMask = VK_ACCESS_2_TRANSFER_WRITE_BIT;
+        barrier.dstStageMask = VK_PIPELINE_STAGE_2_FRAGMENT_SHADER_BIT;
+        barrier.dstAccessMask = VK_ACCESS_2_SHADER_SAMPLED_READ_BIT;
+        barrier.oldLayout = VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL;
+        barrier.newLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+        vkCmdPipelineBarrier2(cmd, &dep);
         check(vkEndCommandBuffer(cmd), "End texture upload");
+
         VkFenceCreateInfo fi = {}; fi.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
         check(create_handle(fence, vkCreateFence, m_device, &fi, allocation_callbacks()), "Create upload fence");
-        VkSubmitInfo submit = {}; submit.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO; submit.commandBufferCount = 1; submit.pCommandBuffers = &cmd;
-        check(vkQueueSubmit(m_graphics_queue, 1, &submit, fence), "Submit texture upload"); submitted = true;
+        VkCommandBufferSubmitInfo cmd_info = {};
+        cmd_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_SUBMIT_INFO;
+        cmd_info.commandBuffer = cmd;
+        VkSubmitInfo2 submit = {};
+        submit.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO_2;
+        submit.commandBufferInfoCount = 1;
+        submit.pCommandBufferInfos = &cmd_info;
+        check(vkQueueSubmit2(m_graphics_queue, 1, &submit, fence), "Submit texture upload"); submitted = true;
         check(vkWaitForFences(m_device, 1, &fence, VK_TRUE, UINT64_MAX), "Wait texture upload");
         t.state = rhi::resource_state::shader_resource; t.contents_valid = true;
         cleanup(); return t;
@@ -178,7 +202,6 @@ void vulkan_backend::destroy_texture(rhi::rhi_texture_handle handle) {
         slot = cit->second; cube = true; m_bindless_cube_slots.erase(cit);
     }
     m_retired_textures.push_back({retirement_serial(), *t, slot, cube});
-    retire_pass_cache(t->view);
     m_textures.release(handle); *t = {};
     for (auto& bound : m_bound_textures) if (bound==handle) bound=0;
     collect_retired();

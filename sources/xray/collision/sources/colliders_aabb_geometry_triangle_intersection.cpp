@@ -5,10 +5,15 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "pch.h"
+#if !(defined(XRAY_COLLISION_USE_BULLET_BVH) && XRAY_COLLISION_USE_BULLET_BVH)
 #include "colliders_aabb_geometry.h"
 #include "triangle_mesh_geometry.h"
 
 using xray::collision::colliders::aabb_geometry;
+#else
+#include <xray/collision/api.h>
+#define XRAY_USE_OLD_TRIANGLE_AABB_TEST 0
+#endif
 using xray::math::float3;
 
 #if !XRAY_USE_OLD_TRIANGLE_AABB_TEST
@@ -183,6 +188,7 @@ XRAY_COLLISION_API int triBoxOverlap(float3 const& boxcenter, float3 const& boxh
    return 1;   /* box and triangle overlaps */
 }
 
+#if !(defined(XRAY_COLLISION_USE_BULLET_BVH) && XRAY_COLLISION_USE_BULLET_BVH)
 bool aabb_geometry::test_triangle	( u32 const triangle_id ) const
 {
 	u32 const* const indices		= m_geometry.indices( triangle_id );
@@ -194,4 +200,5 @@ bool aabb_geometry::test_triangle	( u32 const triangle_id ) const
 	};
 	return							triBoxOverlap( m_aabb.center(), m_aabb.extents(), triangle_vertices ) != 0;
 }
+#endif
 #endif // #if !XRAY_USE_OLD_TRIANGLE_AABB_TEST

@@ -14,7 +14,7 @@
 | **Текстури та матеріали** | Фіксовані слоти DX10/11, одностадійні обмеження в ранніх портах | **Vulkan 1.2 Bindless (`VK_EXT_descriptor_indexing`)** (`Texture2D[1024]`, `TextureCube[128]`), багатостадійні (`multi-stage`) матеріали |
 | **Освітлення та поверхні** | Legacy Light Pre-Pass у DX10/11 | **2-Pass Light Pre-Pass / Deferred Material** у Vulkan: анізотропний BRDF, **Pre-Integrated Skin/Organic SSS**, POM, Triplanar, Soft Particles, Cubemap Reflections, Burning Wood |
 | **Скінінг та LOD** | CPU-скінінг / DX константні буфери, жорсткий ліміт **80 кісток** (`79 + 1`), без runtime LOD у Vulkan | **GPU Compute Skinning (`skinning.comp.hlsl`)** на SSBO, ліміт **128 кісток** (`127 + object_movement`), автоматичне перемикання **Runtime LOD (`LOD0..LOD2`)** за екранним AABB |
-| **Редакторський SDK** | C++/CLI + .NET Framework 3.5 (`AvalonAdapter`, старий WinForms/WPF) | **.NET 11 (`net11.0-windows`)**, нативний C ABI міст (`host_bridge.h`), відновлена оболонка **`WindowIde`** та **40/40** родин редакторів (SDK-0 — SDK-12), `PerMonitorV2` DPI |
+| **Редакторський SDK** | C++/CLI + .NET Framework 3.5 (`AvalonAdapter`, старий WinForms/WPF) | **.NET 11 (`net11.0-windows`, SDK `11.0.100`)**, нативний C ABI міст (`host_bridge.h`), відновлена оболонка **`WindowIde`** та **40/40** родин редакторів (SDK-0 — SDK-12), `PerMonitorV2` DPI |
 | **DCC-інструменти (3D/Анімація)** | Тільки Autodesk Maya 2011 (32/64-bit C++ `.mll` плагін + пропрієтарний SISL) | **Blender 5.3** як основний DCC (`xray_blender` v0.3.3) + **Maya 2022–2027 Python API 2.0** (`xray_maya_plugin.py` v2.1), спільний формат **`xray-dcc-exchange/v2`** |
 | **Кукер асетів та математика кривих** | Прив’язаний до Maya runtime (`xray/maya_animation` + SISL + Win32) | Автономний портативний **C++26 `xray_asset_cook_cli`** та header-only бібліотека **`xray_animation_math`** (кубічний B-spline фітер без Maya/SISL) |
 | **Міграція спадкового контенту** | Ручний експорт із Maya 2011 | Автоматичний конвеєр **`migrate_legacy.py`**: декомпіляція `.model`/`.skeleton`/`.skinned_model`/`.clip`/`.physics` без Maya, парсер `.ma` (включно з Trax `clipLibrary`), batch-міграція `.mb` |
@@ -28,8 +28,8 @@
 - **Сучасний C++26 та x64-only контракт:** проєкт переведено на стандарт `CMAKE_CXX_STANDARD 26` зі збіркою через **CMake + Ninja** компілятором **GCC 16 (MinGW-w64 x64)**. Застарілі 32-бітні та консольні (Xbox 360 / PS3 Cell) гілки ізольовані; додано контрактні тести `xray_source_contract` і `xray_windows_x64_contract` (перевірка ABI м’ютексів Windows та багатопотокової синхронізації).
 - **Уніфікація сторонніх залежностей:**
   - **Lua 5.5 + `sol2`:** усі модулі рушія, кукера та редактора використовують єдиний системний рантайм Lua 5.5 із пропатченим знімком `sources/third_party/sol2` (перевіряється тестом `xray_lua_sol_binding`).
-  - **Системні пакети MSYS2:** `Boost` (`filesystem`, `system`, `thread`), `SDL2`, `mimalloc`, `zlib` (`ZLIB::ZLIB` для декодування terrain chunk 103), `Bullet`.
-  - **Збережені вбудовані бібліотеки:** заголовки Boost 1.48 (`sources/boost`), `ODE`, `OPCODE`, `Ogg`, `Vorbis`, `FastDelegate`, `BugTrap` та відновлені алгоритми геометричного фітингу `WildMagic4` (`Wm4ContBox3` / `Wm4ContSphere3` у `sources/third_party/wildmagic4`).
+  - **Системні пакети MSYS2 (єдине джерело заголовків і бібліотек):** `Boost` 1.92.0 (`Boost::headers`, `filesystem`, `system`, `thread`), `SDL2`, `mimalloc`, `zlib` (`ZLIB::ZLIB` для декодування terrain chunk 103), `Bullet` (`PkgConfig::BULLET`), `Ogg` / `Vorbis` (`PkgConfig::OGG_VORBIS`), `Asio` (`asio::asio`).
+  - **Збережені вбудовані бібліотеки:** `ODE`, `OPCODE`, `FastDelegate`, `BugTrap` та відновлені алгоритми геометричного фітингу `WildMagic4` (`Wm4ContBox3` / `Wm4ContSphere3` у `sources/third_party/wildmagic4`).
 - **Захищена віртуальна файлова система (VFS) та конфігурації:** додано 64-бітну валідацію бінарних конфігів (`checked_config`), детектування циклів і перевірку меж при читанні VFS hard links та legacy-архівів.
 
 ---
@@ -62,7 +62,7 @@
 
 ### 3. Відновлення та модернізація X-Ray 2.0 SDK (`sources/xray/editor/`, етапи SDK-0 — SDK-12)
 
-Спадковий редакторський хост на C++/CLI та .NET Framework 3.5 перенесено на **.NET 10 (`net10.0-windows`)** із повною підтримкою WinForms, WPF та нативного Vulkan-в’юпорта:
+Спадковий редакторський хост на C++/CLI та .NET Framework 3.5 перенесено на **.NET 11 (`net11.0-windows`)** із повною підтримкою WinForms, WPF та нативного Vulkan-в’юпорта:
 
 - **Нативно-керований міст та UI-фундамент (SDK-0 — SDK-2):**
   - Чистий C ABI міст (`host_bridge.h`, `managed_host.cpp`, `Bridge.cs`, `sdk_property_bridge.h`) між нативним `xray_editor_world` і керованим `EditorHost`.
@@ -110,7 +110,7 @@
 - [`sources/CMakeLists.txt`](sources/CMakeLists.txt) — головний CMake-файл збірки рушія, рендера, редактора та кукера.
 - [`sources/README.md`](sources/README.md) — опис підтримуваного середовища збірки (Windows x64, MSYS2 MinGW-w64 GCC 16, Ninja).
 - [`sources/xray/render/vulkan/`](sources/xray/render/vulkan/README.md) — бекенд Vulkan 1.4, HLSL-шейдери (`assets/`), кукери моделей/матеріалів і контракти продуктивності.
-- [`sources/xray/editor/`](sources/xray/editor/) — нативний (`world/`, `animation/`, `sound/`) та керований .NET 10 (`base/`, `wpf_controls/`) код SDK.
+- [`sources/xray/editor/`](sources/xray/editor/) — нативний (`world/`, `animation/`, `sound/`) та керований .NET 11 (`base/`, `wpf_controls/`) код SDK.
 - [`sources/xray/animation_math/`](sources/xray/animation_math/README.md) — DCC-незалежна C++26 математика фітингу та перевірки B-spline анімацій.
 - [`sources/xray/maya_cook/`](sources/xray/maya_cook/) — портативний C++26 кукер ресурсів `xray_asset_cook_cli` / `xray_maya_cook_cli`.
 - [`sources/tools/dcc_common/`](sources/tools/dcc_common/README.md) — спільне ядро `xray-dcc-exchange/v2` ([SPEC_V2.md](sources/tools/dcc_common/SPEC_V2.md), [PARITY.md](sources/tools/dcc_common/PARITY.md)), декомпілятор `legacy_codec.py` та парсер `ma_reader.py`.
@@ -129,10 +129,21 @@
 
 ### 1. Збірка рушія, Vulkan-рендера, SDK та кукера (Windows x64, MSYS2 MinGW-w64 GCC + Ninja)
 
+Зафіксовані версії інструментів та пакетів MSYS2 описано в [`sources/tools/ci/toolchain-manifest.json`](sources/tools/ci/toolchain-manifest.json), а ізольовані Debug/Release пресети — у [`sources/CMakePresets.json`](sources/CMakePresets.json).
+
 ```powershell
-cmake -S sources -B build/release -G Ninja -DCMAKE_BUILD_TYPE=Release
-cmake --build build/release --parallel 8
-ctest --test-dir build/release --output-on-failure
+Push-Location sources
+cmake --preset windows-x64-release
+cmake --build --preset windows-x64-release --parallel 8
+ctest --preset windows-x64-release-cpu
+ctest --preset windows-x64-release-all
+Pop-Location
+```
+
+Для збору базових метрик (версії, імпорти DLL, попередження компілятора, JUnit-звіт CTest):
+
+```powershell
+python sources/tools/ci/collect_build_baseline.py --preset windows-x64-release --build-dir build/presets/windows-x64-release --output build/modernization-baseline/windows-x64-release/baseline.json
 ```
 
 ### 2. Автономна збірка лише DCC-кукера (`xray_asset_cook_cli`)
@@ -140,7 +151,7 @@ ctest --test-dir build/release --output-on-failure
 ```powershell
 cmake -S sources/xray/maya_cook -B build/standalone-cook -G Ninja -DCMAKE_BUILD_TYPE=Release
 cmake --build build/standalone-cook --parallel 8
-ctest --test-dir build/standalone-cook --output-on-failure
+ctest --test-dir build/standalone-cook --output-on-failure --no-tests=error
 ```
 
 ### 3. Пакування розширення Blender (`xray_blender`)

@@ -11,6 +11,8 @@ set(XRAY_SDK_UI_PACKAGE_SOURCE "" CACHE PATH "Optional offline NuGet feed for SD
 set(editor_package_source "https://api.nuget.org/v3/index.json")
 if(XRAY_SDK_UI_PACKAGE_SOURCE)
     set(editor_package_source "${XRAY_SDK_UI_PACKAGE_SOURCE}")
+elseif(EXISTS "${CMAKE_SOURCE_DIR}/../build/sdk-modernization/nuget")
+    set(editor_package_source "${CMAKE_SOURCE_DIR}/../build/sdk-modernization/nuget")
 endif()
 file(WRITE "${XRAY_MANAGED_EDITOR_DIR}/NuGet.Config" "<configuration><packageSources><clear /><add key=\"sdk\" value=\"${editor_package_source}\" /></packageSources></configuration>\n")
 file(GLOB_RECURSE editor_wpf_inputs CONFIGURE_DEPENDS

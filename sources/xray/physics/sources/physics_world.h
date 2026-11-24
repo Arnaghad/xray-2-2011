@@ -43,6 +43,7 @@ public:
 	virtual			~physics_world	( );
 
 	virtual	void							tick				( );
+			void							step_fixed			( float dt );
 	virtual	void							initialize			( ){};
 
 	virtual	void							clear_resources		( );

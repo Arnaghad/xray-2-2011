@@ -326,11 +326,17 @@ void   cooker_thread_yield				(u32 thread_sleep_period)
 
 void   register_cook (cook_base * const cook)
 {
+	if ( !g_resources_manager.initialized() )
+		return;
+
 	g_resources_manager->register_cook(cook);
 }
 
 cook_base *   unregister_cook (class_id_enum const resource_class)
 {
+	if ( !g_resources_manager.initialized() )
+		return nullptr;
+
 	return	g_resources_manager->unregister_cook(resource_class);
 }
 

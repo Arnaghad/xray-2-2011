@@ -6,7 +6,6 @@
 
 #include "pch.h"
 #include <xray/core/library_linkage.h>
-#include <ogg/library_linkage.h>
 
 #include <xray/linkage_helper.h>
 

@@ -37,10 +37,7 @@ inline	float					interpolation_factor( ){ return m_time_left/integration_step; }
 
 inline	const physics::physics_world& world	( )const	{return m_world ;}
 inline	const step_counter_ref	step_counter( )const	{ return step_counter_ref( m_step_counter ); }
-private:
-	void	step		( float time_delta );
-	
-
+		void					step		( float time_delta );
 
 }; // class scheduler
 

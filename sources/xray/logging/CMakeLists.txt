@@ -1,8 +1,20 @@
 cmake_minimum_required(VERSION 3.25)
 
 # Collect all source files for xray/logging
-file(GLOB_RECURSE LOGGING_SOURCES "*.cpp" "*.h")
-list(FILTER LOGGING_SOURCES EXCLUDE REGEX "(_multi)\\.cpp")
+set(LOGGING_SOURCES
+    sources/filter_tree.cpp
+    sources/filter_tree_node.cpp
+    sources/format_specifier.cpp
+    sources/globals.cpp
+    sources/helper.cpp
+    sources/helper_win.cpp
+    sources/log_file.cpp
+    sources/logging.cpp
+    sources/logging_library_linkage.cpp
+    sources/logging_win.cpp
+    sources/path_parts.cpp
+    sources/pch.cpp
+)
 
 # Create static library for xray/logging
 add_library(xray_logging STATIC ${LOGGING_SOURCES})

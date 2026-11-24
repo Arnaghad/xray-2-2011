@@ -7,6 +7,7 @@
 
 #include "pch.h"
 #include <xray/math_aabb_plane.h>
+#include <bit>
 #include <cmath>
 
 using xray::math::aabb_plane;
@@ -33,9 +34,9 @@ static u32 const aabb_lut[8][3]	= {
 static u32 lut_id				( xray::math::float3 const& normal )
 {
 	// there is an error in the paper, where << 2 is for x, not for z
-	u32 const x			= ((*(u32*)&normal.x >> 31) ^ 1) << 0; // if ( normal.x >= 0.f ) x = 1; else x = 0;
-	u32	const y			= ((*(u32*)&normal.y >> 31) ^ 1) << 1; // if ( normal.y >= 0.f ) y = 2; else y = 0;
-	u32	const z			= ((*(u32*)&normal.z >> 31) ^ 1) << 2; // if ( normal.z >= 0.f ) z = 4; else z = 0;
+	u32 const x			= ((std::bit_cast<u32>(normal.x) >> 31) ^ 1) << 0; // if ( normal.x >= 0.f ) x = 1; else x = 0;
+	u32	const y			= ((std::bit_cast<u32>(normal.y) >> 31) ^ 1) << 1; // if ( normal.y >= 0.f ) y = 2; else y = 0;
+	u32	const z			= ((std::bit_cast<u32>(normal.z) >> 31) ^ 1) << 2; // if ( normal.z >= 0.f ) z = 4; else z = 0;
 	return				x | y | z;
 }
 

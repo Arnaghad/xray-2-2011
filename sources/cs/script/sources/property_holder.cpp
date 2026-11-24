@@ -372,21 +372,11 @@ bool property_holder::r_bool								(pcstr section, pcstr line) const
 		case LUA_TSTRING  :		{
 			pcstr				string = tag.as<pcstr>();
 
-			string16			temp;
+			string16			temp = {};
 			sz_ncpy				(temp,string,4);
 			sz_lwr				(temp, sizeof(temp));
-			
-			u32					temp_n = *(u32*)temp;
 
-			pcstr				yes = "yes";
-			if ((*((u32*)(yes))) == temp_n)
-				return			true;
-
-			pcstr				on = "on";
-			if (((*((u32*)(on))) & 0x00ffffff) == temp_n)
-				return			true;
-
-			return				false;
+			return				(std::strcmp(temp, "yes") == 0) || (std::strcmp(temp, "on") == 0);
 		}
 	}
 	return						false;

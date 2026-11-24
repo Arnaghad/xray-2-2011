@@ -17,6 +17,10 @@ public sealed unsafe partial class EditorWorld
     private SdkNativeResources? resourceSession;
     private ProjectSceneBinding? sceneBinding;
     private bool sdkSessionInitialized;
+    private int stage06SmokePhase;
+    private int stage06PostReloadFrames;
+    private int stage06InitialRootChildren;
+    private string? stage06SavedProjectPath;
     public void BindScene(SdkSceneCallbacks callbacks)
     {
         CheckOwner();
@@ -226,5 +230,147 @@ public sealed unsafe partial class EditorWorld
     {
         CheckOwner();
         throw new NotSupportedException("SDK diagnostic tests have been removed.");
+    }
+
+    private void TickStage06Smoke(uint frame)
+    {
+        if (!background || stage06SmokePhase >= 4)
+            return;
+        if (!string.Equals(Environment.GetEnvironmentVariable("XRAY_SDK_STAGE06_SMOKE"), "1", StringComparison.Ordinal))
+            return;
+        if (projectIde == null || sceneBinding == null || !sdkSessionInitialized || frame < 2)
+            return;
+
+        string? reportPath = Environment.GetEnvironmentVariable("XRAY_SDK_STAGE06_SMOKE_REPORT");
+        try
+        {
+            switch (stage06SmokePhase)
+            {
+                case 0:
+                    foreach (string legacyName in new[] { "alex", "dima_light_test" })
+                    {
+                        string legacyPath = Path.Combine(SdkVfsManager.AssetPackRoot, "sources", "projects", legacyName, "project.xprj");
+                        if (!File.Exists(legacyPath))
+                            throw new FileNotFoundException($"Missing legacy project for Stage 06 smoke: {legacyPath}", legacyPath);
+                        using var legacyProj = new Project();
+                        legacyProj.LoadProjectFile(legacyPath, legacyName, applyMissingRegistry: false);
+                        if (!legacyProj.IsProjectOpen || legacyProj.Root.Children.Count == 0)
+                            throw new InvalidOperationException($"Legacy project '{legacyName}' opened with empty hierarchy.");
+                        if (string.Equals(legacyName, "alex", StringComparison.Ordinal))
+                        {
+                            string copyPath = Path.Combine(SdkVfsManager.WorkingSourcesRoot, "projects", "alex_stage06_copy", "project.xprj");
+                            legacyProj.SaveProjectFile(copyPath);
+                            if (!File.Exists(copyPath))
+                                throw new IOException($"Failed to save legacy copy: {copyPath}");
+                            using var reloadedLegacy = new Project();
+                            reloadedLegacy.LoadProjectFile(copyPath, "alex_stage06_copy", applyMissingRegistry: false);
+                            if (!reloadedLegacy.IsProjectOpen || reloadedLegacy.Root.Children.Count != legacyProj.Root.Children.Count)
+                                throw new InvalidOperationException("Saved legacy project copy did not recover identical root children.");
+                        }
+                    }
+
+                    projectIde.OpenInteractiveStarterScene();
+                    if (!projectIde.Project.IsProjectOpen ||
+                        !string.Equals(projectIde.Project.Name, "default_scene", StringComparison.Ordinal) ||
+                        projectIde.Project.Root.Children.Count == 0)
+                    {
+                        throw new InvalidOperationException("Stage 06 smoke failed to open starter Vulkan scene project.");
+                    }
+                    stage06InitialRootChildren = projectIde.Project.Root.Children.Count;
+                    stage06SmokePhase = 1;
+                    break;
+
+                case 1:
+                    const string folderName = "stage06_smoke_folder";
+                    _ = projectIde.Editing.AddFolder(folderName, projectIde.Project.Root);
+                    if (!projectIde.Project.Root.Children.Any(c => c.Name == folderName) || !projectIde.Commands.CanUndo)
+                        throw new InvalidOperationException("Stage 06 smoke AddFolder did not record undoable edit.");
+
+                    if (projectIde.Commands.rollback(-1) != -1 ||
+                        projectIde.Project.Root.Children.Any(c => c.Name == folderName) ||
+                        !projectIde.Commands.CanRedo)
+                    {
+                        throw new InvalidOperationException("Stage 06 smoke Undo failed.");
+                    }
+
+                    if (projectIde.Commands.rollback(1) != 1 ||
+                        !projectIde.Project.Root.Children.Any(c => c.Name == folderName) ||
+                        !projectIde.Commands.CanUndo)
+                    {
+                        throw new InvalidOperationException("Stage 06 smoke Redo failed.");
+                    }
+                    stage06SmokePhase = 2;
+                    break;
+
+                case 2:
+                    projectIde.Project.SaveProject();
+                    stage06SavedProjectPath = projectIde.Project.ProjectFilePath;
+                    if (string.IsNullOrEmpty(stage06SavedProjectPath) ||
+                        !File.Exists(stage06SavedProjectPath) ||
+                        !File.ReadAllText(stage06SavedProjectPath).Contains("stage06_smoke_folder", StringComparison.Ordinal))
+                    {
+                        throw new InvalidOperationException("Stage 06 smoke SaveProject did not persist edited folder.");
+                    }
+
+                    projectIde.Project.CloseProject();
+                    if (projectIde.Project.IsProjectOpen)
+                        throw new InvalidOperationException("Stage 06 smoke CloseProject left project open.");
+
+                    projectIde.Project.LoadProject("default_scene");
+                    if (!projectIde.Project.IsProjectOpen ||
+                        !projectIde.Project.Root.Children.Any(c => c.Name == "stage06_smoke_folder"))
+                    {
+                        throw new InvalidOperationException("Stage 06 smoke reload did not recover saved folder.");
+                    }
+                    stage06SmokePhase = 3;
+                    break;
+
+                case 3:
+                    if (++stage06PostReloadFrames < 2)
+                        return;
+
+                    if (!string.IsNullOrWhiteSpace(reportPath))
+                    {
+                        string? dir = Path.GetDirectoryName(reportPath);
+                        if (!string.IsNullOrEmpty(dir))
+                            Directory.CreateDirectory(dir);
+                        var payload = new
+                        {
+                            ok = true,
+                            runtimeVersion = Environment.Version.ToString(),
+                            openedProject = projectIde.Project.Name,
+                            legacyProjectsVerified = new[] { "alex", "dima_light_test" },
+                            legacySaveReloadOk = true,
+                            initialRootChildren = stage06InitialRootChildren,
+                            undoOk = true,
+                            redoOk = true,
+                            savedProjectPath = stage06SavedProjectPath,
+                            reloadedHasFolder = true,
+                            renderedFrames = frame + 1
+                        };
+                        File.WriteAllText(reportPath, System.Text.Json.JsonSerializer.Serialize(payload));
+                    }
+                    stage06SmokePhase = 4;
+                    Require(native.RequestExit(native.Context, 0));
+                    break;
+            }
+        }
+        catch (Exception ex)
+        {
+            stage06SmokePhase = 4;
+            Console.Error.WriteLine("Stage 06 EditorHost smoke failed: " + ex);
+            if (!string.IsNullOrWhiteSpace(reportPath))
+            {
+                string? dir = Path.GetDirectoryName(reportPath);
+                if (!string.IsNullOrEmpty(dir))
+                    Directory.CreateDirectory(dir);
+                File.WriteAllText(reportPath, System.Text.Json.JsonSerializer.Serialize(new
+                {
+                    ok = false,
+                    error = ex.ToString()
+                }));
+            }
+            _ = native.RequestExit(native.Context, 3);
+        }
     }
 }

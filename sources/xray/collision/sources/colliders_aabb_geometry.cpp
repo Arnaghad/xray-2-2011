@@ -239,10 +239,12 @@ void aabb_geometry::add_triangles		( Opcode::AABBNoLeafNode const* const node ) 
 
 void aabb_geometry::query				( Opcode::AABBNoLeafNode const* const node) const
 {
-	if ( out_of_bounds( m_aabb, ( float3 const& )node->mAABB.mCenter, ( float3 const& )node->mAABB.mExtents ) )
+	float3 const center( node->mAABB.mCenter.x, node->mAABB.mCenter.y, node->mAABB.mCenter.z );
+	float3 const extents( node->mAABB.mExtents.x, node->mAABB.mExtents.y, node->mAABB.mExtents.z );
+	if ( out_of_bounds( m_aabb, center, extents ) )
 		return;
 
-	if ( completely_inside( m_aabb, ( float3 const& )node->mAABB.mCenter, ( float3 const& )node->mAABB.mExtents ) ) {
+	if ( completely_inside( m_aabb, center, extents ) ) {
 		add_triangles		( node );
 		return;
 	}

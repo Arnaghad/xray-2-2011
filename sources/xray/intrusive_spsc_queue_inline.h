@@ -7,6 +7,8 @@
 #ifndef INTRUSIVE_SPSC_QUEUE_INLINE_H_INCLUDED
 #define INTRUSIVE_SPSC_QUEUE_INLINE_H_INCLUDED
 
+#include <cstdint>
+
 namespace xray {
 
 template < typename T, typename BaseWithMember, T* BaseWithMember::*MemberNext >
@@ -32,7 +34,7 @@ inline void intrusive_spsc_queue<T,BaseWithMember,MemberNext>::push_back				( T*
 	R_ASSERT_CMP			( m_tail, !=, 0, "unexpected situation" );
 	R_ASSERT_CMP			( m_push_thread_id, ==, (long)threading::current_thread_id() );
 
-	R_ASSERT				( *(u32*)(&value) != 0xcccccccc );
+	R_ASSERT				( static_cast<u32>(reinterpret_cast<std::uintptr_t>(value)) != 0xccccccccu );
 
 	value->*MemberNext		= 0;
 	threading::interlocked_exchange_pointer	( (pvoid&)(m_head->*MemberNext), value );

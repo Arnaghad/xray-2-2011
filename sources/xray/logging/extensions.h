@@ -19,7 +19,6 @@
 #endif // #ifndef XRAY_LOG_MODULE_INITIATOR
 
 #include <functional>
-#include <boost/bind.hpp>
 #include <xray/logging/helper.h>
 #include <xray/logging/format_specifier.h>
 

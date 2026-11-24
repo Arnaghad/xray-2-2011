@@ -28,7 +28,10 @@ editor_world::editor_world(xray::editor::engine& engine) :
 
 editor_world::~editor_world()
 {
-	delete m_physics_world;
+	if (m_physics_world) {
+		physics::destroy_world(memory::g_crt_allocator, m_physics_world);
+		m_physics_world = nullptr;
+	}
 	delete m_sound_scene;
 	delete m_camera_view_output_window;
 	delete m_view_output_window;

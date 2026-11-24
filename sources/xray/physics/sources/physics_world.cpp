@@ -54,8 +54,7 @@ struct shell;
 
 static void register_cooks				( )
 {
-	static animated_model_instance_cook	animated_model_cook;
-	register_cook						( &animated_model_cook );
+	register_animated_model_instance_cook	( );
 }
 
 physics_world::physics_world( memory::base_allocator& allocator, engine& engine/*, xray::render::scene_ptr const& scene,	 render::debug::renderer &renderer*/ ) :
@@ -125,6 +124,14 @@ void physics_world::tick( )
 
 	//if( s_debug_render )
 	//	debug_render( scene(), renderer( ) );
+}
+
+void physics_world::step_fixed( float dt )
+{
+	if ( !m_b_ready || !(dt > 0.f) )
+		return;
+	ASSERT( m_scheduler );
+	m_scheduler->step( dt );
 }
 
 void physics_world::clear_resources( )

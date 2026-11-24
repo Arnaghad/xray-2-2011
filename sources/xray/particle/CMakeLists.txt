@@ -1,15 +1,29 @@
 cmake_minimum_required(VERSION 3.25)
 
-file(GLOB PARTICLE_SOURCES
-    "sources/*.cpp"
-    "sources/*.h"
-    "*.h"
+set(PARTICLE_SOURCES
+    sources/bounded_particle_template_cook.cpp
+    sources/color_matrix.cpp
+    sources/curve_line.cpp
+    sources/evaluate_type.cpp
+    sources/help_functions.cpp
+    sources/particle_actions.cpp
+    sources/particle_beam_emitter_instance.cpp
+    sources/particle_domains.cpp
+    sources/particle_emitter.cpp
+    sources/particle_emitter_instance.cpp
+    sources/particle_entry_point.cpp
+    sources/particle_library_linkage.cpp
+    sources/particle_system.cpp
+    sources/particle_system_instance.cpp
+    sources/particle_system_instance_cook.cpp
+    sources/particle_system_instance_impl.cpp
+    sources/particle_world.cpp
+    sources/particle_world_cooker.cpp
+    sources/pch.cpp
+    sources/preview_particle_system.cpp
+    sources/preview_particle_system_cooker.cpp
+    sources/preview_particle_system_instance.cpp
 )
-
-# Exclude legacy cooker files that reference APIs removed from the current engine
-# (fs::path_info, fs::open_file, resources::query_fs_iterator, etc.)
-list(FILTER PARTICLE_SOURCES EXCLUDE REGEX ".*particle_template_cooker\\.cpp$")
-list(FILTER PARTICLE_SOURCES EXCLUDE REGEX ".*particle_system_wrapper_cook\\.cpp$")
 
 add_library(xray_particle STATIC ${PARTICLE_SOURCES})
 

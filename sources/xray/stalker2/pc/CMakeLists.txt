@@ -8,7 +8,9 @@ set_source_files_properties(stalker2.rc PROPERTIES OBJECT_DEPENDS "${CMAKE_CURRE
 if(MSVC)
     target_link_options(stalker2 PRIVATE /MANIFEST:NO)
 endif()
-add_dependencies(stalker2 xray_editor_world)
+if(TARGET xray_editor_world)
+    add_dependencies(stalker2 xray_editor_world)
+endif()
 
 target_include_directories(stalker2 PRIVATE 
     "sources"
@@ -30,7 +32,6 @@ target_link_libraries(stalker2 PRIVATE
     xray_animation
     xray_render_vulkan
     xray_engine
-    xinput
     $<TARGET_LINKER_FILE:xray_engine>
 )
 

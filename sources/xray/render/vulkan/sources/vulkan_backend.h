@@ -59,6 +59,8 @@ public:
     void compute_to_vertex_barrier(rhi::rhi_buffer_handle) override;
     u32 register_bindless_texture(rhi::rhi_texture_handle) override;
     bool supports_bindless() const override { return m_bindless_enabled; }
+    bool synchronization2_enabled() const { return m_synchronization2_enabled; }
+    bool dynamic_rendering_enabled() const { return m_dynamic_rendering_enabled; }
     std::array<size_t,2> capture_storage() const;
     // Owner-thread opt-in timing. Memory accounting is active for every session.
     void enable_performance_timestamps();
@@ -103,7 +105,7 @@ public:
     void end_render_pass() override;
     void begin_presentation_pass(bool preserve_contents = false) override;
     void transition_texture(rhi::rhi_texture_handle, rhi::resource_state) override;
-    size_t pending_pass_objects() const { return m_retired_passes.size(); }
+    size_t pending_pass_objects() const { return 0; }
     size_t pipeline_count() const { return m_pipeline_map.size(); }
 	virtual bool            present() override;
 	virtual void			resize_swapchain(u32 width, u32 height) override;
@@ -161,6 +163,8 @@ private:
     bool m_non_solid_enabled=false;
 	bool m_shader_demote_enabled = false;
 	bool m_bindless_enabled = false;
+	bool m_synchronization2_enabled = false;
+	bool m_dynamic_rendering_enabled = false;
 	static constexpr u32 MAX_BINDLESS_2D = 1024;
 	static constexpr u32 MAX_BINDLESS_CUBE = 128;
 	VkPhysicalDevice	m_physical_device	= VK_NULL_HANDLE;
@@ -203,20 +207,8 @@ private:
     struct retired_sampler { u64 serial; VkSampler sampler; };
     std::list<retired_texture> m_retired_textures;
     std::list<retired_sampler> m_retired_samplers;
-    struct retired_pass {
-        u64 serial=0; VkRenderPass pass=VK_NULL_HANDLE; VkFramebuffer framebuffer=VK_NULL_HANDLE;
-        presentation_output* owner=nullptr;
-        std::array<VkImageView,5> views{};
-        std::array<VkAttachmentDescription,5> attachments{};
-        u32 attachment_count=0,color_count=0;
-        VkExtent2D extent{};
-    };
-    std::list<retired_pass> m_retired_passes;
-    std::list<retired_pass> m_cached_passes;
     u64 m_pass_pair_creations=0;
-    void retire_pass_cache(VkImageView view=VK_NULL_HANDLE,presentation_output* output=nullptr) noexcept;
-    bool m_pass_active = false, m_presentation_pass = false;
-    VkRenderPass m_active_render_pass = VK_NULL_HANDLE;
+    bool m_pass_active = false, m_presentation_pass = false, m_pass_has_stencil = false;
     VkExtent2D m_pass_extent = {};
     rhi::render_pass_desc m_pass_description;
     std::vector<u32> m_pass_color_formats;
@@ -309,8 +301,6 @@ private:
 	void	create_logical_device	();
 	void	create_window_surface	();
 	void	create_swapchain	();
-	void	create_render_pass	();
-	void	create_framebuffers	();
 	void	create_depth_resource	();
 	void	create_sync_objects	();
 	void	cleanup_swapchain	();

@@ -9,17 +9,27 @@
 #include <xray/memory_stack_allocator.h>
 #include <xray/intrusive_list.h>
 #include <xray/math_float3.h>
+#include <cstdarg>
+#include <cstdio>
 
 namespace xray {
 namespace strings {
 
 	inline pcstr make_str(pcstr format, ...)
 	{
+		static constexpr unsigned slot_count = 8;
+		static constexpr size_t slot_size = 512;
+		thread_local char buffers[slot_count][slot_size];
+		thread_local unsigned next_slot = 0;
+
+		char* const buf = buffers[next_slot];
+		next_slot = (next_slot + 1u) % slot_count;
+
 		va_list args;
 		va_start(args, format);
-		xray::debug::detail::string_helper h;
-		h.appendf_va_list(format, args);
-		return h.c_str();
+		std::vsnprintf(buf, slot_size, format, args);
+		va_end(args);
+		return buf;
 	}
 	inline pcstr make_str(bool b) {return b ? "+" : "-";}
 	inline pcstr make_str(float f) {return make_str("%f", f);}

@@ -7,6 +7,8 @@
 #ifndef XRAY_VFS_PLATFORM_CONFIGURATION_H_INCLUDED
 #define XRAY_VFS_PLATFORM_CONFIGURATION_H_INCLUDED
 
+#include <cstring>
+
 namespace xray {
 namespace vfs {
 
@@ -38,10 +40,12 @@ template <
 		 > 
 inline	PointerType	file_size_type_to_platform_pointer_impl (file_size_type value)
 {
-	PointerType								out_result;
+	PointerType								out_result{};
 	typedef typename	pointer_size_to_int_type<PointerSize>::int_type	pointer_int;
 	R_ASSERT								(value < std::numeric_limits<pointer_int>::max());
-	* (pointer_int *) & out_result		=	(pointer_int)value;
+	pointer_int const raw					= static_cast<pointer_int>(value);
+	static_assert							(sizeof(out_result) >= sizeof(raw), "platform_pointer size mismatch");
+	std::memcpy								(&out_result, &raw, sizeof(raw));
 	return									out_result;
 }
 

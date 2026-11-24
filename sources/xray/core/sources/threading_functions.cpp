@@ -117,7 +117,7 @@ thread_id_type spawn	(
 	thread_id_type const out_thread_id	= spawn_internal( argument, 8*1024*1024 + stack_size );
 
 	if ( out_handle )
-		*out_handle						= *(pvoid*)&out_thread_id;
+		*out_handle						= reinterpret_cast<pvoid>( static_cast<std::uintptr_t>( out_thread_id ) );
 
 	while ( !argument.processed )
 		yield							( 0 );

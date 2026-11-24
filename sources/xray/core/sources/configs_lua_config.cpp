@@ -669,17 +669,20 @@ static void construct(xray::configs::lua_config_value const &value,
   item.count = 0;
   switch (item.type) {
   case t_boolean: {
-    *(u32 *)&item.data = bool(value) ? 1 : 0;
+    u32 const raw = bool(value) ? 1u : 0u;
+    std::memcpy(&item.data, &raw, sizeof(raw));
     item.count = sizeof(u32);
     break;
   }
   case t_integer: {
-    *(u32 *)&item.data = value;
+    u32 const raw = value;
+    std::memcpy(&item.data, &raw, sizeof(raw));
     item.count = sizeof(u32);
     break;
   }
   case t_float: {
-    *(float *)&item.data = value;
+    float const raw = value;
+    std::memcpy(&item.data, &raw, sizeof(raw));
     item.count = sizeof(float);
     break;
   }

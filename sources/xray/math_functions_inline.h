@@ -7,6 +7,7 @@
 #ifndef XRAY_MATH_FUNCTIONS_INLINE_H_INCLUDED
 #define XRAY_MATH_FUNCTIONS_INLINE_H_INCLUDED
 
+#include <bit>
 #include <cmath>
 #include "math_float3.h"
 
@@ -163,8 +164,7 @@ inline u64 max			( u64 left, u64 right )
 inline float abs		( float value )
 {
 	R_ASSERT	( valid(value) );
-	u32			bit_value = (*(u32*)&value) & 0x7fffffff;
-	return		( *( float* )&bit_value );
+	return		std::bit_cast<float>( std::bit_cast<u32>(value) & 0x7fffffffu );
 }
 
 // http://graphics.stanford.edu/~seander/bithacks.html#IntegerAbs
@@ -176,8 +176,8 @@ inline int abs			( int value )
 
 inline s64 abs			( s64 value )
 {
-	int const	mask = value >> ( sizeof(s64) * 8 - 1 );
-	return		( (value + mask) ^ mask );
+	u64 const	raw = static_cast<u64>( value );
+	return		value < 0 ? static_cast<s64>( 0u - raw ) : value;
 }
 
 template < typename T >
@@ -405,37 +405,13 @@ inline bool valid		( float const& value )
 inline int floor		( float const value )
 {
 	R_ASSERT		( valid( value ) );
-	int value_raw	= *(int const * )( &value );
-	value_raw		= value_raw ^ ((value_raw ^ (value_raw & (value_raw - 1))) & 0x80000000);
-	int exponent	= ( 127 + 31 ) - ( ( value_raw >> 23 ) & 0xff );
-	int result		= (((u32)(value_raw) << 8 ) | ( 1U << 31 ) ) >> exponent;
-	exponent		+= 31 - 127;
-	int imask		= (!(((( (1<<(exponent)))-1)>>8) & value_raw ) );
-	exponent		-= (31 - 127) + 32;
-	exponent		>>= 31;
-	value_raw		>>=	31;
-	result			-= imask & value_raw;
-	result			&= exponent;
-	result			^= value_raw;
-	return			result;
+	return			static_cast<int>( std::floor( value ) );
 }
 
 inline int ceil			( float const value )
 {
 	R_ASSERT		( valid( value ) );
-	int value_raw	= *( int const* )( &value );
-	value_raw		= value_raw ^ ((value_raw ^ (value_raw & (value_raw - 1))) & 0x80000000);
-	int exponent	= ( 127 + 31 ) - ( (value_raw >> 23) & 0xff );
-	int result		= (((u32)(value_raw) << 8) | (1U << 31)) >> exponent;
-	exponent		+= 31 - 127;
-	int imask		= (!(((( (1 << (exponent))) - 1) >> 8) & value_raw ) );
-	exponent		-= (31 - 127) + 32;
-	exponent		>>=	31;
-	value_raw		= ~((value_raw - 1) >> 31);		/* change sign */
-	result			-= imask & value_raw;
-	result			&= exponent;
-	result			^= value_raw;
-	return			-result;
+	return			static_cast<int>( std::ceil( value ) );
 }
 
 inline sine_cosine::sine_cosine	( float const angle ) :
@@ -452,7 +428,7 @@ inline T type_epsilon	( )
 
 inline bool negative	( float value )
 {
-	return			( !!( horrible_cast<float,int>(value).second & 0x80000000 ) );
+	return			( std::bit_cast<u32>(value) & 0x80000000u ) != 0;
 }
 
 inline float deg2rad	( float const value )

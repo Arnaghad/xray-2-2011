@@ -106,8 +106,7 @@ bool   device_manager::do_async_operation (fs_new::file_type *							file,
 	COMPILE_ASSERT	(	sizeof(OVERLAPPED) == sizeof(device_manager::m_overlapped), 
 						please_change_buffer_size );
 
-	OVERLAPPED & overlapped				=	(OVERLAPPED &)m_overlapped;
-	overlapped = {};
+	OVERLAPPED overlapped				=	{};
 	overlapped.hEvent					=	m_async_file_operation_finished_event.get_handle();
 	if ( sector_aligned )
 	{

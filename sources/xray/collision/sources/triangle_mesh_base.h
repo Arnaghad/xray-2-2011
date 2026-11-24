@@ -9,6 +9,9 @@
 
 #include <xray/collision/geometry.h>
 #include <xray/collision/object.h>
+#if defined(XRAY_COLLISION_USE_BULLET_BVH) && XRAY_COLLISION_USE_BULLET_BVH
+#include "bullet_mesh_bvh.h"
+#else
 #include "colliders_aabb_geometry.h"
 
 namespace Opcode {
@@ -16,6 +19,7 @@ namespace Opcode {
 	class MeshInterface;
 	class Model;
 } // namespace Opcode
+#endif
 
 namespace xray {
 namespace collision {
@@ -35,8 +39,12 @@ public:
 	virtual	u32 const*			indices			( u32 triangle_id ) const;
 	virtual	u32					index_count		( ) const;
 	
+#if !(defined(XRAY_COLLISION_USE_BULLET_BVH) && XRAY_COLLISION_USE_BULLET_BVH)
 	Opcode::AABBNoLeafNode const* root			( ) const;
 	inline Opcode::MeshInterface* mesh			( ) const { return m_mesh; }
+#else
+	void				update_mesh_pointers	( float3 const* vertices, u32 const* indices );
+#endif
 
 	virtual	void		add_triangles			( triangles_type& triangles ) const;
 
@@ -84,9 +92,13 @@ protected:
 protected:
 	math::aabb 						m_bounding_aabb;
 	mutable memory::base_allocator*	m_allocator;
+#if defined(XRAY_COLLISION_USE_BULLET_BVH) && XRAY_COLLISION_USE_BULLET_BVH
+	bullet_mesh_bvh					m_bullet_bvh;
+#else
 	Opcode::MeshInterface*			m_mesh;
 	Opcode::Model*					m_model;
 	Opcode::AABBNoLeafNode const*	m_root;
+#endif
 }; // class world
 
 } // namespace collision

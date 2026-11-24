@@ -17,24 +17,31 @@ struct disk_value { u64 id,data; u32 crc; u16 type,count; };
 static_assert(sizeof(disk_value)==sizeof(configs::binary_config_value));
 static_assert(offsetof(configs::binary_config_value,data)==8 && offsetof(configs::binary_config_value,type)==20);
 class config_preflight {
-    unsigned char const* bytes;
-    size_t size;
+    std::span<std::byte const> bytes;
     std::set<size_t> visited;
     std::vector<disk_value> nodes;
     void range(u64 offset,size_t count) const {
-        if (offset>size || count>size-size_t(offset)) throw std::runtime_error("Truncated binary config reference");
+        if (offset>bytes.size() || count>bytes.size()-size_t(offset)) throw std::runtime_error("Truncated binary config reference");
+    }
+    template <typename T>
+    T read_pod(u64 offset) const {
+        range(offset,sizeof(T));
+        T out{};
+        auto slice=bytes.subspan(size_t(offset),sizeof(T));
+        std::memcpy(&out,slice.data(),sizeof(T));
+        return out;
     }
     void visit(u64 offset,unsigned depth) {
-        range(offset,sizeof(disk_value));
         if (offset%sizeof(disk_value) || depth>32 || nodes.size()>=4096 || !visited.insert(size_t(offset)).second)
             throw std::runtime_error("Cyclic, shared, unaligned or oversized binary config tree");
-        disk_value value; std::memcpy(&value,bytes+offset,sizeof(value)); nodes.push_back(value);
+        disk_value value=read_pod<disk_value>(offset);
+        nodes.push_back(value);
         if (value.type==configs::t_table_named || value.type==configs::t_table_indexed) {
             range(value.data,size_t(value.count)*sizeof(disk_value));
             u32 previous=0; std::set<std::string_view> names;
             for (size_t i=0;i<value.count;++i) {
-                disk_value child; auto child_offset=value.data+i*sizeof(disk_value);
-                std::memcpy(&child,bytes+child_offset,sizeof(child));
+                auto child_offset=value.data+i*sizeof(disk_value);
+                disk_value child=read_pod<disk_value>(child_offset);
                 if (value.type==configs::t_table_named) {
                     auto name=string(child.id);
                     crc32_type crc; crc.process_block(name,name+std::strlen(name));
@@ -63,13 +70,15 @@ class config_preflight {
     }
     pcstr string(u64 offset) const {
         range(offset,1);
-        auto* text=reinterpret_cast<pcstr>(bytes+offset);
-        if (!std::memchr(text,0,size-size_t(offset))) throw std::runtime_error("Unterminated binary config string");
+        auto tail=bytes.subspan(size_t(offset));
+        auto* text=reinterpret_cast<pcstr>(tail.data());
+        if (!std::memchr(text,0,tail.size())) throw std::runtime_error("Unterminated binary config string");
         return text;
     }
 public:
-    explicit config_preflight(const_buffer source) : bytes(static_cast<unsigned char const*>(source.c_ptr())),size(source.size()) {
-        if (!bytes || size<sizeof(disk_value) || size>1024*1024) throw std::runtime_error("Expected a bounded Windows binary config");
+    explicit config_preflight(std::span<std::byte const> source) : bytes(source) {
+        if (bytes.empty() || !bytes.data() || bytes.size()<sizeof(disk_value) || bytes.size()>1024*1024)
+            throw std::runtime_error("Expected a bounded Windows binary config");
         visit(0,0);
         size_t fat_size=nodes.size()*sizeof(disk_value);
         if (*visited.rbegin()+sizeof(disk_value)!=fat_size || nodes[0].id || nodes[0].type!=configs::t_table_named)
@@ -83,9 +92,12 @@ public:
     }
 };
 }
-checked_config::checked_config(const_buffer source,memory::base_allocator& allocator) {
+checked_config::checked_config(std::span<std::byte const> source,memory::base_allocator& allocator) {
     config_preflight checked(source);
-    m_config=std::make_unique<core::configs::binary_config>(static_cast<pcbyte>(source.c_ptr()),u32(source.size()),&allocator);
+    m_config=std::make_unique<core::configs::binary_config>(reinterpret_cast<pcbyte>(source.data()),u32(source.size()),&allocator);
+}
+checked_config::checked_config(const_buffer source,memory::base_allocator& allocator)
+    : checked_config(std::span<std::byte const>(static_cast<std::byte const*>(source.c_ptr()),source.size()),allocator) {
 }
 checked_config::~checked_config() = default;
 configs::binary_config_value const& checked_config::root() const { return m_config->get_root(); }

@@ -114,7 +114,7 @@ bool try_to_allocate_arenas_as_a_single_block	(
 	u64 const pure_total_size	= total_size;
 	total_size					= xray::math::align_up( total_size, (u64)allocation_granularity( ) );
 
-	pbyte arena					= (pbyte)::allocate_region( total_size, *(pvoid*)&start_address, additional_flags, false );
+	pbyte arena					= (pbyte)::allocate_region( total_size, reinterpret_cast<pvoid>( static_cast<std::uintptr_t>( start_address ) ), additional_flags, false );
 	R_ASSERT_U					( !assert_on_failure || arena );
 	if ( !arena )
 		return					false;

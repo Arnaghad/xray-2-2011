@@ -147,7 +147,6 @@ void vulkan_backend::close_output(std::shared_ptr<presentation_output> const& ou
         m_completed_serial=std::max(m_completed_serial,m_frames->serials[i]);
     }
     wait_for_presentations();
-    retire_pass_cache(VK_NULL_HANDLE,output.get());
     destroy_output_objects(); m_outputs.erase(entry);
     m_frames=&m_idle_frames;
     if (!m_outputs.empty()) select_output(previous==output ? m_outputs.front().presentation : previous);
@@ -161,9 +160,6 @@ void vulkan_backend::destroy_output_objects() noexcept {
         for (size_t i=0;i<m_output->present_pending.size();++i)
             if (m_output->present_pending[i]) vkWaitForFences(m_device,1,&m_output->present_fences[i],VK_TRUE,UINT64_MAX);
         cleanup_capture(); cleanup_material_frames(); cleanup_swapchain();
-        if (m_output->render_pass) vkDestroyRenderPass(m_device,m_output->render_pass,allocation_callbacks());
-        if (m_output->load_render_pass) vkDestroyRenderPass(m_device,m_output->load_render_pass,allocation_callbacks());
-        m_output->render_pass=m_output->load_render_pass=VK_NULL_HANDLE;
         for (u32 i=0;i<MAX_FRAMES_IN_FLIGHT;++i) {
             if (m_frames->image_available[i]) vkDestroySemaphore(m_device,m_frames->image_available[i],allocation_callbacks());
             if (m_frames->in_flight[i]) vkDestroyFence(m_device,m_frames->in_flight[i],allocation_callbacks());
@@ -230,9 +226,8 @@ void vulkan_backend::shutdown() noexcept {
 	m_initialized = false;
 	m_recording = false;
 	m_frame_submitted = false;
-    m_pass_active = m_presentation_pass = false;
+    m_pass_active = m_presentation_pass = m_pass_has_stencil = false;
     m_presentation_contents = false;
-    m_active_render_pass = VK_NULL_HANDLE;
     m_pass_description = {}; m_pass_color_formats.clear(); m_pass_depth_format = 0;
 	if (m_device != VK_NULL_HANDLE) {
 		VkResult const idle = vkDeviceWaitIdle(m_device);
@@ -599,12 +594,12 @@ void vulkan_backend::create_logical_device() {
 	VkDeviceCreateInfo device_create_info = {};
 	VkPhysicalDeviceVulkan12Features vk12_supported = {};
 	vk12_supported.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VULKAN_1_2_FEATURES;
-	VkPhysicalDeviceShaderDemoteToHelperInvocationFeatures demote = {};
-	demote.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SHADER_DEMOTE_TO_HELPER_INVOCATION_FEATURES;
-	demote.pNext = &vk12_supported;
+	VkPhysicalDeviceVulkan13Features vk13_supported = {};
+	vk13_supported.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VULKAN_1_3_FEATURES;
+	vk13_supported.pNext = &vk12_supported;
 	VkPhysicalDeviceFeatures2 supported_features = {};
 	supported_features.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FEATURES_2;
-	supported_features.pNext = &demote;
+	supported_features.pNext = &vk13_supported;
 	vkGetPhysicalDeviceFeatures2(m_physical_device, &supported_features);
 	VkPhysicalDeviceFeatures enabled_features = {};
 	enabled_features.textureCompressionBC = supported_features.features.textureCompressionBC;
@@ -612,12 +607,22 @@ void vulkan_backend::create_logical_device() {
     enabled_features.sampleRateShading=supported_features.features.sampleRateShading;
     m_sample_shading_enabled=enabled_features.sampleRateShading==VK_TRUE;
 	m_bc_textures_enabled = enabled_features.textureCompressionBC == VK_TRUE;
-	m_shader_demote_enabled = demote.shaderDemoteToHelperInvocation == VK_TRUE;
+	m_shader_demote_enabled = vk13_supported.shaderDemoteToHelperInvocation == VK_TRUE;
 	m_bindless_enabled = props.apiVersion >= VK_API_VERSION_1_2
 		&& vk12_supported.descriptorIndexing == VK_TRUE
 		&& vk12_supported.shaderSampledImageArrayNonUniformIndexing == VK_TRUE
 		&& vk12_supported.descriptorBindingPartiallyBound == VK_TRUE
 		&& vk12_supported.descriptorBindingSampledImageUpdateAfterBind == VK_TRUE;
+	m_synchronization2_enabled = props.apiVersion >= VK_API_VERSION_1_3 && vk13_supported.synchronization2 == VK_TRUE;
+	m_dynamic_rendering_enabled = props.apiVersion >= VK_API_VERSION_1_3 && vk13_supported.dynamicRendering == VK_TRUE;
+	if (!m_synchronization2_enabled || !m_dynamic_rendering_enabled)
+		throw ::std::runtime_error("Vulkan 1.3 synchronization2 and dynamicRendering required");
+	VkPhysicalDeviceVulkan13Features vk13_enabled = {};
+	vk13_enabled.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VULKAN_1_3_FEATURES;
+	vk13_enabled.synchronization2 = VK_TRUE;
+	vk13_enabled.dynamicRendering = VK_TRUE;
+	vk13_enabled.shaderDemoteToHelperInvocation = m_shader_demote_enabled ? VK_TRUE : VK_FALSE;
+	vk13_enabled.pNext = m_present_fences_enabled ? &maintenance : nullptr;
 	VkPhysicalDeviceVulkan12Features vk12_enabled = {};
 	vk12_enabled.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VULKAN_1_2_FEATURES;
 	if (m_bindless_enabled) {
@@ -625,10 +630,7 @@ void vulkan_backend::create_logical_device() {
 		vk12_enabled.shaderSampledImageArrayNonUniformIndexing = VK_TRUE;
 		vk12_enabled.descriptorBindingPartiallyBound = VK_TRUE;
 		vk12_enabled.descriptorBindingSampledImageUpdateAfterBind = VK_TRUE;
-		demote.pNext = &vk12_enabled;
-		vk12_enabled.pNext = m_present_fences_enabled ? &maintenance : nullptr;
-	} else {
-		demote.pNext = m_present_fences_enabled ? &maintenance : nullptr;
+		vk12_enabled.pNext = &vk13_enabled;
 	}
 	device_create_info.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
 	device_create_info.pEnabledFeatures = &enabled_features;
@@ -636,7 +638,7 @@ void vulkan_backend::create_logical_device() {
 	device_create_info.queueCreateInfoCount = (uint32_t)queue_create_infos.size();
 	device_create_info.enabledExtensionCount = static_cast<uint32_t>(device_extensions.size());
 	device_create_info.ppEnabledExtensionNames = device_extensions.data();
-	device_create_info.pNext = &demote;
+	device_create_info.pNext = m_bindless_enabled ? static_cast<void*>(&vk12_enabled) : static_cast<void*>(&vk13_enabled);
 
     VkDevice candidate = VK_NULL_HANDLE;
     VkResult result = vkCreateDevice(m_physical_device, &device_create_info, allocation_callbacks(), &candidate);
@@ -655,7 +657,7 @@ void vulkan_backend::create_logical_device() {
 
 	create_pipeline_layout();
 	record_device(props.deviceName, props.apiVersion, m_present_fences_enabled);
-	diagnostic("info", "Present fences: %s, Vulkan 1.2 bindless: %s",
+	diagnostic("info", "Present fences: %s, Vulkan 1.2 bindless: %s, Vulkan 1.3 sync2/dynamicRendering: enabled",
 		m_present_fences_enabled ? "enabled" : "disabled",
 		m_bindless_enabled ? "enabled" : "disabled");
 }
@@ -852,85 +854,6 @@ void vulkan_backend::create_swapchain() {
 }
 
 // -----------------------------------------------------------------------
-// Render Pass
-// -----------------------------------------------------------------------
-
-void vulkan_backend::create_render_pass() {
-	// Color attachment (swapchain image)
-	VkAttachmentDescription color_attachment = {};
-	color_attachment.format         = m_output->swapchain_format;
-	color_attachment.samples        = VK_SAMPLE_COUNT_1_BIT;
-	color_attachment.loadOp         = VK_ATTACHMENT_LOAD_OP_CLEAR;
-	color_attachment.storeOp        = VK_ATTACHMENT_STORE_OP_STORE;
-	color_attachment.stencilLoadOp  = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
-	color_attachment.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
-	color_attachment.initialLayout  = VK_IMAGE_LAYOUT_UNDEFINED;
-	color_attachment.finalLayout    = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
-
-	VkAttachmentReference color_attachment_ref = {};
-	color_attachment_ref.attachment = 0;
-	color_attachment_ref.layout     = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
-
-	// Depth attachment
-	m_output->depth_format = find_depth_format();
-
-	VkAttachmentDescription depth_attachment = {};
-	depth_attachment.format         = m_output->depth_format;
-	depth_attachment.samples        = VK_SAMPLE_COUNT_1_BIT;
-	depth_attachment.loadOp         = VK_ATTACHMENT_LOAD_OP_CLEAR;
-	depth_attachment.storeOp        = VK_ATTACHMENT_STORE_OP_STORE;
-	depth_attachment.stencilLoadOp  = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
-	depth_attachment.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
-	depth_attachment.initialLayout  = VK_IMAGE_LAYOUT_UNDEFINED;
-	depth_attachment.finalLayout    = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
-
-	VkAttachmentReference depth_attachment_ref = {};
-	depth_attachment_ref.attachment = 1;
-	depth_attachment_ref.layout     = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
-
-	// Single subpass
-	VkSubpassDescription subpass = {};
-	subpass.pipelineBindPoint       = VK_PIPELINE_BIND_POINT_GRAPHICS;
-	subpass.colorAttachmentCount    = 1;
-	subpass.pColorAttachments       = &color_attachment_ref;
-	subpass.pDepthStencilAttachment = &depth_attachment_ref;
-
-	// Subpass dependency: ensures the swapchain image is transitioned
-	// before we try to write to it
-	VkSubpassDependency dependency = {};
-	dependency.srcSubpass    = VK_SUBPASS_EXTERNAL;
-	dependency.dstSubpass    = 0;
-	dependency.srcStageMask  = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT
-	                         | VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT | VK_PIPELINE_STAGE_LATE_FRAGMENT_TESTS_BIT;
-	dependency.srcAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT | VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT;
-	dependency.dstStageMask  = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT
-	                         | VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT | VK_PIPELINE_STAGE_LATE_FRAGMENT_TESTS_BIT;
-	dependency.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT | VK_ACCESS_COLOR_ATTACHMENT_READ_BIT
-	                         | VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT | VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_READ_BIT;
-
-	::std::array<VkAttachmentDescription, 2> attachments = { color_attachment, depth_attachment };
-
-	VkRenderPassCreateInfo render_pass_info = {};
-	render_pass_info.sType           = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
-	render_pass_info.attachmentCount = (uint32_t)attachments.size();
-	render_pass_info.pAttachments    = attachments.data();
-	render_pass_info.subpassCount    = 1;
-	render_pass_info.pSubpasses      = &subpass;
-	render_pass_info.dependencyCount = 1;
-	render_pass_info.pDependencies   = &dependency;
-
-    vk_check(create_handle(m_output->render_pass, vkCreateRenderPass,
-        m_device, &render_pass_info, allocation_callbacks()), "Create presentation render pass");
-    attachments[0].loadOp = VK_ATTACHMENT_LOAD_OP_LOAD;
-    attachments[0].initialLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
-    attachments[1].loadOp = VK_ATTACHMENT_LOAD_OP_LOAD;
-    attachments[1].initialLayout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
-    vk_check(create_handle(m_output->load_render_pass, vkCreateRenderPass,
-        m_device, &render_pass_info, allocation_callbacks()), "Create preserving presentation pass");
-	diagnostic("info", "Vulkan render pass created (color + depth)");
-}
-
-// -----------------------------------------------------------------------
 // Depth Format Selection
 // -----------------------------------------------------------------------
 
@@ -973,6 +896,7 @@ uint32_t vulkan_backend::find_memory_type(uint32_t type_filter, VkMemoryProperty
 // -----------------------------------------------------------------------
 
 void vulkan_backend::create_depth_resource() {
+	m_output->depth_format = find_depth_format();
 	m_output->depth_attachments.resize(m_output->swapchain_images.size());
 	for (auto& depth : m_output->depth_attachments) {
 
@@ -1022,34 +946,6 @@ void vulkan_backend::create_depth_resource() {
 }
 
 // -----------------------------------------------------------------------
-// Framebuffers (one per swapchain image)
-// -----------------------------------------------------------------------
-
-void vulkan_backend::create_framebuffers() {
-	m_output->framebuffers.resize(m_output->swapchain_image_views.size());
-
-	for (size_t i = 0; i < m_output->swapchain_image_views.size(); ++i) {
-		::std::array<VkImageView, 2> attachments = {
-			m_output->swapchain_image_views[i],
-		m_output->depth_attachments[i].view
-		};
-
-		VkFramebufferCreateInfo fb_info = {};
-		fb_info.sType           = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
-		fb_info.renderPass      = m_output->render_pass;
-		fb_info.attachmentCount = (uint32_t)attachments.size();
-		fb_info.pAttachments    = attachments.data();
-		fb_info.width           = m_output->swapchain_extent.width;
-		fb_info.height          = m_output->swapchain_extent.height;
-		fb_info.layers          = 1;
-
-        vk_check(create_handle(m_output->framebuffers[i], vkCreateFramebuffer,
-            m_device, &fb_info, allocation_callbacks()), "Create presentation framebuffer");
-	}
-	diagnostic("info", "Vulkan framebuffers created (%zu)", m_output->framebuffers.size());
-}
-
-// -----------------------------------------------------------------------
 // Sync Objects
 // -----------------------------------------------------------------------
 
@@ -1075,12 +971,6 @@ void vulkan_backend::create_sync_objects() {
 // -----------------------------------------------------------------------
 
 void vulkan_backend::cleanup_swapchain() {
-	for (auto& fb : m_output->framebuffers) {
-		if (fb != VK_NULL_HANDLE)
-			vkDestroyFramebuffer(m_device, fb, allocation_callbacks());
-	}
-	m_output->framebuffers.clear();
-
 	for (auto const& depth : m_output->depth_attachments) {
 		if (depth.view) vkDestroyImageView(m_device, depth.view, allocation_callbacks());
 		if (depth.image) vkDestroyImage(m_device, depth.image, allocation_callbacks());
@@ -1147,16 +1037,10 @@ bool vulkan_backend::refresh_swapchain() {
 	collect_retired();
 	wait_for_presentations();
 	cleanup_swapchain();
-	// Pipelines depend on attachment formats/count, not framebuffer dimensions.
+	// Pipelines depend on dynamic rendering attachment formats, not swapchain dimensions.
 	// The full compatibility signature selects a new pipeline if formats change.
-	if (m_output->render_pass) vkDestroyRenderPass(m_device, m_output->render_pass, allocation_callbacks());
-	m_output->render_pass = VK_NULL_HANDLE;
-    if (m_output->load_render_pass) vkDestroyRenderPass(m_device, m_output->load_render_pass, allocation_callbacks());
-    m_output->load_render_pass = VK_NULL_HANDLE;
 	create_swapchain();
-	create_render_pass();
 	create_depth_resource();
-	create_framebuffers();
 	m_output->swapchain_dirty = false;
 	record_swapchain_recreation();
 	return true;
@@ -1241,9 +1125,28 @@ bool vulkan_backend::end_frame() {
 	VkCommandBuffer cmd = m_frames->command_buffers[m_frames->current_frame];
 
     end_render_pass();
-	if (m_frames->capture_enabled) record_capture(cmd);
+	if (m_frames->capture_enabled) {
+        record_capture(cmd);
+    } else {
+        VkImageMemoryBarrier2 to_present = {};
+        to_present.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER_2;
+        to_present.srcStageMask = VK_PIPELINE_STAGE_2_COLOR_ATTACHMENT_OUTPUT_BIT;
+        to_present.srcAccessMask = VK_ACCESS_2_COLOR_ATTACHMENT_WRITE_BIT;
+        to_present.dstStageMask = VK_PIPELINE_STAGE_2_NONE;
+        to_present.dstAccessMask = VK_ACCESS_2_NONE;
+        to_present.oldLayout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+        to_present.newLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
+        to_present.srcQueueFamilyIndex = to_present.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+        to_present.image = m_output->swapchain_images[m_output->current_image_index];
+        to_present.subresourceRange = {VK_IMAGE_ASPECT_COLOR_BIT, 0, 1, 0, 1};
+        VkDependencyInfo dep = {};
+        dep.sType = VK_STRUCTURE_TYPE_DEPENDENCY_INFO;
+        dep.imageMemoryBarrierCount = 1;
+        dep.pImageMemoryBarriers = &to_present;
+        vkCmdPipelineBarrier2(cmd, &dep);
+    }
     if (m_performance_enabled)
-        vkCmdWriteTimestamp(cmd,VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT,m_frames->timestamps,m_frames->current_frame*2+1);
+        vkCmdWriteTimestamp2(cmd,VK_PIPELINE_STAGE_2_BOTTOM_OF_PIPE_BIT,m_frames->timestamps,m_frames->current_frame*2+1);
 	m_recording = false;
 	VkResult const recorded = vkEndCommandBuffer(cmd);
 	if (recorded != VK_SUCCESS) {
@@ -1252,24 +1155,33 @@ bool vulkan_backend::end_frame() {
 		return false;
 	}
 
-	// Submit with synchronization
-	VkSemaphore wait_semaphores[]   = { m_frames->image_available[m_frames->current_frame] };
-	VkPipelineStageFlags wait_stages[] = { VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT };
-	VkSemaphore signal_semaphores[] = { m_output->render_finished_semaphores[m_output->current_image_index] };
+	// Submit with synchronization2
+	VkSemaphoreSubmitInfo wait_info = {};
+	wait_info.sType = VK_STRUCTURE_TYPE_SEMAPHORE_SUBMIT_INFO;
+	wait_info.semaphore = m_frames->image_available[m_frames->current_frame];
+	wait_info.stageMask = VK_PIPELINE_STAGE_2_COLOR_ATTACHMENT_OUTPUT_BIT;
 
-	VkSubmitInfo submit_info = {};
-	submit_info.sType                = VK_STRUCTURE_TYPE_SUBMIT_INFO;
-	submit_info.waitSemaphoreCount   = 1;
-	submit_info.pWaitSemaphores      = wait_semaphores;
-	submit_info.pWaitDstStageMask    = wait_stages;
-	submit_info.commandBufferCount   = 1;
-	submit_info.pCommandBuffers      = &cmd;
-	submit_info.signalSemaphoreCount = 1;
-	submit_info.pSignalSemaphores    = signal_semaphores;
+	VkCommandBufferSubmitInfo cmd_info = {};
+	cmd_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_SUBMIT_INFO;
+	cmd_info.commandBuffer = cmd;
+
+	VkSemaphoreSubmitInfo signal_info = {};
+	signal_info.sType = VK_STRUCTURE_TYPE_SEMAPHORE_SUBMIT_INFO;
+	signal_info.semaphore = m_output->render_finished_semaphores[m_output->current_image_index];
+	signal_info.stageMask = VK_PIPELINE_STAGE_2_ALL_COMMANDS_BIT;
+
+	VkSubmitInfo2 submit_info = {};
+	submit_info.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO_2;
+	submit_info.waitSemaphoreInfoCount = 1;
+	submit_info.pWaitSemaphoreInfos = &wait_info;
+	submit_info.commandBufferInfoCount = 1;
+	submit_info.pCommandBufferInfos = &cmd_info;
+	submit_info.signalSemaphoreInfoCount = 1;
+	submit_info.pSignalSemaphoreInfos = &signal_info;
 
 	// Reset only after successful command recording, immediately before submit.
 	vk_check(vkResetFences(m_device, 1, &m_frames->in_flight[m_frames->current_frame]), "Reset submit fence");
-    VkResult submitted = vkQueueSubmit(m_graphics_queue, 1, &submit_info, m_frames->in_flight[m_frames->current_frame]);
+    VkResult submitted = vkQueueSubmit2(m_graphics_queue, 1, &submit_info, m_frames->in_flight[m_frames->current_frame]);
 	if (submitted != VK_SUCCESS) {
 		diagnostic("error", "Submit draw command buffer failed (VkResult=%d)", static_cast<int>(submitted));
 		m_initialized = false;
@@ -1543,6 +1455,7 @@ VkPipeline vulkan_backend::get_or_create_pipeline(pipeline_state_desc const& des
     key.color_format = key.color_formats.empty() ? 0 : key.color_formats[0];
     key.depth_format = m_pass_depth_format;
     key.samples=m_pass_samples;
+    key.has_stencil = m_pass_has_stencil;
     if (desc.stencil_enable && key.depth_format != VK_FORMAT_D24_UNORM_S8_UINT && key.depth_format != VK_FORMAT_D32_SFLOAT_S8_UINT)
         throw std::runtime_error("Stencil draw requires a stencil attachment");
 	auto it = m_pipeline_map.find(key);
@@ -1646,8 +1559,21 @@ VkPipeline vulkan_backend::get_or_create_pipeline(pipeline_state_desc const& des
 	dynamic_state_info.dynamicStateCount = (uint32_t)dynamic_states.size();
 	dynamic_state_info.pDynamicStates = dynamic_states.data();
 
+	std::vector<VkFormat> color_vk_formats;
+	color_vk_formats.reserve(key.color_formats.size());
+	for (u32 fmt : key.color_formats)
+		color_vk_formats.push_back(static_cast<VkFormat>(fmt));
+
+	VkPipelineRenderingCreateInfo rendering_info = {};
+	rendering_info.sType = VK_STRUCTURE_TYPE_PIPELINE_RENDERING_CREATE_INFO;
+	rendering_info.colorAttachmentCount = static_cast<uint32_t>(color_vk_formats.size());
+	rendering_info.pColorAttachmentFormats = color_vk_formats.empty() ? nullptr : color_vk_formats.data();
+	rendering_info.depthAttachmentFormat = static_cast<VkFormat>(key.depth_format);
+	rendering_info.stencilAttachmentFormat = key.has_stencil ? static_cast<VkFormat>(key.depth_format) : VK_FORMAT_UNDEFINED;
+
 	VkGraphicsPipelineCreateInfo pipeline_info = {};
 	pipeline_info.sType = VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
+	pipeline_info.pNext = &rendering_info;
 	pipeline_info.stageCount = (uint32_t)shader_stages.size();
 	pipeline_info.pStages = shader_stages.data();
 	pipeline_info.pVertexInputState = &vertex_input_info;
@@ -1659,7 +1585,7 @@ VkPipeline vulkan_backend::get_or_create_pipeline(pipeline_state_desc const& des
 	pipeline_info.pColorBlendState = &color_blending;
 	pipeline_info.pDynamicState = &dynamic_state_info;
 	pipeline_info.layout = m_pipeline_layout;
-	pipeline_info.renderPass = m_active_render_pass;
+	pipeline_info.renderPass = VK_NULL_HANDLE;
 	pipeline_info.subpass = 0;
 
 	VkPipeline pipeline = VK_NULL_HANDLE;

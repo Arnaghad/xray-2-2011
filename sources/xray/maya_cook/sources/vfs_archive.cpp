@@ -4,6 +4,7 @@
 #include <cstring>
 #include <fstream>
 #include <memory>
+#include <span>
 #include <stdexcept>
 
 namespace xray::maya_cook::detail {
@@ -23,15 +24,24 @@ std::uint32_t align8(std::uint32_t v) {
     return (v + 7u) & ~7u;
 }
 
-void write_u16(std::vector<std::uint8_t>& buf, std::size_t off, std::uint16_t v) {
+void write_u16(std::span<std::uint8_t> buf, std::size_t off, std::uint16_t v) {
+    if (off > buf.size() || sizeof(v) > buf.size() - off) {
+        throw std::out_of_range("VFS archive write_u16 out of bounds");
+    }
     std::memcpy(buf.data() + off, &v, sizeof(v));
 }
 
-void write_u32(std::vector<std::uint8_t>& buf, std::size_t off, std::uint32_t v) {
+void write_u32(std::span<std::uint8_t> buf, std::size_t off, std::uint32_t v) {
+    if (off > buf.size() || sizeof(v) > buf.size() - off) {
+        throw std::out_of_range("VFS archive write_u32 out of bounds");
+    }
     std::memcpy(buf.data() + off, &v, sizeof(v));
 }
 
-void write_u64(std::vector<std::uint8_t>& buf, std::size_t off, std::uint64_t v) {
+void write_u64(std::span<std::uint8_t> buf, std::size_t off, std::uint64_t v) {
+    if (off > buf.size() || sizeof(v) > buf.size() - off) {
+        throw std::out_of_range("VFS archive write_u64 out of bounds");
+    }
     std::memcpy(buf.data() + off, &v, sizeof(v));
 }
 

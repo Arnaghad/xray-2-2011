@@ -177,6 +177,7 @@ public sealed unsafe partial class EditorWorld : IDisposable
         projectIde?.ViewportOutputs?.Tick();
         projectIde?.UpdateResourceReloadStatus();
         fixed (float* values = copy) Require(native.Render(native.Context, frame, values));
+        TickStage06Smoke(frame);
     }
     public void SetEditorMode(bool enabled) { CheckOwner(); if (toolbar != null) toolbar.Enabled = enabled && projectIde?.RuntimeActive!=true; UpdateSdk(enabled && !cleared); }
     public void Message(string message) { CheckOwner(); window.Text = "X-Ray Vulkan Editor · " + message; }

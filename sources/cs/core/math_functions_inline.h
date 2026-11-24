@@ -9,6 +9,9 @@
 #ifndef CS_CORE_MATH_FUNCTIONS_INLINE_H_INCLUDED
 #define CS_CORE_MATH_FUNCTIONS_INLINE_H_INCLUDED
 
+#include <bit>
+#include <cmath>
+
 #pragma warning(push)
 #pragma warning(disable:4995)
 
@@ -16,11 +19,7 @@
 
 inline float MATH::_abs					(float const number_)
 {
-//	return			fabsf(number_);
-	float			number = number_;
-	u32&			integer = (u32&)number;
-	integer			&= 0x7fffffff;
-	return			number;
+	return			std::bit_cast<float>(std::bit_cast<u32>(number_) & 0x7fffffffu);
 }
 
 inline int	 MATH::_abs					(int const number)
@@ -184,39 +183,12 @@ inline MATH::sine_cosine::sine_cosine	(float const angle)
 
 inline int MATH::i_floor				(float const number)
 {
-    int a			= *(int const*)(&number);
-    int exponent	= (127 + 31) - ((a >> 23) & 0xff);
-    int result		= (((u32)(a) << 8) | (u32(1) << 31)) >> exponent;
-    exponent		+= 31-127;
-    {
-		int			imask = !((((1 << exponent) - 1) >> 8) & a);
-        exponent	-=	(31-127)+32;
-        exponent	>>=	31;
-        a			>>=	31;
-        result		-=	(imask&a);
-        result		&=	exponent;
-        result		^=	a;
-    }
-    return			result;
+	return			static_cast<int>(std::floor(number));
 }
 
 inline int MATH::i_ceil					(float const number)
 {
-    int a			= *(int const*)(&number);
-    int exponent	= (127 + 31) - ((a >> 23) & 0xff);
-    int result		= (((u32)(a) << 8) | (u32(1) << 31)) >> exponent;
-    exponent		+= 31-127;
-    {
-		int			imask = !((((1 << exponent) - 1) >> 8) & a);
-        exponent	-=	(31-127)+32;
-        exponent	>>=	31;
-        a			=	~((a-1)>>31);		
-        result		-=	(imask&  a);
-        result		&=	exponent;
-        result		^=	a;
-        result		=	-result;                 
-    }
-    return			result;
+	return			static_cast<int>(std::ceil(number));
 }
 
 inline float MATH::deg2rad				(float const degrees)

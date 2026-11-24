@@ -25,20 +25,14 @@ public:
 				~io_service		();
 
 	void		tick			();
+
+	asio_io_service&	get_io_context		() { return m_asio_service; }
+	async_host&			get_dispatch_host	() { return m_dispatch_host; }
+
 private:
-	void		test_timer_func			(error_code const ec);
-	void		sent_result				(error_code const ec, std::size_t bytes_transferred);
-	void		receive_result			(error_code const ec, std::size_t bytes_transferred);
-
-
 	asio_io_service						m_asio_service;
 	async_host							m_dispatch_host;
 	io_service_work						m_asio_work;
-	deadline_timer						m_test_timer;
-	datagram_socket						m_udp_test;
-	datagram_endpoint					m_udp_sender;
-	std::array<char, 256>				m_receive_buffer;
-	std::array<char, 256>				m_send_buffer;
 };// class io_service
 
 } // namespace lowlevel

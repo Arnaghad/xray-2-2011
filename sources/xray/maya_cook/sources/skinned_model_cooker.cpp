@@ -87,10 +87,19 @@ void normalize_vertex_weights(
     if (n == 0) {
         throw std::runtime_error("Skinned vertex has zero non-empty bone influences");
     }
-    std::sort(pairs.begin(), pairs.begin() + n, [](auto const& a, auto const& b) {
-        if (a.weight != b.weight) return a.weight > b.weight;
-        return a.bone < b.bone;
-    });
+    for (std::size_t i = 1; i < n && i < pairs.size(); ++i) {
+        inf_pair key = pairs[i];
+        std::size_t j = i;
+        while (j > 0) {
+            auto const& prev = pairs[j - 1];
+            bool const key_before_prev =
+                (key.weight != prev.weight) ? (key.weight > prev.weight) : (key.bone < prev.bone);
+            if (!key_before_prev) break;
+            pairs[j] = prev;
+            --j;
+        }
+        pairs[j] = key;
+    }
 
     double sum = 0.0;
     for (std::size_t i = 0; i < n; ++i) sum += pairs[i].weight;

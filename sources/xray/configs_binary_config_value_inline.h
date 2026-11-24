@@ -7,6 +7,8 @@
 #ifndef XRAY_CONFIGS_BINARY_CONFIG_VALUE_INLINE_H_INCLUDED
 #define XRAY_CONFIGS_BINARY_CONFIG_VALUE_INLINE_H_INCLUDED
 
+#include <cstring>
+
 namespace xray {
 namespace configs {
 
@@ -51,7 +53,10 @@ template <typename T, typename P0, typename P1>
 T binary_config_value::cast_number			() const
 {
 	R_ASSERT			(type == t_integer);
-	P0 value			= *(P1*)&data;
+	static_assert		( sizeof(data) >= sizeof(P1), "binary_config_value::data too small for scalar" );
+	P1 raw_value		= 0;
+	std::memcpy			(&raw_value, &data, sizeof(P1));
+	P0 value			= raw_value;
 	R_ASSERT			( value <= std::numeric_limits<T>::max() );
 	R_ASSERT			( value >= std::numeric_limits<T>::min() );
 	T const result		= T( value );
@@ -73,7 +78,10 @@ T binary_config_value::cast_signed_number		() const
 binary_config_value::operator bool				() const
 {
 	R_ASSERT			(type == t_boolean);
-	return				!!*(u32*)&data;
+	static_assert		( sizeof(data) >= sizeof(u32), "binary_config_value::data too small for bool" );
+	u32 value			= 0;
+	std::memcpy			(&value, &data, sizeof(u32));
+	return				!!value;
 }
 
 binary_config_value::operator s8				() const
@@ -108,8 +116,12 @@ binary_config_value::operator u32 () const
 
 binary_config_value::operator float () const
 {
-	if ( type == t_float )
-		return			*(float*)&data;
+	if ( type == t_float ) {
+		static_assert	( sizeof(data) >= sizeof(float), "binary_config_value::data too small for float" );
+		float value		= 0.f;
+		std::memcpy		(&value, &data, sizeof(float));
+		return			value;
+	}
 	
 	R_ASSERT			( type == t_integer );
 	return				float( cast_signed_number<s32>() );

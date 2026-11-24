@@ -19,9 +19,6 @@ struct presentation_output {
     std::vector<VkImageView> swapchain_image_views;
     uint32_t current_image_index = 0;
     uint64_t presented_frames = 0;
-    VkRenderPass render_pass = VK_NULL_HANDLE;
-    VkRenderPass load_render_pass = VK_NULL_HANDLE;
-    std::vector<VkFramebuffer> framebuffers;
     VkFormat depth_format = VK_FORMAT_UNDEFINED;
     struct depth_attachment {
         VkImage image = VK_NULL_HANDLE;

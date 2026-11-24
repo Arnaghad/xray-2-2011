@@ -12,11 +12,13 @@
 #include "triangle_mesh_base.h"
 #include <xray/render/engine/base_classes.h>
 
+#if !(defined(XRAY_COLLISION_USE_BULLET_BVH) && XRAY_COLLISION_USE_BULLET_BVH)
 namespace Opcode {
 	class AABBNoLeafNode;
 	class MeshInterface;
 	class Model;
 } // namespace Opcode
+#endif
 
 namespace xray {
 
@@ -44,8 +46,10 @@ public:
 			void		initialize				( memory::base_allocator* allocator, float3 const* vertices, u32 vertex_count, u32 const* indices, u32 index_count );
 	
 	
+#if !(defined(XRAY_COLLISION_USE_BULLET_BVH) && XRAY_COLLISION_USE_BULLET_BVH)
 	Opcode::AABBNoLeafNode const* root			( ) const;
 	inline Opcode::MeshInterface* mesh			( ) const { return m_mesh; }
+#endif
 
 	virtual	void		add_triangles			( triangles_type& triangles ) const;
 

@@ -7,12 +7,14 @@
 #include "pch.h"
 #include "triangle_mesh_geometry.h"
 #include <xray/render/facade/debug_renderer.h>
+#if !(defined(XRAY_COLLISION_USE_BULLET_BVH) && XRAY_COLLISION_USE_BULLET_BVH)
 #include "opcode_include.h"
 #include "colliders_ray_query_geometry.h"
 #include "colliders_ray_test_geometry.h"
 #include "colliders_aabb_geometry.h"
 #include "colliders_cuboid_geometry.h"
 #include "colliders_convex_geometry.h"
+#endif
 
 using xray::math::aabb;
 using xray::math::float3;
@@ -43,21 +45,27 @@ void triangle_mesh_geometry::initialize		( memory::base_allocator* allocator, fl
 void triangle_mesh_geometry::destroy	( memory::base_allocator* allocator )
 {
 	::g_allocator			= allocator;
+#if defined(XRAY_COLLISION_USE_BULLET_BVH) && XRAY_COLLISION_USE_BULLET_BVH
+	m_bullet_bvh.reset		( );
+#else
 	XRAY_DELETE_IMPL		( allocator, m_model );
 	XRAY_DELETE_IMPL		( allocator, m_mesh );
 	m_model					= 0;
 	m_mesh					= 0;
+#endif
 }
 
 triangle_mesh_geometry::~triangle_mesh_geometry		( )
 {
 }
 
+#if !(defined(XRAY_COLLISION_USE_BULLET_BVH) && XRAY_COLLISION_USE_BULLET_BVH)
 Opcode::AABBNoLeafNode const* triangle_mesh_geometry::root	( ) const
 {
 	ASSERT					( m_root );
 	return					( m_root );
 }
+#endif
 
 void triangle_mesh_geometry::add_triangles	( triangles_type& triangles ) const
 {
@@ -121,30 +129,15 @@ void triangle_mesh_geometry::render			( xray::render::scene_ptr const& scene, xr
 	//	UNREACHABLE_CODE();
 	//}
 
-	IceMaths::Point const* const	vertices = m_mesh->GetVerts( );
-	IndexedTriangle const* const b	= ( IndexedTriangle const* )m_mesh->GetTris( );
-	IndexedTriangle const* i		= b;
-	IndexedTriangle const* const e	= b + m_mesh->GetNbTriangles( );
-	for ( ; i != e; ++i ) {
-		//for ( u32 j=0; j<3; ++j ) {
-
-		//}
+	float3 const* const	verts		= vertices();
+	u32 const* const	tris		= indices();
+	u32 const			tri_count	= index_count() / 3;
+	for ( u32 ti = 0; ti < tri_count; ++ti ) {
+		u32 const* const tri_idx	= tris + ti * 3;
 		float3 const positions[]	= {
-			matrix.transform_position( float3(
-				vertices[ (*i).mVRef[0] ].x,
-				vertices[ (*i).mVRef[0] ].y,
-				vertices[ (*i).mVRef[0] ].z
-			)),
-			matrix.transform_position( float3(
-				vertices[ (*i).mVRef[1] ].x,
-				vertices[ (*i).mVRef[1] ].y,
-				vertices[ (*i).mVRef[1] ].z
-			)),
-			matrix.transform_position( float3(
-				vertices[ (*i).mVRef[2] ].x,
-				vertices[ (*i).mVRef[2] ].y,
-				vertices[ (*i).mVRef[2] ].z
-			)),
+			matrix.transform_position( verts[ tri_idx[0] ] ),
+			matrix.transform_position( verts[ tri_idx[1] ] ),
+			matrix.transform_position( verts[ tri_idx[2] ] ),
 		};
 
 		math::color clr(0, 127, 0, 127);
@@ -170,17 +163,21 @@ void triangle_mesh_geometry::render			( xray::render::scene_ptr const& scene, xr
 
 bool triangle_mesh_geometry::aabb_query		( object const* object, aabb const& aabb, triangles_type& triangles ) const
 {
-	return					colliders::aabb_geometry( *this, object, aabb, triangles ).result( );
+	return					triangle_mesh_base::aabb_query( object, aabb, triangles );
 }
 
 bool triangle_mesh_geometry::cuboid_query	( object const* object, cuboid const& cuboid, triangles_type& triangles ) const
 {
-	return					colliders::cuboid_geometry	( *this, object, cuboid, triangles ).result( );
+	return					triangle_mesh_base::cuboid_query( object, cuboid, triangles );
 }
 
 u32 triangle_mesh_geometry::get_triangles_count		( math::convex const& bounding_convex ) const
 {
+#if defined(XRAY_COLLISION_USE_BULLET_BVH) && XRAY_COLLISION_USE_BULLET_BVH
+	return					m_bullet_bvh.convex_triangle_count( bounding_convex );
+#else
 	return					colliders::convex_geometry( *this, bounding_convex ).result();
+#endif
 }
 
 

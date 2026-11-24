@@ -9,9 +9,8 @@
 
 #include <xray/input/world.h>
 #include <xray/input/gamepad.h>
-#include <xray/os_include.h>
-
-#	include <xinput.h>
+#include <SDL3/SDL_gamepad.h>
+#include <SDL3/SDL_events.h>
 
 namespace xray {
 namespace input {
@@ -36,11 +35,24 @@ public:
 			void			on_deactivate	( );
 			void			execute			( );
 			void			process			( handlers_type& handlers );
+			void			on_gamepad_added	( SDL_JoystickID instance_id );
+			void			on_gamepad_removed	( SDL_JoystickID instance_id );
+			void			on_sdl_event		( SDL_Event const& ev );
+			void			apply_gamepad_state	(
+								bool connected,
+								u16 buttons,
+								float left_trigger,
+								float right_trigger,
+								math::float2 left_stick,
+								math::float2 right_stick
+							);
 
 private:
 	xray::input::world&		m_world;
-	XINPUT_CAPABILITIES		m_device_capabilities;
-	XINPUT_VIBRATION		m_current_vibration;
+	SDL_Gamepad*			m_gamepad;
+	SDL_JoystickID			m_instance_id;
+	u16						m_left_rumble;
+	u16						m_right_rumble;
 	state					m_current_state;
 	state					m_previous_state;
 	u32						m_user_index;

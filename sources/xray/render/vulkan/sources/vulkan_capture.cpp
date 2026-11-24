@@ -29,23 +29,56 @@ void vulkan_backend::record_capture(VkCommandBuffer cmd) {
         free_buffer(slot.buffer); slot.buffer=std::move(next); slot.coherent=coherent;
     }
     slot.width=extent.width; slot.height=extent.height; slot.format=format;
-    VkImageMemoryBarrier image={}; image.sType=VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
-    image.srcAccessMask=VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT; image.dstAccessMask=VK_ACCESS_TRANSFER_READ_BIT;
-    image.oldLayout=VK_IMAGE_LAYOUT_PRESENT_SRC_KHR; image.newLayout=VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL;
-    image.srcQueueFamilyIndex=image.dstQueueFamilyIndex=VK_QUEUE_FAMILY_IGNORED;
-    image.image=m_output->swapchain_images[m_output->current_image_index]; image.subresourceRange={VK_IMAGE_ASPECT_COLOR_BIT,0,1,0,1};
-    vkCmdPipelineBarrier(cmd,VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT,VK_PIPELINE_STAGE_TRANSFER_BIT,0,0,nullptr,0,nullptr,1,&image);
+    VkImageMemoryBarrier2 to_transfer = {};
+    to_transfer.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER_2;
+    to_transfer.srcStageMask = VK_PIPELINE_STAGE_2_COLOR_ATTACHMENT_OUTPUT_BIT;
+    to_transfer.srcAccessMask = VK_ACCESS_2_COLOR_ATTACHMENT_WRITE_BIT;
+    to_transfer.dstStageMask = VK_PIPELINE_STAGE_2_COPY_BIT;
+    to_transfer.dstAccessMask = VK_ACCESS_2_TRANSFER_READ_BIT;
+    to_transfer.oldLayout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+    to_transfer.newLayout = VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL;
+    to_transfer.srcQueueFamilyIndex = to_transfer.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+    to_transfer.image = m_output->swapchain_images[m_output->current_image_index];
+    to_transfer.subresourceRange = {VK_IMAGE_ASPECT_COLOR_BIT, 0, 1, 0, 1};
+    VkDependencyInfo pre_copy = {};
+    pre_copy.sType = VK_STRUCTURE_TYPE_DEPENDENCY_INFO;
+    pre_copy.imageMemoryBarrierCount = 1;
+    pre_copy.pImageMemoryBarriers = &to_transfer;
+    vkCmdPipelineBarrier2(cmd, &pre_copy);
+
     VkBufferImageCopy region={}; region.imageSubresource={VK_IMAGE_ASPECT_COLOR_BIT,0,0,1};
     region.imageExtent={extent.width,extent.height,1};
-    vkCmdCopyImageToBuffer(cmd,image.image,VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,slot.buffer.buffer,1,&region);
-    VkBufferMemoryBarrier host={}; host.sType=VK_STRUCTURE_TYPE_BUFFER_MEMORY_BARRIER;
-    host.srcAccessMask=VK_ACCESS_TRANSFER_WRITE_BIT; host.dstAccessMask=VK_ACCESS_HOST_READ_BIT;
-    host.srcQueueFamilyIndex=host.dstQueueFamilyIndex=VK_QUEUE_FAMILY_IGNORED;
-    host.buffer=slot.buffer.buffer; host.size=VK_WHOLE_SIZE;
-    vkCmdPipelineBarrier(cmd,VK_PIPELINE_STAGE_TRANSFER_BIT,VK_PIPELINE_STAGE_HOST_BIT,0,0,nullptr,1,&host,0,nullptr);
-    image.srcAccessMask=VK_ACCESS_TRANSFER_READ_BIT; image.dstAccessMask=0;
-    image.oldLayout=VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL; image.newLayout=VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
-    vkCmdPipelineBarrier(cmd,VK_PIPELINE_STAGE_TRANSFER_BIT,VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT,0,0,nullptr,0,nullptr,1,&image);
+    vkCmdCopyImageToBuffer(cmd,to_transfer.image,VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,slot.buffer.buffer,1,&region);
+
+    VkBufferMemoryBarrier2 host = {};
+    host.sType = VK_STRUCTURE_TYPE_BUFFER_MEMORY_BARRIER_2;
+    host.srcStageMask = VK_PIPELINE_STAGE_2_COPY_BIT;
+    host.srcAccessMask = VK_ACCESS_2_TRANSFER_WRITE_BIT;
+    host.dstStageMask = VK_PIPELINE_STAGE_2_HOST_BIT;
+    host.dstAccessMask = VK_ACCESS_2_HOST_READ_BIT;
+    host.srcQueueFamilyIndex = host.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+    host.buffer = slot.buffer.buffer;
+    host.size = VK_WHOLE_SIZE;
+
+    VkImageMemoryBarrier2 to_present = {};
+    to_present.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER_2;
+    to_present.srcStageMask = VK_PIPELINE_STAGE_2_COPY_BIT;
+    to_present.srcAccessMask = VK_ACCESS_2_TRANSFER_READ_BIT;
+    to_present.dstStageMask = VK_PIPELINE_STAGE_2_NONE;
+    to_present.dstAccessMask = VK_ACCESS_2_NONE;
+    to_present.oldLayout = VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL;
+    to_present.newLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
+    to_present.srcQueueFamilyIndex = to_present.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+    to_present.image = to_transfer.image;
+    to_present.subresourceRange = {VK_IMAGE_ASPECT_COLOR_BIT, 0, 1, 0, 1};
+
+    VkDependencyInfo post_copy = {};
+    post_copy.sType = VK_STRUCTURE_TYPE_DEPENDENCY_INFO;
+    post_copy.bufferMemoryBarrierCount = 1;
+    post_copy.pBufferMemoryBarriers = &host;
+    post_copy.imageMemoryBarrierCount = 1;
+    post_copy.pImageMemoryBarriers = &to_present;
+    vkCmdPipelineBarrier2(cmd, &post_copy);
 }
 vulkan_backend::captured_frame vulkan_backend::capture_frame() {
     if (!m_initialized || !m_frames->capture_enabled || !m_frames->capture_valid || m_recording)

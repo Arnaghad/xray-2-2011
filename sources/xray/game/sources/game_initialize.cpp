@@ -31,11 +31,18 @@ void game::initialize_physics		( )
 
 	ASSERT							( !m_physics_world );
 #ifdef MASTER_GOLD
-	m_physics_world					= physics::create_world( g_allocator, *this );
+	xray::memory::base_allocator* allocator = g_allocator;
 #else
-	m_physics_world					= physics::create_world( memory::g_crt_allocator, *this );
+	xray::memory::base_allocator* allocator = memory::g_crt_allocator;
+#endif
+#if defined(XRAY_GAME_PHYSICS_USE_BULLET) && XRAY_GAME_PHYSICS_USE_BULLET
+	physics::set_memory_allocator	( allocator );
+	m_physics_world					= physics::create_world_bt( allocator, *this );
+#else
+	m_physics_world					= physics::create_world( allocator, *this );
 #endif
 	ASSERT							( m_physics_world );
+	m_physics_world->initialize		( );
 
 	//m_physics_world->create_test_primitives( );
 }

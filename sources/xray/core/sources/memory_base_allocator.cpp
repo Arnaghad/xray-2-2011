@@ -52,9 +52,6 @@ void base_allocator::finalize	( )
 
 void base_allocator::do_register	( u64 const arena_size, pcstr const description )
 {
-	if ( !this )
-		return;
-
 	register_allocator			( *this, arena_size, description );
 }
 
@@ -75,8 +72,8 @@ void base_allocator::dump_statistics( ) const
 		: 
 			"size: " XRAY_PRINTF_SPEC_LONG_LONG(10),
 		total_size,
-		(u64)*(size_t*)&m_arena_start,
-		(u64)*(size_t*)&m_arena_end
+		static_cast<u64>( reinterpret_cast<std::uintptr_t>( m_arena_start ) ),
+		static_cast<u64>( reinterpret_cast<std::uintptr_t>( m_arena_end ) )
 	);
 }
 

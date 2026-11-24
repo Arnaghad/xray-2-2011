@@ -1,0 +1,161 @@
+name: Modernization CI (Windows x64)
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  cpu-windows-x64:
+    name: CPU Build & CTest (${{ matrix.config }})
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        config: [debug, release]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup MSYS2 MinGW-w64 toolchain
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: MINGW64
+          update: false
+          path-type: inherit
+          install: >-
+            mingw-w64-x86_64-gcc
+            mingw-w64-x86_64-cmake
+            mingw-w64-x86_64-ninja
+            mingw-w64-x86_64-lua
+            mingw-w64-x86_64-boost
+            mingw-w64-x86_64-sdl3
+            mingw-w64-x86_64-mimalloc
+            mingw-w64-x86_64-zlib
+            mingw-w64-x86_64-bullet
+            mingw-w64-x86_64-vulkan-headers
+            mingw-w64-x86_64-vulkan-loader
+            mingw-w64-x86_64-libogg
+            mingw-w64-x86_64-libvorbis
+            mingw-w64-x86_64-asio
+            mingw-w64-x86_64-pkgconf
+
+      - name: Configure CMake preset
+        shell: pwsh
+        run: |
+          $env:PATH = "C:\msys64\mingw64\bin;$env:PATH"
+          cmake -S sources --preset "windows-x64-${{ matrix.config }}"
+
+      - name: Build CPU test targets and asset cooker
+        working-directory: sources
+        shell: pwsh
+        run: |
+          $env:PATH = "C:\msys64\mingw64\bin;$env:PATH"
+          New-Item -ItemType Directory -Force -Path ../build/ci-artifacts | Out-Null
+          cmake --build --preset "windows-x64-${{ matrix.config }}-cpu-tests" --parallel 2>&1 |
+            Tee-Object -FilePath "../build/ci-artifacts/build-${{ matrix.config }}-cpu.log"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Run CPU CTest suite
+        working-directory: sources
+        shell: pwsh
+        run: |
+          $env:PATH = "C:\msys64\mingw64\bin;$env:PATH"
+          ctest --preset "windows-x64-${{ matrix.config }}-cpu" `
+            --output-junit "${{ github.workspace }}/build/ci-artifacts/junit-${{ matrix.config }}-cpu.xml"
+
+      - name: Collect baseline metrics
+        if: always()
+        shell: pwsh
+        run: |
+          $env:PATH = "C:\msys64\mingw64\bin;$env:PATH"
+          python sources/tools/ci/collect_build_baseline.py `
+            --preset "windows-x64-${{ matrix.config }}" `
+            --build-dir "build/presets/windows-x64-${{ matrix.config }}" `
+            --build-log "build/ci-artifacts/build-${{ matrix.config }}-cpu.log" `
+            --ctest-junit "build/ci-artifacts/junit-${{ matrix.config }}-cpu.xml" `
+            --output "build/ci-artifacts/baseline-${{ matrix.config }}-cpu.json"
+
+      - name: Upload CPU CI artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cpu-${{ matrix.config }}
+          path: build/ci-artifacts/
+
+  full-sdk-self-hosted:
+    name: Full Engine & SDK Package (${{ matrix.config }})
+    runs-on: [self-hosted, xray-dcc]
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    strategy:
+      fail-fast: false
+      matrix:
+        config: [debug, release]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure CMake preset
+        shell: pwsh
+        run: |
+          $env:PATH = "C:\msys64\mingw64\bin;$env:PATH"
+          cmake -S sources --preset "windows-x64-${{ matrix.config }}"
+
+      - name: Build full engine and SDK
+        working-directory: sources
+        shell: pwsh
+        run: |
+          $env:PATH = "C:\msys64\mingw64\bin;$env:PATH"
+          New-Item -ItemType Directory -Force -Path ../build/ci-artifacts | Out-Null
+          cmake --build --preset "windows-x64-${{ matrix.config }}" --parallel 2>&1 |
+            Tee-Object -FilePath "../build/ci-artifacts/build-${{ matrix.config }}-full.log"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Run all CTest suites
+        working-directory: sources
+        shell: pwsh
+        run: |
+          $env:PATH = "C:\msys64\mingw64\bin;$env:PATH"
+          ctest --preset "windows-x64-${{ matrix.config }}-all" `
+            --output-junit "${{ github.workspace }}/build/ci-artifacts/junit-${{ matrix.config }}-all.xml"
+
+      - name: Package SDK runtime and verify without MSYS2 in PATH
+        shell: pwsh
+        run: |
+          $pkgDir = "build/ci-artifacts/sdk-package-${{ matrix.config }}"
+          python sources/tools/sdk/package-sdk-runtime.py `
+            --config "${{ matrix.config }}" `
+            --build-dir "build/presets/windows-x64-${{ matrix.config }}" `
+            --output $pkgDir `
+            --clean
+          $savedPath = $env:PATH
+          $env:PATH = "$env:SystemRoot\System32;$env:SystemRoot"
+          try {
+            & "$pkgDir\bin\xray_asset_cook_cli.exe" --help
+            if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          } finally {
+            $env:PATH = $savedPath
+          }
+
+      - name: Collect full baseline metrics
+        if: always()
+        shell: pwsh
+        run: |
+          $env:PATH = "C:\msys64\mingw64\bin;$env:PATH"
+          python sources/tools/ci/collect_build_baseline.py `
+            --preset "windows-x64-${{ matrix.config }}" `
+            --build-dir "build/presets/windows-x64-${{ matrix.config }}" `
+            --build-log "build/ci-artifacts/build-${{ matrix.config }}-full.log" `
+            --ctest-junit "build/ci-artifacts/junit-${{ matrix.config }}-all.xml" `
+            --output "build/ci-artifacts/baseline-${{ matrix.config }}-full.json"
+
+      - name: Upload full SDK CI artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: full-sdk-${{ matrix.config }}
+          path: build/ci-artifacts/

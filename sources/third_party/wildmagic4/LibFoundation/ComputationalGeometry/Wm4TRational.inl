@@ -336,7 +336,8 @@ TRational<N>::TRational (float fValue)
     }
 
     // value = sign * 1.mantissa * 2^exponent
-    unsigned int uiBits = *(unsigned int*)&fValue;
+    unsigned int uiBits = 0;
+    std::memcpy(&uiBits, &fValue, sizeof(uiBits));
     unsigned int uiSign = (0x80000000u & uiBits);
     unsigned int uiExponent = ((0x7F800000 & uiBits) >> 23);
     unsigned int uiMantissa = (0x007FFFFF & uiBits);
@@ -436,16 +437,8 @@ void TRational<N>::ConvertTo (float& rfValue) const
         if (iBlock >= 8)
         {
             // quotient larger than the maximum float in magnitude
-            if (iSign > 0)
-            {
-                uiResult = 0x7F7FFFFFu;  // FLT_MAX
-                rfValue = *(float*)&uiResult;
-            }
-            else
-            {
-                uiResult = 0xFF7FFFFFu;  // -FLT_MAX
-                rfValue = *(float*)&uiResult;
-            }
+            uiResult = (iSign > 0) ? 0x7F7FFFFFu : 0xFF7FFFFFu;  // +-FLT_MAX
+            std::memcpy(&rfValue, &uiResult, sizeof(rfValue));
             return;
         }
 
@@ -455,16 +448,8 @@ void TRational<N>::ConvertTo (float& rfValue) const
             if ((uiValue & 0xFFFFFF00u) == 0xFFFFFF00u)
             {
                 // quotient larger or equal to the maximum float in magnitude
-                if (iSign > 0)
-                {
-                    uiResult = 0x7F7FFFFFu;  // FLT_MAX
-                    rfValue = *(float*)&uiResult;
-                }
-                else
-                {
-                    uiResult = 0xFF7FFFFFu;  // -FLT_MAX
-                    rfValue = *(float*)&uiResult;
-                }
+                uiResult = (iSign > 0) ? 0x7F7FFFFFu : 0xFF7FFFFFu;  // +-FLT_MAX
+                std::memcpy(&rfValue, &uiResult, sizeof(rfValue));
                 return;
             }
         }
@@ -476,7 +461,7 @@ void TRational<N>::ConvertTo (float& rfValue) const
         {
             uiResult |= 0x80000000;
         }
-        rfValue = *(float*)&uiResult;
+        std::memcpy(&rfValue, &uiResult, sizeof(rfValue));
         return;
     }
 
@@ -501,16 +486,8 @@ void TRational<N>::ConvertTo (float& rfValue) const
     if (iBlock == 8 || (iBlock == 7 && kQuo.ToUnsignedInt(0) >= 4))
     {
         // rational number smaller than the minimum floating point number
-        if (iSign > 0)
-        {
-            uiResult = 0x00800000;  // FLT_MIN
-            rfValue = *(float*)&uiResult;
-        }
-        else
-        {
-            uiResult = 0x80800000;  // -FLT_MIN
-            rfValue = *(float*)&uiResult;
-        }
+        uiResult = (iSign > 0) ? 0x00800000u : 0x80800000u;  // +-FLT_MIN
+        std::memcpy(&rfValue, &uiResult, sizeof(rfValue));
         return;
     }
 
@@ -530,7 +507,7 @@ void TRational<N>::ConvertTo (float& rfValue) const
         uiResult |= 0x80000000u;
     }
 
-    rfValue = *(float*)&uiResult;
+    std::memcpy(&rfValue, &uiResult, sizeof(rfValue));
 }
 //----------------------------------------------------------------------------
 template <int N>
@@ -602,7 +579,8 @@ TRational<N>::TRational (double dValue)
     }
 
     // value = sign * 1.mantissa * 2^exponent
-    unsigned int* auiBits = (unsigned int*)&dValue;
+    unsigned int auiBits[2] = {};
+    std::memcpy(auiBits, &dValue, sizeof(auiBits));
 #ifdef WM4_BIG_ENDIAN
     unsigned int uiSave = auiBits[0];
     auiBits[0] = auiBits[1];
@@ -722,24 +700,18 @@ void TRational<N>::ConvertTo (double& rdValue) const
             {
                 auiResult[0] = 0xFFFFFFFF;  // DBL_MAX
                 auiResult[1] = 0x7FEFFFFF;
-#ifdef WM4_BIG_ENDIAN
-                uiSave = auiResult[0];
-                auiResult[0] = auiResult[1];
-                auiResult[1] = uiSave;
-#endif
-                rdValue = *(double*)auiResult;
             }
             else
             {
                 auiResult[0] = 0xFFFFFFFF;  // -DBL_MAX
                 auiResult[1] = 0xFFEFFFFF;
-#ifdef WM4_BIG_ENDIAN
-                uiSave = auiResult[0];
-                auiResult[0] = auiResult[1];
-                auiResult[1] = uiSave;
-#endif
-                rdValue = *(double*)auiResult;
             }
+#ifdef WM4_BIG_ENDIAN
+            uiSave = auiResult[0];
+            auiResult[0] = auiResult[1];
+            auiResult[1] = uiSave;
+#endif
+            std::memcpy(&rdValue, auiResult, sizeof(rdValue));
             return;
         }
 
@@ -755,24 +727,18 @@ void TRational<N>::ConvertTo (double& rdValue) const
                 {
                     auiResult[0] = 0xFFFFFFFF;  // DBL_MAX
                     auiResult[1] = 0x7FEFFFFF;
-#ifdef WM4_BIG_ENDIAN
-                    uiSave = auiResult[0];
-                    auiResult[0] = auiResult[1];
-                    auiResult[1] = uiSave;
-#endif
-                    rdValue = *(double*)auiResult;
                 }
                 else
                 {
                     auiResult[0] = 0xFFFFFFFF;  // -DBL_MAX
                     auiResult[1] = 0xFFEFFFFF;
-#ifdef WM4_BIG_ENDIAN
-                    uiSave = auiResult[0];
-                    auiResult[0] = auiResult[1];
-                    auiResult[1] = uiSave;
-#endif
-                    rdValue = *(double*)auiResult;
                 }
+#ifdef WM4_BIG_ENDIAN
+                uiSave = auiResult[0];
+                auiResult[0] = auiResult[1];
+                auiResult[1] = uiSave;
+#endif
+                std::memcpy(&rdValue, auiResult, sizeof(rdValue));
                 return;
             }
         }
@@ -791,7 +757,7 @@ void TRational<N>::ConvertTo (double& rdValue) const
         auiResult[0] = auiResult[1];
         auiResult[1] = uiSave;
 #endif
-        rdValue = *(double*)auiResult;
+        std::memcpy(&rdValue, auiResult, sizeof(rdValue));
         return;
     }
 
@@ -820,24 +786,18 @@ void TRational<N>::ConvertTo (double& rdValue) const
         {
             auiResult[1] = 0x00100000;  // DBL_MIN
             auiResult[0] = 0x00000000;
-#ifdef WM4_BIG_ENDIAN
-            uiSave = auiResult[0];
-            auiResult[0] = auiResult[1];
-            auiResult[1] = uiSave;
-#endif
-            rdValue = *(double*)auiResult;
         }
         else
         {
             auiResult[1] = 0x80100000;  // -DBL_MIN
             auiResult[0] = 0x00000000;
-#ifdef WM4_BIG_ENDIAN
-            uiSave = auiResult[0];
-            auiResult[0] = auiResult[1];
-            auiResult[1] = uiSave;
-#endif
-            rdValue = *(double*)auiResult;
         }
+#ifdef WM4_BIG_ENDIAN
+        uiSave = auiResult[0];
+        auiResult[0] = auiResult[1];
+        auiResult[1] = uiSave;
+#endif
+        std::memcpy(&rdValue, auiResult, sizeof(rdValue));
         return;
     }
 
@@ -863,7 +823,7 @@ void TRational<N>::ConvertTo (double& rdValue) const
     auiResult[0] = auiResult[1];
     auiResult[1] = uiSave;
 #endif
-    rdValue = *(double*)auiResult;
+    std::memcpy(&rdValue, auiResult, sizeof(rdValue));
 }
 //----------------------------------------------------------------------------
 template <int N>

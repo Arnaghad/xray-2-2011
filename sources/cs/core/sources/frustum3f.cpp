@@ -8,6 +8,7 @@
 
 #include "pch.h"
 #include <cs/core/frustum3f.h>
+#include <bit>
 
 static u32 const min_x			= 0;
 static u32 const min_y			= 1;
@@ -34,9 +35,9 @@ void frustum3f::aabb_plane::normalize					()
 	plane.z					*= denomimator;
 	plane.w					*= denomimator;
 	
-	u32						x = (*(u32*)&plane.x >> 31) << 2;
-	u32						y = (*(u32*)&plane.y >> 31) << 1;
-	u32						z = (*(u32*)&plane.z >> 31);
+	u32						x = (std::bit_cast<u32>(plane.x) >> 31) << 2;
+	u32						y = (std::bit_cast<u32>(plane.y) >> 31) << 1;
+	u32						z = (std::bit_cast<u32>(plane.z) >> 31);
 
 	m_lut_id				= x | y | z;
 }

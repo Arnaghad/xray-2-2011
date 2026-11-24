@@ -49,6 +49,7 @@ target_include_directories(xray_editor_sound PUBLIC
 
 target_link_libraries(xray_editor_sound PRIVATE 
     xray_sound
+    xray_collision
     xray_editor_base
     xray_render_vulkan
     xray_core

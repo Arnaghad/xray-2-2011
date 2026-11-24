@@ -6,11 +6,13 @@
 
 #include "pch.h"
 #include "triangle_mesh_base.h"
+#if !(defined(XRAY_COLLISION_USE_BULLET_BVH) && XRAY_COLLISION_USE_BULLET_BVH)
 #include "opcode_include.h"
 #include "colliders_ray_query_geometry.h"
 #include "colliders_ray_test_geometry.h"
 #include "colliders_aabb_geometry.h"
 #include "colliders_cuboid_geometry.h"
+#endif
 #include "sphere_geometry.h"
 #include "box_geometry.h"
 #include "cylinder_geometry.h"
@@ -41,9 +43,11 @@ using xray::memory::base_allocator;
 triangle_mesh_base::triangle_mesh_base	( base_allocator* allocator )	:
 	m_allocator				( allocator ),
 	m_triangle_data			( *allocator ),
+#if !(defined(XRAY_COLLISION_USE_BULLET_BVH) && XRAY_COLLISION_USE_BULLET_BVH)
 	m_mesh					( 0 ),
 	m_model					( 0 ),
 	m_root					( 0 ),
+#endif
 	m_bounding_aabb			( math::create_zero_aabb() )
 {
 	::g_allocator			= allocator;
@@ -58,6 +62,9 @@ void triangle_mesh_base::initialize		( float3 const* const vertices, u32 const v
 {
 	ASSERT					( (index_count % 3) == 0 );
 
+#if defined(XRAY_COLLISION_USE_BULLET_BVH) && XRAY_COLLISION_USE_BULLET_BVH
+	m_bullet_bvh.initialize	( vertices, vertex_count, indices, index_count );
+#else
 	m_mesh					= XRAY_NEW_IMPL ( m_allocator, Opcode::MeshInterface )( m_allocator );
 	m_mesh->SetNbTriangles	( index_count / 3 );
 	m_mesh->SetNbVertices	( vertex_count );
@@ -76,6 +83,7 @@ void triangle_mesh_base::initialize		( float3 const* const vertices, u32 const v
 	m_model->Build			( options );
 
 	m_root					= dynamic_cast<Opcode::AABBNoLeafTree const*>( m_model->GetTree( ) )->GetNodes( );
+#endif
 
 	calculate_aabb			( vertices, vertex_count, indices, index_count );
 }
@@ -83,40 +91,71 @@ void triangle_mesh_base::initialize		( float3 const* const vertices, u32 const v
 triangle_mesh_base::~triangle_mesh_base		( )
 {
 	::g_allocator			= m_allocator;
+#if defined(XRAY_COLLISION_USE_BULLET_BVH) && XRAY_COLLISION_USE_BULLET_BVH
+	m_bullet_bvh.reset		( );
+#else
 	XRAY_DELETE_IMPL		( m_allocator, m_model );
 	XRAY_DELETE_IMPL		( m_allocator, m_mesh );
+#endif
 }
 
+#if !(defined(XRAY_COLLISION_USE_BULLET_BVH) && XRAY_COLLISION_USE_BULLET_BVH)
 Opcode::AABBNoLeafNode const* triangle_mesh_base::root	( ) const
 {
 	ASSERT					( m_root );
 	return					( m_root );
 }
+#else
+void triangle_mesh_base::update_mesh_pointers( float3 const* const vertices, u32 const* const indices )
+{
+	m_bullet_bvh.update_pointers( vertices, indices );
+}
+#endif
 
 float3 const* triangle_mesh_base::vertices				( ) const
 {
+#if defined(XRAY_COLLISION_USE_BULLET_BVH) && XRAY_COLLISION_USE_BULLET_BVH
+	return					( m_bullet_bvh.vertices( ) );
+#else
 	return					( ( float3 const* )m_mesh->GetVerts( ) );
+#endif
 }
 
 u32 triangle_mesh_base::vertex_count					( ) const
 {
+#if defined(XRAY_COLLISION_USE_BULLET_BVH) && XRAY_COLLISION_USE_BULLET_BVH
+	return					( m_bullet_bvh.vertex_count( ) );
+#else
 	return					( m_mesh->GetNbVertices( ) );
+#endif
 }
 
 u32 const* triangle_mesh_base::indices					( ) const
 {
+#if defined(XRAY_COLLISION_USE_BULLET_BVH) && XRAY_COLLISION_USE_BULLET_BVH
+	return					( m_bullet_bvh.indices( ) );
+#else
 	return					&m_mesh->GetTris( )->mVRef[0];
+#endif
 }
 
 
 u32 const* triangle_mesh_base::indices					( u32 const triangle_id ) const
 {
+#if defined(XRAY_COLLISION_USE_BULLET_BVH) && XRAY_COLLISION_USE_BULLET_BVH
+	return					( m_bullet_bvh.indices( triangle_id ) );
+#else
 	return					( m_mesh->GetTris( )[ triangle_id ].mVRef );
+#endif
 }
 
 u32 triangle_mesh_base::index_count						( ) const
 {
+#if defined(XRAY_COLLISION_USE_BULLET_BVH) && XRAY_COLLISION_USE_BULLET_BVH
+	return					( m_bullet_bvh.index_count( ) );
+#else
 	return					( 3*m_mesh->GetNbTriangles( ) );
+#endif
 }
 
 bool triangle_mesh_base::aabb_test		( aabb const& aabb ) const
@@ -163,6 +202,14 @@ bool triangle_mesh_base::ray_test		(
 {
 	bool result				= false;
 	helper					distance_helper( distance, result );
+#if defined(XRAY_COLLISION_USE_BULLET_BVH) && XRAY_COLLISION_USE_BULLET_BVH
+	m_bullet_bvh.ray_test	(
+		origin,
+		direction,
+		max_distance,
+		triangles_predicate_type( &distance_helper, &helper::predicate )
+	);
+#else
 	colliders::ray_test_geometry(
 		*this,
 		origin,
@@ -170,6 +217,7 @@ bool triangle_mesh_base::ray_test		(
 		max_distance,
 		triangles_predicate_type( &distance_helper, &helper::predicate )
 	);
+#endif
 	return					result;
 }
 
@@ -189,30 +237,15 @@ void triangle_mesh_base::render			( xray::render::scene_ptr const& scene, xray::
 	//	UNREACHABLE_CODE();
 	//}
 
-	IceMaths::Point const* const	vertices = m_mesh->GetVerts( );
-	IndexedTriangle const* const b	= ( IndexedTriangle const* )m_mesh->GetTris( );
-	IndexedTriangle const* i		= b;
-	IndexedTriangle const* const e	= b + m_mesh->GetNbTriangles( );
-	for ( ; i != e; ++i ) {
-		//for ( u32 j=0; j<3; ++j ) {
-
-		//}
+	float3 const* const	verts		= vertices();
+	u32 const* const	tris		= indices();
+	u32 const			tri_count	= index_count() / 3;
+	for ( u32 ti = 0; ti < tri_count; ++ti ) {
+		u32 const* const tri_idx	= tris + ti * 3;
 		float3 const positions[]	= {
-			matrix.transform_position( float3(
-				vertices[ (*i).mVRef[0] ].x,
-				vertices[ (*i).mVRef[0] ].y,
-				vertices[ (*i).mVRef[0] ].z
-			)),
-			matrix.transform_position( float3(
-				vertices[ (*i).mVRef[1] ].x,
-				vertices[ (*i).mVRef[1] ].y,
-				vertices[ (*i).mVRef[1] ].z
-			)),
-			matrix.transform_position( float3(
-				vertices[ (*i).mVRef[2] ].x,
-				vertices[ (*i).mVRef[2] ].y,
-				vertices[ (*i).mVRef[2] ].z
-			)),
+			matrix.transform_position( verts[ tri_idx[0] ] ),
+			matrix.transform_position( verts[ tri_idx[1] ] ),
+			matrix.transform_position( verts[ tri_idx[2] ] ),
 		};
 
 		float const step			= 10.f;
@@ -250,12 +283,20 @@ void triangle_mesh_base::render			( xray::render::scene_ptr const& scene, xray::
 
 bool triangle_mesh_base::aabb_query		( object const* object, aabb const& aabb, triangles_type& triangles ) const
 {
+#if defined(XRAY_COLLISION_USE_BULLET_BVH) && XRAY_COLLISION_USE_BULLET_BVH
+	return					m_bullet_bvh.aabb_query( object, aabb, triangles );
+#else
 	return					colliders::aabb_geometry( *this, object, aabb, triangles ).result( );
+#endif
 }
 
 bool triangle_mesh_base::cuboid_query	( object const* object, cuboid const& cuboid, triangles_type& triangles ) const
 {
+#if defined(XRAY_COLLISION_USE_BULLET_BVH) && XRAY_COLLISION_USE_BULLET_BVH
+	return					m_bullet_bvh.cuboid_query( object, cuboid, triangles );
+#else
 	return					colliders::cuboid_geometry	( *this, object, cuboid, triangles ).result( );
+#endif
 }
 
 bool triangle_mesh_base::ray_query		(
@@ -270,7 +311,11 @@ bool triangle_mesh_base::ray_query		(
 {
 	XRAY_UNREFERENCED_PARAMETER	(distance);
 
+#if defined(XRAY_COLLISION_USE_BULLET_BVH) && XRAY_COLLISION_USE_BULLET_BVH
+	bool const result		= m_bullet_bvh.ray_query( object, origin, direction, max_distance, triangles, predicate );
+#else
 	bool const result		= colliders::ray_query_geometry( *this, object, origin, direction, max_distance, triangles, predicate ).result( );
+#endif
 	if ( !result )
 		return				( false );
 

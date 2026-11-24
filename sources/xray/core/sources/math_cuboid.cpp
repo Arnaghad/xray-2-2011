@@ -47,8 +47,10 @@ cuboid::cuboid					( aabb const& aabb, float4x4 const& matrix )
 
 	aabb_plane* i				= &m_planes[0];
 	aabb_plane const* const e	= &m_planes[plane_count];
-	for ( ; i != e; ++i )
+	for ( ; i != e; ++i ) {
 		(*i).plane				= transform( (*i).plane, matrix );
+		(*i).normalize			( );
+	}
 }
 
 cuboid::cuboid					( cuboid const& other, float4x4 const& matrix )

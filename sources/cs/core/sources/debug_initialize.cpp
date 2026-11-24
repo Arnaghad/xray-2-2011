@@ -13,10 +13,10 @@
 #	include <new.h>					// for _set_new_mode
 #	include <signal.h>				// for signals
 
-#	define CS_USE_BUG_TRAP				1
-#	include <BugTrap/BugTrap.h>		// for BugTrap functionality
+#	define CS_USE_BUG_TRAP				0
 
 #if CS_USE_BUG_TRAP
+#	include <BugTrap/BugTrap.h>		// for BugTrap functionality
 #	include <dbghelp.h>				// MiniDump flags
 #endif // #if CS_USE_BUG_TRAP
 

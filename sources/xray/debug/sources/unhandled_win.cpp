@@ -10,6 +10,7 @@
 #include <dbghelp.h>
 #include <xray/debug/extensions.h>
 #include <xray/debug/call_stack.h>
+#include <xray/os_raii_win.h>
 #include "platform.h"
 #include "utils.h"
 #include "bugtrap.h"
@@ -18,77 +19,48 @@
 #define INVALID_HANDLE_VALUE ((HANDLE)(LONG_PTR)-1)
 #endif
 
-static void save_minidump						( pcstr const output_file_name, _EXCEPTION_POINTERS* const exception_information )
+bool xray::debug::write_local_minidump			( pcstr const output_file_name, _EXCEPTION_POINTERS* const exception_information )
 {
-	static const pcstr			library_id = "dbghelp.dll";
+	if ( !output_file_name || !*output_file_name )
+		return						false;
 
-	HMODULE library_handle		= 0;
+	xray::os::unique_handle minidump_handle(
+		CreateFileA( output_file_name, GENERIC_WRITE, FILE_SHARE_WRITE, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr )
+	);
+	if ( !minidump_handle.valid() )
+		return						false;
 
-	string_path					file_name;
-	strcpy_s					( file_name, xray::debug::debug_engine()->current_directory() );
-	strcat_s					( file_name, library_id );
-	library_handle				= LoadLibrary ( file_name );
-
-	if ( !library_handle ) {
-		library_handle			= LoadLibrary ( library_id );
-		if ( !library_handle )
-			return;
+	_MINIDUMP_EXCEPTION_INFORMATION info = {};
+	PMINIDUMP_EXCEPTION_INFORMATION info_ptr = nullptr;
+	if ( exception_information ) {
+		info.ThreadId				= ::GetCurrentThreadId();
+		info.ExceptionPointers		= exception_information;
+		info.ClientPointers			= FALSE;
+		info_ptr					= &info;
 	}
 
-	typedef BOOL (WINAPI *MiniDumpWriteDumpType) (
-		HANDLE hProcess,
-		DWORD dwPid,
-		HANDLE hFile,
-		MINIDUMP_TYPE DumpType,
-		CONST PMINIDUMP_EXCEPTION_INFORMATION ExceptionParam,
-		CONST PMINIDUMP_USER_STREAM_INFORMATION UserStreamParam,
-		CONST PMINIDUMP_CALLBACK_INFORMATION CallbackParam
-	);
-
-	MiniDumpWriteDumpType const	MiniDumpWriteDump = ( MiniDumpWriteDumpType ) GetProcAddress( library_handle, "MiniDumpWriteDump" );
-	if ( !MiniDumpWriteDump )
-		return;
-
-	xray::debug::debug_engine()->create_folder_r	( output_file_name, false );
-
-	// create the file
-	HANDLE minidump_handle		= CreateFile ( output_file_name, GENERIC_WRITE, FILE_SHARE_WRITE, 0, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0 );
-	if ( minidump_handle == INVALID_HANDLE_VALUE )
-		return;
-
-	_MINIDUMP_EXCEPTION_INFORMATION info;
-
-	info.ThreadId				= ::GetCurrentThreadId();
-	info.ExceptionPointers		= exception_information;
-	info.ClientPointers			= 0;
-
-	MiniDumpWriteDump			(
+	BOOL const ok = MiniDumpWriteDump(
 		GetCurrentProcess(),
 		GetCurrentProcessId(),
-		minidump_handle,
-		MINIDUMP_TYPE (
+		minidump_handle.get(),
+		MINIDUMP_TYPE(
 			MiniDumpWithDataSegs |
-//			MiniDumpWithFullMemory |
-//			MiniDumpWithHandleData |
-//			MiniDumpFilterMemory |
-//			MiniDumpScanMemory |
-//			MiniDumpWithUnloadedModules |
 			MiniDumpWithIndirectlyReferencedMemory |
-//			MiniDumpFilterModulePaths |
-//			MiniDumpWithProcessThreadData |
-//			MiniDumpWithPrivateReadWriteMemory |
-//			MiniDumpWithoutOptionalData |
-//			MiniDumpWithFullMemoryInfo |
-//			MiniDumpWithThreadInfo |
-//			MiniDumpWithCodeSegs |
-			0
+			MiniDumpWithThreadInfo
 		),
-		&info,
-		0,
-		0
+		info_ptr,
+		nullptr,
+		nullptr
 	);
+	return							ok != FALSE;
+}
 
-	CloseHandle					( minidump_handle );
+static void save_minidump						( pcstr const output_file_name, _EXCEPTION_POINTERS* const exception_information )
+{
+	if ( xray::debug::debug_engine() )
+		xray::debug::debug_engine()->create_folder_r( output_file_name, false );
+
+	xray::debug::write_local_minidump( output_file_name, exception_information );
 }
 
 void xray::debug::platform::format_message	( )

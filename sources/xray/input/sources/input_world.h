@@ -8,8 +8,7 @@
 #define INPUT_WORLD_H_INCLUDED
 
 #include <xray/input/world.h>
-
-struct IDirectInput8A;
+#include <SDL3/SDL_events.h>
 
 namespace xray {
 namespace input {
@@ -44,9 +43,12 @@ public:
 	virtual keyboard_ptr_type	get_keyboard( );
 	virtual mouse_ptr_type		get_mouse	( );
 
+			void			feed_sdl_event	( SDL_Event const& ev );
+
 private:
 			void			create_devices	( HWND window_handle );
 			void			destroy_devices	( );
+			void			pump_events		( );
 			void		process_on_activate	( );
 			void	process_on_deactivate	( );
 
@@ -63,7 +65,7 @@ private:
 private:
 	handlers_type				m_handlers;
 	engine&						m_engine;
-	IDirectInput8A*				m_direct_input;
+	HWND						m_target_window;
 	receiver::gamepad*			m_gamepad;
 	receiver::keyboard*			m_keyboard;
 	receiver::mouse*			m_mouse;

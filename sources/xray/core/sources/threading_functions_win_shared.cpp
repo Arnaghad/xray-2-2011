@@ -6,6 +6,7 @@
 
 #include "pch.h"
 #include <xray/os_include.h>
+#include <xray/os_raii_win.h>
 #include "threading_functions.h"
 #include <process.h>				// for _beginthreadex
 #include <xray/debug/debug.h>
@@ -137,8 +138,8 @@ thread_id_type spawn_internal		(
 		u32 const stack_size
 	)
 {
-	DWORD	result;
-	HANDLE const handle	=
+	DWORD	result = 0;
+	xray::os::unique_handle handle(
 		CreateThread(
 			0, 
 			stack_size, 
@@ -146,17 +147,19 @@ thread_id_type spawn_internal		(
 			&argument,
 			0, 
 			&result
-		);
+		)
+	);
 
 	if ( !handle ) {
 		DWORD const error_code	=	GetLastError( ); 
 		pstr error_message		=	xray::debug::platform::fill_format_message	( error_code );
+		auto const free_message_guard = xray::os::make_scoped_cleanup( [&]() {
+			xray::debug::platform::free_format_message	( error_message );
+		} );
 		LOGI_ERROR					( "debug", "CreateThread failed with error_code %d: %s", error_code, error_message );
-		xray::debug::platform::free_format_message	( error_message );
 	}
 
-	R_ASSERT_U						( handle, "can't spawn thread!" );
-	CloseHandle						( handle );
+	R_ASSERT_U						( handle.valid(), "can't spawn thread!" );
 	return							result;
 }
 

@@ -16,6 +16,8 @@
 #include "Wm4FoundationPCH.h"
 #include "Wm4Math.h"
 
+#include <cstring>
+
 namespace Wm4
 {
 template<> const float Math<float>::EPSILON = FLT_EPSILON;
@@ -53,9 +55,10 @@ template <>
 float Math<float>::FastInvSqrt (float fValue)
 {
     float fHalf = 0.5f*fValue;
-    int i  = *(int*)&fValue;
+    int i = 0;
+    std::memcpy(&i, &fValue, sizeof(i));
     i = 0x5f3759df - (i >> 1);
-    fValue = *(float*)&i;
+    std::memcpy(&fValue, &i, sizeof(fValue));
     fValue = fValue*(1.5f - fHalf*fValue*fValue);
     return fValue;
 }
@@ -64,13 +67,14 @@ template <>
 double Math<double>::FastInvSqrt (double dValue)
 {
     double dHalf = 0.5*dValue;
-    Integer64 i  = *(Integer64*)&dValue;
+    Integer64 i = 0;
+    std::memcpy(&i, &dValue, sizeof(i));
 #if defined(WM4_USING_VC70) || defined(WM4_USING_VC6)
     i = 0x5fe6ec85e7de30da - (i >> 1);
 #else
     i = 0x5fe6ec85e7de30daLL - (i >> 1);
 #endif
-    dValue = *(double*)&i;
+    std::memcpy(&dValue, &i, sizeof(dValue));
     dValue = dValue*(1.5 - dHalf*dValue*dValue);
     return dValue;
 }

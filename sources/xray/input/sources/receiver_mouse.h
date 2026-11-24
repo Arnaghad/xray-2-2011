@@ -9,9 +9,7 @@
 
 #include <xray/input/world.h>
 #include <xray/input/mouse.h>
-
-struct IDirectInputDevice8A;
-struct IDirectInput8A;
+#include <SDL3/SDL_events.h>
 
 namespace xray {
 namespace input {
@@ -26,19 +24,27 @@ class mouse :
 {
 typedef vector< handler* >		handlers_type;
 public:
-							mouse			( IDirectInput8A& direct_input, HWND window_handle, xray::input::world& input_world );
+							mouse			( HWND window_handle, xray::input::world& input_world );
 	virtual					~mouse			( );
 	virtual	state const&	get_state		( ) const;
 			void			on_activate		( );
 			void			on_deactivate	( );
 			void			execute			( );
 			void			process			( handlers_type& handlers );
+			void			on_motion		( float dx, float dy );
+			void			on_wheel		( float dz );
+			void			on_button		( mouse_button btn, bool down );
+			void			on_sdl_event	( SDL_Event const& ev );
 private:
 	state					m_current_state;
 	state					m_previous_state;
 	HWND					m_window_handle;
-	IDirectInputDevice8A*	m_device;
 	xray::input::world&		m_world;
+	long					m_pending_x;
+	long					m_pending_y;
+	long					m_pending_z;
+	u8						m_live_buttons;
+	bool					m_active;
 }; // class world
 
 } // namespace receiver

@@ -29,8 +29,8 @@ performance_snapshot vulkan_backend::performance() const {
     result.resources=resource_counts(); result.retired_resources=retired_resource_counts();
     result.pipelines=m_pipeline_map.size(); result.pipeline_creations=m_pipeline_creations;
     result.pipeline_creation_ns=m_pipeline_creation_ns; result.device_idle_calls=m_device_idle_calls;
-    result.pending_pass_objects=m_retired_passes.size();
-    result.cached_pass_objects=m_cached_passes.size();result.pass_pair_creations=m_pass_pair_creations;
+    result.pending_pass_objects=0;
+    result.cached_pass_objects=0;result.pass_pair_creations=m_pass_pair_creations;
     result.timestamps_enabled=m_performance_enabled;
     result.timestamp_valid_bits=m_timestamp_valid_bits; result.timestamp_period_ns=m_timestamp_period;
     result.outputs.reserve(m_outputs.size());
@@ -103,6 +103,6 @@ void vulkan_backend::begin_frame_timestamp(VkCommandBuffer command) {
     if (!m_performance_enabled) return;
     auto first=m_frames->current_frame*2;
     vkCmdResetQueryPool(command,m_frames->timestamps,first,2);
-    vkCmdWriteTimestamp(command,VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT,m_frames->timestamps,first);
+    vkCmdWriteTimestamp2(command,VK_PIPELINE_STAGE_2_TOP_OF_PIPE_BIT,m_frames->timestamps,first);
 }
 } } }

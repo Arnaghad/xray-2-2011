@@ -19,22 +19,8 @@ u64 vulkan_backend::retirement_serial() const {
     // Recording commands can reference resources before their submit exists.
     return m_submitted_serial + (m_recording ? 1 : 0);
 }
-void vulkan_backend::retire_pass_cache(VkImageView view,presentation_output* output) noexcept {
-    for(auto it=m_cached_passes.begin();it!=m_cached_passes.end();) {
-        auto current=it++;
-        if((!view && !output) || (output && current->owner==output)
-            || (view && std::find(current->views.begin(),current->views.begin()+current->attachment_count,view)!=current->views.begin()+current->attachment_count))
-            m_retired_passes.splice(m_retired_passes.end(),m_cached_passes,current);
-    }
-}
 void vulkan_backend::collect_retired(bool force) noexcept {
-    if(force)m_retired_passes.splice(m_retired_passes.end(),m_cached_passes);
-    for (auto it = m_retired_passes.begin(); it != m_retired_passes.end();) {
-        if (!force && it->serial > m_completed_serial) { ++it; continue; }
-        vkDestroyFramebuffer(m_device, it->framebuffer, allocation_callbacks());
-        vkDestroyRenderPass(m_device, it->pass, allocation_callbacks());
-        it = m_retired_passes.erase(it);
-    }
+    (void)force;
     for (auto it = m_retired_textures.begin(); it != m_retired_textures.end();) {
         if (!force && it->serial > m_completed_serial) { ++it; continue; }
         if (!force && it->bindless_slot > 0)
@@ -357,17 +343,21 @@ void vulkan_backend::compute_to_vertex_barrier(rhi::rhi_buffer_handle handle) {
     if (!m_recording || m_pass_active) throw std::runtime_error("Compute barrier must occur outside render pass");
     auto* b = m_buffers.get(handle);
     if (!b) return;
-    VkBufferMemoryBarrier barrier = {};
-    barrier.sType = VK_STRUCTURE_TYPE_BUFFER_MEMORY_BARRIER;
-    barrier.srcAccessMask = VK_ACCESS_SHADER_WRITE_BIT;
-    barrier.dstAccessMask = VK_ACCESS_VERTEX_ATTRIBUTE_READ_BIT;
+    VkBufferMemoryBarrier2 barrier = {};
+    barrier.sType = VK_STRUCTURE_TYPE_BUFFER_MEMORY_BARRIER_2;
+    barrier.srcStageMask = VK_PIPELINE_STAGE_2_COMPUTE_SHADER_BIT;
+    barrier.srcAccessMask = VK_ACCESS_2_SHADER_STORAGE_WRITE_BIT;
+    barrier.dstStageMask = VK_PIPELINE_STAGE_2_VERTEX_ATTRIBUTE_INPUT_BIT;
+    barrier.dstAccessMask = VK_ACCESS_2_VERTEX_ATTRIBUTE_READ_BIT;
     barrier.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
     barrier.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
     barrier.buffer = b->buffer;
     barrier.offset = 0;
     barrier.size = VK_WHOLE_SIZE;
-    vkCmdPipelineBarrier(m_frames->command_buffers[m_frames->current_frame],
-        VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT, VK_PIPELINE_STAGE_VERTEX_INPUT_BIT,
-        0, 0, nullptr, 1, &barrier, 0, nullptr);
+    VkDependencyInfo dep = {};
+    dep.sType = VK_STRUCTURE_TYPE_DEPENDENCY_INFO;
+    dep.bufferMemoryBarrierCount = 1;
+    dep.pBufferMemoryBarriers = &barrier;
+    vkCmdPipelineBarrier2(m_frames->command_buffers[m_frames->current_frame], &dep);
 }
 } } }

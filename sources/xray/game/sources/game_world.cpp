@@ -108,6 +108,15 @@ game_world::~game_world( )
 	m_camera_director	= nullptr;
 	DELETE				( cd );
 	DELETE				( m_test_anim_object );
+	if ( m_physics_world )
+	{
+#ifdef XRAY_STATIC_LIBRARIES
+		physics::destroy_world( stalker2::g_physics_allocator.c_ptr(), m_physics_world );
+#else // #ifdef XRAY_STATIC_LIBRARIES
+		physics::destroy_world( memory::g_crt_allocator, m_physics_world );
+#endif // #ifdef XRAY_STATIC_LIBRARIES
+		m_physics_world = nullptr;
+	}
 }
 
 void game_world::time_update( )

@@ -63,6 +63,10 @@ XRAY_DEBUG_API	void			dump_call_stack		( pcstr						initiator,
 
 XRAY_DEBUG_API	void			log_call_stack		( pcstr header );
 
+#ifdef _WIN32
+XRAY_DEBUG_API	bool			write_local_minidump( pcstr output_file_name, _EXCEPTION_POINTERS* exception_information );
+#endif
+
 typedef void protected_function_type				( pvoid );
 XRAY_DEBUG_API	void			protected_call		( protected_function_type* function_to_call, pvoid arguments );
 

@@ -24,6 +24,7 @@ target_link_libraries(xray_engine PRIVATE
     xray_animation
     xray_physics
     xray_render_vulkan
+    SDL3::SDL3
 )
 target_link_libraries(xray_engine PUBLIC 
     Boost::system 

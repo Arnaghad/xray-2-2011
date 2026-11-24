@@ -30,11 +30,13 @@ class bullet_physics_world :public world,
 public:
 	
 	bullet_physics_world	( memory::base_allocator& allocator, engine& engine );
+	virtual					~bullet_physics_world	( );
 	virtual	void			initialize				( );
 	virtual	void			tick					( );
+	void					step_fixed				( float dt, int max_substeps = 10, float fixed_step = 1.0f / 60.0f );
 	virtual	void			clear_resources			( ){};
 	virtual	void			debug_render			( xray::render::scene_ptr const& scene, xray::render::debug::renderer& renderer ) const;
-	virtual	void			set_ready				( bool ){};
+	virtual	void			set_ready				( bool v ) { m_ready = v; }
 	virtual	void			create_test_scene		( );
 
 	virtual	void			add_rigid_body			( bt_rigid_body* );
@@ -68,6 +70,7 @@ private:
 
 	engine&						m_engine;
 	float						m_last_frame_time;
+	bool						m_ready;
 }; // class bullet_physics_world
 
 } // namespace physics

@@ -9,7 +9,6 @@
 
 #include <xray/debug/api.h>
 #include <functional>
-#include <boost/bind.hpp>
 
 namespace xray {
 namespace debug {

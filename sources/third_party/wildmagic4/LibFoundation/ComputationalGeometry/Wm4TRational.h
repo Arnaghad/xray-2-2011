@@ -18,6 +18,7 @@
 
 #include "Wm4FoundationLIB.h"
 #include "Wm4TInteger.h"
+#include <cstring>
 
 namespace Wm4
 {

@@ -32,6 +32,8 @@ private:
 
 }; // class animated_model_instance
 
+void register_animated_model_instance_cook( );
+
 } // namespace physics
 } // namespace xray
 

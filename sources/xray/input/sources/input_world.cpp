@@ -18,13 +18,13 @@ using xray::input::mouse;
 using xray::input::gamepad;
 
 input_world::input_world	( xray::input::engine& engine, HWND const window_handle ) :
-	m_engine		( engine ),
-	m_direct_input	( 0 ),
-	m_gamepad		( 0 ),
-	m_keyboard		( 0 ),
-	m_mouse			( 0 ),
-	m_target_state	( input_state_processed ),
-	m_acquired		( false )
+	m_engine				( engine ),
+	m_target_window			( window_handle ),
+	m_gamepad				( 0 ),
+	m_keyboard				( 0 ),
+	m_mouse					( 0 ),
+	m_target_state			( input_state_processed ),
+	m_acquired				( false )
 {
 	create_devices	( window_handle );
 }
@@ -47,6 +47,8 @@ void input_world::tick		( )
 
 		threading::interlocked_exchange( (threading::atomic32_type&)m_target_state, input_state_processed );
 	}
+
+	pump_events				( );
 
 	if ( m_handlers.empty( ) )
 		return;

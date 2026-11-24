@@ -6,48 +6,41 @@
 
 #include "pch.h"
 #include "network_world.h"
-
-#if 1
-#	include "io_service.h"
-#endif // #if 1
+#include "io_service.h"
 
 #ifndef MASTER_GOLD
-static xray::command_line::key	s_no_network_key	("no_network", "", "", "disable network");
+static xray::command_line::key	s_no_network_key		("no_network", "", "", "disable network");
 #endif // #ifndef MASTER_GOLD
+static xray::command_line::key	s_enable_network_key	("enable_network", "", "network", "enable network io_service at startup");
 
 using xray::network::network_world;
 
 network_world::network_world		( xray::network::engine& engine ) :
-	m_engine					( engine )
+	m_engine					( engine ),
+	m_ioservice					( nullptr )
 {
+	bool enabled				= s_enable_network_key.is_set();
 #ifndef MASTER_GOLD
-	if ( !s_no_network_key.is_set() )
+	if ( s_no_network_key.is_set() )
+		enabled					= false;
 #endif // #ifndef MASTER_GOLD
-#if 1
-		m_ioservice				= XN_NEW(lowlevel::io_service);	
-#else // #if 1
-		(void)0;
-#endif // #if 1
+	if ( enabled )
+		m_ioservice				= XN_NEW(lowlevel::io_service);
 }
 
 network_world::~network_world		( )
 {
-#if 1
-	XN_DELETE					( m_ioservice );
-#endif // #if 1
+	if ( m_ioservice ) {
+		XN_DELETE				( m_ioservice );
+		m_ioservice				= nullptr;
+	}
 }
 
 void network_world::tick			( u32 const logic_frame_id )
 {
 	XRAY_UNREFERENCED_PARAMETER	( logic_frame_id );
-#ifndef MASTER_GOLD
-	if ( !s_no_network_key.is_set() )
-#endif // #ifndef MASTER_GOLD
-#if 1
+	if ( m_ioservice )
 		m_ioservice->tick		( );
-#else // #if 1
-		(void)0;
-#endif // #if 1
 }
 
 void network_world::clear_resources	( )

@@ -55,13 +55,7 @@ void engine_world::network				( )
 		if ( m_destruction_started )
 			break;
 
-//		network_tick				( );
-
-		//while ( ( m_logic_frame_id > m_render_world->engine_renderer().frame_id( ) + 1 ) && !m_destruction_started ) {
-		//	if ( !apc::try_process_single_call( apc::network ) )
-		//		threading::yield	( 1 );
-		//}
-
+		network_tick				( );
 		threading::yield			( 10 );
 	}
 	

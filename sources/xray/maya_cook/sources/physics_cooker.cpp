@@ -1,12 +1,10 @@
 #include "physics_cooker.hpp"
 
+#include "collision_primitive_fitter.hpp"
 #include "lua_and_binary_config.hpp"
 #include "model_cook_common.hpp"
 #include "exchange_schema.hpp"
 #include "vfs_archive.hpp"
-
-#include "Wm4ContBox3.h"
-#include "Wm4ContSphere3.h"
 
 #include <algorithm>
 #include <array>
@@ -24,7 +22,6 @@ namespace xray::maya_cook {
 namespace {
 
 constexpr double kMinExtentMeters = 0.0005; // 1 mm diameter / edge minimum, matches safety bounds
-constexpr double kDefaultSinglePointRadius = 0.005;
 
 collision_shape_type parse_shape_type(std::string_view name) {
     if (name == "box") return collision_shape_type::box;
@@ -42,100 +39,78 @@ char const* shape_type_name(collision_shape_type shape) {
     return "box";
 }
 
-bool vec_is_finite(Wm4::Vector3d const& v) {
-    return std::isfinite(v.X()) && std::isfinite(v.Y()) && std::isfinite(v.Z());
+double vec_dot(detail::vec3d const& a, detail::vec3d const& b) {
+    return a.x * b.x + a.y * b.y + a.z * b.z;
 }
 
-Wm4::Vector3d normalize_or(Wm4::Vector3d v, Wm4::Vector3d const& fallback) {
-    double len = v.Length();
+detail::vec3d vec_cross(detail::vec3d const& a, detail::vec3d const& b) {
+    return {
+        a.y * b.z - a.z * b.y,
+        a.z * b.x - a.x * b.z,
+        a.x * b.y - a.y * b.x,
+    };
+}
+
+double vec_len(detail::vec3d const& v) {
+    return std::sqrt(vec_dot(v, v));
+}
+
+detail::vec3d normalize_or(detail::vec3d const& v, detail::vec3d const& fallback) {
+    double const len = vec_len(v);
     if (!(len > 1e-12) || !std::isfinite(len)) {
         return fallback;
     }
-    return v / len;
+    return {v.x / len, v.y / len, v.z / len};
+}
+
+detail::vec3d vec_sub(detail::vec3d const& a, detail::vec3d const& b) {
+    return {a.x - b.x, a.y - b.y, a.z - b.z};
+}
+
+detail::vec3d vec_mul(detail::vec3d const& a, double s) {
+    return {a.x * s, a.y * s, a.z * s};
 }
 
 std::array<float, 3> xray_basis_to_euler(
-    Wm4::Vector3d u0,
-    Wm4::Vector3d u1,
-    Wm4::Vector3d u2
+    detail::vec3d u0,
+    detail::vec3d u1,
+    detail::vec3d u2
 ) {
     // Ensure orthonormal right-handed frame (i x j . k > 0) for X-Ray create_rotation
-    u0 = normalize_or(u0, Wm4::Vector3d::UNIT_X);
-    u1 = normalize_or(u1 - u0 * u0.Dot(u1), Wm4::Vector3d::UNIT_Y);
-    if (std::abs(u0.Dot(u1)) > 0.1) {
-        u1 = std::abs(u0.Y()) < 0.9 ? Wm4::Vector3d::UNIT_Y : Wm4::Vector3d::UNIT_Z;
-        u1 = normalize_or(u1 - u0 * u0.Dot(u1), Wm4::Vector3d::UNIT_Y);
+    u0 = normalize_or(u0, {1.0, 0.0, 0.0});
+    u1 = normalize_or(vec_sub(u1, vec_mul(u0, vec_dot(u0, u1))), {0.0, 1.0, 0.0});
+    if (std::abs(vec_dot(u0, u1)) > 0.1) {
+        detail::vec3d const alt = std::abs(u0.y) < 0.9
+            ? detail::vec3d{0.0, 1.0, 0.0}
+            : detail::vec3d{0.0, 0.0, 1.0};
+        u1 = normalize_or(vec_sub(alt, vec_mul(u0, vec_dot(u0, alt))), {0.0, 1.0, 0.0});
     }
-    Wm4::Vector3d right_z = u0.Cross(u1);
-    if (right_z.Dot(u2) < 0.0) {
-        u2 = -right_z;
+    detail::vec3d right_z = vec_cross(u0, u1);
+    if (vec_dot(right_z, u2) < 0.0) {
+        u2 = vec_mul(right_z, -1.0);
     } else {
         u2 = normalize_or(right_z, right_z);
     }
     // Re-enforce u2 = u0 x u1 so det == +1 exactly
-    u2 = u0.Cross(u1);
+    u2 = vec_cross(u0, u1);
 
-    double const sy_clamped = std::clamp(u0.Z(), -1.0, 1.0);
+    double const sy_clamped = std::clamp(u0.z, -1.0, 1.0);
     double const ay = std::asin(sy_clamped);
     double ax = 0.0;
     double az = 0.0;
     if (std::abs(sy_clamped) < 0.99999) {
-        ax = std::atan2(-u1.Z(), u2.Z());
-        az = std::atan2(-u0.Y(), u0.X());
+        ax = std::atan2(-u1.z, u2.z);
+        az = std::atan2(-u0.y, u0.x);
     } else {
         ax = 0.0;
-        az = std::atan2(u1.X(), u1.Y());
+        az = std::atan2(u1.x, u1.y);
     }
     return {static_cast<float>(ax), static_cast<float>(ay), static_cast<float>(az)};
 }
 
-Wm4::Box3d fit_wm4_box_safe(std::vector<Wm4::Vector3d> const& pts) {
-    if (pts.size() == 1) {
-        Wm4::Box3d single;
-        single.Center = pts[0];
-        single.Axis[0] = Wm4::Vector3d::UNIT_X;
-        single.Axis[1] = Wm4::Vector3d::UNIT_Y;
-        single.Axis[2] = Wm4::Vector3d::UNIT_Z;
-        single.Extent[0] = kDefaultSinglePointRadius;
-        single.Extent[1] = kDefaultSinglePointRadius;
-        single.Extent[2] = kDefaultSinglePointRadius;
-        return single;
-    }
-
-    int const qty = static_cast<int>(pts.size());
-    Wm4::Box3d box = Wm4::ContMinBox<double>(qty, pts.data(), 1.0e-5, Wm4::Query::QT_FILTERED);
-    bool valid = vec_is_finite(box.Center) &&
-        vec_is_finite(box.Axis[0]) && vec_is_finite(box.Axis[1]) && vec_is_finite(box.Axis[2]) &&
-        std::isfinite(box.Extent[0]) && std::isfinite(box.Extent[1]) && std::isfinite(box.Extent[2]);
-    if (!valid || box.Axis[0].SquaredLength() < 1e-8 ||
-        box.Axis[1].SquaredLength() < 1e-8 || box.Axis[2].SquaredLength() < 1e-8) {
-        box = Wm4::ContOrientedBox<double>(qty, pts.data());
-        if (!vec_is_finite(box.Center) || box.Axis[0].SquaredLength() < 1e-8) {
-            box = Wm4::ContAlignedBox<double>(qty, pts.data());
-        }
-    }
-    return box;
-}
-
-Wm4::Sphere3d fit_wm4_sphere_safe(std::vector<Wm4::Vector3d> const& pts) {
-    if (pts.size() == 1) {
-        Wm4::Sphere3d single;
-        single.Center = pts[0];
-        single.Radius = kDefaultSinglePointRadius;
-        return single;
-    }
-    int const qty = static_cast<int>(pts.size());
-    Wm4::Sphere3d sphere;
-    Wm4::MinSphere3<double>(qty, pts.data(), sphere, 1.0e-4);
-    if (!vec_is_finite(sphere.Center) || !std::isfinite(sphere.Radius) || sphere.Radius <= 0.0) {
-        sphere = Wm4::ContSphereAverage<double>(qty, pts.data());
-    }
-    return sphere;
-}
-
 fitted_collision_primitive fit_xray_points_internal(
     collision_shape_type shape,
-    std::vector<Wm4::Vector3d> const& xray_pts,
+    std::vector<detail::vec3d> const& xray_pts,
     bool flip_z,
     float unit_scale,
     bool output_in_maya_space
@@ -148,53 +123,53 @@ fitted_collision_primitive fit_xray_points_internal(
     std::array<float, 3> scale_xray{};
 
     if (shape == collision_shape_type::sphere) {
-        Wm4::Sphere3d const sphere = fit_wm4_sphere_safe(xray_pts);
-        double const diam = std::max(2.0 * sphere.Radius, 2.0 * kMinExtentMeters);
+        detail::fitted_sphere const sphere = detail::fit_bounding_sphere(xray_pts);
+        double const diam = std::max(2.0 * sphere.radius, 2.0 * kMinExtentMeters);
         pos_xray = {
-            static_cast<float>(sphere.Center.X()),
-            static_cast<float>(sphere.Center.Y()),
-            static_cast<float>(sphere.Center.Z()),
+            static_cast<float>(sphere.center.x),
+            static_cast<float>(sphere.center.y),
+            static_cast<float>(sphere.center.z),
         };
         rot_xray = {0.0f, 0.0f, 0.0f};
         scale_xray = {static_cast<float>(diam), static_cast<float>(diam), static_cast<float>(diam)};
     } else {
-        Wm4::Box3d const box = fit_wm4_box_safe(xray_pts);
+        detail::fitted_obb const box = detail::fit_oriented_box(xray_pts);
         pos_xray = {
-            static_cast<float>(box.Center.X()),
-            static_cast<float>(box.Center.Y()),
-            static_cast<float>(box.Center.Z()),
+            static_cast<float>(box.center.x),
+            static_cast<float>(box.center.y),
+            static_cast<float>(box.center.z),
         };
         if (shape == collision_shape_type::box) {
-            Wm4::Vector3d u0 = normalize_or(box.Axis[0], Wm4::Vector3d::UNIT_X);
-            Wm4::Vector3d u1 = normalize_or(box.Axis[1], Wm4::Vector3d::UNIT_Y);
-            Wm4::Vector3d u2 = normalize_or(box.Axis[2], Wm4::Vector3d::UNIT_Z);
-            if (u0.Cross(u1).Dot(u2) < 0.0) {
-                u2 = -u2;
+            detail::vec3d u0 = normalize_or(box.axis[0], {1.0, 0.0, 0.0});
+            detail::vec3d u1 = normalize_or(box.axis[1], {0.0, 1.0, 0.0});
+            detail::vec3d u2 = normalize_or(box.axis[2], {0.0, 0.0, 1.0});
+            if (vec_dot(vec_cross(u0, u1), u2) < 0.0) {
+                u2 = vec_mul(u2, -1.0);
             }
             rot_xray = xray_basis_to_euler(u0, u1, u2);
             scale_xray = {
-                static_cast<float>(std::max(2.0 * std::abs(box.Extent[0]), 2.0 * kMinExtentMeters)),
-                static_cast<float>(std::max(2.0 * std::abs(box.Extent[1]), 2.0 * kMinExtentMeters)),
-                static_cast<float>(std::max(2.0 * std::abs(box.Extent[2]), 2.0 * kMinExtentMeters)),
+                static_cast<float>(std::max(2.0 * std::abs(box.extent[0]), 2.0 * kMinExtentMeters)),
+                static_cast<float>(std::max(2.0 * std::abs(box.extent[1]), 2.0 * kMinExtentMeters)),
+                static_cast<float>(std::max(2.0 * std::abs(box.extent[2]), 2.0 * kMinExtentMeters)),
             };
         } else {
             // Cylinder local Y is long axis, diameter in XZ uses middle extent per legacy set_cylinder_matrix
             std::array<int, 3> order{0, 1, 2};
             std::sort(order.begin(), order.end(), [&](int a, int b) {
-                return std::abs(box.Extent[a]) < std::abs(box.Extent[b]);
+                return std::abs(box.extent[a]) < std::abs(box.extent[b]);
             });
             int const min_i = order[0];
             int const mid_i = order[1];
             int const max_i = order[2];
 
-            Wm4::Vector3d u_y = normalize_or(box.Axis[max_i], Wm4::Vector3d::UNIT_Y);
-            Wm4::Vector3d u_x = box.Axis[min_i] - u_y * u_y.Dot(box.Axis[min_i]);
-            u_x = normalize_or(u_x, Wm4::Vector3d::UNIT_X);
-            Wm4::Vector3d u_z = normalize_or(u_x.Cross(u_y), Wm4::Vector3d::UNIT_Z);
+            detail::vec3d const u_y = normalize_or(box.axis[max_i], {0.0, 1.0, 0.0});
+            detail::vec3d u_x = vec_sub(box.axis[min_i], vec_mul(u_y, vec_dot(u_y, box.axis[min_i])));
+            u_x = normalize_or(u_x, {1.0, 0.0, 0.0});
+            detail::vec3d const u_z = normalize_or(vec_cross(u_x, u_y), {0.0, 0.0, 1.0});
 
             rot_xray = xray_basis_to_euler(u_x, u_y, u_z);
-            double const diam = std::max(2.0 * std::abs(box.Extent[mid_i]), 2.0 * kMinExtentMeters);
-            double const height = std::max(2.0 * std::abs(box.Extent[max_i]), 2.0 * kMinExtentMeters);
+            double const diam = std::max(2.0 * std::abs(box.extent[mid_i]), 2.0 * kMinExtentMeters);
+            double const height = std::max(2.0 * std::abs(box.extent[max_i]), 2.0 * kMinExtentMeters);
             scale_xray = {static_cast<float>(diam), static_cast<float>(height), static_cast<float>(diam)};
         }
     }
@@ -261,15 +236,15 @@ std::vector<std::uint8_t> read_binary_file(std::filesystem::path const& path) {
     return buf;
 }
 
-std::vector<Wm4::Vector3d> convert_points_to_wm4(
+std::vector<detail::vec3d> convert_points_to_fitter(
     std::vector<detail::float3> const& pts,
     detail::coord_transform const& xform
 ) {
-    std::vector<Wm4::Vector3d> out;
+    std::vector<detail::vec3d> out;
     out.reserve(pts.size());
     for (auto const& raw : pts) {
         detail::float3 const p = xform.pos(raw);
-        out.emplace_back(static_cast<double>(p.x), static_cast<double>(p.y), static_cast<double>(p.z));
+        out.push_back({static_cast<double>(p.x), static_cast<double>(p.y), static_cast<double>(p.z)});
     }
     return out;
 }
@@ -300,7 +275,7 @@ fitted_collision_primitive fit_collision_primitive(
     }
 
     std::size_t const count = xyz_points.size() / 3;
-    std::vector<Wm4::Vector3d> pts;
+    std::vector<detail::vec3d> pts;
     pts.reserve(count);
     for (std::size_t i = 0; i < count; ++i) {
         float const x = xyz_points[i * 3 + 0];
@@ -313,7 +288,7 @@ fitted_collision_primitive fit_collision_primitive(
         double const sy = static_cast<double>(y) * static_cast<double>(unit_scale_to_meters);
         double const sz = (input_is_maya_right_handed ? -static_cast<double>(z) : static_cast<double>(z)) *
             static_cast<double>(unit_scale_to_meters);
-        pts.emplace_back(sx, sy, sz);
+        pts.push_back({sx, sy, sz});
     }
 
     return fit_xray_points_internal(
@@ -345,13 +320,13 @@ std::string fit_collision_bundle_to_json(std::filesystem::path const& exchange_d
             throw std::runtime_error("fit_request.points count must be > 0");
         }
         auto raw_pts = detail::read_f32x3_span(pts_span, payload, count);
-        auto wm_pts = convert_points_to_wm4(raw_pts, xform);
+        auto fit_pts = convert_points_to_fitter(raw_pts, xform);
 
         fitted_collision_primitive source_fit = fit_xray_points_internal(
-            shape, wm_pts, xform.flip_z, xform.scale, true
+            shape, fit_pts, xform.flip_z, xform.scale, true
         );
         fitted_collision_primitive const xray_fit = fit_xray_points_internal(
-            shape, wm_pts, xform.flip_z, xform.scale, false
+            shape, fit_pts, xform.flip_z, xform.scale, false
         );
         if (v2) {
             auto const p = xform.inverse_pos({xray_fit.position[0], xray_fit.position[1], xray_fit.position[2]});
@@ -447,9 +422,9 @@ cook_result cook_physics(
                         throw std::runtime_error("Collision shape points count must be > 0");
                     }
                     auto raw_pts = read_f32x3_span(*pts_span, payload, count);
-                    auto wm_pts = convert_points_to_wm4(raw_pts, xform);
+                    auto fit_pts = convert_points_to_fitter(raw_pts, xform);
                     fitted_collision_primitive const fit = fit_xray_points_internal(
-                        shape, wm_pts, xform.flip_z, xform.scale, false
+                        shape, fit_pts, xform.flip_z, xform.scale, false
                     );
                     c_pos = {fit.position[0], fit.position[1], fit.position[2]};
                     c_rot = {fit.rotation[0], fit.rotation[1], fit.rotation[2]};

@@ -6,10 +6,13 @@
 
 #include "pch.h"
 #include "bullet_physics_world.h"
+#include "animated_model_instance_cook.h"
 #include <xray/physics/rigid_body.h>
 #include <xray/physics/soft_body.h>
 #include "bullet_include.h"
 #include <xray/render/facade/debug_renderer.h>
+#include <algorithm>
+#include <cmath>
 
 void* bullet_alloc( size_t size )
 {
@@ -25,18 +28,71 @@ namespace xray {
 namespace physics {
 
 bullet_physics_world::bullet_physics_world( memory::base_allocator& allocator, engine& engine )
-:m_engine		( engine ),
-m_allocator		( allocator ),
-m_dynamic_test_body( nullptr ),
-m_ground_plane_body	( nullptr ),
-m_test_rope_body	( nullptr )
+:m_allocator				( allocator ),
+m_collisionConfiguration	( nullptr ),
+m_dispatcher				( nullptr ),
+m_overlappingPairCache		( nullptr ),
+m_constraintSolver			( nullptr ),
+m_softBodyWorldInfo			( nullptr ),
+m_dynamicsWorld				( nullptr ),
+m_ground_plane_body			( nullptr ),
+m_dynamic_test_body			( nullptr ),
+m_test_rope_body			( nullptr ),
+m_engine					( engine ),
+m_last_frame_time			( 0.0f ),
+m_ready						( true )
 {
-	
+}
+
+bullet_physics_world::~bullet_physics_world( )
+{
+	if ( m_dynamicsWorld )
+	{
+		if ( m_test_rope_body )
+		{
+			m_dynamicsWorld->removeSoftBody( m_test_rope_body );
+			XRAY_DELETE_IMPL( m_allocator, m_test_rope_body );
+			m_test_rope_body = nullptr;
+		}
+		if ( m_dynamic_test_body )
+		{
+			m_dynamicsWorld->removeRigidBody( m_dynamic_test_body->get_bt_body() );
+			destroy_rigid_body( m_dynamic_test_body );
+			m_dynamic_test_body = nullptr;
+		}
+		if ( m_ground_plane_body )
+		{
+			btCollisionShape* ground_shape = m_ground_plane_body->getCollisionShape();
+			m_dynamicsWorld->removeRigidBody( m_ground_plane_body );
+			XRAY_DELETE_IMPL( m_allocator, m_ground_plane_body );
+			XRAY_DELETE_IMPL( m_allocator, ground_shape );
+			m_ground_plane_body = nullptr;
+		}
+		XRAY_DELETE_IMPL( m_allocator, m_dynamicsWorld );
+		m_dynamicsWorld = nullptr;
+	}
+	XRAY_DELETE_IMPL( m_allocator, m_constraintSolver );
+	m_constraintSolver = nullptr;
+	XRAY_DELETE_IMPL( m_allocator, m_overlappingPairCache );
+	m_overlappingPairCache = nullptr;
+	XRAY_DELETE_IMPL( m_allocator, m_dispatcher );
+	m_dispatcher = nullptr;
+	XRAY_DELETE_IMPL( m_allocator, m_collisionConfiguration );
+	m_collisionConfiguration = nullptr;
+	XRAY_DELETE_IMPL( m_allocator, m_softBodyWorldInfo );
+	m_softBodyWorldInfo = nullptr;
 }
 
 void bullet_physics_world::initialize( )
 {
-	btAlignedAllocSetCustom		( bullet_alloc, bullet_free );
+	if ( m_dynamicsWorld )
+		return;
+
+	if ( !xray::physics::g_ph_allocator )
+		set_memory_allocator( &m_allocator );
+
+	// Keep Bullet's default process-lifetime aligned allocator so static state inside
+	// shared Bullet DLLs can tear down safely during LdrShutdownProcess after local allocators.
 	
 	btVector3 worldMin			(-1000,-1000,-1000);
 	btVector3 worldMax			(1000,1000,1000);
@@ -92,16 +148,23 @@ void bullet_physics_world::initialize( )
 
 	m_timer.start();
 	m_last_frame_time = 0.0f;
+	register_animated_model_instance_cook();
+}
+
+void bullet_physics_world::step_fixed( float dt, int max_substeps, float fixed_step )
+{
+	if ( !m_dynamicsWorld || !m_ready || !(dt > 0.0f) || !std::isfinite(dt) )
+		return;
+	m_dynamicsWorld->stepSimulation		( dt, max_substeps, fixed_step );
+	m_softBodyWorldInfo->m_sparsesdf.GarbageCollect();
 }
 
 void bullet_physics_world::tick( )
 {
 	float const current_time			= m_timer.get_elapsed_sec();
-	float const frame_time				= current_time - m_last_frame_time;
+	float const frame_time				= std::clamp( current_time - m_last_frame_time, 0.0f, 0.25f );
 	m_last_frame_time					= current_time;
-	m_dynamicsWorld->stepSimulation		( frame_time );
-	m_softBodyWorldInfo->m_sparsesdf.GarbageCollect();
-
+	step_fixed							( frame_time, 10, 1.0f / 60.0f );
 }
 
 void bullet_physics_world::add_rigid_body( bt_rigid_body* body )

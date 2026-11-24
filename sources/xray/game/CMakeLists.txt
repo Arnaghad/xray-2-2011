@@ -11,6 +11,9 @@ target_link_libraries(xray_game PUBLIC
     xray_rtp
 )
 target_link_libraries(xray_game PRIVATE xray_render_vulkan)
+target_compile_definitions(xray_game PRIVATE
+    XRAY_GAME_PHYSICS_USE_BULLET=$<BOOL:${XRAY_GAME_PHYSICS_USE_BULLET}>
+)
 target_link_libraries(xray_game INTERFACE
     xray_sound
     xray_network

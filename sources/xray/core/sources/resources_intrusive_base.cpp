@@ -146,6 +146,9 @@ void   unmanaged_intrusive_base::destroy (unmanaged_resource * const resource) c
 	if ( resource->is_no_delete() )
 		return;
 
+	if ( !g_resources_manager.initialized() )
+		return;
+
 	R_ASSERT	(resource->get_deleter_object());
 
 	if ( !try_unregister_from_fat_or_from_name_registry	(resource) )

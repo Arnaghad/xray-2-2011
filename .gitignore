@@ -35,11 +35,6 @@ install_manifest.txt
 *.ipch
 *.spv
 
-# Keep legacy macOS .exp/.pch files shipped inside bundled Ogg/Vorbis sources
-!sources/ogg/sources/macos/*.exp
-!sources/ogg/sources/macosx/*.pch
-!sources/vorbis/sources/macos/*.exp
-
 # Visual Studio / Rider / VS Code / IDE state
 .vs/
 .idea/
