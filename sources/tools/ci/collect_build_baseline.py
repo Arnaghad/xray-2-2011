@@ -35,14 +35,15 @@ def run_capture(cmd: list[str], cwd: Path | None = None) -> tuple[int, str]:
 
 
 def collect_tool_versions(manifest: dict) -> dict:
-    versions: dict[str, str | None] = {}
+    versions: dict[str, str | dict[str, str | None] | None] = {}
     for key, cmd in (
         ("gcc", ["g++", "--version"]),
         ("cmake", ["cmake", "--version"]),
         ("ninja", ["ninja", "--version"]),
         ("dotnet", ["dotnet", "--version"]),
     ):
-        rc, out = run_capture(cmd)
+        executable = shutil.which(cmd[0])
+        rc, out = run_capture([executable, *cmd[1:]]) if executable else (1, "")
         versions[key] = out.splitlines()[0].strip() if rc == 0 and out else None
 
     versions["python"] = sys.version.split()[0]
@@ -54,20 +55,24 @@ def collect_tool_versions(manifest: dict) -> dict:
     else:
         versions["dxc"] = None
 
-    pacman_exe = Path("C:/msys64/usr/bin/pacman.exe")
+    compiler = shutil.which("g++")
+    toolchain_prefix = Path(compiler).resolve().parent.parent if compiler else None
+    ucrt = toolchain_prefix is not None and toolchain_prefix.name.lower() == "ucrt64"
+    pkg_names = list(manifest.get("msys2Mingw64Packages", {}))
+    if ucrt:
+        pkg_names = [name.replace("mingw-w64-x86_64-", "mingw-w64-ucrt-x86_64-", 1) for name in pkg_names]
+    pacman_exe = toolchain_prefix.parent / "usr/bin/pacman.exe" if toolchain_prefix else None
     msys2_pkgs: dict[str, str | None] = {}
-    if pacman_exe.is_file():
-        pkg_names = list(manifest.get("msys2Mingw64Packages", {}).keys())
-        rc, out = run_capture([str(pacman_exe), "-Q", *pkg_names])
+    if pacman_exe and pacman_exe.is_file() and pkg_names:
+        _, out = run_capture([str(pacman_exe), "-Q", *pkg_names])
         installed: dict[str, str] = {}
-        if rc == 0:
-            for line in out.splitlines():
-                parts = line.split()
-                if len(parts) >= 2:
-                    installed[parts[0]] = parts[1]
+        for line in out.splitlines():
+            parts = line.split()
+            if len(parts) == 2 and parts[0] in pkg_names:
+                installed[parts[0]] = parts[1]
         for pkg in pkg_names:
             msys2_pkgs[pkg] = installed.get(pkg)
-    versions["msys2Mingw64Packages"] = msys2_pkgs
+    versions["msys2Ucrt64Packages" if ucrt else "msys2Mingw64Packages"] = msys2_pkgs
     return versions
 
 

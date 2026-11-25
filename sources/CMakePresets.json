@@ -56,32 +56,38 @@
       "configurePreset": "windows-x64-release"
     },
     {
-      "name": "windows-x64-debug-cpu-tests",
-      "displayName": "Build CPU Tests & Cooker (Debug)",
-      "configurePreset": "windows-x64-debug",
+      "name": "windows-x64-cpu-tests-base",
+      "hidden": true,
       "targets": [
         "xray_lua_sol_binding",
         "xray_windows_x64_contract",
         "xray_vfs_legacy_decode",
         "xray_editor_host_abi_contract",
+        "xray_avalonia_headless_tests",
         "xray_ogg_vorbis_contract",
         "xray_dependency_single_source_contract",
+        "xray_math_and_binary_config_contract",
+        "xray_callback_and_raii_contract",
+        "xray_input_sdl3_contract",
+        "xray_diagnostics_minidump_contract",
+        "xray_network_udp_loopback",
+        "xray_physics_world_parity_contract",
+        "xray_collision_bvh_parity_contract",
+        "xray_physics_cook_fitter_contract",
         "xray_asset_cook_cli"
       ]
     },
     {
+      "name": "windows-x64-debug-cpu-tests",
+      "displayName": "Build CPU Tests & Cooker (Debug)",
+      "inherits": "windows-x64-cpu-tests-base",
+      "configurePreset": "windows-x64-debug"
+    },
+    {
       "name": "windows-x64-release-cpu-tests",
       "displayName": "Build CPU Tests & Cooker (Release)",
-      "configurePreset": "windows-x64-release",
-      "targets": [
-        "xray_lua_sol_binding",
-        "xray_windows_x64_contract",
-        "xray_vfs_legacy_decode",
-        "xray_editor_host_abi_contract",
-        "xray_ogg_vorbis_contract",
-        "xray_dependency_single_source_contract",
-        "xray_asset_cook_cli"
-      ]
+      "inherits": "windows-x64-cpu-tests-base",
+      "configurePreset": "windows-x64-release"
     }
   ],
   "testPresets": [
