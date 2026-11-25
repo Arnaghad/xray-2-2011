@@ -1,0 +1,9 @@
+<editors:value_editor_base xmlns="https://github.com/avaloniaui"
+                           xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                           xmlns:editors="clr-namespace:xray.editor.avalonia_controls.property_editors.value"
+                           xmlns:pe="clr-namespace:xray.editor.avalonia_controls.property_editors"
+                           x:Class="xray.editor.avalonia_controls.property_editors.value.Boolean_editor"
+                           x:DataType="pe:property"
+                           x:CompileBindings="False">
+  <CheckBox Name="m_check_box" IsChecked="{Binding value}" VerticalAlignment="Center" Margin="0,0,0,1" />
+</editors:value_editor_base>

@@ -1,0 +1,10 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceInclude Source="avares://xray.editor.avalonia_controls/property_editors/item/themes/custom_item_editor_theme.axaml" />
+    <ResourceInclude Source="avares://xray.editor.avalonia_controls/property_editors/item/themes/data_source_editor_theme.axaml" />
+    <ResourceInclude Source="avares://xray.editor.avalonia_controls/property_editors/item/themes/material_stage_editor_theme.axaml" />
+    <ResourceInclude Source="avares://xray.editor.avalonia_controls/property_editors/item/themes/material_stage_effect_editor_theme.axaml" />
+    <ResourceInclude Source="avares://xray.editor.avalonia_controls/property_editors/item/themes/named_item_editor_theme.axaml" />
+  </ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>

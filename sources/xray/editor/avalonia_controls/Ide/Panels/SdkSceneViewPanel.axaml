@@ -1,0 +1,17 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:themes="using:xray.editor.avalonia_controls.Themes"
+             x:Class="xray.editor.avalonia_controls.Ide.Panels.SdkSceneViewPanel"
+             Background="{x:Static themes:SdkWorkspaceTheme.Canvas}">
+    <DockPanel LastChildFill="True">
+        <Border DockPanel.Dock="Top"
+                Background="{x:Static themes:SdkWorkspaceTheme.Chrome}"
+                BorderBrush="{x:Static themes:SdkWorkspaceTheme.Divider}"
+                BorderThickness="0,0,0,1"
+                Padding="4,2">
+            <WrapPanel x:Name="m_toolbar_panel"
+                       Orientation="Horizontal" />
+        </Border>
+        <ContentControl x:Name="m_viewport_container" />
+    </DockPanel>
+</UserControl>

@@ -1,0 +1,34 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:as="using:xray.editor.avalonia_controls.animation_setup"
+             x:Class="xray.editor.avalonia_controls.animation_lexeme_panel.animation_interval_view"
+             x:CompileBindings="False"
+             Width="{Binding length}"
+             Height="40"
+             PointerPressed="user_control_pointer_pressed">
+    <UserControl.Resources>
+        <as:animation_channel_partition_type_to_visibility_converter x:Key="type_to_v_c" />
+        <ContextMenu x:Key="context_menu">
+            <MenuItem Header="Cycle lexeme from this interval" Click="cycle_click" />
+            <MenuItem Header="Remove cycling" Click="uncycle_click" />
+            <MenuItem Header="Remove interval" Click="remove_interval_click" />
+            <MenuItem Header="Remove animation" Click="remove_animation_click" />
+        </ContextMenu>
+    </UserControl.Resources>
+    <Border HorizontalAlignment="Left"
+            Width="{Binding length}"
+            Background="Transparent"
+            BorderBrush="Black"
+            BorderThickness="1">
+        <DockPanel>
+            <Grid>
+                <Border IsVisible="{Binding type, Converter={StaticResource type_to_v_c}, ConverterParameter=undefined}" Background="Transparent" />
+                <Border IsVisible="{Binding type, Converter={StaticResource type_to_v_c}, ConverterParameter=none}" Background="Transparent" />
+                <Border VerticalAlignment="Top" IsVisible="{Binding type, Converter={StaticResource type_to_v_c}, ConverterParameter=left}" Background="Green" Height="20" />
+                <Border VerticalAlignment="Bottom" IsVisible="{Binding type, Converter={StaticResource type_to_v_c}, ConverterParameter=right}" Background="Green" Height="20" />
+                <Border IsVisible="{Binding type, Converter={StaticResource type_to_v_c}, ConverterParameter=both}" Background="Green" />
+                <TextBlock Text="{Binding text}" HorizontalAlignment="Right" VerticalAlignment="Top" />
+            </Grid>
+        </DockPanel>
+    </Border>
+</UserControl>

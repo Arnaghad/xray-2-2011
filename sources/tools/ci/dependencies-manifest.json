@@ -110,9 +110,49 @@
     "dotnetSdk": "11.0.100",
     "nugetPackages": [
       {
-        "name": "Extended.Wpf.Toolkit",
-        "version": "5.1.2",
-        "consumer": "sources/xray/wpf_controls/wpf_controls.csproj"
+        "name": "Avalonia.Desktop",
+        "version": "12.2.0",
+        "consumer": "sources/xray/editor/base/EditorHost.csproj.in"
+      },
+      {
+        "name": "Avalonia",
+        "version": "12.2.0",
+        "consumer": "sources/xray/editor/avalonia_controls/xray.editor.avalonia_controls.csproj"
+      },
+      {
+        "name": "Avalonia.Skia",
+        "version": "12.2.0",
+        "consumer": "sources/xray/editor/avalonia_controls/xray.editor.avalonia_controls.csproj"
+      },
+      {
+        "name": "Avalonia.Themes.Fluent",
+        "version": "12.2.0",
+        "consumer": "sources/xray/editor/avalonia_controls/xray.editor.avalonia_controls.csproj"
+      },
+      {
+        "name": "Dock.Avalonia",
+        "version": "12.2.0",
+        "consumer": "sources/xray/editor/avalonia_controls/xray.editor.avalonia_controls.csproj"
+      },
+      {
+        "name": "Dock.Avalonia.Themes.Fluent",
+        "version": "12.2.0",
+        "consumer": "sources/xray/editor/avalonia_controls/xray.editor.avalonia_controls.csproj"
+      },
+      {
+        "name": "Dock.Model.Mvvm",
+        "version": "12.2.0",
+        "consumer": "sources/xray/editor/avalonia_controls/xray.editor.avalonia_controls.csproj"
+      },
+      {
+        "name": "Dock.Serializer.SystemTextJson",
+        "version": "12.2.0",
+        "consumer": "sources/xray/editor/avalonia_controls/xray.editor.avalonia_controls.csproj"
+      },
+      {
+        "name": "Avalonia.Headless",
+        "version": "12.2.0",
+        "consumer": "sources/xray/editor/avalonia_controls.tests/xray.editor.avalonia_controls.tests.csproj"
       }
     ],
     "dxc": "1.9.2609.5",
@@ -133,6 +173,7 @@
     "asio.zip legacy archive (sources/asio.zip, replaced by MSYS2 asio 1.38.2-1)",
     "Legacy DX9/common renderers (sources/xray/render/dx9, sources/xray/render/common)",
     "Legacy Maya C++ plugins (sources/xray/maya, sources/xray/maya_animation, superseded by Python DCC/SDK bridges)",
-    "Legacy standalone utilities/logs (build_log.txt, build_log_final.txt, UpgradeLog.htm, vcpkg.json, finger_printer, graphics_benchmark, rms_generator, rtp_learn, shader_generator, sound_system_usage_example, vfs_pack)"
+    "Legacy standalone utilities/logs (build_log.txt, build_log_final.txt, UpgradeLog.htm, vcpkg.json, finger_printer, graphics_benchmark, rms_generator, rtp_learn, shader_generator, sound_system_usage_example, vfs_pack)",
+    "Legacy WinForms/WPF UI libraries (sources/xray/wpf_controls, Extended.Wpf.Toolkit, DockPanelSuite, Avalonia.Win32.Interoperability, replaced by pure Avalonia UI 12.2.0 + Dock.Avalonia on net11.0)"
   ]
 }

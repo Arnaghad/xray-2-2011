@@ -1,0 +1,67 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="xray.editor.avalonia_controls.color_picker.color_component_slider">
+  <DockPanel>
+    <Button x:Name="m_title"
+            MinHeight="15"
+            DockPanel.Dock="Top"
+            Focusable="False"
+            IsTabStop="False"
+            Padding="2,1" />
+    <TextBox x:Name="m_value"
+             FontSize="8"
+             DockPanel.Dock="Top"
+             FontFamily="Arial"
+             FontWeight="Bold"
+             Text="0"
+             Padding="1"
+             MinHeight="16"
+             Focusable="True"
+             IsTabStop="True" />
+    <Slider x:Name="m_slider"
+            IsSnapToTickEnabled="False"
+            Minimum="0"
+            Maximum="1"
+            MinHeight="40"
+            SmallChange="0.01"
+            Margin="0,5,0,0"
+            Orientation="Vertical"
+            Focusable="False"
+            IsTabStop="False">
+      <Slider.Template>
+        <ControlTemplate>
+          <Border x:Name="PART_TrackBackground"
+                  BorderBrush="Black"
+                  BorderThickness="1">
+            <Track x:Name="PART_Track"
+                   Orientation="Vertical"
+                   Minimum="{TemplateBinding Minimum}"
+                   Maximum="{TemplateBinding Maximum}"
+                   Value="{TemplateBinding Value, Mode=TwoWay}">
+              <Track.Thumb>
+                <Thumb x:Name="Thumb" HorizontalAlignment="Stretch">
+                  <Thumb.Template>
+                    <ControlTemplate>
+                      <Border x:Name="ThumbBorder"
+                              HorizontalAlignment="Stretch"
+                              BorderBrush="Black"
+                              BorderThickness="1"
+                              Height="5"
+                              Background="Red">
+                        <Border.Styles>
+                          <Style Selector="Border#ThumbBorder:pointerover">
+                            <Setter Property="Background" Value="Yellow" />
+                          </Style>
+                        </Border.Styles>
+                      </Border>
+                    </ControlTemplate>
+                  </Thumb.Template>
+                </Thumb>
+              </Track.Thumb>
+            </Track>
+          </Border>
+        </ControlTemplate>
+      </Slider.Template>
+    </Slider>
+  </DockPanel>
+</UserControl>

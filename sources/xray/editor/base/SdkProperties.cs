@@ -2,7 +2,6 @@ using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using PositionRange = xray.editor.wpf_controls.property_editors.attributes.value_range_and_format_attribute;
 
 namespace xray.editor_base;
 
@@ -107,11 +106,11 @@ public sealed unsafe class SdkProperties : IDisposable
     [Browsable(false)] public SdkPosition Snapshot { get { CheckOwner(); return current; } }
     [Browsable(false)] public bool CanUndo => !disposed && commands.CanUndo;
     [Browsable(false)] public bool CanRedo => !disposed && commands.CanRedo;
-    [Category("Position"), PositionRange(double.NaN, double.NaN, .1, 4, update_on_edit_complete = true)]
+    [Category("Position"), SdkNumericRange(double.NaN, double.NaN, .1, 4, UpdateOnEditComplete = true)]
     public float X { get => current.X; set => Edit(value, current.Y, current.Z); }
-    [Category("Position"), PositionRange(double.NaN, double.NaN, .1, 4, update_on_edit_complete = true)]
+    [Category("Position"), SdkNumericRange(double.NaN, double.NaN, .1, 4, UpdateOnEditComplete = true)]
     public float Y { get => current.Y; set => Edit(current.X, value, current.Z); }
-    [Category("Position"), PositionRange(double.NaN, double.NaN, .1, 4, update_on_edit_complete = true)]
+    [Category("Position"), SdkNumericRange(double.NaN, double.NaN, .1, 4, UpdateOnEditComplete = true)]
     public float Z { get => current.Z; set => Edit(current.X, current.Y, value); }
     public void Undo()
     {

@@ -1,0 +1,27 @@
+<editors:value_editor_base xmlns="https://github.com/avaloniaui"
+                           xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                           xmlns:editors="clr-namespace:xray.editor.avalonia_controls.property_editors.value"
+                           x:Class="xray.editor.avalonia_controls.property_editors.value.external_editor"
+                           x:CompileBindings="False">
+  <DockPanel Name="Panel">
+    <Button DockPanel.Dock="Right"
+            Padding="0,-2,0,-2"
+            Tag="{Binding}"
+            Name="run_editor_button"
+            Width="18"
+            Content="..."
+            ToolTip.Tip="Run Editor" />
+    <Button DockPanel.Dock="Right"
+            Padding="0,-2,0,-2"
+            Name="m_clear_button"
+            Content="C"
+            Width="18"
+            ToolTip.Tip="Clear Value" />
+    <TextBox Name="externalEditorTextBox"
+             Text="{Binding value, Mode=OneWay}"
+             Foreground="{DynamicResource SdkMutedTextBrush}"
+             IsReadOnly="True"
+             BorderThickness="0"
+             Background="Transparent" />
+  </DockPanel>
+</editors:value_editor_base>

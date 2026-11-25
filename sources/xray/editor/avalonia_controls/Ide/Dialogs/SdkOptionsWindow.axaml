@@ -1,0 +1,32 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ctrl="using:xray.editor.avalonia_controls.Ide.Controls"
+        xmlns:themes="using:xray.editor.avalonia_controls.Themes"
+        x:Class="xray.editor.avalonia_controls.Ide.Dialogs.SdkOptionsWindow"
+        Title="Options"
+        Width="580"
+        Height="420"
+        CanResize="False"
+        ShowInTaskbar="False"
+        WindowStartupLocation="CenterOwner"
+        Background="{x:Static themes:SdkWorkspaceTheme.Surface}">
+    <DockPanel LastChildFill="True">
+        <Border DockPanel.Dock="Bottom"
+                Background="{x:Static themes:SdkWorkspaceTheme.Chrome}"
+                BorderBrush="{x:Static themes:SdkWorkspaceTheme.Divider}"
+                BorderThickness="0,1,0,0"
+                Padding="8,6">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="8">
+                <Button x:Name="m_ok_button" Width="80" Content="OK" />
+                <Button x:Name="m_cancel_button" Width="80" Content="Cancel" />
+                <Button x:Name="m_apply_button" Width="80" IsEnabled="False" Content="Apply" />
+            </StackPanel>
+        </Border>
+
+        <Grid ColumnDefinitions="190,4,*">
+            <ctrl:SdkTreeView x:Name="m_tree_view" Grid.Column="0" />
+            <GridSplitter Grid.Column="1" Background="{x:Static themes:SdkWorkspaceTheme.Divider}" />
+            <ContentControl x:Name="m_page_host" Grid.Column="2" />
+        </Grid>
+    </DockPanel>
+</Window>

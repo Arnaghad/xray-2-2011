@@ -57,6 +57,15 @@ add_executable(xray_editor_host_abi_contract test_editor_host_abi.cpp)
 add_test(NAME xray_editor_host_abi_contract COMMAND xray_editor_host_abi_contract)
 set_tests_properties(xray_editor_host_abi_contract PROPERTIES LABELS "cpu" TIMEOUT 60)
 
+if(XRAY_BUILD_EDITOR_HOST)
+    find_program(_xray_dotnet_test_exe dotnet REQUIRED)
+    add_test(
+        NAME xray_avalonia_headless_smoke
+        COMMAND "${_xray_dotnet_test_exe}" exec "${CMAKE_BINARY_DIR}/editor-managed/avalonia-tests/xray.editor.avalonia_controls.tests.dll"
+    )
+    set_tests_properties(xray_avalonia_headless_smoke PROPERTIES LABELS "cpu" TIMEOUT 60)
+endif()
+
 add_executable(xray_ogg_vorbis_contract test_ogg_vorbis_contract.cpp)
 target_link_libraries(xray_ogg_vorbis_contract PRIVATE PkgConfig::OGG_VORBIS)
 add_test(NAME xray_ogg_vorbis_contract COMMAND xray_ogg_vorbis_contract)

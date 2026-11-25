@@ -1,0 +1,12 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:xray.editor.avalonia_controls"
+             x:Class="xray.editor.avalonia_controls.color_ramp">
+  <ContentControl x:Name="m_host_content" MinHeight="20" Background="Transparent">
+    <local:custom_gradient_control Margin="5" x:Name="m_gradient_box">
+      <local:custom_gradient_control.Background>
+        <LinearGradientBrush StartPoint="0%,0%" EndPoint="100%,0%" />
+      </local:custom_gradient_control.Background>
+    </local:custom_gradient_control>
+  </ContentControl>
+</UserControl>

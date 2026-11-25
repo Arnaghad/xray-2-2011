@@ -1,13 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net11.0-windows</TargetFramework>
+    <TargetFramework>net11.0</TargetFramework>
     <RuntimeFrameworkVersion>11.0.0</RuntimeFrameworkVersion>
     <TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
     <LangVersion>15.0</LangVersion>
-    <UseWindowsForms>true</UseWindowsForms>
-    <UseWPF>true</UseWPF>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <EnableDefaultPageItems>false</EnableDefaultPageItems>
     <AssemblyName>xray.editor.base</AssemblyName>
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
@@ -29,26 +28,17 @@
     <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/WindowIde.Sound.cs" />
     <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/SdkParticle.cs" />
     <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/WindowIde.Particle.cs" />
-    <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/SdkDialog.cs" />
     <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/WindowIde.Dialog.cs" />
     <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/SdkScripting.cs" />
     <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/WindowIde.Scripting.cs" />
     <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/SdkNavigation.cs" />
     <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/WindowIde.Navigation.cs" />
     <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/SdkProperties.cs" />
-    <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/Command.cs" />
-    <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/CommandEngine.cs" />
     <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/SdkNativeResources.cs" />
     <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/WindowIde.Models.cs" />
-    <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/SdkObjExporter.cs" />
     <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/SdkModelEditor.cs" />
-    <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/SdkModelDocument.cs" />
-    <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/SdkAnimationCollection.cs" />
     <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/SdkAnimationPreview.cs" />
-    <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/SdkAnimationViewerGraph.cs" />
-    <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/SdkAnimationViewerDocument.cs" />
     <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/SdkAnimationViewerEditor.cs" />
-    <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/SdkAnimationPlayback.cs" />
     <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/SdkAnimationCollectionEditor.cs" />
     <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/SdkAnimationSetup.cs" />
     <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/SdkAnimationGroups.cs" />
@@ -56,27 +46,21 @@
     <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/WindowIde.Animation.cs" />
     <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/SdkModelSources.cs" />
     <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/SdkModelPhysics.cs" />
-    <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/SdkDcc.cs" />
     <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/SdkDccResources.cs" />
-    <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/SdkDccPublisher.cs" />
-    <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/SdkDccImport.cs" />
     <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/SdkDccWindow.cs" />
     <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/WindowIde.Dcc.cs" />
 
     <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/SdkRenderOptions.cs" />
     <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/SdkAssetSources.cs" />
-    <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/SdkTextureDocument.cs" />
-    <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/SdkMaterialGraph.cs" />
-    <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/SdkMaterialPalette.cs" />
     <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/SdkMaterialSources.cs" />
-    <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/SdkMaterialDocument.cs" />
     <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/SdkMaterialEditor.cs" />
     <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/WindowIde.Materials.cs" />
     <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/SdkTextureEditor.cs" />
     <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/WindowIde.Assets.cs" />
     <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/SdkScene.cs" />
     <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/SdkViewport.cs" />
-    <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/SdkViewportHost.cs" />
+    <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/AvaloniaPreviewWindow.cs" />
+    <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/AvaloniaIdeBridge.cs" />
     <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/SdkOutputs.cs" />
     <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/SdkSelection.cs" />
     <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/ProjectViewportOutputs.cs" />
@@ -88,17 +72,12 @@
     <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/ViewportNavigation.cs" />
     <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/ProjectViewportEditing.cs" />
     <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/SdkDockLayout.cs" />
-    <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/SdkWindowStyle.cs" />
-    <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/Interfaces.cs" />
     <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/Action.cs" />
     <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/ActionContinuous.cs" />
     <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/ActionShortcut.cs" />
     <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/ActionsLayer.cs" />
     <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/InputKeysHolder.cs" />
     <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/InputEngine.cs" />
-    <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/GuiBinder.cs" />
-    <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/ImageLoader.cs" />
-    <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/LuaConfig.cs" />
     <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/ObjectsLibrary.cs" />
     <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/SdkResourcePipeline.cs" />
     <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/SdkResourceBrowser.cs" />
@@ -110,7 +89,7 @@
     <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/ProjectEditing.cs" />
     <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/ProjectClipboard.cs" />
     <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/ProjectPropertyAdapters.cs" />
-    <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/SdkControls.cs" />
+    <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/SdkAvaloniaHost.cs" />
     <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/ObjectInspectorTab.cs" />
     <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/ProjectTab.cs" />
     <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/ToolsTab.cs" />
@@ -119,8 +98,8 @@
     <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/WindowIde.Projects.cs" />
     <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/WindowIde.Editing.cs" />
     <EmbeddedResource Include="@CMAKE_CURRENT_SOURCE_DIR@/images/images16x16.png" LogicalName="xray.editor_base.images16x16.png" />
-    <PackageReference Include="DockPanelSuite" Version="3.1.1" />
-    <PackageReference Include="DockPanelSuite.ThemeVS2015" Version="3.1.1" />
-    <ProjectReference Include="@CMAKE_SOURCE_DIR@/xray/wpf_controls/wpf_controls.csproj" />
+    <PackageReference Include="Avalonia.Desktop" Version="12.2.0" />
+    <ProjectReference Include="@CMAKE_SOURCE_DIR@/xray/editor/core/xray.editor.core.csproj" />
+    <ProjectReference Include="@CMAKE_SOURCE_DIR@/xray/editor/avalonia_controls/xray.editor.avalonia_controls.csproj" />
   </ItemGroup>
 </Project>

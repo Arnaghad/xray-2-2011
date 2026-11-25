@@ -1,0 +1,19 @@
+<editors:value_editor_base xmlns="https://github.com/avaloniaui"
+                           xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                           xmlns:editors="clr-namespace:xray.editor.avalonia_controls.property_editors.value"
+                           xmlns:curve="clr-namespace:xray.editor.avalonia_controls.curve_editor"
+                           x:Class="xray.editor.avalonia_controls.property_editors.value.float_curve_editor"
+                           Focusable="True">
+  <DockPanel>
+    <Button DockPanel.Dock="Right" Width="15" Name="big_editor">
+      <Path Data="M0 0 L8 5 L0 10" Fill="{DynamicResource SdkTextBrush}" />
+    </Button>
+    <Border MinHeight="64" MinWidth="150" Name="m_curve_panel_border" Background="{DynamicResource SdkCanvasBrush}">
+      <curve:curve_editor_panel x:Name="m_curve_panel"
+                                is_toolbar_visible="False"
+                                is_hierarchy_visible="False"
+                                is_horizontal_numbers_visible="False"
+                                is_vertical_numbers_visible="False" />
+    </Border>
+  </DockPanel>
+</editors:value_editor_base>

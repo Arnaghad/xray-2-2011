@@ -1,14 +1,11 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Windows.Forms;
+using Avalonia.Input;
 
 namespace xray.editor_base
 {
     public class ActionShortcut
     {
-        private static readonly KeysConverter s_key_converter = new KeysConverter();
-
         public readonly Action? m_action;
         public readonly string? m_first_keys;
         public readonly string? m_second_keys;
@@ -43,6 +40,76 @@ namespace xray.editor_base
                 return (m_first_keys ?? string.Empty) + ", " + m_second_keys + "(" + m_context + ")";
         }
 
+        internal static string FormatKeyName(Key key) => key switch
+        {
+            Key.Return => "Enter",
+            Key.PageUp => "PageUp",
+            Key.PageDown => "PageDown",
+            _ => key.ToString()
+        };
+
+        internal static string FormatCombination(KeyModifiers modifiers, List<Key> keys)
+        {
+            keys.Sort((a, b) => string.Compare(FormatKeyName(a), FormatKeyName(b), StringComparison.Ordinal));
+            var parts = new List<string>(4 + keys.Count);
+            if ((modifiers & KeyModifiers.Control) != 0) parts.Add("Ctrl");
+            if ((modifiers & KeyModifiers.Shift) != 0) parts.Add("Shift");
+            if ((modifiers & KeyModifiers.Alt) != 0) parts.Add("Alt");
+            if ((modifiers & KeyModifiers.Meta) != 0) parts.Add("Meta");
+
+            foreach (Key key in keys)
+            {
+                if (key != Key.None)
+                    parts.Add(FormatKeyName(key));
+            }
+
+            return parts.Count == 0 ? "None" : string.Join("+", parts);
+        }
+
+        internal static KeyModifiers TryParseModifier(string token)
+        {
+            return token.Trim().ToLowerInvariant() switch
+            {
+                "ctrl" or "control" or "controlkey" or "lcontrolkey" or "rcontrolkey" => KeyModifiers.Control,
+                "shift" or "shiftkey" or "lshiftkey" or "rshiftkey" => KeyModifiers.Shift,
+                "alt" or "menu" or "lmenu" or "rmenu" => KeyModifiers.Alt,
+                "meta" or "win" or "windows" => KeyModifiers.Meta,
+                _ => KeyModifiers.None
+            };
+        }
+
+        internal static Key TryParseKey(string token)
+        {
+            string trimmed = token.Trim();
+            if (string.IsNullOrEmpty(trimmed))
+                return Key.None;
+
+            switch (trimmed.ToLowerInvariant())
+            {
+                case "none": return Key.None;
+                case "del": case "delete": return Key.Delete;
+                case "esc": case "escape": return Key.Escape;
+                case "enter": case "return": return Key.Return;
+                case "ins": case "insert": return Key.Insert;
+                case "back": case "backspace": return Key.Back;
+                case "pgup": case "pageup": case "prior": return Key.PageUp;
+                case "pgdn": case "pagedown": case "next": return Key.PageDown;
+                case "space": case "spacebar": return Key.Space;
+                case "0": return Key.D0;
+                case "1": return Key.D1;
+                case "2": return Key.D2;
+                case "3": return Key.D3;
+                case "4": return Key.D4;
+                case "5": return Key.D5;
+                case "6": return Key.D6;
+                case "7": return Key.D7;
+                case "8": return Key.D8;
+                case "9": return Key.D9;
+            }
+
+            return Enum.TryParse<Key>(trimmed, ignoreCase: true, out Key parsed) ? parsed : Key.None;
+        }
+
         private void extract_shortcut_pair(string combination, out string? keys_first, out string? keys_second, out string context)
         {
             string[] keysAndContext = combination.Split('(');
@@ -57,77 +124,42 @@ namespace xray.editor_base
             keys_second = null;
 
             if (keys.Length == 0 || keys.Length > 2)
-            {
                 return;
-            }
 
             keys_first = arrange_keys(keys[0]);
 
-            if (keys.Length == 2)
-            {
-                if (!string.IsNullOrEmpty(keys[1]))
-                    keys_second = arrange_keys(keys[1]);
-            }
+            if (keys.Length == 2 && !string.IsNullOrEmpty(keys[1]))
+                keys_second = arrange_keys(keys[1]);
         }
 
-        private string? arrange_keys(string keysString)
+        private static string arrange_keys(string keysString)
         {
             string[] split = keysString.Split('+');
-            List<Keys> keys = new List<Keys>();
-            Keys modifiers = Keys.None;
+            var keys = new List<Key>();
+            KeyModifiers modifiers = KeyModifiers.None;
 
             foreach (string s in split)
             {
                 string trimmed = s.Trim();
-                if (string.IsNullOrEmpty(trimmed)) continue;
+                if (string.IsNullOrEmpty(trimmed))
+                    continue;
 
-                Keys key = try_convert(trimmed);
-                if (key == Keys.None) return trimmed;
-
-                if ((key & Keys.Modifiers) != Keys.None)
+                KeyModifiers mod = TryParseModifier(trimmed);
+                if (mod != KeyModifiers.None)
                 {
-                    modifiers |= (key & Keys.Modifiers);
+                    modifiers |= mod;
+                    continue;
                 }
-                else if ((key & Keys.KeyCode) != Keys.None)
-                {
-                    Keys keyCode = key & Keys.KeyCode;
-                    if (!keys.Contains(keyCode))
-                        keys.Add(keyCode);
-                }
+
+                Key key = TryParseKey(trimmed);
+                if (key == Key.None)
+                    return trimmed;
+
+                if (!keys.Contains(key))
+                    keys.Add(key);
             }
 
-            return combine_string(modifiers, keys);
-        }
-
-        private Keys try_convert(string str)
-        {
-            try
-            {
-                object? converted = s_key_converter.ConvertFromString(str);
-                return (Keys)(converted ?? Keys.None);
-            }
-            catch
-            {
-                return Keys.None;
-            }
-        }
-
-        private string combine_string(Keys modifiers, List<Keys> keys)
-        {
-            keys.Sort();
-            string result;
-
-            if (keys.Count > 0)
-                result = s_key_converter.ConvertToString(modifiers | keys[0]) ?? string.Empty;
-            else
-                result = s_key_converter.ConvertToString(modifiers) ?? string.Empty;
-
-            for (int i = 1; i < keys.Count; ++i)
-            {
-                result += "+" + (s_key_converter.ConvertToString(keys[i]) ?? string.Empty);
-            }
-
-            return result;
+            return FormatCombination(modifiers, keys);
         }
     }
 }

@@ -1,0 +1,71 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:color_picker="clr-namespace:xray.editor.avalonia_controls.color_picker"
+             xmlns:panels="clr-namespace:xray.editor.avalonia_controls.panels"
+             x:Class="xray.editor.avalonia_controls.color_picker.hsv_circle"
+             x:DataType="color_picker:hsv_circle"
+             Width="265"
+             Height="265"
+             x:Name="this_control">
+  <UserControl.Resources>
+    <color_picker:color_rgb_component_extracter x:Key="opacity_extractor" />
+    <DrawingBrush DestinationRect="0,0,24,24" TileMode="Tile" x:Key="triangle_checker">
+      <DrawingBrush.Drawing>
+        <DrawingGroup>
+          <GeometryDrawing Brush="White">
+            <GeometryDrawing.Geometry>
+              <RectangleGeometry Rect="0,0,24,24" />
+            </GeometryDrawing.Geometry>
+          </GeometryDrawing>
+          <GeometryDrawing Brush="Black">
+            <GeometryDrawing.Geometry>
+              <GeometryGroup>
+                <RectangleGeometry Rect="0,0,12,12" />
+                <RectangleGeometry Rect="12,12,12,12" />
+              </GeometryGroup>
+            </GeometryDrawing.Geometry>
+          </GeometryDrawing>
+        </DrawingGroup>
+      </DrawingBrush.Drawing>
+    </DrawingBrush>
+  </UserControl.Resources>
+  <Grid>
+    <color_picker:hue_spectrum x:Name="m_hue_spectrum" ZIndex="150" />
+    <panels:single_place_panel x:Name="m_saturation_brightness_spectrum"
+                               ZIndex="300"
+                               ClipToBounds="False"
+                               Width="180"
+                               Height="156"
+                               Margin="0,51,0,0"
+                               Background="Transparent">
+      <Path Data="M 0,0 L 180,0 L 90,156 Z" Fill="{StaticResource triangle_checker}" />
+      <Panel Width="180"
+             Height="156"
+             Clip="M 0,0 L 180,0 L 90,156 Z"
+             Opacity="{Binding #this_control.selected_color, Converter={StaticResource opacity_extractor}, ConverterParameter=3, Mode=OneWay}">
+        <Border x:Name="m_triangle_hue_border" />
+        <Image Source="avares://xray.editor.avalonia_controls/controls/color_picker/Saturation.png" Stretch="Fill" />
+        <Border>
+          <Border.Background>
+            <LinearGradientBrush StartPoint="50%,100%" EndPoint="50%,0%">
+              <GradientStop Offset="0.0" Color="Black" />
+              <GradientStop Offset="1.0" Color="#00000000" />
+            </LinearGradientBrush>
+          </Border.Background>
+        </Border>
+      </Panel>
+      <Path Stroke="Black"
+            StrokeThickness="1"
+            Data="M 0,0 L 180,0 L 90,156 Z"
+            IsHitTestVisible="False" />
+      <Path x:Name="m_saturation_brightness_marker"
+            Stroke="Black"
+            StrokeThickness="2"
+            Cursor="Cross"
+            Fill="Transparent"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Data="M -7,0 A 7,7 0 1 0 7,0 A 7,7 0 1 0 -7,0" />
+    </panels:single_place_panel>
+  </Grid>
+</UserControl>

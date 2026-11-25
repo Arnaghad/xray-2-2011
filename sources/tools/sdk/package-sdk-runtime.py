@@ -33,20 +33,16 @@ MANAGED_BIN_FILES = (
     'xray.editor.base.dll',
     'xray.editor.base.runtimeconfig.json',
     'xray.editor.base.deps.json',
-    'wpf_controls.dll',
-    'wpf_controls.deps.json',
-    'WeifenLuo.WinFormsUI.Docking.dll',
-    'WeifenLuo.WinFormsUI.Docking.ThemeVS2015.dll',
-    'Xceed.Wpf.Toolkit.dll',
-    'Xceed.Wpf.AvalonDock.dll',
-    'Xceed.Wpf.AvalonDock.Themes.Aero.dll',
-    'Xceed.Wpf.AvalonDock.Themes.Metro.dll',
-    'Xceed.Wpf.AvalonDock.Themes.VS2010.dll',
+    'xray.editor.core.dll',
+    'xray.editor.core.deps.json',
+    'xray.editor.avalonia_controls.dll',
+    'xray.editor.avalonia_controls.deps.json',
 )
 
 DEBUG_OPTIONAL_FILES = (
     'xray.editor.base.pdb',
-    'wpf_controls.pdb',
+    'xray.editor.core.pdb',
+    'xray.editor.avalonia_controls.pdb',
 )
 
 MINGW_RUNTIME_DLLS = (
@@ -87,6 +83,7 @@ SYSTEM_DLL_EXACT = {
     'vulkan-1.dll', 'xaudio2_9.dll', 'ucrtbase.dll', 'rpcrt4.dll', 'imm32.dll',
     'comctl32.dll', 'bcrypt.dll', 'crypt32.dll', 'version.dll', 'dbghelp.dll', 'psapi.dll',
     'ntdll.dll', 'shcore.dll', 'uxtheme.dll', 'dwmapi.dll', 'setupapi.dll', 'cfgmgr32.dll',
+    'dxgi.dll', 'fontsub.dll',
 }
 
 
@@ -112,9 +109,10 @@ def copy_file(src: Path, dst: Path):
 
 def audit_pe_imports(bin_dir: Path, objdump_exe: Path) -> dict:
     assert objdump_exe.is_file(), f'objdump executable not found: {objdump_exe}'
+    scan_dirs = (bin_dir, bin_dir / 'vulkan-validation', bin_dir / 'runtimes' / 'win-x64' / 'native')
     packaged_dlls = {
         p.name.lower()
-        for folder in (bin_dir, bin_dir / 'vulkan-validation')
+        for folder in scan_dirs
         if folder.is_dir()
         for p in folder.iterdir()
         if p.is_file() and p.suffix.lower() == '.dll'
@@ -122,7 +120,7 @@ def audit_pe_imports(bin_dir: Path, objdump_exe: Path) -> dict:
     audit = {}
     targets = sorted(
         p
-        for folder in (bin_dir, bin_dir / 'vulkan-validation')
+        for folder in scan_dirs
         if folder.is_dir()
         for p in folder.iterdir()
         if p.is_file() and p.suffix.lower() in {'.exe', '.dll'}
@@ -250,16 +248,30 @@ def package_runtime(
         copy_file(bins_src / name, bin_dst / name)
     for name in MANAGED_BIN_FILES:
         copy_file(bins_src / name, bin_dst / name)
+
+    # Managed runtime & win-x64 native assets declared in xray.editor.base.deps.json
+    deps_data = json.loads((bins_src / 'xray.editor.base.deps.json').read_text(encoding='utf-8-sig'))
+    for target_entries in deps_data.get('targets', {}).values():
+        for pkg in target_entries.values():
+            for rel_asset in pkg.get('runtime', {}).keys():
+                file_name = Path(rel_asset).name
+                if file_name.lower().endswith('.dll') and not (bin_dst / file_name).exists():
+                    copy_file(bins_src / file_name, bin_dst / file_name)
+            for rel_asset, meta in pkg.get('runtimeTargets', {}).items():
+                if meta.get('rid') == 'win-x64' and meta.get('assetType') == 'native':
+                    local_rel = meta.get('localPath') or rel_asset
+                    if local_rel.lower().endswith('.pdb') and cfg != 'debug':
+                        continue
+                    src_asset = bins_src / local_rel
+                    dst_asset = bin_dst / local_rel
+                    if src_asset.is_file() and not dst_asset.exists():
+                        copy_file(src_asset, dst_asset)
+
     if cfg == 'debug':
         for name in DEBUG_OPTIONAL_FILES:
             p = bins_src / name
             if p.is_file():
                 copy_file(p, bin_dst / name)
-
-    # Managed localization resource satellites if present
-    for sub in bins_src.iterdir():
-        if sub.is_dir() and (sub / 'Xceed.Wpf.AvalonDock.resources.dll').is_file():
-            shutil.copytree(sub, bin_dst / sub.name)
 
     # 2. MinGW & third-party runtime DLLs + DXC + Vulkan validation layer
     for name in MINGW_RUNTIME_DLLS:
@@ -286,6 +298,11 @@ def package_runtime(
 
     # 5. Runtime settings & launch scripts
     runtime_cfg = json.loads((bin_dst / 'xray.editor.base.runtimeconfig.json').read_text(encoding='utf-8-sig'))
+    runtime_opts = runtime_cfg.get('runtimeOptions', {})
+    dotnet_frameworks = runtime_opts.get('frameworks')
+    if dotnet_frameworks is None:
+        fw = runtime_opts.get('framework')
+        dotnet_frameworks = [fw] if fw is not None else []
     runtime_settings = {
         'schemaVersion': 1,
         'product': 'X-Ray 2.0 Modernized SDK',
@@ -320,7 +337,7 @@ def package_runtime(
         },
         'prerequisites': {
             'os': 'Windows 10/11 x64',
-            'dotnetDesktopRuntime': runtime_cfg['runtimeOptions']['frameworks'],
+            'dotnetRuntime': dotnet_frameworks,
             'vulkan': 'Vulkan 1.3+ ICD GPU driver with shaderDemoteToHelperInvocation',
         },
     }

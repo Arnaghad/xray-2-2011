@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Windows.Forms;
 
 namespace xray.editor_base;
 
@@ -10,12 +9,6 @@ public interface IProjectClipboard
 {
     string? Read();
     void Write(string value);
-}
-public sealed class SystemProjectClipboard : IProjectClipboard
-{
-    public const string Format = "XRay.SDK.ProjectItems.Lua.v1";
-    public string? Read() => Clipboard.TryGetData<string>(Format, out var value) ? value : null;
-    public void Write(string value) => Clipboard.SetData(Format, value);
 }
 public sealed class LocalProjectClipboard : IProjectClipboard
 {
@@ -26,7 +19,7 @@ public sealed class LocalProjectClipboard : IProjectClipboard
 
 public sealed partial class ProjectEditing
 {
-    public IProjectClipboard Clipboard { get; set; } = new SystemProjectClipboard();
+    public IProjectClipboard Clipboard { get; set; } = new LocalProjectClipboard();
     public bool CanCopy => Topmost(Project.SelectedItems).Any(i => Contains(i) && !Subtree(i).Any(IsProtected));
     public bool CanPaste
     {

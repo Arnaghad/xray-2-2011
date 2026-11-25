@@ -1,0 +1,21 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:animation_setup="using:xray.editor.avalonia_controls.animation_setup"
+             x:Class="xray.editor.avalonia_controls.animation_setup.animation_channel_partitions_view"
+             x:CompileBindings="False"
+             Background="DarkGray">
+    <UserControl.Resources>
+        <DataTemplate x:Key="animation_channel_partition">
+            <animation_setup:animation_channel_partition_view />
+        </DataTemplate>
+    </UserControl.Resources>
+    <Border HorizontalAlignment="Left" Height="40" Width="{Binding length}">
+        <ItemsControl x:Name="m_partitions_view" ItemTemplate="{StaticResource animation_channel_partition}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        </ItemsControl>
+    </Border>
+</UserControl>

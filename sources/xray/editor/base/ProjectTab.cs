@@ -1,369 +1,178 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
 using System.Linq;
-using System.Windows.Forms;
-using WeifenLuo.WinFormsUI.Docking;
-using xray.editor.controls;
+using Avalonia.Input;
+using xray.editor.avalonia_controls.Ide.Controls;
+using xray.editor.avalonia_controls.Ide.Panels;
 
-namespace xray.editor_base
+namespace xray.editor_base;
+
+public class ProjectTab : IDisposable
 {
-    // C# port of world/sources/project_tab.{h,cpp}
-    public class ProjectTab : DockContent
+    public const string PersistIdentity = SdkProjectPanel.PersistId;
+
+    private sealed record DragSelection(Guid SessionId, ProjectItemBase[] Items);
+
+    private readonly Project _project;
+    private bool _updatingFromTree;
+    private bool _disposed;
+
+    public ProjectTab(Project project)
     {
-        public const string PersistIdentity = "xray.editor.project_tab";
-
-        private readonly Project _project;
-        public readonly tree_view treeView = new tree_view();
-        public readonly ContextMenuStrip global_view_menu = new ContextMenuStrip();
-        public readonly ToolStripMenuItem addToolStripMenuItem = new ToolStripMenuItem("Add");
-        public readonly ToolStripMenuItem newFilterToolStripMenuItem = new ToolStripMenuItem("New Filter");
-        public readonly ToolStripSeparator toolStripSeparator2 = new ToolStripSeparator();
-        public readonly ToolStripMenuItem removeToolStripMenuItem = new ToolStripMenuItem("Remove");
-        public readonly ToolStripMenuItem addToIgnoreListToolStripMenuItem = new ToolStripMenuItem("Add to ignore list");
-        public readonly ToolStripMenuItem removeFromIgnoreListToolStripMenuItem = new ToolStripMenuItem("Remove from ignore list");
-        public readonly StatusStrip statusStrip1 = new StatusStrip();
-        public readonly ToolStripStatusLabel totalStatusLabel1 = new ToolStripStatusLabel();
-        public readonly ToolStripStatusLabel selectedStatusLabel1 = new ToolStripStatusLabel();
-
-        private readonly Font font_normal;
-        private readonly Font font_ignored;
-        private bool _updatingFromProject;
-        public event System.Action<string>? OperationFailed;
-        private ProjectEditing Editing => _project.Editing ?? throw new InvalidOperationException("Attach an editing session to the project first.");
-        private void RunEdit(System.Action action)
+        _project = project ?? throw new ArgumentNullException(nameof(project));
+        SdkAvaloniaBootstrap.EnsureInitialized();
+        View = new SdkProjectPanel
         {
-            try { action(); }
-            catch (Exception error) when (error is InvalidOperationException or ArgumentException) { OperationFailed?.Invoke(error.Message); }
-        }
+            PrepareDrag = PrepareDrag,
+            CanDrop = CanDrop,
+            Drop = Drop
+        };
+        View.SelectionChanged += OnTreeSelectionChanged;
+        View.ContextMenuOpening += UpdateContextMenuState;
+        View.NewFilterRequested += OnNewFilterRequested;
+        View.RemoveRequested += OnRemoveRequested;
+        View.SetIgnoreListRequested += OnSetIgnoreListRequested;
+        View.RenameRequested += OnRenameRequested;
+        View.DragFailed += OnDragFailed;
 
-        public ProjectTab(Project project, ImageList? sharedImages = null)
+        _project.SelectionChanged += OnProjectSelectionChanged;
+        _project.StructureChanged += RefreshTree;
+        RefreshTree();
+    }
+
+    public SdkProjectPanel View { get; }
+    public bool Enabled { get => View.IsEnabled; set => View.IsEnabled = value; }
+
+    public event System.Action<string>? OperationFailed;
+
+    private ProjectEditing Editing =>
+        _project.Editing ?? throw new InvalidOperationException("Attach an editing session to the project first.");
+
+    public void RefreshTree()
+    {
+        View.Populate(AvaloniaIdeBridge.BuildProjectTreeEntry(_project));
+        OnProjectSelectionChanged();
+    }
+
+    public void UpdateCounts() => View.SetCounts(_project.TotalObjectsCount, _project.SelectedObjectsCount);
+
+    public void UpdateContextMenuState()
+    {
+        var items = View.TreeView.SelectedNodes.Select(node => node.Tag).OfType<ProjectItemBase>()
+            .Where(item => !ProjectEditing.IsProtected(item)).ToArray();
+        bool canEdit = Enabled && _project.IsProjectOpen && _project.Editing is { Commands.InPreview: false };
+        View.UpdateContextMenuState(
+            canAddFilter: canEdit,
+            canRemove: canEdit && items.Any(Editing.CanEditStructure),
+            showAddIgnore: canEdit && items.Any(item => !_project.is_object_in_ignore_list(item.Id)),
+            showRemoveIgnore: canEdit && items.Any(item => _project.is_object_in_ignore_list(item.Id)));
+    }
+
+    public ProjectItemFolder AddNewFilterFolder(string folderName = "filter")
+        => Editing.AddFolder(folderName, View.TreeView.SelectedNode?.Tag as ProjectItemFolder);
+
+    public void RemoveSelectedNodes() => Editing.Delete(Editing.EditableSelection);
+
+    public void SetSelectedIgnoreList(bool add)
+        => Editing.SetIgnored(_project.SelectedItems.Where(item => !ProjectEditing.IsProtected(item)), add);
+
+    public void BeginRename(ProjectItemBase item)
+    {
+        if (Editing.CanEditStructure(item) && View.TreeView.GetNode(item.FullPath) is { } node)
+            View.BeginRename(node);
+    }
+
+    private void OnNewFilterRequested() => RunEdit(() => AddNewFilterFolder("new_filter"));
+    private void OnRemoveRequested() => RunEdit(RemoveSelectedNodes);
+    private void OnSetIgnoreListRequested(bool add) => RunEdit(() => SetSelectedIgnoreList(add));
+    private void OnRenameRequested(SdkTreeNode node, string name)
+    {
+        if (node.Tag is ProjectItemBase item)
+            RunEdit(() => Editing.Rename(item, name));
+    }
+    private void OnDragFailed(string message) => OperationFailed?.Invoke(message);
+
+    private void OnTreeSelectionChanged(IReadOnlyList<SdkTreeNode> nodes)
+    {
+        if (_updatingFromTree || _project.get_pin_selection() || !_project.IsProjectOpen)
+            return;
+
+        bool includeDescendants = (InputKeysHolder.Ref.ActiveModifiers & KeyModifiers.Alt) != 0
+            || InputKeysHolder.Ref.get_held_keys().Any(k => k is Key.LeftAlt or Key.RightAlt);
+        var selection = nodes.Select(node => node.Tag).OfType<ProjectItemBase>()
+            .SelectMany(item => includeDescendants ? ProjectEditing.Subtree(item) : new[] { item })
+            .Where(item => item.get_selectable()).Distinct().ToArray();
+        _updatingFromTree = true;
+        try { RunEdit(() => Editing.Select(selection)); }
+        finally { _updatingFromTree = false; }
+        UpdateCounts();
+    }
+
+    private void OnProjectSelectionChanged()
+    {
+        UpdateCounts();
+        if (!_updatingFromTree && _project.TrackActiveItem)
+            View.TrackSelection(_project.SelectedItems.Select(item => item.FullPath));
+    }
+
+    private object? PrepareDrag(SdkTreeNode node)
+    {
+        if (!Enabled || !_project.IsProjectOpen || Editing.Commands.InPreview || node.Tag is not ProjectItemBase item)
+            return null;
+        if (!_project.SelectedItems.Contains(item) && !Editing.Select(new[] { item }))
+            return null;
+
+        var items = Editing.EditableSelection;
+        return items.Length == 0 ? null : new DragSelection(_project.SessionId, items);
+    }
+
+    private ProjectItemFolder DropFolder(SdkTreeNode? node) => node?.Tag as ProjectItemFolder
+        ?? (node?.Tag as ProjectItemBase)?.Parent as ProjectItemFolder
+        ?? _project.Root;
+
+    private bool CanDrop(object data, SdkTreeNode? target)
+        => Enabled && _project.IsProjectOpen && data is DragSelection selection &&
+            selection.SessionId == _project.SessionId && !Editing.Commands.InPreview &&
+            Editing.CanReparent(selection.Items, DropFolder(target));
+
+    private bool Drop(object data, SdkTreeNode? destination, bool copy)
+    {
+        if (data is not DragSelection selection || !CanDrop(selection, destination))
+            return false;
+
+        var target = DropFolder(destination);
+        bool accepted = false;
+        RunEdit(() =>
         {
-            _project = project ?? throw new ArgumentNullException(nameof(project));
-            InitializeComponent();
-            if (sharedImages != null)
-                treeView.ImageList = sharedImages;
-            font_normal = treeView.Font;
-            font_ignored = new Font(font_normal, FontStyle.Strikeout);
-            _project.SelectionChanged += OnProjectSelectionChanged;
-            _project.StructureChanged += RefreshTree;
-            RefreshTree();
-        }
+            accepted = copy
+                ? Editing.Paste(Editing.ExportItems(selection.Items), target).Length > 0
+                : Editing.Reparent(selection.Items, target);
+        });
+        return accepted;
+    }
 
-        protected override string GetPersistString() => PersistIdentity;
-
-        private void InitializeComponent()
+    private void RunEdit(System.Action action)
+    {
+        try { action(); }
+        catch (Exception error) when (error is InvalidOperationException or ArgumentException or System.IO.IOException or FormatException)
         {
-            SuspendLayout();
-
-            addToolStripMenuItem.DropDownItems.Add(newFilterToolStripMenuItem);
-            newFilterToolStripMenuItem.Click += newFilterToolStripMenuItem_Click;
-            removeToolStripMenuItem.Click += removeToolStripMenuItem_Click;
-            addToIgnoreListToolStripMenuItem.Click += add_remove_IgnoreListToolStripMenuItem_Click;
-            removeFromIgnoreListToolStripMenuItem.Click += add_remove_IgnoreListToolStripMenuItem_Click;
-
-            global_view_menu.Items.AddRange(new ToolStripItem[]
-            {
-                addToolStripMenuItem,
-                toolStripSeparator2,
-                removeToolStripMenuItem,
-                addToIgnoreListToolStripMenuItem,
-                removeFromIgnoreListToolStripMenuItem
-            });
-            global_view_menu.Opening += global_view_menu_Opening;
-
-            totalStatusLabel1.Name = "totalStatusLabel1";
-            totalStatusLabel1.Size = new Size(36, 17);
-            totalStatusLabel1.Text = "Total:0";
-
-            selectedStatusLabel1.Name = "selectedStatusLabel1";
-            selectedStatusLabel1.Size = new Size(56, 17);
-            selectedStatusLabel1.Text = "Selected:0";
-
-            statusStrip1.Items.AddRange(new ToolStripItem[] { totalStatusLabel1, selectedStatusLabel1 });
-            statusStrip1.Location = new Point(0, 467);
-            statusStrip1.Name = "statusStrip1";
-            statusStrip1.Size = new Size(264, 22);
-            statusStrip1.SizingGrip = false;
-            SdkWindowStyle.StyleStrip(statusStrip1);
-            SdkWindowStyle.StyleStrip(global_view_menu);
-
-            treeView.AllowDrop = true;
-            treeView.ContextMenuStrip = global_view_menu;
-            treeView.Dock = DockStyle.Fill;
-            SdkWindowStyle.StyleTree(treeView);
-            treeView.FilterVisibleDefault();
-            treeView.HideSelection = false;
-            treeView.Indent = 27;
-            treeView.is_multiselect = true;
-            treeView.is_selectable_groups = true;
-            treeView.ItemHeight = 20;
-            treeView.LabelEdit = true;
-            treeView.Name = "treeView";
-            treeView.PathSeparator = "/";
-            treeView.BeforeLabelEdit += treeView_BeforeLabelEdit;
-            treeView.AfterLabelEdit += treeView_AfterLabelEdit;
-            treeView.selected_items_changed += treeView_selected_items_changed;
-
-            Controls.Add(treeView);
-            Controls.Add(statusStrip1);
-            DockAreas = DockAreas.Float | DockAreas.DockLeft | DockAreas.DockRight | DockAreas.DockTop | DockAreas.DockBottom;
-            HideOnClose = true;
-            Name = "project_tab";
-            Text = "Project";
-            TabText = Text;
-            ResumeLayout(false);
-            PerformLayout();
-        }
-
-        public void RefreshTree()
-        {
-            treeView.BeginUpdate();
-            bool wasUpdating = _updatingFromProject;
-            _updatingFromProject = true;
-            try
-            {
-            treeView.clear();
-            if (_project.empty())
-            {
-                treeView.nodes.Add(new tree_node("Create new or load existing")
-                {
-                    Name = "Create new or load existing",
-                    m_node_type = tree_node_type.single_item
-                });
-                return;
-            }
-
-            var rootNode = new tree_node(_project.Root.Name)
-            {
-                Name = _project.Root.Name,
-                Tag = _project.Root,
-                m_node_type = tree_node_type.group_item,
-                m_image_index_collapsed = (int)images16x16.folder_closed,
-                m_image_index_expanded = (int)images16x16.folder_open,
-                ImageIndex = (int)images16x16.folder_open,
-                SelectedImageIndex = (int)images16x16.folder_open
-            };
-            _project.Root.m_tree_node_ = rootNode;
-            treeView.nodes.Add(rootNode);
-            AddNodes(rootNode.Nodes, _project.Root);
-            rootNode.ExpandAll();
-            }
-            finally
-            {
-                treeView.EndUpdate();
-                _updatingFromProject = wasUpdating;
-                UpdateCounts();
-                OnProjectSelectionChanged();
-            }
-        }
-
-        private void AddNodes(TreeNodeCollection nodes, ProjectItemBase item)
-        {
-            foreach (var child in item.Children)
-            {
-                bool isFolder = !child.is_object();
-                int collapsedIdx = (int)images16x16.folder_closed;
-                int expandedIdx = (int)images16x16.folder_open;
-                if (child is ProjectItemFolder folder && folder.locked)
-                {
-                    collapsedIdx = (int)images16x16.node_group_locked;
-                    expandedIdx = (int)images16x16.node_group_locked;
-                }
-                else if (child is ProjectItemObject obj)
-                {
-                    int toolIcon = obj.ToolName switch
-                    {
-                        "light" => (int)images16x16.object_light,
-                        "terrain" => (int)images16x16.terrain_selector,
-                        "sound" => (int)images16x16.node_sound_file,
-                        "misc" => (int)images16x16.misc_tree_icon,
-                        "scripting" => (int)images16x16.script_object_tree_icon,
-                        "composite" => (int)images16x16.composite_tree_icon,
-                        "particle" => (int)images16x16.particle_tree_icon,
-                        _ => (int)images16x16.node_mesh
-                    };
-                    collapsedIdx = toolIcon;
-                    expandedIdx = toolIcon;
-                }
-
-                var node = new tree_node(child.Name, collapsedIdx, collapsedIdx)
-                {
-                    Name = child.Name,
-                    Tag = child,
-                    m_node_type = isFolder ? tree_node_type.group_item : tree_node_type.single_item,
-                    m_image_index_collapsed = collapsedIdx,
-                    m_image_index_expanded = expandedIdx,
-                    NodeFont = _project.is_object_in_ignore_list(child.Id) ? font_ignored : font_normal
-                };
-                child.m_tree_node_ = node;
-                nodes.Add(node);
-                AddNodes(node.Nodes, child);
-            }
-        }
-
-        public void UpdateCounts()
-        {
-            set_total_objects_count(_project.TotalObjectsCount);
-            set_selected_objects_count(_project.SelectedObjectsCount);
-        }
-
-        public void set_total_objects_count(uint value)
-        {
-            totalStatusLabel1.Text = $"Total:{value}";
-        }
-
-        public void set_selected_objects_count(uint value)
-        {
-            selectedStatusLabel1.Text = $"Selected:{value}";
-        }
-
-        private void global_view_menu_Opening(object? sender, CancelEventArgs e)
-        {
-            UpdateContextMenuState();
-        }
-
-        public void UpdateContextMenuState()
-        {
-            newFilterToolStripMenuItem.Enabled = _project.IsProjectOpen && !Editing.Commands.InPreview;
-            bool bAddToList = false;
-            bool bRemoveFromList = false;
-            bool bDeleteObject = false;
-
-            foreach (var node in treeView.selected_nodes)
-            {
-                if (node.Tag is not ProjectItemBase h || ProjectEditing.IsProtected(h))
-                    continue;
-                if (_project.is_object_in_ignore_list(h.id()))
-                    bRemoveFromList = true;
-                else
-                    bAddToList = true;
-                bDeleteObject |= Editing.CanEditStructure(h);
-            }
-
-            addToIgnoreListToolStripMenuItem.Visible = bAddToList;
-            removeFromIgnoreListToolStripMenuItem.Visible = bRemoveFromList;
-            removeToolStripMenuItem.Enabled = bDeleteObject;
-        }
-
-        public ProjectItemFolder AddNewFilterFolder(string folderName = "filter")
-        {
-            ProjectItemFolder? parentFolder = null;
-            if (treeView.selected_nodes.Count > 0 && treeView.selected_nodes[0].Tag is ProjectItemFolder f)
-                parentFolder = f;
-            return Editing.AddFolder(folderName, parentFolder);
-        }
-
-        private void newFilterToolStripMenuItem_Click(object? sender, EventArgs e)
-        {
-            RunEdit(() => AddNewFilterFolder("new_filter"));
-        }
-
-        public void RemoveSelectedNodes()
-        {
-            Editing.Delete(Editing.EditableSelection);
-        }
-
-        private void removeToolStripMenuItem_Click(object? sender, EventArgs e)
-        {
-            RunEdit(RemoveSelectedNodes);
-        }
-
-        public void SetSelectedIgnoreList(bool add)
-        {
-            Editing.SetIgnored(_project.SelectedItems.Where(i => !ProjectEditing.IsProtected(i)), add);
-        }
-
-        private void add_remove_IgnoreListToolStripMenuItem_Click(object? sender, EventArgs e)
-        {
-            RunEdit(() => SetSelectedIgnoreList(ReferenceEquals(sender, addToIgnoreListToolStripMenuItem)));
-        }
-
-        private void treeView_BeforeLabelEdit(object? sender, NodeLabelEditEventArgs e)
-        {
-            if (e.Node?.Tag is not ProjectItemBase ib || !Editing.CanEditStructure(ib))
-                e.CancelEdit = true;
-        }
-
-        private void treeView_AfterLabelEdit(object? sender, NodeLabelEditEventArgs e)
-        {
-            if (string.IsNullOrEmpty(e.Label) || e.Node?.Tag is not ProjectItemBase w)
-            {
-                e.CancelEdit = true;
-                return;
-            }
-            string text = e.Label;
-            e.CancelEdit = true;
-            BeginInvoke(() => RunEdit(() => Editing.Rename(w, text)));
-        }
-
-        private void treeView_selected_items_changed(object? sender, tree_view_selection_event_args e)
-        {
-            if (_updatingFromProject || _project.get_pin_selection() || !_project.IsProjectOpen)
-                return;
-
-            bool recursive = (Control.ModifierKeys & Keys.Alt) == Keys.Alt;
-            var newSelection = new List<ProjectItemBase>();
-            foreach (var tn in e.new_selection)
-            {
-                if (tn.Tag is not ProjectItemBase ib) continue;
-                var childs = new List<ProjectItemBase>();
-                if (recursive)
-                    ib.get_all_items(childs, true);
-                else
-                    childs.Add(ib);
-
-                foreach (var pi in childs)
-                {
-                    if (pi.get_selectable() && !newSelection.Contains(pi))
-                        newSelection.Add(pi);
-                }
-            }
-
-            _updatingFromProject = true;
-            try
-            {
-                Editing.Select(newSelection);
-                UpdateCounts();
-            }
-            finally
-            {
-                _updatingFromProject = false;
-            }
-        }
-
-        private void OnProjectSelectionChanged()
-        {
-            UpdateCounts();
-            if (_updatingFromProject || !_project.TrackActiveItem) return;
-            _updatingFromProject = true;
-            try
-            {
-                var paths = new List<string>();
-                foreach (var item in _project.SelectedItems)
-                    paths.Add(item.FullPath);
-                treeView.track_active_nodes(paths);
-            }
-            finally
-            {
-                _updatingFromProject = false;
-            }
-        }
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                _project.StructureChanged -= RefreshTree;
-                _project.SelectionChanged -= OnProjectSelectionChanged;
-                font_ignored.Dispose();
-            }
-            base.Dispose(disposing);
+            OperationFailed?.Invoke(error.Message);
         }
     }
 
-    internal static class TreeViewExtensions
+    public void Dispose()
     {
-        public static void FilterVisibleDefault(this tree_view tv) => tv.filter_visible = true;
+        if (_disposed)
+            return;
+        _disposed = true;
+        View.SelectionChanged -= OnTreeSelectionChanged;
+        View.ContextMenuOpening -= UpdateContextMenuState;
+        View.NewFilterRequested -= OnNewFilterRequested;
+        View.RemoveRequested -= OnRemoveRequested;
+        View.SetIgnoreListRequested -= OnSetIgnoreListRequested;
+        View.RenameRequested -= OnRenameRequested;
+        View.DragFailed -= OnDragFailed;
+        _project.StructureChanged -= RefreshTree;
+        _project.SelectionChanged -= OnProjectSelectionChanged;
     }
 }

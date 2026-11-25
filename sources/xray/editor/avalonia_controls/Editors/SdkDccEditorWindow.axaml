@@ -1,0 +1,56 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="using:xray.editor.avalonia_controls.Editors"
+        xmlns:themes="using:xray.editor.avalonia_controls.Themes"
+        x:Class="xray.editor.avalonia_controls.Editors.SdkDccEditorWindow"
+        Title="DCC sources · Blender / Maya"
+        Width="1020"
+        Height="700"
+        Background="{x:Static themes:SdkWorkspaceTheme.Surface}">
+    <DockPanel LastChildFill="True">
+        <Border DockPanel.Dock="Top"
+                Background="{x:Static themes:SdkWorkspaceTheme.Chrome}"
+                BorderBrush="{x:Static themes:SdkWorkspaceTheme.Divider}"
+                BorderThickness="0,0,0,1"
+                Padding="6,4">
+            <WrapPanel Orientation="Horizontal">
+                <TextBlock VerticalAlignment="Center" Margin="0,0,4,4" Text="Asset URI" />
+                <TextBox x:Name="m_asset_box" Width="380" Margin="0,0,6,4" PlaceholderText="resources/models/..." />
+                <Button x:Name="m_show_source_button" Margin="0,0,4,4" Content="Show source" />
+                <Button x:Name="m_associate_button" Margin="0,0,4,4" Content="Associate scene" />
+                <Button x:Name="m_migrated_blend_button" Margin="0,0,4,4" Content="Use migrated .blend" />
+                <Button x:Name="m_import_legacy_button" Margin="0,0,4,4" Content="Import legacy asset" />
+                <Button x:Name="m_open_dcc_button" Margin="0,0,8,4" Content="Open source in DCC" />
+
+                <TextBlock VerticalAlignment="Center" Margin="0,0,4,4" Text="Object" />
+                <TextBox x:Name="m_object_box" Width="150" Margin="0,0,6,4" />
+                <TextBlock VerticalAlignment="Center" Margin="0,0,4,4" Text="Action" />
+                <TextBox x:Name="m_action_box" Width="150" Margin="0,0,6,4" />
+
+                <Button x:Name="m_save_selection_button" Margin="0,0,4,4" Content="Save selection" />
+                <Button x:Name="m_reimport_button" Margin="0,0,4,4" Content="Reimport" />
+                <Button x:Name="m_cancel_button" Margin="0,0,4,4" Content="Cancel" />
+                <Button x:Name="m_preview_button" Margin="0,0,4,4" Content="Preview" />
+                <Button x:Name="m_play_pause_button" Margin="0,0,4,4" Content="Play / pause" />
+                <Button x:Name="m_dcc_options_button" Margin="0,0,8,4" Content="DCC options" />
+                <CheckBox x:Name="m_watch_check" Margin="0,0,0,4" Content="Reimport saved sources automatically" />
+            </WrapPanel>
+        </Border>
+
+        <Border DockPanel.Dock="Bottom"
+                Background="{x:Static themes:SdkWorkspaceTheme.Chrome}"
+                BorderBrush="{x:Static themes:SdkWorkspaceTheme.Divider}"
+                BorderThickness="0,1,0,0"
+                Padding="8,4">
+            <StackPanel Spacing="4">
+                <Slider x:Name="m_time_slider" Minimum="0" Maximum="1000" />
+                <TextBlock x:Name="m_status_label"
+                           Height="68"
+                           TextWrapping="Wrap"
+                           Foreground="{x:Static themes:SdkWorkspaceTheme.Text}" />
+            </StackPanel>
+        </Border>
+
+        <local:SdkDccPoseView x:Name="m_pose_view" />
+    </DockPanel>
+</Window>

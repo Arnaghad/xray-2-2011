@@ -1,0 +1,52 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="using:xray.editor.avalonia_controls"
+             xmlns:curve="using:xray.editor.avalonia_controls.curve_editor"
+             xmlns:themes="using:xray.editor.avalonia_controls.Themes"
+             x:Class="xray.editor.avalonia_controls.animation_curve_editor">
+    <DockPanel>
+        <Button x:Name="m_focus_fake" Width="0" Height="0" IsTabStop="False" Opacity="0" />
+
+        <Border DockPanel.Dock="Top"
+                Background="{x:Static themes:SdkWorkspaceTheme.Chrome}"
+                BorderBrush="{x:Static themes:SdkWorkspaceTheme.Divider}"
+                BorderThickness="0,0,0,1"
+                Padding="4,2">
+            <WrapPanel Orientation="Horizontal" VerticalAlignment="Center" ItemHeight="24">
+                <Button Content="Play" Padding="6,2" Margin="1" Click="play_click" />
+                <Button Content="Stop" Padding="6,2" Margin="1" Click="stop_click" />
+                <Border Width="1" Background="{x:Static themes:SdkWorkspaceTheme.Divider}" Margin="4,2" />
+                <Button Content="Set Key" Padding="6,2" Margin="1" Click="set_key" />
+                <Button Content="Prev Key" Padding="6,2" Margin="1" Click="prev_key_click" />
+                <Button Content="Next Key" Padding="6,2" Margin="1" Click="next_key_click" />
+                <ToggleButton x:Name="m_select_keys_toggle" Content="Select" Padding="6,2" Margin="1" />
+                <ToggleButton x:Name="m_camera_view_button" Content="Cam View" Padding="6,2" Margin="1" Click="camera_view_click" />
+                <Button Content="Sel-&gt;Cam" Padding="6,2" Margin="1" Click="selected_to_camera_click" />
+                <Button Content="Cam-&gt;Sel" Padding="6,2" Margin="1" Click="camera_to_selected_click" />
+                <Border Width="1" Background="{x:Static themes:SdkWorkspaceTheme.Divider}" Margin="4,2" />
+                <TextBlock Text="Speed:" VerticalAlignment="Center" Margin="4,0,2,0" Foreground="{x:Static themes:SdkWorkspaceTheme.MutedText}" />
+                <Slider x:Name="m_speed_slider" Width="80" Minimum="0.1" Maximum="4" Value="1" VerticalAlignment="Center" />
+                <Button x:Name="m_settings_button" Content="Settings" Padding="6,2" Margin="4,1,1,1" Click="settings_click" />
+            </WrapPanel>
+        </Border>
+
+        <curve:curve_editor_panel x:Name="m_curves_panel"
+                                  is_frequently_changed="True">
+            <curve:curve_editor_panel.decorator>
+                <Grid RowDefinitions="Auto,*,Auto">
+                    <Canvas Grid.Row="0" Height="36" ClipToBounds="True" PointerPressed="timeline_mouse_down" Background="Transparent">
+                        <local:ruler x:Name="m_time_ruler_seconds" Height="18" Width="2000" top_to_down="False" Canvas.Top="0" />
+                        <local:ruler x:Name="m_time_ruler_frames" Height="18" Width="2000" top_to_down="True" Canvas.Top="18" />
+                        <Thumb x:Name="m_time_thumb"
+                               Width="10"
+                               Height="36"
+                               Canvas.Left="-5"
+                               Canvas.Top="0"
+                               Background="{x:Static themes:SdkWorkspaceTheme.Accent}"
+                               DragDelta="thumb_drag_delta" />
+                    </Canvas>
+                </Grid>
+            </curve:curve_editor_panel.decorator>
+        </curve:curve_editor_panel>
+    </DockPanel>
+</UserControl>

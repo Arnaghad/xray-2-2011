@@ -1,0 +1,92 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters="using:xray.editor.avalonia_controls.converters"
+             x:Class="xray.editor.avalonia_controls.animation_playback.animation_item_view"
+             x:CompileBindings="False"
+             Background="DarkGray"
+             BorderThickness="1"
+             BorderBrush="Black">
+    <UserControl.Resources>
+        <converters:single_to_thickness_converter x:Key="left_converter" />
+        <converters:singles_to_thickness_converter x:Key="multi_converter" />
+    </UserControl.Resources>
+
+    <Border Height="{Binding height}">
+        <Grid>
+            <Border HorizontalAlignment="Left"
+                    Width="{Binding offset}"
+                    BorderThickness="1"
+                    BorderBrush="Black"
+                    Background="Red"
+                    Height="{Binding bindings.weighted_height}">
+                <Border.Margin>
+                    <MultiBinding Converter="{StaticResource multi_converter}">
+                        <Binding Path="position" />
+                        <Binding Path="bindings.top_offset" />
+                    </MultiBinding>
+                </Border.Margin>
+            </Border>
+
+            <Border HorizontalAlignment="Left"
+                    Width="{Binding bindings.animation_time_width}"
+                    BorderThickness="1"
+                    BorderBrush="Black"
+                    Background="Yellow"
+                    Height="{Binding bindings.weighted_height}">
+                <Border.Margin>
+                    <MultiBinding Converter="{StaticResource multi_converter}">
+                        <Binding Path="bindings.offset_position" />
+                        <Binding Path="bindings.top_offset" />
+                    </MultiBinding>
+                </Border.Margin>
+            </Border>
+
+            <Border HorizontalAlignment="Left"
+                    Width="{Binding bindings.time_scaled_length}"
+                    BorderThickness="1"
+                    BorderBrush="Black"
+                    Background="Blue"
+                    Height="{Binding bindings.weighted_height}">
+                <Border.Margin>
+                    <MultiBinding Converter="{StaticResource multi_converter}">
+                        <Binding Path="bindings.animation_time" />
+                        <Binding Path="bindings.top_offset" />
+                    </MultiBinding>
+                </Border.Margin>
+            </Border>
+
+            <Border HorizontalAlignment="Left"
+                    Margin="{Binding position, Converter={StaticResource left_converter}}"
+                    Width="{Binding length}"
+                    BorderThickness="2"
+                    BorderBrush="Black"
+                    Background="Transparent"
+                    Height="{Binding height}" />
+
+            <ItemsControl ItemsSource="{Binding events}" ZIndex="100">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <Grid />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Width="20"
+                              Height="20"
+                              HorizontalAlignment="Left"
+                              VerticalAlignment="Center"
+                              Margin="{Binding position, Converter={StaticResource left_converter}}">
+                            <Path VerticalAlignment="Bottom" Data="M 10,0 L 20,20 L 0,20 Z" Fill="LightGreen" Stroke="Black" StrokeThickness="1" />
+                            <TextBlock Text="{Binding text}" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,-8" />
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <Path x:Name="m_weights_path" Stroke="Red" StrokeThickness="1" ZIndex="150" />
+            <Path x:Name="m_scales_path" Stroke="Green" StrokeThickness="1" ZIndex="150" />
+            <Path x:Name="m_weights_levels_path" Stroke="LightPink" StrokeThickness="1" ZIndex="150" />
+            <Path x:Name="m_scales_levels_path" Stroke="LightGreen" StrokeThickness="1" ZIndex="150" />
+        </Grid>
+    </Border>
+</UserControl>

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Numerics;
-using NumberRange = xray.editor.wpf_controls.property_editors.attributes.value_range_and_format_attribute;
 
 namespace xray.editor_base;
 
@@ -30,21 +29,21 @@ public sealed class ProjectTerrainProperties
     [Category("Terrain"), ReadOnly(true)]
     public int TotalTriangles => Editor.Project.Terrain.TotalTriangles;
 
-    [Category("Transform"), NumberRange(-100000, 100000, 0.5, 3, update_on_edit_complete = true)]
+    [Category("Transform"), SdkNumericRange(-100000, 100000, 0.5, 3, UpdateOnEditComplete = true)]
     public float PositionX
     {
         get => Editor.Project.Terrain.GetPositionOffset().X;
         set => SetOffsetComponent(0, value);
     }
 
-    [Category("Transform"), NumberRange(-100000, 100000, 0.5, 3, update_on_edit_complete = true)]
+    [Category("Transform"), SdkNumericRange(-100000, 100000, 0.5, 3, UpdateOnEditComplete = true)]
     public float PositionY
     {
         get => Editor.Project.Terrain.GetPositionOffset().Y;
         set => SetOffsetComponent(1, value);
     }
 
-    [Category("Transform"), NumberRange(-100000, 100000, 0.5, 3, update_on_edit_complete = true)]
+    [Category("Transform"), SdkNumericRange(-100000, 100000, 0.5, 3, UpdateOnEditComplete = true)]
     public float PositionZ
     {
         get => Editor.Project.Terrain.GetPositionOffset().Z;
@@ -68,16 +67,16 @@ public sealed class ProjectTerrainProperties
     [Category("Brush")]
     public TerrainBrushType ActiveBrush { get; set; } = TerrainBrushType.RaiseLower;
 
-    [Category("Brush"), NumberRange(0.25, 512, 0.5, 2, update_on_edit_complete = true)]
+    [Category("Brush"), SdkNumericRange(0.25, 512, 0.5, 2, UpdateOnEditComplete = true)]
     public float BrushRadius { get; set; } = 6f;
 
-    [Category("Brush"), NumberRange(-100, 100, 0.25, 3, update_on_edit_complete = true)]
+    [Category("Brush"), SdkNumericRange(-100, 100, 0.25, 3, UpdateOnEditComplete = true)]
     public float BrushStrength { get; set; } = 2f;
 
-    [Category("Brush"), NumberRange(0, 1, 0.05, 2, update_on_edit_complete = true)]
+    [Category("Brush"), SdkNumericRange(0, 1, 0.05, 2, UpdateOnEditComplete = true)]
     public float BrushHardness { get; set; } = 0.5f;
 
-    [Category("Brush"), NumberRange(-1000, 1000, 0.5, 2, update_on_edit_complete = true)]
+    [Category("Brush"), SdkNumericRange(-1000, 1000, 0.5, 2, UpdateOnEditComplete = true)]
     public float TargetHeight { get; set; } = 0f;
 
     public SdkTerrainCell AddNode(int keyX, int keyY, string libName = "base:terrain_64x64", float size = 64f, float cellSize = 1f)
@@ -222,77 +221,77 @@ public sealed class ProjectLightProperties : ProjectTypedObjectProperties
         _ => "Unknown"
     };
 
-    [Category("Light"), NumberRange(0, 1, 0.02, 3, update_on_edit_complete = true)]
+    [Category("Light"), SdkNumericRange(0, 1, 0.02, 3, UpdateOnEditComplete = true)]
     public float ColorR
     {
         get => RawFloat3("color", Vector3.One).X;
         set { float v = RequireFiniteRange(value, 0f, 1f, nameof(ColorR)); EditConfig(c => { var col = RawFloat3("color", Vector3.One); c["color"].Assign(new Vector3(v, col.Y, col.Z)); }); }
     }
 
-    [Category("Light"), NumberRange(0, 1, 0.02, 3, update_on_edit_complete = true)]
+    [Category("Light"), SdkNumericRange(0, 1, 0.02, 3, UpdateOnEditComplete = true)]
     public float ColorG
     {
         get => RawFloat3("color", Vector3.One).Y;
         set { float v = RequireFiniteRange(value, 0f, 1f, nameof(ColorG)); EditConfig(c => { var col = RawFloat3("color", Vector3.One); c["color"].Assign(new Vector3(col.X, v, col.Z)); }); }
     }
 
-    [Category("Light"), NumberRange(0, 1, 0.02, 3, update_on_edit_complete = true)]
+    [Category("Light"), SdkNumericRange(0, 1, 0.02, 3, UpdateOnEditComplete = true)]
     public float ColorB
     {
         get => RawFloat3("color", Vector3.One).Z;
         set { float v = RequireFiniteRange(value, 0f, 1f, nameof(ColorB)); EditConfig(c => { var col = RawFloat3("color", Vector3.One); c["color"].Assign(new Vector3(col.X, col.Y, v)); }); }
     }
 
-    [Category("Light"), NumberRange(0, 16, 0.1, 3, update_on_edit_complete = true)]
+    [Category("Light"), SdkNumericRange(0, 16, 0.1, 3, UpdateOnEditComplete = true)]
     public float Intensity
     {
         get => RawFloat("intensity", 1f);
         set { float v = RequireFiniteRange(value, 0f, 16f, nameof(Intensity)); EditConfig(c => c["intensity"].Assign(v)); }
     }
 
-    [Category("Light"), NumberRange(0.01, 10000, 0.5, 2, update_on_edit_complete = true)]
+    [Category("Light"), SdkNumericRange(0.01, 10000, 0.5, 2, UpdateOnEditComplete = true)]
     public float Range
     {
         get => RawFloat("range", 5f);
         set { float v = RequireFiniteRange(value, 0.01f, 10000f, nameof(Range)); EditConfig(c => c["range"].Assign(v)); }
     }
 
-    [Category("Light"), NumberRange(0.01, 16, 0.1, 2, update_on_edit_complete = true)]
+    [Category("Light"), SdkNumericRange(0.01, 16, 0.1, 2, UpdateOnEditComplete = true)]
     public float AttenuationPower
     {
         get => RawFloat("attenuation_power", 2f);
         set { float v = RequireFiniteRange(value, 0.01f, 16f, nameof(AttenuationPower)); EditConfig(c => c["attenuation_power"].Assign(v)); }
     }
 
-    [Category("Light"), NumberRange(0, 10, 0.1, 2, update_on_edit_complete = true)]
+    [Category("Light"), SdkNumericRange(0, 10, 0.1, 2, UpdateOnEditComplete = true)]
     public float DiffuseInfluenceFactor
     {
         get => RawFloat("diffuse_influence_factor", 1f);
         set { float v = RequireFiniteRange(value, 0f, 10f, nameof(DiffuseInfluenceFactor)); EditConfig(c => c["diffuse_influence_factor"].Assign(v)); }
     }
 
-    [Category("Light"), NumberRange(0, 10, 0.1, 2, update_on_edit_complete = true)]
+    [Category("Light"), SdkNumericRange(0, 10, 0.1, 2, UpdateOnEditComplete = true)]
     public float SpecularInfluenceFactor
     {
         get => RawFloat("specular_influence_factor", 1f);
         set { float v = RequireFiniteRange(value, 0f, 10f, nameof(SpecularInfluenceFactor)); EditConfig(c => c["specular_influence_factor"].Assign(v)); }
     }
 
-    [Category("Spot"), NumberRange(0.01, 3.1415, 0.05, 4, update_on_edit_complete = true)]
+    [Category("Spot"), SdkNumericRange(0.01, 3.1415, 0.05, 4, UpdateOnEditComplete = true)]
     public float SpotUmbraAngle
     {
         get => RawFloat("spot_umbra_angle", 0.3926991f);
         set { float v = RequireFiniteRange(value, 0.001f, MathF.PI, nameof(SpotUmbraAngle)); EditConfig(c => c["spot_umbra_angle"].Assign(v)); }
     }
 
-    [Category("Spot"), NumberRange(0.01, 3.1415, 0.05, 4, update_on_edit_complete = true)]
+    [Category("Spot"), SdkNumericRange(0.01, 3.1415, 0.05, 4, UpdateOnEditComplete = true)]
     public float SpotPenumbraAngle
     {
         get => RawFloat("spot_penumbra_angle", 0.7853982f);
         set { float v = RequireFiniteRange(value, 0.001f, MathF.PI, nameof(SpotPenumbraAngle)); EditConfig(c => c["spot_penumbra_angle"].Assign(v)); }
     }
 
-    [Category("Spot"), NumberRange(0, 16, 0.1, 3, update_on_edit_complete = true)]
+    [Category("Spot"), SdkNumericRange(0, 16, 0.1, 3, UpdateOnEditComplete = true)]
     public float SpotFalloff
     {
         get => RawFloat("spot_falloff", 1f);
@@ -340,14 +339,14 @@ public sealed class ProjectLightProperties : ProjectTypedObjectProperties
         }
     }
 
-    [Category("Shadows"), NumberRange(0, 1, 0.05, 3, update_on_edit_complete = true)]
+    [Category("Shadows"), SdkNumericRange(0, 1, 0.05, 3, UpdateOnEditComplete = true)]
     public float ShadowTransparency
     {
         get => RawFloat("shadow_transparency", 0.1f);
         set { float v = RequireFiniteRange(value, 0f, 1f, nameof(ShadowTransparency)); EditConfig(c => c["shadow_transparency"].Assign(v)); }
     }
 
-    [Category("Shadows"), NumberRange(0, 1, 0.0001, 6, update_on_edit_complete = true)]
+    [Category("Shadows"), SdkNumericRange(0, 1, 0.0001, 6, UpdateOnEditComplete = true)]
     public float ZBias
     {
         get => RawFloat("z_bias", 0.0001f);
@@ -411,7 +410,7 @@ public sealed class ProjectParticleProperties : ProjectTypedObjectProperties
         set => EditConfig(c => c["paused"].Assign(value));
     }
 
-    [Category("Playback"), NumberRange(0, 10, 0.1, 2, update_on_edit_complete = true)]
+    [Category("Playback"), SdkNumericRange(0, 10, 0.1, 2, UpdateOnEditComplete = true)]
     public float TimeScale
     {
         get => RawFloat("time_scale", 1f);
@@ -440,7 +439,7 @@ public sealed class ProjectSpeedTreeProperties : ProjectTypedObjectProperties
         }
     }
 
-    [Category("SpeedTree"), NumberRange(0.0001, 4096, 0.1, 4, update_on_edit_complete = true)]
+    [Category("SpeedTree"), SdkNumericRange(0.0001, 4096, 0.1, 4, UpdateOnEditComplete = true)]
     public float UniformScale
     {
         get => Item.Scale.X;
@@ -532,21 +531,21 @@ public sealed class ProjectMiscProperties : ProjectTypedObjectProperties
         });
     }
 
-    [Category("Decal"), NumberRange(0.001, 128, 0.1, 3, update_on_edit_complete = true)]
+    [Category("Decal"), SdkNumericRange(0.001, 128, 0.1, 3, UpdateOnEditComplete = true)]
     public float DecalWidth
     {
         get => RawFloat("width", 1f);
         set { float v = RequireFiniteRange(value, 0.001f, 128f, nameof(DecalWidth)); EditConfig(c => c["width"].Assign(v)); }
     }
 
-    [Category("Decal"), NumberRange(0.001, 128, 0.1, 3, update_on_edit_complete = true)]
+    [Category("Decal"), SdkNumericRange(0.001, 128, 0.1, 3, UpdateOnEditComplete = true)]
     public float DecalHeight
     {
         get => RawFloat("height", 1f);
         set { float v = RequireFiniteRange(value, 0.001f, 128f, nameof(DecalHeight)); EditConfig(c => c["height"].Assign(v)); }
     }
 
-    [Category("Decal"), NumberRange(0.001, 128, 0.1, 3, update_on_edit_complete = true)]
+    [Category("Decal"), SdkNumericRange(0.001, 128, 0.1, 3, UpdateOnEditComplete = true)]
     public float DecalFarDistance
     {
         get => RawFloat("far_distance", RawFloat("projection_distance", 0.5f));
@@ -579,21 +578,21 @@ public sealed class ProjectMiscProperties : ProjectTypedObjectProperties
     public bool ProjectOnParticle { get => RawBool("projection_on_particle_geometry", false); set => EditConfig(c => c["projection_on_particle_geometry"].Assign(value)); }
 
     // base:camera
-    [Category("Camera"), NumberRange(5, 170, 1, 2, update_on_edit_complete = true)]
+    [Category("Camera"), SdkNumericRange(5, 170, 1, 2, UpdateOnEditComplete = true)]
     public float Fov
     {
         get => RawFloat("fov", 60f);
         set { float v = RequireFiniteRange(value, 5f, 170f, nameof(Fov)); EditConfig(c => c["fov"].Assign(v)); }
     }
 
-    [Category("Camera"), NumberRange(0.01, 100, 0.05, 3, update_on_edit_complete = true)]
+    [Category("Camera"), SdkNumericRange(0.01, 100, 0.05, 3, UpdateOnEditComplete = true)]
     public float NearPlane
     {
         get => RawFloat("near_plane", 0.1f);
         set { float v = RequireFiniteRange(value, 0.001f, 1000f, nameof(NearPlane)); EditConfig(c => c["near_plane"].Assign(v)); }
     }
 
-    [Category("Camera"), NumberRange(1, 50000, 10, 1, update_on_edit_complete = true)]
+    [Category("Camera"), SdkNumericRange(1, 50000, 10, 1, UpdateOnEditComplete = true)]
     public float FarPlane
     {
         get => RawFloat("far_plane", 500f);
@@ -601,7 +600,7 @@ public sealed class ProjectMiscProperties : ProjectTypedObjectProperties
     }
 
     // base:timer
-    [Category("Timer"), NumberRange(0, 86400, 0.5, 2, update_on_edit_complete = true)]
+    [Category("Timer"), SdkNumericRange(0, 86400, 0.5, 2, UpdateOnEditComplete = true)]
     public float Duration
     {
         get => RawFloat("duration", 1f);
@@ -813,28 +812,28 @@ public sealed class ProjectSoundProperties : ProjectTypedObjectProperties
         set => EditConfig(c => c["looped"].Assign(value));
     }
 
-    [Category("Sound"), NumberRange(0.1, 10000, 0.5, 2, update_on_edit_complete = true)]
+    [Category("Sound"), SdkNumericRange(0.1, 10000, 0.5, 2, UpdateOnEditComplete = true)]
     public float Radius
     {
         get => RawFloat("radius", 30f);
         set { float v = RequireFiniteRange(value, 0.1f, 10000f, nameof(Radius)); EditConfig(c => c["radius"].Assign(v)); }
     }
 
-    [Category("Cone"), NumberRange(1, 360, 1, 1, update_on_edit_complete = true)]
+    [Category("Cone"), SdkNumericRange(1, 360, 1, 1, UpdateOnEditComplete = true)]
     public float ConeInnerAngleDegrees
     {
         get => RawFloat("cone_inner_angle", 45f);
         set { float v = RequireFiniteRange(value, 1f, 360f, nameof(ConeInnerAngleDegrees)); EditConfig(c => c["cone_inner_angle"].Assign(v)); }
     }
 
-    [Category("Cone"), NumberRange(1, 360, 1, 1, update_on_edit_complete = true)]
+    [Category("Cone"), SdkNumericRange(1, 360, 1, 1, UpdateOnEditComplete = true)]
     public float ConeOuterAngleDegrees
     {
         get => RawFloat("cone_outer_angle", 120f);
         set { float v = RequireFiniteRange(value, 1f, 360f, nameof(ConeOuterAngleDegrees)); EditConfig(c => c["cone_outer_angle"].Assign(v)); }
     }
 
-    [Category("Cone"), NumberRange(0, 1, 0.05, 3, update_on_edit_complete = true)]
+    [Category("Cone"), SdkNumericRange(0, 1, 0.05, 3, UpdateOnEditComplete = true)]
     public float ConeOuterGain
     {
         get => RawFloat("cone_outer_gain", 0.25f);

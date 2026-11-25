@@ -1,0 +1,62 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:as="using:xray.editor.avalonia_controls.animation_setup"
+             x:Class="xray.editor.avalonia_controls.animation_setup.animation_channel_partition_view"
+             x:CompileBindings="False"
+             PointerPressed="user_control_mouse_right_button_down"
+             PointerMoved="user_control_mouse_move"
+             PointerReleased="user_control_mouse_left_button_up">
+    <UserControl.Resources>
+        <as:animation_channel_partition_type_to_visibility_converter x:Key="type_to_v_c" />
+        <ContextMenu x:Key="partition_context_menu">
+            <MenuItem Header="Change type">
+                <MenuItem Header="None" Click="none_click" ToggleType="CheckBox" />
+                <MenuItem Header="Left" Click="left_click" ToggleType="CheckBox" />
+                <MenuItem Header="Right" Click="right_click" ToggleType="CheckBox" />
+                <MenuItem Header="Both" Click="both_click" ToggleType="CheckBox" />
+            </MenuItem>
+            <MenuItem Header="Split" Click="split_click" />
+            <MenuItem Header="Remove partition" Click="remove_partition_click" />
+            <MenuItem Header="Remove channel" Click="remove_channel_click" />
+            <MenuItem Header="Copy channel" Click="copy_channel_click" />
+            <MenuItem Header="Cut channel" Click="cut_channel_click" />
+        </ContextMenu>
+    </UserControl.Resources>
+    <Border HorizontalAlignment="Left" Width="{Binding length}" Background="Transparent">
+        <DockPanel>
+            <Border x:Name="m_right_edge"
+                    DockPanel.Dock="Right"
+                    Width="2"
+                    Cursor="SizeWestEast"
+                    Background="Transparent"
+                    BorderBrush="Black"
+                    BorderThickness="0,0,2,0" />
+            <Grid>
+                <Border x:Name="m_undefined_border"
+                        IsVisible="{Binding type, Converter={StaticResource type_to_v_c}, ConverterParameter=undefined}"
+                        Background="Transparent"
+                        Cursor="SizeAll" />
+                <Border x:Name="m_none_border"
+                        IsVisible="{Binding type, Converter={StaticResource type_to_v_c}, ConverterParameter=none}"
+                        Background="Transparent"
+                        Cursor="SizeAll" />
+                <Border x:Name="m_left_border"
+                        VerticalAlignment="Top"
+                        IsVisible="{Binding type, Converter={StaticResource type_to_v_c}, ConverterParameter=left}"
+                        Background="Green"
+                        Height="20"
+                        Cursor="SizeAll" />
+                <Border x:Name="m_right_border"
+                        VerticalAlignment="Bottom"
+                        IsVisible="{Binding type, Converter={StaticResource type_to_v_c}, ConverterParameter=right}"
+                        Background="Green"
+                        Height="20"
+                        Cursor="SizeAll" />
+                <Border x:Name="m_both_border"
+                        IsVisible="{Binding type, Converter={StaticResource type_to_v_c}, ConverterParameter=both}"
+                        Background="Green"
+                        Cursor="SizeAll" />
+            </Grid>
+        </DockPanel>
+    </Border>
+</UserControl>

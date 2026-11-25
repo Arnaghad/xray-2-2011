@@ -1,0 +1,13 @@
+<editors:value_editor_base xmlns="https://github.com/avaloniaui"
+                           xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                           xmlns:editors="clr-namespace:xray.editor.avalonia_controls.property_editors.value"
+                           x:Class="xray.editor.avalonia_controls.property_editors.value.default_editor"
+                           x:CompileBindings="False">
+  <TextBox Name="m_value_text_box"
+           VerticalAlignment="Center"
+           IsReadOnly="True"
+           BorderThickness="0"
+           Background="Transparent"
+           Foreground="{DynamicResource SdkMutedTextBrush}"
+           ToolTip.Tip="{Binding Text, RelativeSource={RelativeSource Self}}" />
+</editors:value_editor_base>

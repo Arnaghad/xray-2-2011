@@ -1,0 +1,11 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="xray.editor.avalonia_controls.curve_editor.panel_curve_effect"
+             PointerPressed="mouse_down">
+    <DockPanel>
+        <Button DockPanel.Dock="Right" Width="13" Height="13" Margin="2,0" Padding="0" VerticalAlignment="Center" Click="remove_click">
+            <Path Stroke="Black" StrokeThickness="1" Data="M 0,0 L 5,5 M 0,5 L 5,0" />
+        </Button>
+        <TextBlock x:Name="m_text_block" Padding="4,0,0,0" />
+    </DockPanel>
+</UserControl>

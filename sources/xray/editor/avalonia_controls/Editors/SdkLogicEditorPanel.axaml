@@ -1,0 +1,34 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:hg="using:xray.editor.avalonia_controls.hypergraph"
+             xmlns:pg="using:xray.editor.avalonia_controls.property_grid"
+             x:Class="xray.editor.avalonia_controls.Editors.SdkLogicEditorPanel">
+    <Grid RowDefinitions="Auto,*,Auto" Margin="8">
+        <WrapPanel Margin="0,0,0,6" ItemSpacing="6" LineSpacing="4">
+            <Button x:Name="NewSceneButton" Content="New Scene" />
+            <Button x:Name="NewJobButton" Content="New Job" />
+            <Button x:Name="ConnectionEditorButton" Content="Connection Editor" />
+            <Button x:Name="StartButton" Content="Run #StartScene" />
+            <Button x:Name="StepButton" Content="Step 1.0s" />
+            <Button x:Name="UndoButton" Content="Undo" />
+            <Button x:Name="RedoButton" Content="Redo" />
+        </WrapPanel>
+        <Grid Grid.Row="1" ColumnDefinitions="*,5,300">
+            <Grid RowDefinitions="2*,5,*">
+                <hg:hypergraph_control x:Name="Graph" />
+                <GridSplitter Grid.Row="1" ResizeDirection="Rows" />
+                <TabControl Grid.Row="2">
+                    <TabItem Header="Property Connections">
+                        <ListBox x:Name="ConnectionsList" />
+                    </TabItem>
+                    <TabItem Header="Runtime Event Trace">
+                        <ListBox x:Name="TraceList" />
+                    </TabItem>
+                </TabControl>
+            </Grid>
+            <GridSplitter Grid.Column="1" ResizeDirection="Columns" />
+            <pg:property_grid_control x:Name="Properties" Grid.Column="2" />
+        </Grid>
+        <TextBlock x:Name="StatusLabel" Grid.Row="2" Margin="0,6,0,0" TextWrapping="Wrap" />
+    </Grid>
+</UserControl>

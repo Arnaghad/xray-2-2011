@@ -1,0 +1,76 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="using:xray.editor.avalonia_controls.Ide.Dialogs"
+        xmlns:themes="using:xray.editor.avalonia_controls.Themes"
+        x:Class="xray.editor.avalonia_controls.Ide.Dialogs.SdkProjectBrowserWindow"
+        Title="Project Browser"
+        Width="600"
+        Height="440"
+        ShowInTaskbar="False"
+        WindowStartupLocation="CenterOwner"
+        Background="{x:Static themes:SdkWorkspaceTheme.Surface}">
+    <DockPanel LastChildFill="True">
+        <Border DockPanel.Dock="Top"
+                Background="{x:Static themes:SdkWorkspaceTheme.Chrome}"
+                BorderBrush="{x:Static themes:SdkWorkspaceTheme.Divider}"
+                BorderThickness="0,0,0,1"
+                Padding="6,4">
+            <StackPanel Orientation="Horizontal" Spacing="6">
+                <Button x:Name="m_up_button" Width="56" Content="Up" />
+                <Button x:Name="m_browse_folder_button" Content="Browse Folder..." />
+                <TextBlock x:Name="m_current_path_label"
+                           VerticalAlignment="Center"
+                           Foreground="{x:Static themes:SdkWorkspaceTheme.MutedText}" />
+            </StackPanel>
+        </Border>
+
+        <Border DockPanel.Dock="Bottom"
+                Background="{x:Static themes:SdkWorkspaceTheme.Chrome}"
+                BorderBrush="{x:Static themes:SdkWorkspaceTheme.Divider}"
+                BorderThickness="0,1,0,0"
+                Padding="8,6">
+            <StackPanel Spacing="6">
+                <TextBox x:Name="m_project_name_text_box"
+                         PlaceholderText="Project name..." />
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="8">
+                    <Button x:Name="m_ok_button" Width="84" Content="OK" />
+                    <Button x:Name="m_cancel_button" Width="84" Content="Cancel" />
+                </StackPanel>
+            </StackPanel>
+        </Border>
+
+        <DockPanel LastChildFill="True">
+            <Border DockPanel.Dock="Top"
+                    Background="{x:Static themes:SdkWorkspaceTheme.Chrome}"
+                    BorderBrush="{x:Static themes:SdkWorkspaceTheme.Divider}"
+                    BorderThickness="0,0,0,1"
+                    Padding="8,4">
+                <Grid ColumnDefinitions="2*,1*,1.2*,0.8*">
+                    <TextBlock Grid.Column="0" FontWeight="SemiBold" Text="Name" />
+                    <TextBlock Grid.Column="1" FontWeight="SemiBold" Text="Type" />
+                    <TextBlock Grid.Column="2" FontWeight="SemiBold" Text="Modified" />
+                    <TextBlock Grid.Column="3" FontWeight="SemiBold" Text="Access" />
+                </Grid>
+            </Border>
+
+            <ListBox x:Name="m_projects_list_box">
+                <ListBox.ContextMenu>
+                    <ContextMenu x:Name="m_context_menu">
+                        <MenuItem x:Name="m_new_folder_menu" Header="New folder" />
+                        <MenuItem x:Name="m_remove_menu" Header="Remove" />
+                    </ContextMenu>
+                </ListBox.ContextMenu>
+                <ListBox.ItemTemplate>
+                    <DataTemplate x:DataType="local:SdkProjectBrowserItem">
+                        <Grid ColumnDefinitions="2*,1*,1.2*,0.8*">
+                            <TextBlock Grid.Column="0" Text="{Binding Name}" />
+                            <TextBlock Grid.Column="1" Text="{Binding ItemType}" Foreground="{x:Static themes:SdkWorkspaceTheme.MutedText}" />
+                            <TextBlock Grid.Column="2" Text="{Binding Modified}" Foreground="{x:Static themes:SdkWorkspaceTheme.MutedText}" />
+                            <TextBlock Grid.Column="3" Text="{Binding Access}" Foreground="{x:Static themes:SdkWorkspaceTheme.MutedText}" />
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </DockPanel>
+    </DockPanel>
+</Window>

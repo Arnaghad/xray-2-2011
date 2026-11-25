@@ -1,0 +1,94 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="using:xray.editor.avalonia_controls"
+             xmlns:animation_lexeme_panel="using:xray.editor.avalonia_controls.animation_lexeme_panel"
+             x:Class="xray.editor.avalonia_controls.animation_lexeme_panel.animation_lexeme_panel"
+             x:CompileBindings="False"
+             Loaded="user_control_loaded"
+             DragDrop.AllowDrop="True">
+    <UserControl.Resources>
+        <DataTemplate x:Key="animation_intervals">
+            <animation_lexeme_panel:animation_item_intervals_view />
+        </DataTemplate>
+        <DataTemplate x:Key="animation_name">
+            <animation_lexeme_panel:animation_item_name_view />
+        </DataTemplate>
+        <DataTemplate x:Key="animation_lexeme">
+            <animation_lexeme_panel:animation_lexeme_item_view />
+        </DataTemplate>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Border Grid.RowSpan="2" BorderThickness="1" BorderBrush="Black">
+            <DockPanel>
+                <Border DockPanel.Dock="Top" Height="20" BorderBrush="Black" BorderThickness="1">
+                    <TextBlock Text="Milliseconds" HorizontalAlignment="Center" VerticalAlignment="Center" Height="20" />
+                </Border>
+                <Border Height="40" DockPanel.Dock="Top" BorderBrush="Black" BorderThickness="1">
+                    <TextBlock Text="LEXEME:" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                </Border>
+                <Border Height="15" DockPanel.Dock="Top" BorderBrush="Black" BorderThickness="1">
+                    <TextBlock Text="Animations:" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                </Border>
+                <ScrollViewer VerticalScrollBarVisibility="Hidden"
+                              HorizontalScrollBarVisibility="Disabled"
+                              x:Name="m_names_scroller"
+                              ScrollChanged="scroll_viewer_scroll_changed">
+                    <ItemsControl x:Name="m_animation_names" ItemTemplate="{StaticResource animation_name}" />
+                </ScrollViewer>
+            </DockPanel>
+        </Border>
+        <Border Grid.RowSpan="2" Grid.Column="1" BorderThickness="1" BorderBrush="Black">
+            <ScrollViewer VerticalScrollBarVisibility="Disabled"
+                          HorizontalScrollBarVisibility="Hidden"
+                          x:Name="m_intervals_h_scroller"
+                          ScrollChanged="intervals_h_scroller_scroll_changed">
+                <Grid x:Name="own_grid"
+                      Width="{Binding max_time_scaled}"
+                      PointerMoved="own_grid_mouse_move"
+                      PointerReleased="own_grid_mouse_left_button_up">
+                    <DockPanel>
+                        <Border Height="20" Background="Gray" DockPanel.Dock="Top">
+                            <local:ruler x:Name="time_layout_ruler" DockPanel.Dock="Top" Height="20" />
+                        </Border>
+                        <Border Height="40" DockPanel.Dock="Top" BorderThickness="1" BorderBrush="Black">
+                            <ItemsControl x:Name="m_lexeme_view" ItemTemplate="{StaticResource animation_lexeme}" />
+                        </Border>
+                        <Border Height="15" DockPanel.Dock="Top" BorderThickness="1" BorderBrush="Black">
+                            <Separator />
+                        </Border>
+                        <ScrollViewer x:Name="m_intervals_scroller"
+                                      HorizontalScrollBarVisibility="Disabled"
+                                      VerticalScrollBarVisibility="Hidden"
+                                      ScrollChanged="scroll_viewer_scroll_changed">
+                            <ItemsControl x:Name="m_animation_intervals_view" ItemTemplate="{StaticResource animation_intervals}" />
+                        </ScrollViewer>
+                    </DockPanel>
+                </Grid>
+            </ScrollViewer>
+        </Border>
+        <ScrollBar Grid.Column="2"
+                   Grid.RowSpan="2"
+                   Orientation="Vertical"
+                   LargeChange="1000"
+                   SmallChange="100"
+                   x:Name="m_vertical_scrollbar"
+                   ValueChanged="m_vertical_scrollbar_value_changed" />
+        <ScrollBar Grid.Column="1"
+                   Grid.Row="2"
+                   LargeChange="1000"
+                   SmallChange="100"
+                   Orientation="Horizontal"
+                   x:Name="m_horizontal_scrollbar"
+                   ValueChanged="m_horizontal_scrollbar_value_changed" />
+    </Grid>
+</UserControl>

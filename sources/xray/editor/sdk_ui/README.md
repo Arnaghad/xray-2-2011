@@ -1,5 +1,9 @@
 # SDK UI compatibility stage
 
+This page records the historical WinForms/WPF compatibility stage. The current
+editor uses Avalonia on .NET 11. See the [build instructions](../../../README.md)
+and [UI migration plan](../../../../ui_migration_plan.md).
+
 This target checks the SDK-1 through SDK-3 controls, IDE shell, projects,
 documents, resource pipeline, managed bridge, and SDK-4 scene editing.
 The native full IDE (`WindowIde`) binds authored models/point lights, mesh picking,

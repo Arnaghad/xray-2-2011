@@ -1,0 +1,47 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:themes="using:xray.editor.avalonia_controls.Themes"
+        x:Class="xray.editor.avalonia_controls.Ide.Dialogs.SdkResourceLoadingWindow"
+        Title="Missing Resource"
+        Width="400"
+        Height="240"
+        CanResize="False"
+        ShowInTaskbar="False"
+        WindowStartupLocation="CenterOwner"
+        Background="{x:Static themes:SdkWorkspaceTheme.Surface}">
+    <Grid Margin="12" RowDefinitions="Auto,Auto,Auto,*,Auto" RowSpacing="8">
+        <TextBlock x:Name="m_missing_label"
+                   Grid.Row="0"
+                   TextWrapping="Wrap"
+                   Foreground="{x:Static themes:SdkWorkspaceTheme.Text}"
+                   Text="Missing resource" />
+
+        <Grid Grid.Row="1" ColumnDefinitions="*,Auto" ColumnSpacing="6">
+            <TextBox x:Name="m_substitute_text_box"
+                     Grid.Column="0"
+                     PlaceholderText="Substitute resource path..." />
+            <Button x:Name="m_browse_button"
+                    Grid.Column="1"
+                    Width="36"
+                    Content="..." />
+        </Grid>
+
+        <StackPanel Grid.Row="2" Spacing="4">
+            <RadioButton x:Name="m_radio_this_object"
+                         IsChecked="True"
+                         Content="For this object only" />
+            <RadioButton x:Name="m_radio_all_with_name"
+                         Content="For all objects with this resource name" />
+            <RadioButton x:Name="m_radio_all_any_name"
+                         Content="For all objects of this class" />
+        </StackPanel>
+
+        <StackPanel Grid.Row="4"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    Spacing="8">
+            <Button x:Name="m_replace_button" Width="88" Content="Replace" />
+            <Button x:Name="m_ignore_button" Width="88" Content="Ignore" />
+        </StackPanel>
+    </Grid>
+</Window>

@@ -1,0 +1,84 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="using:xray.editor.avalonia_controls.Editors"
+        xmlns:pg="using:xray.editor.avalonia_controls.property_grid"
+        xmlns:themes="using:xray.editor.avalonia_controls.Themes"
+        x:Class="xray.editor.avalonia_controls.Editors.SdkAnimationCollectionEditorWindow"
+        Title="Animation collections"
+        Width="1060"
+        Height="720"
+        Background="{x:Static themes:SdkWorkspaceTheme.Surface}">
+    <DockPanel LastChildFill="True">
+        <Border DockPanel.Dock="Top"
+                Background="{x:Static themes:SdkWorkspaceTheme.Chrome}"
+                BorderBrush="{x:Static themes:SdkWorkspaceTheme.Divider}"
+                BorderThickness="0,0,0,1"
+                Padding="6,4">
+            <WrapPanel x:Name="m_toolbar_panel" Orientation="Horizontal">
+                <Button x:Name="m_save_button" Margin="0,0,4,4" Content="Save source" />
+                <Button x:Name="m_revert_button" Margin="0,0,4,4" Content="Revert" />
+                <Button x:Name="m_undo_button" Margin="0,0,4,4" Content="Undo" />
+                <Button x:Name="m_redo_button" Margin="0,0,4,4" Content="Redo" />
+                <Button x:Name="m_cancel_button" Margin="0,0,8,4" Content="Cancel loading" />
+
+                <TextBox x:Name="m_reference_box" Width="260" Margin="0,0,4,4" PlaceholderText="Clip or collection URI/name..." />
+                <Button x:Name="m_add_clip_button" Margin="0,0,4,4" Content="Add clip" />
+                <Button x:Name="m_add_collection_button" Margin="0,0,4,4" Content="Add nested collection" />
+                <Button x:Name="m_add_reference_button" Margin="0,0,4,4" Content="Add collection reference" />
+                <Button x:Name="m_remove_button" Margin="0,0,4,4" Content="Remove" />
+                <Button x:Name="m_move_up_button" Margin="0,0,4,4" Content="Move up" />
+                <Button x:Name="m_move_down_button" Margin="0,0,8,4" Content="Move down" />
+
+                <TextBlock VerticalAlignment="Center" Margin="0,0,4,4" Text="Preview model" />
+                <TextBox x:Name="m_model_uri_box"
+                         Width="360"
+                         Margin="0,0,4,4"
+                         Text="resources/models/character/human/neutral/neutral_01/neutral_01.skinned_model" />
+                <Button x:Name="m_preview_selected_button" Margin="0,0,4,4" Content="Preview selected clip" />
+                <Button x:Name="m_preview_collection_button" Margin="0,0,4,4" Content="Preview collection" />
+                <Button x:Name="m_play_button" Margin="0,0,4,4" Content="Play" />
+                <Button x:Name="m_pause_button" Margin="0,0,4,4" Content="Pause" />
+                <Button x:Name="m_stop_button" Margin="0,0,8,4" Content="Stop" />
+
+                <CheckBox x:Name="m_loop_check" Margin="0,0,8,4" IsChecked="True" Content="Loop clip" />
+                <TextBlock VerticalAlignment="Center" Margin="0,0,4,4" Text="Rate" />
+                <NumericUpDown x:Name="m_rate_box" Width="90" Margin="0,0,6,4" Minimum="0.01" Maximum="4" Increment="0.1" Value="1" FormatString="0.00" />
+                <TextBlock VerticalAlignment="Center" Margin="0,0,4,4" Text="Crossfade (s)" />
+                <NumericUpDown x:Name="m_crossfade_box" Width="90" Margin="0,0,6,4" Minimum="0" Maximum="5" Increment="0.05" Value="0" FormatString="0.000" />
+                <TextBlock VerticalAlignment="Center" Margin="0,0,4,4" Text="Seconds" />
+                <NumericUpDown x:Name="m_seconds_box" Width="110" Margin="0,0,0,4" Minimum="0" Maximum="1000000" Increment="0.033" Value="0" FormatString="0.000" />
+            </WrapPanel>
+        </Border>
+
+        <Border DockPanel.Dock="Bottom"
+                Background="{x:Static themes:SdkWorkspaceTheme.Chrome}"
+                BorderBrush="{x:Static themes:SdkWorkspaceTheme.Divider}"
+                BorderThickness="0,1,0,0"
+                Padding="8,4">
+            <StackPanel Spacing="4">
+                <Slider x:Name="m_timeline_slider" Minimum="0" Maximum="10000" />
+                <TextBlock x:Name="m_playback_status_label" Foreground="{x:Static themes:SdkWorkspaceTheme.MutedText}" />
+                <TextBlock x:Name="m_status_label" Height="42" TextWrapping="Wrap" Foreground="{x:Static themes:SdkWorkspaceTheme.Text}" />
+            </StackPanel>
+        </Border>
+
+        <Grid ColumnDefinitions="360,4,*">
+            <TreeView x:Name="m_items_tree" Grid.Column="0">
+                <TreeView.Styles>
+                    <Style Selector="TreeViewItem" x:DataType="local:SdkAnimCollectionTreeNode">
+                        <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
+                    </Style>
+                </TreeView.Styles>
+                <TreeView.ItemTemplate>
+                    <TreeDataTemplate x:DataType="local:SdkAnimCollectionTreeNode" ItemsSource="{Binding Children}">
+                        <TextBlock Text="{Binding Name}" />
+                    </TreeDataTemplate>
+                </TreeView.ItemTemplate>
+            </TreeView>
+
+            <GridSplitter Grid.Column="1" Background="{x:Static themes:SdkWorkspaceTheme.Divider}" />
+
+            <pg:property_grid_control x:Name="m_grid" Grid.Column="2" />
+        </Grid>
+    </DockPanel>
+</Window>

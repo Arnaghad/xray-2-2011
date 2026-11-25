@@ -1,0 +1,28 @@
+<editors:value_editor_base xmlns="https://github.com/avaloniaui"
+                           xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                           xmlns:converters="clr-namespace:xray.editor.avalonia_controls.converters"
+                           xmlns:editors="clr-namespace:xray.editor.avalonia_controls.property_editors.value"
+                           x:Class="xray.editor.avalonia_controls.property_editors.value.int32_editor"
+                           x:CompileBindings="False">
+  <editors:value_editor_base.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://xray.editor.avalonia_controls/property_editors/value/themes/progress_bar_theme.axaml" />
+      </ResourceDictionary.MergedDictionaries>
+      <converters:number_to_double_converter x:Key="number_to_double_converter" />
+    </ResourceDictionary>
+  </editors:value_editor_base.Resources>
+
+  <Grid>
+    <ProgressBar Name="progress_bar"
+                 VerticalAlignment="Stretch"
+                 HorizontalAlignment="Stretch"
+                 Opacity="0.5"
+                 BorderThickness="0"
+                 IsTabStop="False"
+                 Value="{Binding value, Mode=OneWay, Converter={StaticResource number_to_double_converter}}" />
+    <TextBox Name="text_box"
+             Background="Transparent"
+             BorderThickness="0" />
+  </Grid>
+</editors:value_editor_base>

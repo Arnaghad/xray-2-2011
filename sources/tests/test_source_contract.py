@@ -39,8 +39,11 @@ def check_dotnet_alignment(repo_root: Path) -> None:
     if sdk_version != "11.0.100" or sdk.get("rollForward") != "latestPatch" or sdk.get("allowPrerelease") is not False:
         raise AssertionError(f"Unexpected global.json SDK pinning: {sdk!r}")
     major = sdk_version.split(".", 1)[0]
-    expected_tfm = f"net{major}.0-windows"
-    expected_lock_tfm = f"net{major}.0-windows7.0"
+    expected_tfm = f"net{major}.0"
+    expected_lock_tfm = f"net{major}.0"
+
+    if (repo_root / "sources/xray/wpf_controls").exists():
+        raise AssertionError("Legacy sources/xray/wpf_controls directory must be removed")
 
     editor_csproj = repo_root / "sources/xray/editor/base/EditorHost.csproj.in"
     editor_text = editor_csproj.read_text(encoding="utf-8")
@@ -54,29 +57,45 @@ def check_dotnet_alignment(repo_root: Path) -> None:
         m = re.search(rf"<{prop}>([^<]+)</{prop}>", editor_text)
         if not m or m.group(1) != expected_val:
             raise AssertionError(f"{editor_csproj} <{prop}>={m.group(1) if m else None!r}, expected {expected_val!r}")
+    for forbidden in ("<UseWindowsForms>", "<UseWPF>", "DockPanelSuite", "Avalonia.Win32.Interoperability", "wpf_controls"):
+        if forbidden in editor_text:
+            raise AssertionError(f"{editor_csproj} must not reference {forbidden!r}")
 
-    wpf_csproj = repo_root / "sources/xray/wpf_controls/wpf_controls.csproj"
-    wpf_text = wpf_csproj.read_text(encoding="utf-8")
-    for prop, expected_val in (
-        ("TargetFramework", expected_tfm),
-        ("RestorePackagesWithLockFile", "true"),
+    for csproj_rel, req_props in (
+        ("sources/xray/editor/core/xray.editor.core.csproj", (("TargetFramework", expected_tfm),)),
+        (
+            "sources/xray/editor/avalonia_controls/xray.editor.avalonia_controls.csproj",
+            (("TargetFramework", expected_tfm), ("RestorePackagesWithLockFile", "true"), ("RestoreLockedMode", "true")),
+        ),
+        (
+            "sources/xray/editor/avalonia_controls.tests/xray.editor.avalonia_controls.tests.csproj",
+            (("TargetFramework", expected_tfm), ("RestorePackagesWithLockFile", "true"), ("RestoreLockedMode", "true")),
+        ),
     ):
-        m = re.search(rf"<{prop}>([^<]+)</{prop}>", wpf_text)
-        if not m or m.group(1) != expected_val:
-            raise AssertionError(f"{wpf_csproj} <{prop}>={m.group(1) if m else None!r}, expected {expected_val!r}")
+        csproj_path = repo_root / csproj_rel
+        csproj_text = csproj_path.read_text(encoding="utf-8")
+        for prop, expected_val in req_props:
+            m = re.search(rf"<{prop}>([^<]+)</{prop}>", csproj_text)
+            if not m or m.group(1) != expected_val:
+                raise AssertionError(f"{csproj_path} <{prop}>={m.group(1) if m else None!r}, expected {expected_val!r}")
 
     for lock_path in (
         repo_root / "sources/xray/editor/base/EditorHost.packages.lock.json",
-        repo_root / "sources/xray/wpf_controls/packages.lock.json",
+        repo_root / "sources/xray/editor/avalonia_controls/packages.lock.json",
+        repo_root / "sources/xray/editor/avalonia_controls.tests/packages.lock.json",
     ):
         if not lock_path.is_file():
             raise AssertionError(f"Missing NuGet lock file: {lock_path}")
-        lock_data = json.loads(lock_path.read_text(encoding="utf-8"))
+        lock_text = lock_path.read_text(encoding="utf-8")
+        lock_data = json.loads(lock_text)
         if lock_data.get("version") != 1:
             raise AssertionError(f"{lock_path} has unexpected lock version {lock_data.get('version')!r}")
         deps = lock_data.get("dependencies", {})
         if expected_lock_tfm not in deps or not deps[expected_lock_tfm]:
             raise AssertionError(f"{lock_path} missing dependencies for {expected_lock_tfm!r}")
+        for forbidden in ("DockPanelSuite", "WeifenLuo", "Avalonia.Win32.Interoperability"):
+            if forbidden in lock_text:
+                raise AssertionError(f"{lock_path} must not contain legacy package {forbidden!r}")
 
 
 def check_presets(presets_path: Path) -> None:
@@ -112,6 +131,8 @@ def check_toolchain_manifest(manifest_path: Path) -> None:
             raise AssertionError(f"Missing '{key}' in {manifest_path}")
     if data["platform"] != "windows-x64" or data["cxxStandard"] != "26":
         raise AssertionError("Unexpected platform/cxxStandard in toolchain manifest")
+    if data["dotnet"].get("tfm") != "net11.0":
+        raise AssertionError(f"Unexpected dotnet.tfm in toolchain manifest: {data['dotnet']!r}")
 
 
 def check_stage04_modernized_boundaries(sources_dir: Path) -> None:
@@ -194,6 +215,11 @@ def check_stage06_modernized_boundaries(repo_root: Path) -> None:
             raise AssertionError(f"{lock_path} invalid {key}: {digest!r}")
     if lock_data.get("summary", {}).get("assets", 0) <= 0:
         raise AssertionError(f"{lock_path} summary.assets must be > 0")
+
+    manifest_path = sources_dir / "xray/stalker2/pc/stalker2.manifest"
+    manifest_text = manifest_path.read_text(encoding="utf-8")
+    if "{8e0f7a12-bfb3-4fe8-b9a5-48fd50a15a9a}" not in manifest_text:
+        raise AssertionError(f"{manifest_path} must declare Win10/11 supportedOS for Avalonia NativeControlHost")
 
 
 def check_stage07_modernized_boundaries(sources_dir: Path) -> None:

@@ -1,0 +1,59 @@
+<hypergraph:node xmlns="https://github.com/avaloniaui"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:hypergraph="using:xray.editor.avalonia_controls.hypergraph"
+                 xmlns:themes="using:xray.editor.avalonia_controls.Themes"
+                 x:Class="xray.editor.avalonia_controls.hypergraph.properties_node"
+                 x:Name="m_root">
+    <hypergraph:node.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceInclude Source="avares://xray.editor.avalonia_controls/Themes/sdk_disclosure.axaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </hypergraph:node.Resources>
+    <DockPanel>
+        <ContentControl x:Name="m_above_header_content" DockPanel.Dock="Top" HorizontalAlignment="Left" />
+        <Border x:Name="m_node_border"
+                CornerRadius="5"
+                BorderThickness="2"
+                BorderBrush="{x:Static themes:SdkWorkspaceTheme.Axis}"
+                Background="{x:Static themes:SdkWorkspaceTheme.Chrome}">
+            <DockPanel x:Name="m_content_panel">
+                <DockPanel DockPanel.Dock="Top" x:Name="m_header_panel" MinHeight="29" Margin="5,0">
+                    <hypergraph:link_point x:Name="m_input_link_point" id="input" DockPanel.Dock="Left" IsVisible="False" />
+                    <hypergraph:link_point x:Name="m_output_link_point" id="output" DockPanel.Dock="Right" IsVisible="False" />
+                    <ToggleButton x:Name="m_expand_toggle"
+                                  DockPanel.Dock="Left"
+                                  Theme="{StaticResource SdkDisclosure}"
+                                  Padding="0"
+                                  IsVisible="False"
+                                  IsChecked="True" />
+                    <Border x:Name="m_header"
+                            CornerRadius="1"
+                            Background="Transparent"
+                            PointerPressed="header_mouse_down"
+                            PointerMoved="header_mouse_move"
+                            PointerReleased="header_mouse_up">
+                        <TextBlock x:Name="m_name_text"
+                                   Text="node"
+                                   MinWidth="48"
+                                   Padding="5,0"
+                                   FontFamily="{x:Static themes:SdkWorkspaceTheme.FontFamily}"
+                                   FontSize="{x:Static themes:SdkWorkspaceTheme.FontSize}"
+                                   FontWeight="SemiBold"
+                                   Foreground="{x:Static themes:SdkWorkspaceTheme.Text}"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Center" />
+                    </Border>
+                </DockPanel>
+                <Border x:Name="m_body_border"
+                        BorderThickness="0,1,0,0"
+                        BorderBrush="{x:Static themes:SdkWorkspaceTheme.Divider}"
+                        CornerRadius="0,0,4,4"
+                        Background="{x:Static themes:SdkWorkspaceTheme.Surface}">
+                    <hypergraph:properties_control x:Name="m_property_container" Grid.IsSharedSizeScope="True" />
+                </Border>
+            </DockPanel>
+        </Border>
+    </DockPanel>
+</hypergraph:node>

@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Windows.Forms;
 
 namespace xray.editor_base;
 
@@ -21,7 +20,7 @@ public partial class WindowIde
 
         if (!BackgroundMode)
         {
-            if (existing == null) editor.Show(this);
+            if (!editor.Visible) editor.Show(this);
             else editor.Activate();
         }
         SetStatus("Sound editor opened" + (string.IsNullOrWhiteSpace(virtualUri) ? string.Empty : ": " + virtualUri));
@@ -42,24 +41,24 @@ public partial class WindowIde
         if (norm.EndsWith(".sound_collection", StringComparison.OrdinalIgnoreCase) ||
             norm.Contains("/collections/", StringComparison.OrdinalIgnoreCase))
         {
-            var doc = editor.LoadCollection(norm);
+            var doc = editor.View.LoadCollection(norm);
             doc.Saved += () => ResourcePipeline?.InvalidateAllCache();
         }
         else if (norm.EndsWith(".composite_sound", StringComparison.OrdinalIgnoreCase) ||
                  norm.Contains("/composite/", StringComparison.OrdinalIgnoreCase))
         {
-            var doc = editor.LoadComposite(norm);
+            var doc = editor.View.LoadComposite(norm);
             doc.Saved += () => ResourcePipeline?.InvalidateAllCache();
         }
         else if (norm.EndsWith(".editor_sound_scene", StringComparison.OrdinalIgnoreCase) ||
                  norm.Contains("/scenes/", StringComparison.OrdinalIgnoreCase))
         {
-            var doc = editor.LoadScene(norm);
+            var doc = editor.View.LoadScene(norm);
             doc.Saved += () => ResourcePipeline?.InvalidateAllCache();
         }
         else
         {
-            var doc = editor.LoadSingle(norm);
+            var doc = editor.View.LoadSingle(norm);
             doc.Saved += () => ResourcePipeline?.InvalidateAllCache();
         }
     }
@@ -75,24 +74,23 @@ public partial class WindowIde
         string initialDir = SdkVfsManager.IsConfigured
             ? SdkVfsManager.ResolveVirtualToPhysical("resources/sounds")
             : Environment.CurrentDirectory;
-        using var dialog = new OpenFileDialog
-        {
-            Title = "Open sound asset",
-            Filter = "Sound files|*.wav;*.raw_options;*.single_sound_options;*.sound_collection;*.composite_sound;*.editor_sound_scene|Single WAV|*.wav|Sound Collection|*.sound_collection|Composite Sound|*.composite_sound|Sound Scene|*.editor_sound_scene",
-            InitialDirectory = Directory.Exists(initialDir) ? initialDir : Environment.CurrentDirectory
-        };
-        if (dialog.ShowDialog(this) != DialogResult.OK)
+        string? fileName = SdkAvaloniaBootstrap.PickOpenFile(
+            "Open sound asset",
+            "Sound files|*.wav;*.raw_options;*.single_sound_options;*.sound_collection;*.composite_sound;*.editor_sound_scene|Single WAV|*.wav|Sound Collection|*.sound_collection|Composite Sound|*.composite_sound|Sound Scene|*.editor_sound_scene",
+            Directory.Exists(initialDir) ? initialDir : Environment.CurrentDirectory,
+            ObjectInspectorTab.View);
+        if (string.IsNullOrEmpty(fileName))
             return;
 
         var mount = SdkVfsManager.GetMounts()
             .Where(m => string.Equals(m.VirtualPrefix, "resources/sounds", StringComparison.OrdinalIgnoreCase) &&
-                        SdkVfsManager.IsInside(dialog.FileName, m.PhysicalDirectory))
+                        SdkVfsManager.IsInside(fileName, m.PhysicalDirectory))
             .OrderByDescending(m => m.PhysicalDirectory.Length)
             .FirstOrDefault();
 
         string uri = mount != null
-            ? mount.VirtualPrefix + "/" + Path.GetRelativePath(mount.PhysicalDirectory, dialog.FileName).Replace('\\', '/')
-            : dialog.FileName;
+            ? mount.VirtualPrefix + "/" + Path.GetRelativePath(mount.PhysicalDirectory, fileName).Replace('\\', '/')
+            : fileName;
         OpenSoundEditor(uri);
     }
 }

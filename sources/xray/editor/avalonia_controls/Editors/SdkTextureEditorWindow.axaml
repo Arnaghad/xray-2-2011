@@ -1,0 +1,38 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:pg="using:xray.editor.avalonia_controls.property_grid"
+        xmlns:themes="using:xray.editor.avalonia_controls.Themes"
+        x:Class="xray.editor.avalonia_controls.Editors.SdkTextureEditorWindow"
+        Title="Texture source"
+        Width="620"
+        Height="580"
+        Background="{x:Static themes:SdkWorkspaceTheme.Surface}">
+    <DockPanel LastChildFill="True">
+        <Border DockPanel.Dock="Top"
+                Background="{x:Static themes:SdkWorkspaceTheme.Chrome}"
+                BorderBrush="{x:Static themes:SdkWorkspaceTheme.Divider}"
+                BorderThickness="0,0,0,1"
+                Padding="6,4">
+            <WrapPanel Orientation="Horizontal">
+                <Button x:Name="m_apply_button" Margin="0,0,4,0" Content="Apply preview" />
+                <Button x:Name="m_save_button" Margin="0,0,4,0" Content="Save source" />
+                <Button x:Name="m_revert_button" Margin="0,0,4,0" Content="Revert draft" />
+                <Button x:Name="m_undo_button" Margin="0,0,4,0" Content="Undo" />
+                <Button x:Name="m_redo_button" Margin="0,0,4,0" Content="Redo" />
+                <Button x:Name="m_cancel_button" Content="Cancel loading" />
+            </WrapPanel>
+        </Border>
+
+        <Border DockPanel.Dock="Bottom"
+                Background="{x:Static themes:SdkWorkspaceTheme.Chrome}"
+                BorderBrush="{x:Static themes:SdkWorkspaceTheme.Divider}"
+                BorderThickness="0,1,0,0"
+                Padding="8,4">
+            <TextBlock x:Name="m_status_label"
+                       TextWrapping="Wrap"
+                       Foreground="{x:Static themes:SdkWorkspaceTheme.Text}" />
+        </Border>
+
+        <pg:property_grid_control x:Name="m_grid" />
+    </DockPanel>
+</Window>

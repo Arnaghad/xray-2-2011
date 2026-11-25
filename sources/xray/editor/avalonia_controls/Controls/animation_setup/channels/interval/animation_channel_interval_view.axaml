@@ -1,0 +1,40 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="xray.editor.avalonia_controls.animation_setup.animation_channel_interval_view"
+             x:CompileBindings="False"
+             PointerMoved="user_control_mouse_move"
+             PointerPressed="user_control_pointer_pressed"
+             PointerReleased="user_control_mouse_left_button_up">
+    <UserControl.Resources>
+        <ContextMenu x:Key="interval_context_menu">
+            <MenuItem Header="Remove interval" Click="remove_interval_click" />
+            <MenuItem Header="Remove channel" Click="remove_channel_click" />
+            <MenuItem Header="Copy channel" Click="copy_channel_click" />
+            <MenuItem Header="Cut channel" Click="cut_channel_click" />
+        </ContextMenu>
+    </UserControl.Resources>
+    <Canvas>
+        <DockPanel Canvas.Left="{Binding start_time}" Height="38" Margin="-2,0,-2,0">
+            <Border x:Name="m_left_edge"
+                    DockPanel.Dock="Left"
+                    Width="3"
+                    Background="Green"
+                    Cursor="SizeWestEast"
+                    BorderBrush="Black"
+                    BorderThickness="1,1,0,1" />
+            <Border x:Name="m_right_edge"
+                    DockPanel.Dock="Right"
+                    Width="3"
+                    Background="Green"
+                    Cursor="SizeWestEast"
+                    BorderBrush="Black"
+                    BorderThickness="0,1,1,1" />
+            <Border x:Name="m_center_border"
+                    Width="{Binding center_length}"
+                    Background="Green"
+                    BorderBrush="Black"
+                    BorderThickness="0,1,0,1"
+                    Cursor="SizeAll" />
+        </DockPanel>
+    </Canvas>
+</UserControl>

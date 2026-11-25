@@ -1,0 +1,27 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:themes="using:xray.editor.avalonia_controls.Themes"
+             x:Class="xray.editor.avalonia_controls.curve_editor.panel_curve_item"
+             PointerPressed="mouse_down"
+             PointerMoved="mouse_move">
+    <StackPanel>
+        <DockPanel Background="Transparent">
+            <DockPanel.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="add effect" Click="add_effect_click" />
+                </ContextMenu>
+            </DockPanel.ContextMenu>
+            <Border x:Name="m_curve_color_rect"
+                    DockPanel.Dock="Right"
+                    Width="9"
+                    Height="9"
+                    Margin="5,0,6,0"
+                    VerticalAlignment="Center"
+                    BorderBrush="{x:Static themes:SdkWorkspaceTheme.Axis}"
+                    BorderThickness="1"
+                    CornerRadius="2" />
+            <TextBlock x:Name="m_text_box" Padding="6,3" Text="unnamed" />
+        </DockPanel>
+        <ItemsControl x:Name="m_effects" Margin="15,0,0,0" />
+    </StackPanel>
+</UserControl>

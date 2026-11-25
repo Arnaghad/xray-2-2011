@@ -1,0 +1,17 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:color_picker="clr-namespace:xray.editor.avalonia_controls.color_picker"
+        x:Class="xray.editor.avalonia_controls.color_picker.dialog"
+        Title="Select a Color"
+        CanResize="False"
+        Height="411"
+        Width="247"
+        WindowStartupLocation="CenterOwner">
+  <DockPanel>
+    <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right" Margin="10" Spacing="10">
+      <Button x:Name="OKButton" IsEnabled="False" Width="80" TabIndex="2000" IsDefault="True">OK</Button>
+      <Button x:Name="CancelButton" Width="80" TabIndex="2100" IsCancel="True">Cancel</Button>
+    </StackPanel>
+    <color_picker:color_palette x:Name="m_color_picker" Margin="10,10,10,0" TabIndex="500" />
+  </DockPanel>
+</Window>

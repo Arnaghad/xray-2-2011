@@ -1,0 +1,20 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ctrl="using:xray.editor.avalonia_controls.Ide.Controls"
+             xmlns:themes="using:xray.editor.avalonia_controls.Themes"
+             x:Class="xray.editor.avalonia_controls.Ide.Panels.SdkToolLibraryTabView"
+             Background="{x:Static themes:SdkWorkspaceTheme.Surface}">
+    <DockPanel LastChildFill="True">
+        <Border DockPanel.Dock="Bottom"
+                Background="{x:Static themes:SdkWorkspaceTheme.Chrome}"
+                BorderBrush="{x:Static themes:SdkWorkspaceTheme.Divider}"
+                BorderThickness="0,1,0,0"
+                Padding="6,3">
+            <TextBlock x:Name="m_status_label"
+                       Foreground="{x:Static themes:SdkWorkspaceTheme.Text}"
+                       Text="ready" />
+        </Border>
+
+        <ctrl:SdkTreeView x:Name="m_library_tree" />
+    </DockPanel>
+</UserControl>

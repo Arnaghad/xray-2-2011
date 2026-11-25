@@ -1,0 +1,55 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="using:xray.editor.avalonia_controls.Ide.Dialogs"
+        xmlns:themes="using:xray.editor.avalonia_controls.Themes"
+        x:Class="xray.editor.avalonia_controls.Ide.Dialogs.SdkResourceBrowserWindow"
+        Title="Resources"
+        Width="860"
+        Height="560"
+        ShowInTaskbar="False"
+        WindowStartupLocation="CenterOwner"
+        Background="{x:Static themes:SdkWorkspaceTheme.Surface}">
+    <DockPanel LastChildFill="True">
+        <Border DockPanel.Dock="Bottom"
+                Background="{x:Static themes:SdkWorkspaceTheme.Chrome}"
+                BorderBrush="{x:Static themes:SdkWorkspaceTheme.Divider}"
+                BorderThickness="0,1,0,0"
+                Padding="8,6">
+            <WrapPanel Orientation="Horizontal">
+                <Button x:Name="m_load_button" Margin="0,0,6,0" Content="Load resource" />
+                <Button x:Name="m_cancel_query_button" Margin="0,0,6,0" IsEnabled="False" Content="Cancel loading" />
+                <Button x:Name="m_preview_button" Margin="0,0,6,0" Content="Preview" />
+                <Button x:Name="m_edit_source_button" Margin="0,0,6,0" Content="Edit source" />
+                <Button x:Name="m_dcc_button" Margin="0,0,6,0" Content="DCC source / Reimport" />
+                <Button x:Name="m_dependencies_button" Content="Project dependencies" />
+            </WrapPanel>
+        </Border>
+
+        <Grid ColumnDefinitions="340,4,*">
+            <TreeView x:Name="m_resource_tree"
+                      Grid.Column="0"
+                      Background="{x:Static themes:SdkWorkspaceTheme.Surface}">
+                <TreeView.Styles>
+                    <Style Selector="TreeViewItem" x:DataType="local:SdkVfsTreeNode">
+                        <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
+                    </Style>
+                </TreeView.Styles>
+                <TreeView.ItemTemplate>
+                    <TreeDataTemplate x:DataType="local:SdkVfsTreeNode" ItemsSource="{Binding Children}">
+                        <TextBlock Text="{Binding Name}" />
+                    </TreeDataTemplate>
+                </TreeView.ItemTemplate>
+            </TreeView>
+
+            <GridSplitter Grid.Column="1" Background="{x:Static themes:SdkWorkspaceTheme.Divider}" />
+
+            <TextBox x:Name="m_details_box"
+                     Grid.Column="2"
+                     IsReadOnly="True"
+                     AcceptsReturn="True"
+                     TextWrapping="NoWrap"
+                     ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                     ScrollViewer.VerticalScrollBarVisibility="Visible" />
+        </Grid>
+    </DockPanel>
+</Window>

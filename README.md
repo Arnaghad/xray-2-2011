@@ -1,6 +1,6 @@
 # X-Ray Engine 2.0 — Modern C++26, Vulkan 1.4, .NET 11 SDK & Blender 5.3 Pipeline
 
-Модернізований рушій, редакторський SDK та DCC-конвеєр **X-Ray Engine 2.0** (кодова база *S.T.A.L.K.E.R. 2* зразка 2011 року), перенесені зі спадкового 32/64-бітного стека Visual Studio 2008/2010 + DirectX 9/10/11 + .NET Framework 3.5 + Maya 2011 C++ `.mll` на сучасну архітектуру **C++26 (GCC 16 / MinGW-w64 + CMake + Ninja)**, **Vulkan 1.4 RHI (HLSL → SPIR-V через DXC)**, **.NET 11 (`net11.0-windows` WinForms/WPF)** та **Blender 5.3 / Maya 2027 (`xray-dcc-exchange/v2`)**.
+Модернізований рушій, редакторський SDK та DCC-конвеєр **X-Ray Engine 2.0** (кодова база *S.T.A.L.K.E.R. 2* зразка 2011 року), перенесені зі спадкового 32/64-бітного стека Visual Studio 2008/2010 + DirectX 9/10/11 + .NET Framework 3.5 + Maya 2011 C++ `.mll` на сучасну архітектуру **C++26 (GCC 16 / MinGW-w64 + CMake + Ninja)**, **Vulkan 1.4 RHI (HLSL → SPIR-V через DXC)**, **Avalonia 12.2 на .NET 11 (`net11.0`)** та **Blender 5.3 / Maya 2027 (`xray-dcc-exchange/v2`)**.
 
 ---
 
@@ -14,7 +14,7 @@
 | **Текстури та матеріали** | Фіксовані слоти DX10/11, одностадійні обмеження в ранніх портах | **Vulkan 1.2 Bindless (`VK_EXT_descriptor_indexing`)** (`Texture2D[1024]`, `TextureCube[128]`), багатостадійні (`multi-stage`) матеріали |
 | **Освітлення та поверхні** | Legacy Light Pre-Pass у DX10/11 | **2-Pass Light Pre-Pass / Deferred Material** у Vulkan: анізотропний BRDF, **Pre-Integrated Skin/Organic SSS**, POM, Triplanar, Soft Particles, Cubemap Reflections, Burning Wood |
 | **Скінінг та LOD** | CPU-скінінг / DX константні буфери, жорсткий ліміт **80 кісток** (`79 + 1`), без runtime LOD у Vulkan | **GPU Compute Skinning (`skinning.comp.hlsl`)** на SSBO, ліміт **128 кісток** (`127 + object_movement`), автоматичне перемикання **Runtime LOD (`LOD0..LOD2`)** за екранним AABB |
-| **Редакторський SDK** | C++/CLI + .NET Framework 3.5 (`AvalonAdapter`, старий WinForms/WPF) | **.NET 11 (`net11.0-windows`, SDK `11.0.100`)**, нативний C ABI міст (`host_bridge.h`), відновлена оболонка **`WindowIde`** та **40/40** родин редакторів (SDK-0 — SDK-12), `PerMonitorV2` DPI |
+| **Редакторський SDK** | C++/CLI + .NET Framework 3.5 (`AvalonAdapter`, старий WinForms/WPF) | **.NET 11 (`net11.0`)**, оболонка **Avalonia** з `Dock.Avalonia`, нативний Vulkan-в’юпорт через C ABI та `PerMonitorV2` DPI на Windows x64 |
 | **DCC-інструменти (3D/Анімація)** | Тільки Autodesk Maya 2011 (32/64-bit C++ `.mll` плагін + пропрієтарний SISL) | **Blender 5.3** як основний DCC (`xray_blender` v0.3.3) + **Maya 2022–2027 Python API 2.0** (`xray_maya_plugin.py` v2.1), спільний формат **`xray-dcc-exchange/v2`** |
 | **Кукер асетів та математика кривих** | Прив’язаний до Maya runtime (`xray/maya_animation` + SISL + Win32) | Автономний портативний **C++26 `xray_asset_cook_cli`** та header-only бібліотека **`xray_animation_math`** (кубічний B-spline фітер без Maya/SISL) |
 | **Міграція спадкового контенту** | Ручний експорт із Maya 2011 | Автоматичний конвеєр **`migrate_legacy.py`**: декомпіляція `.model`/`.skeleton`/`.skinned_model`/`.clip`/`.physics` без Maya, парсер `.ma` (включно з Trax `clipLibrary`), batch-міграція `.mb` |
@@ -62,12 +62,12 @@
 
 ### 3. Відновлення та модернізація X-Ray 2.0 SDK (`sources/xray/editor/`, етапи SDK-0 — SDK-12)
 
-Спадковий редакторський хост на C++/CLI та .NET Framework 3.5 перенесено на **.NET 11 (`net11.0-windows`)** із повною підтримкою WinForms, WPF та нативного Vulkan-в’юпорта:
+Міграцію UI редактора на **Avalonia 12.2** завершено. `EditorHost`, ядро редактора й бібліотека контролів збираються під **.NET 11 (`net11.0`)**. Цільова платформа SDK — Windows x64 з нативним Vulkan-в’юпортом. [План міграції та результати перевірок](ui_migration_plan.md)
 
 - **Нативно-керований міст та UI-фундамент (SDK-0 — SDK-2):**
   - Чистий C ABI міст (`host_bridge.h`, `managed_host.cpp`, `Bridge.cs`, `sdk_property_bridge.h`) між нативним `xray_editor_world` і керованим `EditorHost`.
-  - Портовано 423 файли бібліотеки `wpf_controls` (`wpf_controls.csproj` під .NET 10: PropertyGrid, Curve Editor, Color Picker, Hypergraph) та `WeifenLuo.WinFormsUI.Docking` із безпечною серіалізацією layout XML та `PerMonitorV2` DPI-масштабуванням (100%–200%).
-  - Відновлено головну оболонку **`WindowIde`** (`ProjectTab`, `ToolsTab` із 8 інструментами рівня, `ObjectInspectorTab`, `SceneViewPanel` на 21 режим рендерингу, `CameraViewPanel`, `AnimationCurveEditorPanel`, `SceneGraphTab`, `OptionsDialog`, `IdeLogForm`), систему шарів команд/хоткеїв (`InputEngine`, `GuiBinder`) та ізольоване збереження налаштувань вікон.
+  - `xray.editor.core` містить моделі та команди редактора. `xray.editor.avalonia_controls` надає PropertyGrid, редактор кривих, палітру кольорів, графи, таймлайни й панелі спеціалізованих редакторів.
+  - `WindowIde` керує головною оболонкою `SdkAvaloniaShellWindow`. `Dock.Avalonia` зберігає макет у `workspace-layout.json` і підтримує імпорт попереднього XML-макета. `AvaloniaViewportHost` керує поверхнею Vulkan при зміні докінгу та DPI.
 - **Проєкти, VFS, транзакційний `CommandEngine` та 3D-в’юпорт (SDK-3 — SDK-5):**
   - Повний цикл роботи з проєктами `.xprj` (`New / Open / Save / Save As / Close`, кириличні шляхи, recovery, dirty-індикація, ізоляція робочих копій від read-only оригіналів), `SdkResourceBrowser` та інспектор залежностей поверх нативного resource ABI.
   - Єдиний стек **`CommandEngine`** (create/delete/duplicate, cut/copy/paste з ремапінгом GUID, group/ungroup/reparent, multi-object transforms, вкладені транзакції та preview accept/cancel).
@@ -77,9 +77,9 @@
   - **SDK-7 (World Tools):** 7 родин інструментів рівня (`terrain`, `solid`, `lights`, `composites`, `particle-placement`, `speedtree`, `misc`).
   - **SDK-8 (Animation Authoring):** 5 родин (`animation-collections`, `animation-viewer`, `animation-setup`, `animation-groups`, `animation-placement`).
   - **SDK-9 (Audio):** `sound-editor` та `audio-tools`.
-  - **SDK-10 (Particles):** `particle-editor` на базі WPF hypergraph.
+  - **SDK-10 (Particles)** — редактор частинок із графом Avalonia, таймлайном і попереднім переглядом симуляції.
   - **SDK-11 (Narrative & AI):** `dialog-editor`, `dialog-excel`, `scripting`, `navigation`.
-  - **SDK-12 (Packaging & Deployment):** автономне пакування Debug/Release дистрибутивів через [package-sdk-runtime.py](sources/tools/sdk/package-sdk-runtime.py) та запуск `stalker2.exe -editor` напряму у `WindowIde`.
+  - **SDK-12 (Packaging & Deployment)** — пакування Debug/Release та запуск `stalker2.exe -editor`. Пакет містить збірки Avalonia, Dock.Avalonia й нативні бібліотеки SkiaSharp та HarfBuzz. Керований хост використовує `Microsoft.NETCore.App` 11.0 без `Microsoft.WindowsDesktop.App`. [Скрипт пакування](sources/tools/sdk/package-sdk-runtime.py)
 
 ---
 
@@ -110,7 +110,7 @@
 - [`sources/CMakeLists.txt`](sources/CMakeLists.txt) — головний CMake-файл збірки рушія, рендера, редактора та кукера.
 - [`sources/README.md`](sources/README.md) — опис підтримуваного середовища збірки (Windows x64, MSYS2 MinGW-w64 GCC 16, Ninja).
 - [`sources/xray/render/vulkan/`](sources/xray/render/vulkan/README.md) — бекенд Vulkan 1.4, HLSL-шейдери (`assets/`), кукери моделей/матеріалів і контракти продуктивності.
-- [`sources/xray/editor/`](sources/xray/editor/) — нативний (`world/`, `animation/`, `sound/`) та керований .NET 11 (`base/`, `wpf_controls/`) код SDK.
+- [`sources/xray/editor/`](sources/xray/editor/) — нативні модулі SDK (`world/`, `animation/`, `sound/`) та керовані проєкти .NET 11 (`base/`, `core/`, `avalonia_controls/`, `avalonia_controls.tests/`).
 - [`sources/xray/animation_math/`](sources/xray/animation_math/README.md) — DCC-незалежна C++26 математика фітингу та перевірки B-spline анімацій.
 - [`sources/xray/maya_cook/`](sources/xray/maya_cook/) — портативний C++26 кукер ресурсів `xray_asset_cook_cli` / `xray_maya_cook_cli`.
 - [`sources/tools/dcc_common/`](sources/tools/dcc_common/README.md) — спільне ядро `xray-dcc-exchange/v2` ([SPEC_V2.md](sources/tools/dcc_common/SPEC_V2.md), [PARITY.md](sources/tools/dcc_common/PARITY.md)), декомпілятор `legacy_codec.py` та парсер `ma_reader.py`.
@@ -119,7 +119,8 @@
 - **Плани та звіти про реалізацію:**
   - [`vulkan_integration_plan.md`](vulkan_integration_plan.md) та [`vulkan_integration_history.md`](vulkan_integration_history.md) — інтеграція та приймання Vulkan RHI (етапи M0–M9).
   - [`vulkan_legacy_materials_plan.md`](vulkan_legacy_materials_plan.md) — перенесення legacy-властивостей матеріалів, Bindless текстур, SSS, GPU Compute Skinning і Runtime LOD у Vulkan.
-  - [`sdk_migration_plan.md`](sdk_migration_plan.md) — перенесення оригінального X-Ray 2.0 SDK на .NET 10 та Vulkan runtime (етапи SDK-0 — SDK-12).
+  - [`sdk_migration_plan.md`](sdk_migration_plan.md) — відновлення функцій оригінального SDK і перенесення в’юпорта на Vulkan (етапи SDK-0 — SDK-12).
+  - [`ui_migration_plan.md`](ui_migration_plan.md) — міграція оболонки, контролів і редакторів на Avalonia (етапи UI-0 — UI-7).
   - [`blender_pipeline_plan.md`](blender_pipeline_plan.md) — архітектура конвеєра Blender 5.3 / Exchange v2 та міграція корпусу (етапи B0 — B8).
   - [`blender_animation_fixes_plan.md`](blender_animation_fixes_plan.md) — виправлення проблемних анімацій, розширення ліміту кісток `80 → 128`, точний скінінг `bindPreMatrix` і Trax `.ma` кліпи.
 
@@ -164,6 +165,11 @@ python sources/tools/blender/build_extension.py
 
 ### 4. Автономне пакування SDK Runtime
 
+Після збірки Release запустіть пакування з кореня репозиторію. Скрипт бере підготовлені SDK-асети з `build/sdk-assets` і записує дистрибутив у `build/sdk-runtime/release`.
+
 ```powershell
-python sources/tools/sdk/package-sdk-runtime.py --clean
+python sources/tools/sdk/package-sdk-runtime.py --config release --build-dir build/presets/windows-x64-release --output build/sdk-runtime/release
+.\build\sdk-runtime\release\launch-sdk.cmd
 ```
+
+`xray_avalonia_headless_smoke` перевіряє контролі й оболонку без видимого вікна. `xray_sdk_package_smoke` перевіряє склад пакета, аудит DLL-імпортів і запуск `stalker2.exe -editor` з Vulkan Validation. CMake додає тест пакета за наявності підготовлених SDK-асетів, DXC і бібліотеки Vulkan Validation.

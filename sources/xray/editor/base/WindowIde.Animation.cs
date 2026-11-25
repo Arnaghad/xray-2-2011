@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Windows.Forms;
 namespace xray.editor_base;
 public partial class WindowIde {
     private readonly List<SdkAnimationCollectionEditor> animationCollections=new();
@@ -18,7 +17,9 @@ public partial class WindowIde {
         SdkAnimationPreview? preview=null;
         if(assetScene is ISdkSkeletalOutputScene native && ViewportOutputs is {} outputs)
             preview=new SdkAnimationPreview(resources,model=>new SdkAnimationPreviewSurface(outputs,native,model,BackgroundMode));
-        var editor=new SdkAnimationSetupEditor(doc,preview);
+        SdkAnimationSetupEditor editor;
+        try { editor = new SdkAnimationSetupEditor(doc, preview); }
+        catch { preview?.Dispose(); doc.Dispose(); throw; }
         doc.Saved+=()=>ResourcePipeline?.InvalidateAllCache();
         animationSetups.Add(editor);
         editor.Disposed+=(_,_)=>{animationSetups.Remove(editor);preview?.Dispose();doc.Dispose();};
@@ -31,13 +32,55 @@ public partial class WindowIde {
         var existing=animationGroups.FirstOrDefault(e=>!e.IsDisposed && e.Document.VirtualPath==controllerUri);
         if(existing!=null){if(!BackgroundMode)existing.Activate();return existing;}
         var doc=SdkAnimationGroupsDocument.Open(controllerUri);
-        var editor=new SdkAnimationGroupsEditor(doc);
+        SdkAnimationGroupsEditor editor;
+        try { editor = new SdkAnimationGroupsEditor(doc); }
+        catch { doc.Dispose(); throw; }
         doc.Saved+=()=>ResourcePipeline?.InvalidateAllCache();
         animationGroups.Add(editor);
         editor.Disposed+=(_,_)=>{animationGroups.Remove(editor);doc.Dispose();};
         if(!BackgroundMode)editor.Show(this);
         SetStatus("Animation groups opened: "+controllerUri);
         return editor;
+    }
+
+    private void ShowAnimationSetup() => ChooseAnimationSource(
+        "Open animation clip setup", "Animation clips|*.clip", "resources/animations/single", uri => OpenAnimationSetup(uri));
+
+    private void ShowAnimationGroups() => ChooseAnimationSource(
+        "Open animation controller set", "Controller sets|*.lua", SdkAnimationGroupsSchema.ControllersPrefix.TrimEnd('/'), uri =>
+        {
+            if (uri.StartsWith(SdkAnimationGroupsSchema.GroupsPrefix, StringComparison.OrdinalIgnoreCase))
+                throw new ArgumentException("Select the controller set that references this animation group.");
+            OpenAnimationGroups(uri);
+        });
+
+    private void ChooseAnimationSource(string title, string filter, string resourceRoot, System.Action<string> open)
+    {
+        if (BackgroundMode)
+            return;
+
+        string? fileName = SdkAvaloniaBootstrap.PickOpenFile(title, filter, SdkVfsManager.ResolveVirtualToPhysical(resourceRoot), ObjectInspectorTab.View);
+        if (string.IsNullOrEmpty(fileName))
+            return;
+
+        const string animationPrefix = "resources/animations";
+        var mount = SdkVfsManager.GetMounts()
+            .Where(m => m.VirtualPrefix == animationPrefix && SdkVfsManager.IsInside(fileName, m.PhysicalDirectory))
+            .OrderByDescending(m => m.PhysicalDirectory.Length)
+            .FirstOrDefault();
+        if (mount == null)
+            throw new ArgumentException("Select a source inside the animation resource mounts.");
+
+        string uri = animationPrefix + "/" + Path.GetRelativePath(mount.PhysicalDirectory, fileName).Replace('\\', '/');
+        if (!uri.StartsWith(resourceRoot + "/", StringComparison.OrdinalIgnoreCase))
+            throw new ArgumentException($"Select a source inside {resourceRoot}.");
+        open(uri);
+    }
+
+    private void CloseAnimationSetupAndGroups()
+    {
+        foreach (var editor in animationSetups.ToArray()) editor.Dispose();
+        foreach (var editor in animationGroups.ToArray()) editor.Dispose();
     }
     internal SdkAnimationPreview CreateAnimationPreview(){
         if(ResourcePipeline?.Backend is not ISdkDccResources resources || assetScene is not ISdkSkeletalOutputScene native || ViewportOutputs is not {} outputs)
@@ -57,9 +100,9 @@ public partial class WindowIde {
     }
     public void ShowAnimationEditor(){
         if(BackgroundMode){SetStatus("Open an .anim_collection source through Resources.");return;}
-        using var dialog=new OpenFileDialog{Title="Open animation source",Filter="Animation sources|*.anim_collection;*.avs;*.anim_clip|Collection|*.anim_collection|Viewer scene|*.avs|Interval clip|*.anim_clip",InitialDirectory=SdkVfsManager.ResolveVirtualToPhysical("resources/animations")};if(dialog.ShowDialog(this)!=DialogResult.OK)return;
-        var mount=SdkVfsManager.GetMounts().Where(m=>m.VirtualPrefix=="resources/animations" && SdkVfsManager.IsInside(dialog.FileName,m.PhysicalDirectory)).OrderByDescending(m=>m.PhysicalDirectory.Length).FirstOrDefault();if(mount==null)throw new ArgumentException("Select a source inside the animation resource mounts.");string uri=mount.VirtualPrefix+"/"+Path.GetRelativePath(mount.PhysicalDirectory,dialog.FileName).Replace('\\','/');if(uri.EndsWith(".anim_collection",StringComparison.Ordinal))OpenAnimationCollection(uri);else OpenAnimationViewer(uri);
+        string? fileName=SdkAvaloniaBootstrap.PickOpenFile("Open animation source","Animation sources|*.anim_collection;*.avs;*.anim_clip|Collection|*.anim_collection|Viewer scene|*.avs|Interval clip|*.anim_clip",SdkVfsManager.ResolveVirtualToPhysical("resources/animations"),ObjectInspectorTab.View);if(string.IsNullOrEmpty(fileName))return;
+        var mount=SdkVfsManager.GetMounts().Where(m=>m.VirtualPrefix=="resources/animations" && SdkVfsManager.IsInside(fileName,m.PhysicalDirectory)).OrderByDescending(m=>m.PhysicalDirectory.Length).FirstOrDefault();if(mount==null)throw new ArgumentException("Select a source inside the animation resource mounts.");string uri=mount.VirtualPrefix+"/"+Path.GetRelativePath(mount.PhysicalDirectory,fileName).Replace('\\','/');if(uri.EndsWith(".anim_collection",StringComparison.Ordinal))OpenAnimationCollection(uri);else OpenAnimationViewer(uri);
     }
-    private void NewAnimationViewer(bool clip=false){if(BackgroundMode)return;string folder=Path.Combine(SdkVfsManager.WorkingSourcesRoot,"animations",clip?"clips":"viewer_scenes");Directory.CreateDirectory(folder);string suffix=clip?"anim_clip":"avs";using var dialog=new SaveFileDialog{Title=clip?"New interval clip":"New animation viewer",Filter="Animation source|*."+suffix,DefaultExt=suffix,InitialDirectory=folder,FileName="new_animation."+suffix};if(dialog.ShowDialog(this)!=DialogResult.OK)return;if(!SdkVfsManager.IsInside(dialog.FileName,folder))throw new ArgumentException("Create the animation source inside the workspace animation directory.");OpenAnimationViewer("resources/animations/"+(clip?"clips/":"viewer_scenes/")+Path.GetRelativePath(folder,dialog.FileName).Replace('\\','/'),true);}
-    private void NewAnimationCollection(){if(BackgroundMode)return;string folder=Path.Combine(SdkVfsManager.WorkingSourcesRoot,"animations","collections");Directory.CreateDirectory(folder);using var dialog=new SaveFileDialog{Title="New animation collection",Filter="Animation collection|*.anim_collection",DefaultExt="anim_collection",InitialDirectory=folder,FileName="new_collection.anim_collection"};if(dialog.ShowDialog(this)!=DialogResult.OK)return;if(!SdkVfsManager.IsInside(dialog.FileName,folder))throw new ArgumentException("Create the collection inside workspace animations/collections.");OpenAnimationCollection("resources/animations/collections/"+Path.GetRelativePath(folder,dialog.FileName).Replace('\\','/'),true);}
+    private void NewAnimationViewer(bool clip=false){if(BackgroundMode)return;string folder=Path.Combine(SdkVfsManager.WorkingSourcesRoot,"animations",clip?"clips":"viewer_scenes");Directory.CreateDirectory(folder);string suffix=clip?"anim_clip":"avs";string? fileName=SdkAvaloniaBootstrap.PickSaveFile(clip?"New interval clip":"New animation viewer","Animation source|*."+suffix,folder,"new_animation."+suffix,suffix,ObjectInspectorTab.View);if(string.IsNullOrEmpty(fileName))return;if(!SdkVfsManager.IsInside(fileName,folder))throw new ArgumentException("Create the animation source inside the workspace animation directory.");OpenAnimationViewer("resources/animations/"+(clip?"clips/":"viewer_scenes/")+Path.GetRelativePath(folder,fileName).Replace('\\','/'),true);}
+    private void NewAnimationCollection(){if(BackgroundMode)return;string folder=Path.Combine(SdkVfsManager.WorkingSourcesRoot,"animations","collections");Directory.CreateDirectory(folder);string? fileName=SdkAvaloniaBootstrap.PickSaveFile("New animation collection","Animation collection|*.anim_collection",folder,"new_collection.anim_collection","anim_collection",ObjectInspectorTab.View);if(string.IsNullOrEmpty(fileName))return;if(!SdkVfsManager.IsInside(fileName,folder))throw new ArgumentException("Create the collection inside workspace animations/collections.");OpenAnimationCollection("resources/animations/collections/"+Path.GetRelativePath(folder,fileName).Replace('\\','/'),true);}
 }

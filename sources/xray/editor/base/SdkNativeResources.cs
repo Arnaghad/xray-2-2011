@@ -3,23 +3,10 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
-using System.Windows.Forms;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace xray.editor_base;
-
-public enum SdkResourceKind : uint { Raw, StaticModel, Material, Texture, SkinnedModel, Animation }
-
-public readonly record struct SdkNativeResource(ulong Handle, ulong Bytes, uint Units);
-
-public interface ISdkResourceBackend : IDisposable
-{
-    SdkNativeResource Query(string virtualPath, SdkResourceKind kind, CancellationToken cancellation);
-    void Release(ulong handle);
-    void Mount(string virtualPath, string physicalPath, bool refresh = false);
-    void Unmount(string virtualPath) => throw new NotSupportedException("Resource backend cannot release individual mounts.");
-}
 
 [StructLayout(LayoutKind.Sequential)]
 public unsafe struct SdkResourceRequest
@@ -93,7 +80,7 @@ public sealed unsafe partial class SdkNativeResources : ISdkModelResources
             {
                 cancellation.ThrowIfCancellationRequested();
                 if (DateTime.UtcNow > deadline) throw new TimeoutException("Native resource query timed out");
-                Application.DoEvents();
+                SdkUiHost.PumpEvents();
                 Thread.Sleep(1);
                 result = Invoke(1, result.Query);
             }

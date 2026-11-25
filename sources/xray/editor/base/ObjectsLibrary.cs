@@ -2,10 +2,9 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
-using System.Windows.Forms;
-using xray.editor.controls;
+using System.Linq;
+using xray.editor.avalonia_controls.Ide.Dialogs;
 
 namespace xray.editor_base
 {
@@ -309,54 +308,6 @@ namespace xray.editor_base
             result.GetRoot().Erase("guid");
             return result;
         }
-
-        public void fill_tree(TreeNodeCollection root_nodes, item_filter? filter, bool show_empty_folders)
-        {
-            root_nodes.Clear();
-            FillTreeInternal(m_root, root_nodes, filter, show_empty_folders);
-        }
-
-        private static bool FillTreeInternal(lib_folder folder, TreeNodeCollection nodes, item_filter? filter, bool show_empty_folders)
-        {
-            bool anyAdded = false;
-            foreach (var sub in folder.m_folders)
-            {
-                var folderNode = new tree_node(sub.m_name)
-                {
-                    Name = sub.m_name,
-                    Tag = sub,
-                    m_node_type = tree_node_type.group_item,
-                    ImageIndex = (int)images16x16.folder_closed,
-                    SelectedImageIndex = (int)images16x16.folder_open,
-                    m_image_index_collapsed = (int)images16x16.folder_closed,
-                    m_image_index_expanded = (int)images16x16.folder_open
-                };
-                bool subHasItems = FillTreeInternal(sub, folderNode.Nodes, filter, show_empty_folders);
-                if (subHasItems || show_empty_folders)
-                {
-                    nodes.Add(folderNode);
-                    anyAdded = true;
-                }
-            }
-
-            foreach (var item in folder.m_items)
-            {
-                if (filter != null && !filter(item))
-                    continue;
-                nodes.Add(new tree_node(item.m_name)
-                {
-                    Name = item.m_name,
-                    Tag = item,
-                    m_node_type = tree_node_type.single_item,
-                    ImageIndex = item.m_image_index,
-                    SelectedImageIndex = item.m_image_index,
-                    m_image_index_collapsed = item.m_image_index,
-                    m_image_index_expanded = item.m_image_index
-                });
-                anyAdded = true;
-            }
-            return anyAdded;
-        }
     }
 
     public interface chooser
@@ -371,7 +322,7 @@ namespace xray.editor_base
         private static readonly Dictionary<string, object?> s_shared_context = new(StringComparer.Ordinal);
 
         public static Func<string, string?, string?, bool, (bool Handled, bool Accepted, string Result)>? ChooseOverride { get; set; }
-        [ThreadStatic] public static IWin32Window? DialogOwner;
+        [ThreadStatic] public static object? DialogOwner;
 
         public static void register_chooser(chooser c)
         {
@@ -419,126 +370,43 @@ namespace xray.editor_base
     }
 
     // C# port of editor/world/sources/select_library_class.{h,cpp}
-    public class SelectLibraryClassForm : Form
+    public class SelectLibraryClassForm : IDisposable
     {
-        public readonly tree_view TreeView = new();
-        public readonly Button OkButton = new() { Text = "OK", DialogResult = DialogResult.OK };
-        public readonly Button CancelButtonControl = new() { Text = "Cancel", DialogResult = DialogResult.Cancel };
-
-        private objects_library? m_library;
-        private bool m_read_only;
-        private string? m_selected_path;
-
-        public string? SelectedPath => m_selected_path;
-        public bool IsReadOnlyMode => m_read_only;
+        private bool m_disposed;
 
         public SelectLibraryClassForm()
         {
-            Text = "Select Library Class";
-            Size = new Size(360, 460);
-            StartPosition = FormStartPosition.CenterParent;
-            FormBorderStyle = FormBorderStyle.SizableToolWindow;
-
-            TreeView.Dock = DockStyle.Fill;
-            TreeView.filter_visible = true;
-            TreeView.PathSeparator = ":";
-            TreeView.HideSelection = false;
-            TreeView.AfterSelect += TreeView_AfterSelect;
-            TreeView.NodeMouseDoubleClick += (_, _) =>
-            {
-                if (OkButton.Enabled && !m_read_only)
-                {
-                    DialogResult = DialogResult.OK;
-                    Close();
-                }
-            };
-
-            var bottomPanel = new FlowLayoutPanel
-            {
-                Dock = DockStyle.Bottom,
-                FlowDirection = FlowDirection.RightToLeft,
-                Height = 38,
-                Padding = new Padding(4)
-            };
-            bottomPanel.Controls.Add(CancelButtonControl);
-            bottomPanel.Controls.Add(OkButton);
-
-            Controls.Add(TreeView);
-            Controls.Add(bottomPanel);
-            AcceptButton = OkButton;
-            CancelButton = CancelButtonControl;
+            SdkAvaloniaBootstrap.EnsureInitialized();
+            View = new SdkSelectLibraryClassWindow();
         }
+
+        public SdkSelectLibraryClassWindow View { get; }
+        public string? SelectedPath => View.SelectedPath;
+        public bool IsReadOnlyMode => View.IsReadOnlyMode;
 
         public void Initialize(objects_library library, string? initial, string? filter, bool read_only)
         {
-            m_library = library ?? throw new ArgumentNullException(nameof(library));
-            m_read_only = read_only;
-            m_selected_path = initial;
-
-            item_filter? filterDelegate = null;
-            if (!string.IsNullOrWhiteSpace(filter))
-            {
-                string filterStr = filter!;
-                filterDelegate = item =>
-                    string.Equals(item.m_lib_item_name, filterStr, StringComparison.OrdinalIgnoreCase) ||
-                    item.full_path_name().Contains(filterStr, StringComparison.OrdinalIgnoreCase);
-            }
-
-            TreeView.BeginUpdate();
-            m_library.fill_tree(TreeView.nodes, filterDelegate, show_empty_folders: false);
-            TreeView.ExpandAll();
-            TreeView.EndUpdate();
-
-            if (!string.IsNullOrWhiteSpace(initial))
-            {
-                SelectNodeByFullPath(TreeView.nodes, initial!);
-            }
-
-            ValidateSelection();
+            ArgumentNullException.ThrowIfNull(library);
+            var entries = library.Items.Select(item =>
+                new SdkLibraryClassEntry(item.full_path_name(), item.m_lib_item_name, item.m_image_index, item));
+            View.Initialize(entries, initial, filter, read_only);
         }
 
-        public bool SelectLibraryPathProgrammatically(string fullPath)
+        public bool SelectLibraryPathProgrammatically(string fullPath) =>
+            View.SelectLibraryPathProgrammatically(fullPath);
+
+        public SdkDialogResult ShowDialog(object? owner = null)
         {
-            if (SelectNodeByFullPath(TreeView.nodes, fullPath))
-            {
-                ValidateSelection();
-                return OkButton.Enabled || (m_read_only && m_selected_path == fullPath);
-            }
-            return false;
+            SdkAvaloniaBootstrap.ShowModalWindow(View, owner, hideOnClose: false);
+            return View.DialogAccepted ? SdkDialogResult.OK : SdkDialogResult.Cancel;
         }
 
-        private bool SelectNodeByFullPath(TreeNodeCollection nodes, string fullPath)
+        public void Dispose()
         {
-            foreach (TreeNode node in nodes)
-            {
-                if (node.Tag is lib_item item && string.Equals(item.full_path_name(), fullPath, StringComparison.Ordinal))
-                {
-                    TreeView.SelectedNode = node;
-                    m_selected_path = item.full_path_name();
-                    return true;
-                }
-                if (SelectNodeByFullPath(node.Nodes, fullPath))
-                    return true;
-            }
-            return false;
-        }
-
-        private void TreeView_AfterSelect(object? sender, TreeViewEventArgs e)
-        {
-            ValidateSelection();
-        }
-
-        private void ValidateSelection()
-        {
-            if (TreeView.SelectedNode?.Tag is lib_item item)
-            {
-                m_selected_path = item.full_path_name();
-                OkButton.Enabled = !m_read_only;
-            }
-            else
-            {
-                OkButton.Enabled = false;
-            }
+            if (m_disposed)
+                return;
+            m_disposed = true;
+            View.Close();
         }
     }
 
@@ -559,7 +427,7 @@ namespace xray.editor_base
         {
             using var form = new SelectLibraryClassForm();
             form.Initialize(m_library, initial, filter, read_only);
-            if (form.ShowDialog(resource_chooser.DialogOwner) == DialogResult.OK && !string.IsNullOrEmpty(form.SelectedPath))
+            if (form.ShowDialog(resource_chooser.DialogOwner) == SdkDialogResult.OK && !string.IsNullOrEmpty(form.SelectedPath))
             {
                 result = form.SelectedPath!;
                 return true;
@@ -612,100 +480,41 @@ namespace xray.editor_base
         }
     }
 
-    // C# port of editor/world/sources/resource_loading_dialog.{h,cpp}
-    public enum subst_resource_result
+    // subst_resource_result and subst_record live in xray.editor.core (SdkUiAbstractions.cs)
+
+    public class ResourceLoadingDialog : IDisposable
     {
-        subst_one,
-        subst_all_by_name,
-        subst_all_any_name,
-        ignore_one,
-        ignore_all_by_name,
-        ignore_all_any_name
-    }
-
-    public struct subst_record
-    {
-        public string class_id;
-        public string source_name;
-        public string dest_name;
-        public subst_resource_result result;
-    }
-
-    public class ResourceLoadingDialog : Form
-    {
-        public readonly Label MissingLabel = new() { AutoSize = true, Location = new Point(12, 12) };
-        public readonly TextBox SubstituteTextBox = new() { Location = new Point(12, 40), Width = 280 };
-        public readonly Button BrowseButton = new() { Text = "...", Location = new Point(300, 38), Width = 36 };
-        public readonly RadioButton RadioThisObject = new() { Text = "For this object only", Checked = true, AutoSize = true, Location = new Point(12, 74) };
-        public readonly RadioButton RadioAllWithName = new() { Text = "For all objects with this resource name", AutoSize = true, Location = new Point(12, 98) };
-        public readonly RadioButton RadioAllAnyName = new() { Text = "For all objects of this class", AutoSize = true, Location = new Point(12, 122) };
-        public readonly Button ReplaceButton = new() { Text = "Replace", Location = new Point(160, 156), Width = 84 };
-        public readonly Button IgnoreButton = new() { Text = "Ignore", Location = new Point(252, 156), Width = 84 };
-
-        public subst_resource_result DialogActionResult { get; private set; } = subst_resource_result.ignore_one;
-        public string SelectedResourceName => SubstituteTextBox.Text;
-
-        private string m_class_id = string.Empty;
+        private bool m_disposed;
 
         public ResourceLoadingDialog()
         {
-            Text = "Missing Resource";
-            Size = new Size(364, 232);
-            FormBorderStyle = FormBorderStyle.FixedDialog;
-            StartPosition = FormStartPosition.CenterParent;
-            MaximizeBox = false;
-            MinimizeBox = false;
-
-            BrowseButton.Click += (_, _) =>
+            SdkAvaloniaBootstrap.EnsureInitialized();
+            View = new SdkResourceLoadingWindow
             {
-                if (resource_chooser.choose(m_class_id, SubstituteTextBox.Text, null, out string chosen, false))
-                {
-                    SubstituteTextBox.Text = chosen;
-                }
+                BrowseCallback = (classId, current) =>
+                    resource_chooser.choose(classId, current, null, out string chosen, false) ? chosen : null
             };
-
-            ReplaceButton.Click += (_, _) =>
-            {
-                if (string.IsNullOrWhiteSpace(SubstituteTextBox.Text))
-                    return;
-                DialogActionResult = RadioAllAnyName.Checked
-                    ? subst_resource_result.subst_all_any_name
-                    : RadioAllWithName.Checked
-                        ? subst_resource_result.subst_all_by_name
-                        : subst_resource_result.subst_one;
-                DialogResult = DialogResult.OK;
-                Close();
-            };
-
-            IgnoreButton.Click += (_, _) =>
-            {
-                DialogActionResult = RadioAllAnyName.Checked
-                    ? subst_resource_result.ignore_all_any_name
-                    : RadioAllWithName.Checked
-                        ? subst_resource_result.ignore_all_by_name
-                        : subst_resource_result.ignore_one;
-                DialogResult = DialogResult.Cancel;
-                Close();
-            };
-
-            Controls.AddRange(new Control[]
-            {
-                MissingLabel,
-                SubstituteTextBox,
-                BrowseButton,
-                RadioThisObject,
-                RadioAllWithName,
-                RadioAllAnyName,
-                ReplaceButton,
-                IgnoreButton
-            });
         }
 
-        public void InitializeDialog(string classId, string missingResourceName)
+        public SdkResourceLoadingWindow View { get; }
+        public subst_resource_result DialogActionResult => View.DialogActionResult;
+        public string SelectedResourceName => View.SelectedResourceName;
+
+        public void InitializeDialog(string classId, string missingResourceName) =>
+            View.InitializeDialog(classId, missingResourceName);
+
+        public SdkDialogResult ShowDialog(object? owner = null)
         {
-            m_class_id = classId;
-            MissingLabel.Text = $"Missing [{classId}]: {missingResourceName}";
-            SubstituteTextBox.Text = string.Empty;
+            SdkAvaloniaBootstrap.ShowModalWindow(View, owner, hideOnClose: false);
+            return View.DialogAccepted ? SdkDialogResult.OK : SdkDialogResult.Cancel;
+        }
+
+        public void Dispose()
+        {
+            if (m_disposed)
+                return;
+            m_disposed = true;
+            View.Close();
         }
     }
 
@@ -819,8 +628,8 @@ namespace xray.editor_base
             dialog.InitializeDialog(class_id, missing_name);
             var answer = dialog.ShowDialog(resource_chooser.DialogOwner);
             register_substitute(class_id, missing_name, dialog.SelectedResourceName, dialog.DialogActionResult);
-            substituted_name = answer == DialogResult.OK ? dialog.SelectedResourceName : string.Empty;
-            return answer == DialogResult.OK && !string.IsNullOrWhiteSpace(substituted_name);
+            substituted_name = answer == SdkDialogResult.OK ? dialog.SelectedResourceName : string.Empty;
+            return answer == SdkDialogResult.OK && !string.IsNullOrWhiteSpace(substituted_name);
         }
     }
 }

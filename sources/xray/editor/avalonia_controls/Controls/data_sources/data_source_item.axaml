@@ -1,0 +1,15 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="xray.editor.avalonia_controls.data_sources.data_source_item"
+             x:CompileBindings="False"
+             Width="200"
+             Margin="5">
+    <DockPanel>
+        <Border DockPanel.Dock="Top" BorderBrush="DarkBlue" BorderThickness="2" Height="20">
+            <TextBlock Text="{Binding name}" TextAlignment="Center" VerticalAlignment="Center" />
+        </Border>
+        <Border DockPanel.Dock="Bottom" BorderBrush="DarkBlue" BorderThickness="1" VerticalAlignment="Bottom">
+            <ContentControl x:Name="m_data_source_editor" Focusable="False" />
+        </Border>
+    </DockPanel>
+</UserControl>

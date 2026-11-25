@@ -1,0 +1,36 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:panels="using:xray.editor.avalonia_controls.panels"
+             x:Class="xray.editor.avalonia_controls.logic_view.logic_view"
+             x:Name="parent_control"
+             BorderThickness="0"
+             BorderBrush="Black"
+             Background="LightGray">
+    <Grid>
+        <DockPanel>
+            <DockPanel x:Name="top_dock_panel" DockPanel.Dock="Top">
+                <Border BorderThickness="4" BorderBrush="DarkGray" Background="Transparent">
+                    <Border.ContextMenu>
+                        <ContextMenu x:Name="m_context_menu">
+                            <MenuItem x:Name="cm_delete_selected_events" Header="Delete selected event(s)" Click="delete_selected_click" />
+                        </ContextMenu>
+                    </Border.ContextMenu>
+                    <TextBlock Text="E V E N T S" Foreground="Gray" TextAlignment="Left" FontSize="18" Background="LightGray" />
+                </Border>
+            </DockPanel>
+            <panels:scroll_viewer x:Name="field_scroller"
+                                  x:FieldModifier="public"
+                                  VerticalScrollBarVisibility="Visible"
+                                  HorizontalScrollBarVisibility="Visible">
+                <Border x:Name="zoomable_panel"
+                        x:FieldModifier="public"
+                        Background="Transparent">
+                    <StackPanel x:Name="logic_entities_list"
+                                x:FieldModifier="public"
+                                RenderTransformOrigin="0%,0%" />
+                </Border>
+            </panels:scroll_viewer>
+        </DockPanel>
+        <Canvas x:Name="events_strip" x:FieldModifier="public" IsHitTestVisible="True" />
+    </Grid>
+</UserControl>

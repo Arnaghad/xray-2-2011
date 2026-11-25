@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Windows.Forms;
 namespace xray.editor_base;
 public partial class WindowIde {
     private ISdkAssetSourceScene? assetScene;
@@ -45,10 +44,10 @@ public partial class WindowIde {
     public void ShowTextureEditor() {
         if(!SdkVfsManager.IsConfigured || ResourcePipeline?.Backend==null || assetScene==null){SetStatus("Configure native texture authoring services first");return;}
         if(BackgroundMode){SetStatus("Texture source selection requires an interactive session");return;}
-        using var dialog=new OpenFileDialog {Title="Open TGA texture source",Filter="TGA texture source|*.tga",InitialDirectory=SdkVfsManager.ResolveVirtualToPhysical("resources/textures")};
-        if(dialog.ShowDialog(this)!=DialogResult.OK)return;
-        var mount=SdkVfsManager.GetMounts().Where(m=>m.VirtualPrefix.StartsWith("resources/textures",StringComparison.Ordinal) && SdkVfsManager.IsInside(dialog.FileName,m.PhysicalDirectory)).OrderByDescending(m=>m.PhysicalDirectory.Length).FirstOrDefault();
+        string? fileName=SdkAvaloniaBootstrap.PickOpenFile("Open TGA texture source","TGA texture source|*.tga",SdkVfsManager.ResolveVirtualToPhysical("resources/textures"),ObjectInspectorTab.View);
+        if(string.IsNullOrEmpty(fileName))return;
+        var mount=SdkVfsManager.GetMounts().Where(m=>m.VirtualPrefix.StartsWith("resources/textures",StringComparison.Ordinal) && SdkVfsManager.IsInside(fileName,m.PhysicalDirectory)).OrderByDescending(m=>m.PhysicalDirectory.Length).FirstOrDefault();
         if(mount==null){SetStatus("Select a texture inside the configured resource mounts");return;}
-        RunProjectAction(()=>OpenTextureSource(mount.VirtualPrefix+"/"+Path.GetRelativePath(mount.PhysicalDirectory,dialog.FileName).Replace('\\','/')));
+        RunProjectAction(()=>OpenTextureSource(mount.VirtualPrefix+"/"+Path.GetRelativePath(mount.PhysicalDirectory,fileName).Replace('\\','/')));
     }
 }

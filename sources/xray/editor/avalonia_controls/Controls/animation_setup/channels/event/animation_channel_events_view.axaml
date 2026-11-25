@@ -1,0 +1,28 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:animation_setup="using:xray.editor.avalonia_controls.animation_setup"
+             x:Class="xray.editor.avalonia_controls.animation_setup.animation_channel_events_view"
+             x:CompileBindings="False"
+             Background="DarkGray"
+             PointerPressed="mouse_right_button_down">
+    <UserControl.Resources>
+        <DataTemplate x:Key="animation_channel_event">
+            <animation_setup:animation_channel_event_view />
+        </DataTemplate>
+        <ContextMenu x:Key="view_context_menu">
+            <MenuItem Header="Add new event" Click="add_new_event_click" />
+            <MenuItem Header="Remove channel" Click="remove_channel_click" />
+            <MenuItem Header="Copy channel" Click="copy_channel_click" />
+            <MenuItem Header="Cut channel" Click="cut_channel_click" />
+        </ContextMenu>
+    </UserControl.Resources>
+    <Border Width="{Binding length}" ClipToBounds="True" BorderBrush="Black" BorderThickness="1" Margin="-1,0,0,0">
+        <ItemsControl x:Name="m_events_view" ItemTemplate="{StaticResource animation_channel_event}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Grid />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        </ItemsControl>
+    </Border>
+</UserControl>

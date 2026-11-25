@@ -65,7 +65,7 @@ public sealed partial class ProjectEditing : IDisposable
     public static bool IsProtected(ProjectItemBase item) => item.get_persistent()
         || item is ProjectItemObject o && (o.ToolName == "terrain" || o.ToolName == "scripting" && o.LibraryName == "base:root_scene")
         || item is ProjectItemFolder && item.Children.Any(IsProtected);
-    private static IEnumerable<ProjectItemBase> Subtree(ProjectItemBase item)
+    internal static IEnumerable<ProjectItemBase> Subtree(ProjectItemBase item)
     {
         yield return item;
         foreach (var child in item.Children) foreach (var descendant in Subtree(child)) yield return descendant;

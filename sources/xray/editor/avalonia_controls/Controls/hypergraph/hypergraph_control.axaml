@@ -1,0 +1,38 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:hypergraph="using:xray.editor.avalonia_controls.hypergraph"
+             xmlns:panels="using:xray.editor.avalonia_controls.panels"
+             xmlns:themes="using:xray.editor.avalonia_controls.Themes"
+             x:Class="xray.editor.avalonia_controls.hypergraph.hypergraph_control"
+             Background="{x:Static themes:SdkWorkspaceTheme.Canvas}"
+             Focusable="True"
+             ClipToBounds="True">
+    <UserControl.Styles>
+        <Style Selector="hypergraph|node">
+            <Setter Property="Template">
+                <ControlTemplate TargetType="hypergraph:node">
+                    <Border x:Name="NodeFrame" BorderThickness="2" BorderBrush="Transparent" CornerRadius="4">
+                        <ContentPresenter Content="{TemplateBinding Content}" />
+                    </Border>
+                </ControlTemplate>
+            </Setter>
+        </Style>
+        <Style Selector="hypergraph|node:pointerover /template/ Border#NodeFrame">
+            <Setter Property="BorderBrush" Value="{x:Static themes:SdkWorkspaceTheme.Axis}" />
+        </Style>
+        <Style Selector="hypergraph|node[is_selected=True] /template/ Border#NodeFrame">
+            <Setter Property="BorderBrush" Value="{x:Static themes:SdkWorkspaceTheme.Accent}" />
+        </Style>
+    </UserControl.Styles>
+
+    <UserControl.ContextMenu>
+        <ContextMenu x:Name="m_context_menu" Opening="context_menu_opened">
+            <MenuItem x:Name="cm_enable_disable_link" Header="Disable Link" Click="enable_disable_link_click" IsVisible="False" />
+            <MenuItem x:Name="cm_remove" Header="Remove" Click="context_menu_remove_click" IsVisible="False" />
+        </ContextMenu>
+    </UserControl.ContextMenu>
+
+    <panels:centralized_scroll_panel x:Name="m_field_scroller" SizeChanged="field_scroller_size_changed">
+        <hypergraph:field x:Name="m_field" ClipToBounds="False" RenderTransformOrigin="0%,0%" />
+    </panels:centralized_scroll_panel>
+</UserControl>

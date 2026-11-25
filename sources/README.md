@@ -33,14 +33,15 @@ writing targets the PC format; existing serialized enum values are preserved.
 The Vulkan README documents configuration, regression tests and real-asset
 acceptance. Build and test presets live in `sources/CMakePresets.json`, and
 pinned Windows x64 toolchain versions are recorded in
-`sources/tools/ci/toolchain-manifest.json`. The .NET editor targets
-`net11.0-windows` under the SDK pinned in `global.json` (`11.0.100`).
+`sources/tools/ci/toolchain-manifest.json`. The editor uses Avalonia 12.2 and
+targets `net11.0` under the SDK pinned in `global.json` (`11.0.100`). The
+packaged EditorHost requires `Microsoft.NETCore.App` 11.0 on Windows x64.
 
 Registered CTest suites (`sources/tests/CMakeLists.txt`):
 - Mandatory `cpu` label: `xray_source_contract`, `xray_lua_sol_binding`,
   `xray_windows_x64_contract`, `xray_vfs_legacy_decode`,
   `xray_vfs_legacy_python_decode`, `xray_dcc_exchange_cook_roundtrip`,
-  `xray_editor_host_abi_contract`, `xray_ogg_vorbis_contract`,
+  `xray_editor_host_abi_contract`, `xray_avalonia_headless_smoke`, `xray_ogg_vorbis_contract`,
   `xray_dependency_single_source_contract`.
 - Environment-gated labels (`vulkan`, `dxc`, `sdk`, `audio`):
   `xray_vulkan_original_archive`, `xray_dxc_shader_compile`,

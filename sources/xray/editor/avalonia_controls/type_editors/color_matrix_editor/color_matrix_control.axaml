@@ -1,0 +1,12 @@
+<ContentControl xmlns="https://github.com/avaloniaui"
+                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                x:Class="xray.editor.avalonia_controls.color_matrix_editor.color_matrix_control"
+                ClipToBounds="True">
+  <ContentControl.ContextMenu>
+    <ContextMenu x:Name="m_context_menu">
+      <MenuItem x:Name="m_add_horizontal_item" Header="Add Horizontal" />
+      <MenuItem x:Name="m_add_vertical_item" Header="Add Vertical" />
+    </ContextMenu>
+  </ContentControl.ContextMenu>
+  <Canvas x:Name="m_work_panel" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" ClipToBounds="False" />
+</ContentControl>

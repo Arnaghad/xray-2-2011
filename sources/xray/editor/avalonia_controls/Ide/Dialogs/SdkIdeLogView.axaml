@@ -1,0 +1,22 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:themes="using:xray.editor.avalonia_controls.Themes"
+             x:Class="xray.editor.avalonia_controls.Ide.Dialogs.SdkIdeLogView"
+             Background="{x:Static themes:SdkWorkspaceTheme.Surface}">
+    <DockPanel LastChildFill="True">
+        <Border DockPanel.Dock="Bottom"
+                Background="{x:Static themes:SdkWorkspaceTheme.Chrome}"
+                BorderBrush="{x:Static themes:SdkWorkspaceTheme.Divider}"
+                BorderThickness="0,1,0,0"
+                Padding="6,4">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="6">
+                <Button x:Name="m_clear_button" Padding="10,2" Content="Clear" />
+                <Button x:Name="m_close_button" Padding="10,2" Content="Close" />
+            </StackPanel>
+        </Border>
+        <ListBox x:Name="m_log_list_box"
+                 SelectionMode="Multiple"
+                 ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                 ScrollViewer.VerticalScrollBarVisibility="Visible" />
+    </DockPanel>
+</UserControl>

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Microsoft.Win32;
 using System.Diagnostics;
 
 namespace xray.editor_base
@@ -10,7 +9,6 @@ namespace xray.editor_base
         private readonly InputKeysHolder _inputKeyHolder;
         private readonly IContextManager _contextManager;
 
-        private RegistryKey? _registryKey;
         private readonly ActionsLayer _defaultActionsLayer;
         private readonly List<ActionsLayer> _actionLayers;
         private readonly List<ActionsLayer> _activeActionLayers;
@@ -205,19 +203,6 @@ namespace xray.editor_base
             if (_paused) return false;
             if (string.IsNullOrEmpty(combination) || combination == "None") return false;
 
-            // WPF specific part
-            try
-            {
-                var device = System.Windows.Input.Keyboard.PrimaryDevice;
-                var target = device?.Target;
-                if (target != null && xray.editor.wpf_controls.input.RaiseInputCommandEvent(combination, target))
-                    return true;
-            }
-            catch
-            {
-                // Might fail if not in a WPF context
-            }
-
             for (int i = _activeActionLayers.Count - 1; i >= 0; --i)
             {
                 var availableShortcuts = _activeActionLayers[i].find_action_shortcuts_by_first_keys(combination);
@@ -325,27 +310,5 @@ namespace xray.editor_base
             settings["shortcuts_ver"] = DefaultShortcutsVersion;
         }
 
-        public void load(RegistryKey baseProductKey)
-        {
-            _registryKey = baseProductKey.OpenSubKey("keybindings", true) ?? baseProductKey.CreateSubKey("keybindings");
-            var dict = new Dictionary<string, string>();
-            foreach (string name in _registryKey.GetValueNames())
-            {
-                if (_registryKey.GetValue(name) is string val)
-                    dict[name] = val;
-            }
-            load(dict);
-        }
-
-        public void save()
-        {
-            if (_registryKey == null) return;
-            foreach (string name in _registryKey.GetValueNames())
-                _registryKey.DeleteValue(name, false);
-            var dict = new Dictionary<string, string>();
-            save(dict);
-            foreach (var kv in dict)
-                _registryKey.SetValue(kv.Key, kv.Value);
-        }
     }
 }

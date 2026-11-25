@@ -1,0 +1,40 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:dock="using:Dock.Avalonia.Controls"
+             xmlns:themes="using:xray.editor.avalonia_controls.Themes"
+             x:Class="xray.editor.avalonia_controls.Ide.Controls.SdkDocumentEditorView"
+             Background="{x:Static themes:SdkWorkspaceTheme.Canvas}">
+    <DockPanel LastChildFill="True">
+        <Border DockPanel.Dock="Top"
+                Background="{x:Static themes:SdkWorkspaceTheme.Surface}"
+                BorderBrush="{x:Static themes:SdkWorkspaceTheme.Divider}"
+                BorderThickness="0,0,0,1">
+            <Menu x:Name="m_menu_bar">
+                <MenuItem Header="_File">
+                    <MenuItem x:Name="m_save_menu_item" Header="_Save" />
+                    <MenuItem x:Name="m_save_all_menu_item" Header="Save _All" />
+                    <Separator />
+                    <MenuItem x:Name="m_close_all_menu_item" Header="_Close All" />
+                </MenuItem>
+                <MenuItem Header="_Edit">
+                    <MenuItem x:Name="m_undo_menu_item" Header="_Undo" />
+                    <MenuItem x:Name="m_redo_menu_item" Header="_Redo" />
+                    <Separator />
+                    <MenuItem x:Name="m_cut_menu_item" Header="Cu_t" />
+                    <MenuItem x:Name="m_copy_menu_item" Header="_Copy" />
+                    <MenuItem x:Name="m_paste_menu_item" Header="_Paste" />
+                    <MenuItem x:Name="m_delete_menu_item" Header="_Delete" />
+                    <Separator />
+                    <MenuItem x:Name="m_select_all_menu_item" Header="Select _All" />
+                </MenuItem>
+                <MenuItem x:Name="m_view_menu_item" Header="_View">
+                    <MenuItem x:Name="m_files_view_menu_item" Header="Files Tree" />
+                    <MenuItem x:Name="m_properties_menu_item" Header="Item Properties" />
+                    <MenuItem x:Name="m_toolbar_menu_item" Header="Toolbar" />
+                </MenuItem>
+            </Menu>
+        </Border>
+
+        <dock:DockControl x:Name="m_dock_control" />
+    </DockPanel>
+</UserControl>

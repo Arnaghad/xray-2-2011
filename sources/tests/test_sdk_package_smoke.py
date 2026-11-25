@@ -61,9 +61,15 @@ def main() -> None:
         opts = runtime_cfg.get("runtimeOptions", {})
         assert opts.get("tfm") == "net11.0", f"Unexpected runtimeconfig tfm: {opts!r}"
         assert opts.get("rollForward") == "LatestPatch", f"Unexpected rollForward: {opts!r}"
-        frameworks = {fw.get("name"): fw.get("version") for fw in opts.get("frameworks", [])}
+        fw_entries = opts.get("frameworks")
+        if fw_entries is None:
+            fw_single = opts.get("framework")
+            fw_entries = [fw_single] if isinstance(fw_single, dict) else []
+        frameworks = {fw.get("name"): fw.get("version") for fw in fw_entries if isinstance(fw, dict)}
         assert frameworks.get("Microsoft.NETCore.App") == "11.0.0", f"Unexpected NETCore.App: {frameworks!r}"
-        assert frameworks.get("Microsoft.WindowsDesktop.App") == "11.0.0", f"Unexpected WindowsDesktop.App: {frameworks!r}"
+        assert "Microsoft.WindowsDesktop.App" not in frameworks, (
+            f"Pure Avalonia net11.0 host must not require Microsoft.WindowsDesktop.App: {frameworks!r}"
+        )
 
         dotnet_root = Path(os.environ.get("DOTNET_ROOT", r"C:\Program Files\dotnet"))
         fxr_hits = list((dotnet_root / "host/fxr").glob("11.*/hostfxr.dll")) if (dotnet_root / "host/fxr").is_dir() else []
@@ -137,6 +143,36 @@ def main() -> None:
         assert report.get("openedProject") == "default_scene", f"Unexpected project: {report!r}"
         assert report.get("legacyProjectsVerified") == ["alex", "dima_light_test"], f"Unexpected legacy check: {report!r}"
         assert report.get("legacySaveReloadOk") is True, f"Legacy save/reload check failed: {report!r}"
+        assert report.get("avaloniaUi6dEditorsOk") is True, f"Avalonia dialog/logic/navigation integration failed: {report!r}"
+        assert report.get("avaloniaUi7WorkspacePanelsOk") is True, f"Avalonia inspector/curve workspace integration failed: {report!r}"
+        assert report.get("avaloniaUi7ProjectTreeOk") is True, f"Avalonia project tree integration failed: {report!r}"
+        assert report.get("avaloniaUi7ToolsAndSceneGraphOk") is True, f"Avalonia tools/scene graph integration failed: {report!r}"
+        assert report.get("avaloniaUi7AuxiliaryToolsOk") is True, f"Avalonia auxiliary tools integration failed: {report!r}"
+        assert report.get("avaloniaUi7SoundAndParticleEditorsOk") is True, f"Avalonia sound and particle editor integration failed: {report!r}"
+        assert report.get("avaloniaUi7AnimationSetupAndGroupsOk") is True, f"Avalonia animation setup and groups integration failed: {report!r}"
+        assert report.get("avaloniaUi7StandaloneEditorsAndNoWpfOk") is True, f"Avalonia standalone editors / no-WPF integration failed: {report!r}"
+        assert report.get("avaloniaUi7IdeDialogsOk") is True, f"Avalonia IDE dialogs integration failed: {report!r}"
+        assert report.get("avaloniaUi7ServicesAndCameraOk") is True, f"Avalonia services / CameraViewPanel check failed: {report!r}"
+        assert report.get("avaloniaUi7PureAvaloniaShellOk") is True, f"Pure Avalonia shell check failed: {report!r}"
+        for forbidden_bin in (
+            "wpf_controls.dll",
+            "Xceed.Wpf.Toolkit.dll",
+            "WeifenLuo.WinFormsUI.Docking.dll",
+            "WeifenLuo.WinFormsUI.Docking.ThemeVS2015.dll",
+            "Avalonia.Win32.Interoperability.dll",
+        ):
+            assert not (pkg_dir / "bin" / forbidden_bin).exists(), f"{forbidden_bin} must not be packaged"
+        for required_avalonia_bin in (
+            "xray.editor.base.dll",
+            "xray.editor.core.dll",
+            "xray.editor.avalonia_controls.dll",
+            "Avalonia.Base.dll",
+            "Dock.Avalonia.dll",
+            "SkiaSharp.dll",
+            "runtimes/win-x64/native/libSkiaSharp.dll",
+            "runtimes/win-x64/native/libHarfBuzzSharp.dll",
+        ):
+            assert (pkg_dir / "bin" / required_avalonia_bin).is_file(), f"Missing packaged Avalonia runtime file: {required_avalonia_bin}"
         assert report.get("initialRootChildren", 0) > 0, f"Empty loaded project tree: {report!r}"
         assert report.get("undoOk") is True and report.get("redoOk") is True, f"Undo/Redo check failed: {report!r}"
         assert report.get("reloadedHasFolder") is True, f"Save/Reload check failed: {report!r}"

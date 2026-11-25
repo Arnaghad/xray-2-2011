@@ -1,0 +1,33 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:item="clr-namespace:xray.editor.avalonia_controls.property_editors.item">
+  <ControlTheme x:Key="{x:Type item:custom_item_editor}" TargetType="item:custom_item_editor">
+    <Setter Property="Template">
+      <ControlTemplate x:DataType="item:custom_item_editor" x:CompileBindings="False">
+        <Grid MinHeight="22">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" SharedSizeGroup="PropertyName" />
+            <ColumnDefinition Width="5" />
+            <ColumnDefinition Width="*" />
+          </Grid.ColumnDefinitions>
+
+          <Border Grid.Column="0" Padding="4,0,6,0" Background="{DynamicResource SdkSurfaceBrush}">
+            <StackPanel Orientation="Horizontal" Name="item_text_panel">
+              <Control Width="{TemplateBinding item_indent}" Focusable="False" />
+              <ContentControl Focusable="False" Content="{TemplateBinding type_box}" />
+            </StackPanel>
+          </Border>
+
+          <GridSplitter Grid.Column="1" Width="5" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Focusable="False" Background="{DynamicResource SdkDividerBrush}" />
+
+          <Border Grid.Column="2" Padding="5,0,2,0">
+            <DockPanel>
+              <StackPanel Name="m_inner_properties_container" Orientation="Horizontal" DockPanel.Dock="Right" />
+              <ContentControl Name="m_value_editor" Focusable="False" Content="{TemplateBinding value_editor}" />
+            </DockPanel>
+          </Border>
+        </Grid>
+      </ControlTemplate>
+    </Setter>
+  </ControlTheme>
+</ResourceDictionary>

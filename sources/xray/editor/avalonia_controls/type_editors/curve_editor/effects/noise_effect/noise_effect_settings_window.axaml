@@ -1,0 +1,33 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:editors="using:xray.editor.avalonia_controls.type_editors"
+             x:Class="xray.editor.avalonia_controls.curve_editor.effects.noise_effect_settings_window"
+             Width="220"
+             Height="160">
+    <DockPanel Margin="6">
+        <Border DockPanel.Dock="Bottom" Margin="0,4,0,0">
+            <Button Content="Done" HorizontalAlignment="Right" Width="80" Click="done_click" />
+        </Border>
+        <Separator DockPanel.Dock="Bottom" Margin="0,5" />
+        <Grid ColumnDefinitions="*,*" RowDefinitions="24,24,24,24">
+            <TextBlock Text="Seed:" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,5,0" />
+            <editors:number_editor Grid.Column="1" x:Name="m_ceed_number_editor" min_value="1" step_size="1" />
+
+            <TextBlock Grid.Row="1" Text="Frequency:" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,5,0" />
+            <editors:number_editor Grid.Row="1" Grid.Column="1" x:Name="m_frequency_number_editor" min_value="0.0001" step_size="0.0001" />
+
+            <TextBlock Grid.Row="2" Text="Strength:" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,5,0" />
+            <editors:number_editor Grid.Row="2" Grid.Column="1" x:Name="m_strength_number_editor" min_value="0.0001" step_size="0.0001" />
+
+            <StackPanel Grid.Row="3" HorizontalAlignment="Center" Orientation="Horizontal">
+                <TextBlock Text="Fade In:" Margin="0,0,4,0" VerticalAlignment="Center" />
+                <editors:number_editor x:Name="m_fade_in_number_editor" Width="40" min_value="0" step_size="0.0001" />
+            </StackPanel>
+
+            <StackPanel Grid.Row="3" Grid.Column="1" HorizontalAlignment="Center" Orientation="Horizontal">
+                <TextBlock Text="Fade Out:" Margin="0,0,4,0" VerticalAlignment="Center" />
+                <editors:number_editor x:Name="m_fade_out_number_editor" Width="40" min_value="0" step_size="0.0001" />
+            </StackPanel>
+        </Grid>
+    </DockPanel>
+</UserControl>

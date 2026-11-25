@@ -1,0 +1,17 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="xray.editor.avalonia_controls.curve_editor.panel_curve_group"
+             PointerPressed="mouse_down">
+    <StackPanel>
+        <Border Background="Transparent">
+            <Border.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="add effect" Click="add_effect_click" />
+                </ContextMenu>
+            </Border.ContextMenu>
+            <TextBlock x:Name="m_header" Text="unnamed" Padding="7,4" FontWeight="SemiBold" />
+        </Border>
+        <ItemsControl x:Name="m_effects" Margin="15,0,0,0" />
+        <ItemsControl x:Name="m_sub_channels" Margin="15,0,0,0" />
+    </StackPanel>
+</UserControl>

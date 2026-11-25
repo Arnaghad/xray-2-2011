@@ -1,0 +1,60 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:dock="using:Dock.Avalonia.Controls"
+        xmlns:themes="using:xray.editor.avalonia_controls.Themes"
+        x:Class="xray.editor.avalonia_controls.Shell.SdkAvaloniaShellWindow"
+        Title="X-Ray 2.0 SDK"
+        Width="1280"
+        Height="760"
+        Background="{x:Static themes:SdkWorkspaceTheme.Canvas}">
+    <DockPanel LastChildFill="True">
+        <Border DockPanel.Dock="Top"
+                Background="{x:Static themes:SdkWorkspaceTheme.Surface}"
+                BorderBrush="{x:Static themes:SdkWorkspaceTheme.Divider}"
+                BorderThickness="0,0,0,1">
+            <Menu x:Name="m_main_menu" />
+        </Border>
+
+        <Border DockPanel.Dock="Top"
+                Background="{x:Static themes:SdkWorkspaceTheme.Chrome}"
+                BorderBrush="{x:Static themes:SdkWorkspaceTheme.Divider}"
+                BorderThickness="0,0,0,1"
+                Padding="4,3">
+            <StackPanel x:Name="m_main_toolbar"
+                        Orientation="Horizontal"
+                        Spacing="4" />
+        </Border>
+
+        <Border DockPanel.Dock="Bottom"
+                Background="{x:Static themes:SdkWorkspaceTheme.Chrome}"
+                BorderBrush="{x:Static themes:SdkWorkspaceTheme.Divider}"
+                BorderThickness="0,1,0,0"
+                Padding="8,3">
+            <Grid ColumnDefinitions="*,Auto,Auto,Auto">
+                <TextBlock x:Name="m_status_label"
+                           Grid.Column="0"
+                           VerticalAlignment="Center"
+                           Foreground="{x:Static themes:SdkWorkspaceTheme.Text}"
+                           Text="Ready" />
+                <TextBlock x:Name="m_camera_label"
+                           Grid.Column="1"
+                           Margin="12,0"
+                           VerticalAlignment="Center"
+                           Foreground="{x:Static themes:SdkWorkspaceTheme.MutedText}"
+                           Text="Camera: 0.0, 0.0, 0.0" />
+                <TextBlock x:Name="m_grid_label"
+                           Grid.Column="2"
+                           Margin="12,0"
+                           VerticalAlignment="Center"
+                           Foreground="{x:Static themes:SdkWorkspaceTheme.MutedText}"
+                           Text="Grid: 100 x 100" />
+                <Button x:Name="m_error_button"
+                        Grid.Column="3"
+                        Padding="8,1"
+                        Content="Errors: 0" />
+            </Grid>
+        </Border>
+
+        <dock:DockControl x:Name="m_dock_control" />
+    </DockPanel>
+</Window>

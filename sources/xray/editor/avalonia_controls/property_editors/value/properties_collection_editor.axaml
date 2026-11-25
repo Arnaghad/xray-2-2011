@@ -1,0 +1,22 @@
+<editors:value_collection_editor_base xmlns="https://github.com/avaloniaui"
+                                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                                      xmlns:editors="clr-namespace:xray.editor.avalonia_controls.property_editors.value"
+                                      xmlns:editorsb="clr-namespace:xray.editor.avalonia_controls.property_editors"
+                                      x:Class="xray.editor.avalonia_controls.property_editors.value.properties_collection_editor"
+                                      x:CompileBindings="False">
+  <editors:value_collection_editor_base.Resources>
+    <StreamGeometry x:Key="remove_button_path_geometry">M 0 0 L 4.5 4 M 4.5 0 L 0 4</StreamGeometry>
+  </editors:value_collection_editor_base.Resources>
+  <DockPanel>
+    <Button Name="m_add_button"
+            DockPanel.Dock="Right"
+            Width="14"
+            Height="14"
+            Padding="2"
+            IsEnabled="{Binding $parent[editorsb:property_items_control].is_expanded}"
+            ToolTip.Tip="Add new item into collection">
+      <Path Stroke="{DynamicResource SdkTextBrush}" StrokeThickness="1" Data="M 0,2.5 L 5,2.5 M 2.5,0 L 2.5,5" />
+    </Button>
+    <TextBox Text="" IsReadOnly="True" BorderThickness="0" Background="Transparent" />
+  </DockPanel>
+</editors:value_collection_editor_base>

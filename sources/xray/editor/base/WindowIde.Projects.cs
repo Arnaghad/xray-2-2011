@@ -1,24 +1,20 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Windows.Forms;
-using xray.editor.controls;
 
 namespace xray.editor_base;
 
 public partial class WindowIde
 {
-    private readonly List<(Guid Session, document_base Document)> m_project_documents = new();
-    private Timer? m_recovery_timer;
+    private Avalonia.Threading.DispatcherTimer? m_recovery_timer;
     private bool m_shutdown;
     private SdkResourceBrowser? m_resource_browser;
+    public SdkResourceBrowser? ResourceBrowser => m_resource_browser;
     private string? m_startup_recovery;
-    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public System.Action? HostCloseRequested { get; set; }
-    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public Func<string, bool>? RecoveryPromptOverride { get; set; }
+    public Func<string, SdkDialogResult>? SaveConfirmationPromptOverride { get; set; }
     public SdkResourcePipeline? ResourcePipeline { get; private set; }
 
     public void InitializeProjectSession(string assets, string working, string userData, bool deferRecovery = false)
@@ -31,8 +27,8 @@ public partial class WindowIde
         m_project.LoadRecentProjectsFile(Path.Combine(userData, "recent_projects.txt"));
         ResourcePipeline = new SdkResourcePipeline();
         RefreshRecentProjectsMenu();
-        m_recovery_timer?.Dispose();
-        m_recovery_timer = new Timer { Interval = 30000 };
+        m_recovery_timer?.Stop();
+        m_recovery_timer = new Avalonia.Threading.DispatcherTimer { Interval = TimeSpan.FromSeconds(30) };
         m_recovery_timer.Tick += (_, _) => RunProjectAction(SaveRecoverySnapshot);
         if (!m_background_mode) m_recovery_timer.Start();
         string unsaved = Path.Combine(SdkVfsManager.WorkingSourcesRoot, "projects", "_unsaved");
@@ -43,23 +39,28 @@ public partial class WindowIde
     {
         string? recovery=m_startup_recovery;m_startup_recovery=null;
         if(recovery==null)return;
-        bool accept=RecoveryPromptOverride?.Invoke(recovery) ?? (!m_background_mode && MessageBox.Show(this,
-            "Recover the unsaved project from your last session?", "Project recovery", MessageBoxButtons.YesNo, MessageBoxIcon.Question)==DialogResult.Yes);
+        bool accept=RecoveryPromptOverride?.Invoke(recovery) ?? (!m_background_mode && SdkAvaloniaBootstrap.ShowSavePromptAsSdkDialogResult(
+            "Recover the unsaved project from your last session?", "Project recovery", allowCancel: false, this) == SdkDialogResult.Yes);
         if(accept)RunProjectAction(()=>m_project.RecoverUnsavedProject(recovery));
     }
 
-    public void AttachProjectDocument(document_base document)
+    private SdkDialogResult PromptToSaveProject()
     {
-        if (!m_project.IsProjectOpen) throw new InvalidOperationException("A project must own the document.");
-        if (m_project_documents.Any(d => ReferenceEquals(d.Document, document))) return;
-        m_project_documents.Add((m_project.SessionId, document));
-        document.Disposed += (_, _) => m_project_documents.RemoveAll(d => ReferenceEquals(d.Document, document));
+        if (!m_project.save_needed() || m_project.empty())
+            return SdkDialogResult.No;
+        if (SaveConfirmationPromptOverride is { } prompt)
+            return prompt(m_project.Name);
+        if (m_background_mode)
+            return SdkDialogResult.Cancel;
+        return SdkAvaloniaBootstrap.ShowSavePromptAsSdkDialogResult($"Save changes to project '{m_project.Name}'?", "X-Ray SDK", allowCancel: true, this);
     }
 
     private bool ConfirmOwnedDocuments()
     {
         foreach(var editor in animationCollections.ToArray())if(!editor.IsDisposed && !editor.ConfirmClose())return false;
         foreach(var editor in animationViewers.ToArray())if(!editor.IsDisposed && !editor.ConfirmClose())return false;
+        foreach (var editor in animationSetups.ToArray()) if (!editor.IsDisposed && !editor.ConfirmClose()) return false;
+        foreach (var editor in animationGroups.ToArray()) if (!editor.IsDisposed && !editor.ConfirmClose()) return false;
         foreach(var editor in soundEditors.ToArray())if(!editor.IsDisposed && !editor.ConfirmClose())return false;
         foreach(var editor in particleEditors.ToArray())if(!editor.IsDisposed && !editor.ConfirmClose())return false;
         foreach(var editor in dialogEditors.ToArray())if(!editor.IsDisposed && !editor.ConfirmClose())return false;
@@ -67,18 +68,6 @@ public partial class WindowIde
         foreach(var editor in modelEditors.ToArray())if(!editor.IsDisposed && !editor.ConfirmClose())return false;
         foreach(var editor in materialEditors.ToArray())if(!editor.IsDisposed && !editor.ConfirmClose())return false;
         foreach(var editor in textureEditors.ToArray())if(!editor.IsDisposed && !editor.ConfirmClose())return false;
-        foreach (var entry in m_project_documents.ToArray())
-        {
-            if (entry.Document.IsDisposed || entry.Document.is_saved) continue;
-            var answer = entry.Document.check_saved();
-            if (answer == DialogResult.Cancel) return false;
-            if (answer == DialogResult.Yes)
-            {
-                try { entry.Document.save(); }
-                catch (Exception error) { LogError(error.Message); return false; }
-                if (!entry.Document.is_saved) return false;
-            }
-        }
         return true;
     }
 
@@ -87,6 +76,7 @@ public partial class WindowIde
         CloseDcc();
         foreach(var editor in animationCollections.ToArray())editor.Dispose();
         foreach(var editor in animationViewers.ToArray())editor.Dispose();
+        CloseAnimationSetupAndGroups();
         foreach(var editor in soundEditors.ToArray())editor.Dispose();
         foreach(var editor in particleEditors.ToArray())editor.Dispose();
         foreach(var editor in dialogEditors.ToArray())editor.Dispose();
@@ -98,8 +88,6 @@ public partial class WindowIde
         foreach(var editor in textureEditors.ToArray())editor.Dispose();
         m_resource_browser?.Dispose();
         m_resource_browser = null;
-        foreach (var entry in m_project_documents.ToArray()) entry.Document.Dispose();
-        m_project_documents.Clear();
         ResourcePipeline?.CancelAllQueries();
         ResourcePipeline?.InvalidateAllCache();
     }
@@ -117,7 +105,8 @@ public partial class WindowIde
                 ViewportOutputs.PreviewAsset(path,kind);
             });
         }
-        m_resource_browser.Show(this);
+        if (!m_background_mode && Visible)
+            m_resource_browser.Show(this);
         SetStatus("Resource browser opened");
     }
 
@@ -147,7 +136,7 @@ public partial class WindowIde
             {
                 if (!CanShowProjectDialog()) return;
                 string root = SdkVfsManager.ResolveVirtualToPhysical("resources/projects", forWrite: true);
-                if (m_project_browser_dialog.SelectProjectToSave(root, m_project.Name, this) != DialogResult.OK)
+                if (m_project_browser_dialog.SelectProjectToSave(root, m_project.Name, this) != SdkDialogResult.OK)
                 { SetStatus("Save project cancelled"); return; }
                 m_project.SaveProjectAs(m_project_browser_dialog.selected_project!);
             }
@@ -169,7 +158,8 @@ public partial class WindowIde
         {
             string recovery = candidates[0];
             bool recover = RecoveryPromptOverride?.Invoke(recovery)
-                ?? (!m_background_mode && MessageBox.Show(this, "Recover unsaved changes to '" + name + "'?", "Project recovery", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes);
+                ?? (!m_background_mode && SdkAvaloniaBootstrap.ShowSavePromptAsSdkDialogResult(
+                    "Recover unsaved changes to '" + name + "'?", "Project recovery", allowCancel: false, this) == SdkDialogResult.Yes);
             if (recover) m_project.RecoverFromSaveCandidate(m_project.ProjectFilePath, recovery);
         }
         PersistRecentProjects();
@@ -245,7 +235,7 @@ public partial class WindowIde
 
         m_project_tab.RefreshTree();
         ViewportEditing?.SynchronizeGizmo();
-        m_gui_binder.update_items();
+        UpdateCommandUi();
         SetStatus("Default scene ready — click objects to select, W/E/R for Move/Rotate/Scale, Play (F5) to run animations, RMB+WASD to move camera");
     }
 

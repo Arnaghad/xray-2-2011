@@ -1,0 +1,25 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:animation_lexeme_panel="using:xray.editor.avalonia_controls.animation_lexeme_panel"
+             x:Class="xray.editor.avalonia_controls.animation_lexeme_panel.animation_item_intervals_view"
+             x:CompileBindings="False"
+             Background="DarkGray"
+             PointerPressed="user_control_mouse_right_button_down">
+    <UserControl.Resources>
+        <DataTemplate x:Key="animation_interval">
+            <animation_lexeme_panel:animation_interval_view />
+        </DataTemplate>
+        <ContextMenu x:Key="context_menu">
+            <MenuItem Header="Remove animation" Click="remove_animation_click" />
+        </ContextMenu>
+    </UserControl.Resources>
+    <Border HorizontalAlignment="Left" Width="{Binding length}" ClipToBounds="True" BorderBrush="Black" BorderThickness="1">
+        <ItemsControl x:Name="m_intervals_view" ItemTemplate="{StaticResource animation_interval}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Canvas Height="40" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        </ItemsControl>
+    </Border>
+</UserControl>

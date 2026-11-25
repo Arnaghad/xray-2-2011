@@ -1,0 +1,55 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="using:xray.editor.avalonia_controls.Editors"
+        xmlns:pg="using:xray.editor.avalonia_controls.property_grid"
+        xmlns:themes="using:xray.editor.avalonia_controls.Themes"
+        x:Class="xray.editor.avalonia_controls.Editors.SdkMaterialEditorWindow"
+        Title="Material source"
+        Width="660"
+        Height="600"
+        Background="{x:Static themes:SdkWorkspaceTheme.Surface}">
+    <DockPanel LastChildFill="True">
+        <Border DockPanel.Dock="Top"
+                Background="{x:Static themes:SdkWorkspaceTheme.Chrome}"
+                BorderBrush="{x:Static themes:SdkWorkspaceTheme.Divider}"
+                BorderThickness="0,0,0,1"
+                Padding="6,4">
+            <WrapPanel Orientation="Horizontal">
+                <Button x:Name="m_apply_button" Margin="0,0,4,4" Content="Apply preview" />
+                <Button x:Name="m_save_button" Margin="0,0,4,4" Content="Save source" />
+                <Button x:Name="m_revert_button" Margin="0,0,4,4" Content="Revert draft" />
+                <Button x:Name="m_undo_button" Margin="0,0,4,4" Content="Undo" />
+                <Button x:Name="m_redo_button" Margin="0,0,4,4" Content="Redo" />
+                <Button x:Name="m_cancel_button" Margin="0,0,8,4" Content="Cancel loading" />
+
+                <ComboBox x:Name="m_override_picker" Width="160" Margin="0,0,4,4">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate x:DataType="local:SdkMaterialOverrideOption">
+                            <TextBlock Text="{Binding Label}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <Button x:Name="m_reset_override_button" Margin="0,0,4,4" Content="Use base value" />
+                <Button x:Name="m_repair_schema_button" Margin="0,0,8,4" Content="Repair instance schema" />
+
+                <ComboBox x:Name="m_stage_picker" Width="135" Margin="0,0,4,4" />
+                <ComboBox x:Name="m_effect_picker" Width="190" Margin="0,0,4,4" />
+                <Button x:Name="m_set_effect_button" Margin="0,0,4,4" Content="Use effect / add stage" />
+                <Button x:Name="m_remove_stage_button" Margin="0,0,8,4" Content="Remove stage" />
+                <CheckBox x:Name="m_all_parameters_check" Margin="0,0,0,4" Content="All stage parameters" />
+            </WrapPanel>
+        </Border>
+
+        <Border DockPanel.Dock="Bottom"
+                Background="{x:Static themes:SdkWorkspaceTheme.Chrome}"
+                BorderBrush="{x:Static themes:SdkWorkspaceTheme.Divider}"
+                BorderThickness="0,1,0,0"
+                Padding="8,4">
+            <TextBlock x:Name="m_status_label"
+                       TextWrapping="Wrap"
+                       Foreground="{x:Static themes:SdkWorkspaceTheme.Text}" />
+        </Border>
+
+        <pg:property_grid_control x:Name="m_grid" />
+    </DockPanel>
+</Window>

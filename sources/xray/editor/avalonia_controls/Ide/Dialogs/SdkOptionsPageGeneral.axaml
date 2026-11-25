@@ -1,0 +1,36 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:themes="using:xray.editor.avalonia_controls.Themes"
+             x:Class="xray.editor.avalonia_controls.Ide.Dialogs.SdkOptionsPageGeneral"
+             Background="{x:Static themes:SdkWorkspaceTheme.Surface}">
+    <ScrollViewer Padding="12">
+        <Grid ColumnDefinitions="130,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" RowSpacing="8" ColumnSpacing="10">
+            <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Text="Near plane:" />
+            <NumericUpDown x:Name="m_near_plane_box" Grid.Row="0" Grid.Column="1" Minimum="0.01" Maximum="100" Increment="0.1" FormatString="0.00" />
+
+            <TextBlock Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Text="Far plane:" />
+            <NumericUpDown x:Name="m_far_plane_box" Grid.Row="1" Grid.Column="1" Minimum="1" Maximum="10000" Increment="10" FormatString="0.0" />
+
+            <TextBlock Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Text="Focus distance:" />
+            <NumericUpDown x:Name="m_focus_distance_box" Grid.Row="2" Grid.Column="1" Minimum="0.1" Maximum="1000" Increment="1" FormatString="0.00" />
+
+            <TextBlock Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Text="Mouse sensitivity:" />
+            <Slider x:Name="m_mouse_sens_slider" Grid.Row="3" Grid.Column="1" Minimum="1" Maximum="100" />
+
+            <TextBlock Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" Text="Selection rate:" />
+            <Slider x:Name="m_transparency_slider" Grid.Row="4" Grid.Column="1" Minimum="1" Maximum="100" />
+
+            <TextBlock Grid.Row="5" Grid.Column="0" VerticalAlignment="Center" Text="Gizmo size:" />
+            <Slider x:Name="m_gizmo_size_slider" Grid.Row="5" Grid.Column="1" Minimum="1" Maximum="100" />
+
+            <CheckBox x:Name="m_enable_postprocess_check" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Content="Enable Postprocess" />
+            <CheckBox x:Name="m_draw_grid_check" Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Content="Draw Grid" />
+
+            <TextBlock Grid.Row="8" Grid.Column="0" VerticalAlignment="Center" Text="Grid step:" />
+            <NumericUpDown x:Name="m_grid_step_box" Grid.Row="8" Grid.Column="1" Minimum="0.1" Maximum="20" Increment="0.5" FormatString="0.0" />
+
+            <TextBlock Grid.Row="9" Grid.Column="0" VerticalAlignment="Center" Text="Grid size:" />
+            <NumericUpDown x:Name="m_grid_size_box" Grid.Row="9" Grid.Column="1" Minimum="5" Maximum="500" Increment="5" FormatString="0" />
+        </Grid>
+    </ScrollViewer>
+</UserControl>

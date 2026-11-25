@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.ComponentModel;
-using xray.editor.controls;
 
 namespace xray.editor_base
 {
@@ -92,7 +91,6 @@ namespace xray.editor_base
         private string _sourceGuidKey = string.Empty;
 
         public Guid m_guid = Guid.NewGuid();
-        public tree_node? m_tree_node_;
 
         [Browsable(false)] public uint Id => _id;
         public uint id() => _id;
@@ -209,11 +207,6 @@ namespace xray.editor_base
                 _parent.check_correct_existance(ref candidate, 1);
 
             _name = candidate;
-            if (m_tree_node_ != null)
-            {
-                m_tree_node_.Name = candidate;
-                m_tree_node_.Text = candidate;
-            }
         }
 
         public void get_all_items(List<ProjectItemBase> result, bool recursive)
@@ -460,15 +453,6 @@ namespace xray.editor_base
                 return;
 
             locked = b;
-            if (m_tree_node_ != null)
-            {
-                int idx = locked ? (int)images16x16.node_group_locked : (int)images16x16.folder_closed;
-                int expIdx = locked ? (int)images16x16.node_group_locked : (int)images16x16.folder_open;
-                m_tree_node_.m_image_index_collapsed = idx;
-                m_tree_node_.m_image_index_expanded = expIdx;
-                m_tree_node_.ImageIndex = m_tree_node_.IsExpanded ? expIdx : idx;
-                m_tree_node_.SelectedImageIndex = m_tree_node_.ImageIndex;
-            }
 
             if (recurse)
             {

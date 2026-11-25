@@ -1,0 +1,11 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="xray.editor.avalonia_controls.animation_playback.animation_item_name_view"
+             x:CompileBindings="False"
+             Background="DarkGray"
+             BorderThickness="1"
+             BorderBrush="Black">
+    <Border Height="{Binding height}">
+        <TextBlock Text="{Binding name}" FontWeight="{Binding font_weight}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+    </Border>
+</UserControl>

@@ -1,0 +1,69 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:pg="using:xray.editor.avalonia_controls.property_grid"
+        xmlns:themes="using:xray.editor.avalonia_controls.Themes"
+        x:Class="xray.editor.avalonia_controls.Editors.SdkModelEditorWindow"
+        Title="Model"
+        Width="920"
+        Height="620"
+        Background="{x:Static themes:SdkWorkspaceTheme.Surface}">
+    <DockPanel LastChildFill="True">
+        <Border DockPanel.Dock="Top"
+                Background="{x:Static themes:SdkWorkspaceTheme.Chrome}"
+                BorderBrush="{x:Static themes:SdkWorkspaceTheme.Divider}"
+                BorderThickness="0,0,0,1"
+                Padding="6,4">
+            <WrapPanel Orientation="Horizontal">
+                <Button x:Name="m_apply_button" Margin="0,0,4,4" Content="Apply preview" />
+                <Button x:Name="m_simulate_button" Margin="0,0,4,4" Content="Simulate preview" />
+                <Button x:Name="m_save_button" Margin="0,0,4,4" Content="Save source" />
+                <Button x:Name="m_revert_button" Margin="0,0,4,4" Content="Revert draft" />
+                <Button x:Name="m_undo_button" Margin="0,0,4,4" Content="Undo" />
+                <Button x:Name="m_redo_button" Margin="0,0,4,4" Content="Redo" />
+                <Button x:Name="m_cancel_button" Margin="0,0,4,4" Content="Cancel loading" />
+                <Button x:Name="m_export_button" Margin="0,0,4,4" Content="Export OBJ" />
+                <Button x:Name="m_dcc_button" Margin="0,0,8,4" Content="DCC source / Reimport" />
+
+                <Button x:Name="m_rigid_button" Margin="0,0,4,4" Content="Rigid body" />
+                <ComboBox x:Name="m_collision_type_box" Width="105" Margin="0,0,4,4" />
+                <Button x:Name="m_add_collision_button" Margin="0,0,4,4" Content="Add collision" />
+                <Button x:Name="m_duplicate_collision_button" Margin="0,0,4,4" Content="Duplicate collision" />
+                <Button x:Name="m_remove_collision_button" Margin="0,0,8,4" Content="Remove collision" />
+
+                <StackPanel x:Name="m_animation_bar"
+                            Orientation="Horizontal"
+                            Spacing="4"
+                            Margin="0,0,0,4"
+                            IsVisible="False">
+                    <TextBlock VerticalAlignment="Center" Text="Animation URI" />
+                    <TextBox x:Name="m_clip_box" Width="260" PlaceholderText="resources/animations/..." />
+                    <Button x:Name="m_play_clip_button" Content="Play clip" />
+                    <Button x:Name="m_pause_clip_button" Content="Pause / resume" />
+                    <Button x:Name="m_stop_clip_button" Content="Bind pose" />
+                </StackPanel>
+            </WrapPanel>
+        </Border>
+
+        <Border DockPanel.Dock="Bottom"
+                Background="{x:Static themes:SdkWorkspaceTheme.Chrome}"
+                BorderBrush="{x:Static themes:SdkWorkspaceTheme.Divider}"
+                BorderThickness="0,1,0,0"
+                Padding="8,4">
+            <TextBlock x:Name="m_status_label"
+                       TextWrapping="Wrap"
+                       Foreground="{x:Static themes:SdkWorkspaceTheme.Text}" />
+        </Border>
+
+        <Grid ColumnDefinitions="200,4,*">
+            <Grid Grid.Column="0" RowDefinitions="*,Auto,Auto" RowSpacing="4">
+                <ListBox x:Name="m_surfaces_list" Grid.Row="0" />
+                <ListBox x:Name="m_collision_list" Grid.Row="1" Height="130" />
+                <ListBox x:Name="m_bones_list" Grid.Row="2" Height="120" IsVisible="False" />
+            </Grid>
+
+            <GridSplitter Grid.Column="1" Background="{x:Static themes:SdkWorkspaceTheme.Divider}" />
+
+            <pg:property_grid_control x:Name="m_grid" Grid.Column="2" />
+        </Grid>
+    </DockPanel>
+</Window>

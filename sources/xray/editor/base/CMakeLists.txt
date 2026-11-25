@@ -15,17 +15,18 @@ elseif(EXISTS "${CMAKE_SOURCE_DIR}/../build/sdk-modernization/nuget")
     set(editor_package_source "${CMAKE_SOURCE_DIR}/../build/sdk-modernization/nuget")
 endif()
 file(WRITE "${XRAY_MANAGED_EDITOR_DIR}/NuGet.Config" "<configuration><packageSources><clear /><add key=\"sdk\" value=\"${editor_package_source}\" /></packageSources></configuration>\n")
-file(GLOB_RECURSE editor_wpf_inputs CONFIGURE_DEPENDS
-    "${CMAKE_SOURCE_DIR}/xray/wpf_controls/*.cs" "${CMAKE_SOURCE_DIR}/xray/wpf_controls/*.xaml"
-    "${CMAKE_SOURCE_DIR}/xray/wpf_controls/*.png" "${CMAKE_SOURCE_DIR}/xray/wpf_controls/*.resx")
+file(GLOB_RECURSE editor_core_inputs CONFIGURE_DEPENDS
+    "${CMAKE_SOURCE_DIR}/xray/editor/core/*.cs")
+file(GLOB_RECURSE editor_avalonia_inputs CONFIGURE_DEPENDS
+    "${CMAKE_SOURCE_DIR}/xray/editor/avalonia_controls/*.cs"
+    "${CMAKE_SOURCE_DIR}/xray/editor/avalonia_controls/*.axaml"
+    "${CMAKE_SOURCE_DIR}/xray/editor/avalonia_controls/*.png")
 add_custom_command(
     OUTPUT "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/xray.editor.base.dll"
         "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/xray.editor.base.runtimeconfig.json"
         "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/xray.editor.base.deps.json"
-        "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/wpf_controls.dll"
-        "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/Xceed.Wpf.Toolkit.dll"
-        "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/WeifenLuo.WinFormsUI.Docking.dll"
-        "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/WeifenLuo.WinFormsUI.Docking.ThemeVS2015.dll"
+        "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/xray.editor.core.dll"
+        "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/xray.editor.avalonia_controls.dll"
     COMMAND ${CMAKE_COMMAND} -E env
         "DOTNET_CLI_HOME=${XRAY_MANAGED_EDITOR_DIR}/cli-home"
         "DOTNET_SKIP_FIRST_TIME_EXPERIENCE=1" "DOTNET_CLI_TELEMETRY_OPTOUT=1"
@@ -36,21 +37,51 @@ add_custom_command(
         --configuration "${CMAKE_BUILD_TYPE}" --output "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}"
         --artifacts-path "${XRAY_MANAGED_EDITOR_DIR}/artifacts"
         --configfile "${XRAY_MANAGED_EDITOR_DIR}/NuGet.Config" --nologo
-    DEPENDS Bridge.cs EditorWorld.cs EditorWorld.Sdk.cs SdkProperties.cs Command.cs CommandEngine.cs SdkNativeResources.cs SdkRenderOptions.cs SdkDcc.cs SdkDccResources.cs SdkDccPublisher.cs SdkDccImport.cs SdkDccWindow.cs WindowIde.Dcc.cs SdkModelSources.cs SdkModelPhysics.cs SdkModelDocument.cs SdkAnimationCollection.cs SdkAnimationPreview.cs SdkAnimationPlayback.cs SdkAnimationViewerGraph.cs SdkAnimationViewerDocument.cs SdkAnimationViewerEditor.cs SdkAnimationCollectionEditor.cs SdkAnimationSetup.cs SdkAnimationGroups.cs SdkAnimationPlacement.cs WindowIde.Animation.cs SdkModelEditor.cs SdkObjExporter.cs WindowIde.Models.cs SdkScene.cs SdkViewport.cs SdkGizmo.cs ProjectViewportGizmos.cs ViewportNavigation.cs ProjectViewportEditing.cs SdkDockLayout.cs
-        SdkWindowStyle.cs SdkViewportHost.cs SdkOutputs.cs SdkSelection.cs SdkAdvancedGizmo.cs SdkResourceReload.cs ProjectViewportOutputs.cs Interfaces.cs Action.cs ActionContinuous.cs ActionShortcut.cs ActionsLayer.cs SdkRuntime.cs
-        InputKeysHolder.cs InputEngine.cs GuiBinder.cs ImageLoader.cs
-        SdkSound.cs WindowIde.Sound.cs SdkParticle.cs WindowIde.Particle.cs SdkDialog.cs WindowIde.Dialog.cs SdkScripting.cs WindowIde.Scripting.cs SdkNavigation.cs WindowIde.Navigation.cs SdkMaterialGraph.cs SdkMaterialPalette.cs SdkMaterialSources.cs SdkMaterialDocument.cs SdkMaterialEditor.cs WindowIde.Materials.cs SdkAssetSources.cs SdkTextureDocument.cs SdkTextureEditor.cs WindowIde.Assets.cs LuaConfig.cs ObjectsLibrary.cs SdkResourcePipeline.cs SdkResourceBrowser.cs ProjectBrowserDialog.cs
+    DEPENDS Bridge.cs EditorWorld.cs EditorWorld.Sdk.cs SdkProperties.cs SdkNativeResources.cs SdkRenderOptions.cs SdkDccResources.cs SdkDccWindow.cs WindowIde.Dcc.cs SdkModelSources.cs SdkModelPhysics.cs SdkAnimationPreview.cs SdkAnimationViewerEditor.cs SdkAnimationCollectionEditor.cs SdkAnimationSetup.cs SdkAnimationGroups.cs SdkAnimationPlacement.cs WindowIde.Animation.cs SdkModelEditor.cs WindowIde.Models.cs SdkScene.cs SdkViewport.cs SdkGizmo.cs ProjectViewportGizmos.cs ViewportNavigation.cs ProjectViewportEditing.cs SdkDockLayout.cs
+        AvaloniaPreviewWindow.cs AvaloniaIdeBridge.cs SdkOutputs.cs SdkSelection.cs SdkAdvancedGizmo.cs SdkResourceReload.cs ProjectViewportOutputs.cs Action.cs ActionContinuous.cs ActionShortcut.cs ActionsLayer.cs SdkRuntime.cs
+        InputKeysHolder.cs InputEngine.cs
+        SdkSound.cs WindowIde.Sound.cs SdkParticle.cs WindowIde.Particle.cs WindowIde.Dialog.cs SdkScripting.cs WindowIde.Scripting.cs SdkNavigation.cs WindowIde.Navigation.cs SdkMaterialSources.cs SdkMaterialEditor.cs WindowIde.Materials.cs SdkAssetSources.cs SdkTextureEditor.cs WindowIde.Assets.cs ObjectsLibrary.cs SdkResourcePipeline.cs SdkResourceBrowser.cs ProjectBrowserDialog.cs
         SdkTerrain.cs SdkWorldTools.cs ProjectItems.cs Project.cs ProjectEditing.cs ProjectClipboard.cs ProjectPropertyAdapters.cs
-        SdkControls.cs ObjectInspectorTab.cs ProjectTab.cs ToolsTab.cs SdkIdePanels.cs WindowIde.cs WindowIde.Projects.cs WindowIde.Editing.cs
-        images/images16x16.png EditorHost.packages.lock.json ${editor_wpf_inputs}
-        "${CMAKE_SOURCE_DIR}/xray/wpf_controls/wpf_controls.csproj"
-        "${CMAKE_SOURCE_DIR}/xray/wpf_controls/packages.lock.json"
+        SdkAvaloniaHost.cs ObjectInspectorTab.cs ProjectTab.cs ToolsTab.cs SdkIdePanels.cs WindowIde.cs WindowIde.Projects.cs WindowIde.Editing.cs
+        images/images16x16.png EditorHost.packages.lock.json ${editor_core_inputs} ${editor_avalonia_inputs}
+        "${CMAKE_SOURCE_DIR}/xray/editor/core/xray.editor.core.csproj"
+        "${CMAKE_SOURCE_DIR}/xray/editor/avalonia_controls/xray.editor.avalonia_controls.csproj"
+        "${CMAKE_SOURCE_DIR}/xray/editor/avalonia_controls/packages.lock.json"
         "${XRAY_MANAGED_EDITOR_DIR}/EditorHost.csproj" "${XRAY_MANAGED_EDITOR_DIR}/NuGet.Config"
     VERBATIM)
 add_custom_target(xray_editor_host ALL DEPENDS
     "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/xray.editor.base.dll"
     "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/xray.editor.base.runtimeconfig.json"
     "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/xray.editor.base.deps.json")
+
+set(XRAY_AVALONIA_TEST_OUT "${XRAY_MANAGED_EDITOR_DIR}/avalonia-tests")
+file(GLOB_RECURSE editor_avalonia_test_inputs CONFIGURE_DEPENDS
+    "${CMAKE_SOURCE_DIR}/xray/editor/avalonia_controls.tests/*.cs")
+add_custom_command(
+    OUTPUT "${XRAY_AVALONIA_TEST_OUT}/xray.editor.avalonia_controls.tests.dll"
+        "${XRAY_AVALONIA_TEST_OUT}/xray.editor.avalonia_controls.tests.runtimeconfig.json"
+        "${XRAY_AVALONIA_TEST_OUT}/xray.editor.avalonia_controls.tests.deps.json"
+    COMMAND ${CMAKE_COMMAND} -E env
+        "DOTNET_CLI_HOME=${XRAY_MANAGED_EDITOR_DIR}/cli-home"
+        "DOTNET_SKIP_FIRST_TIME_EXPERIENCE=1" "DOTNET_CLI_TELEMETRY_OPTOUT=1"
+        "DOTNET_NOLOGO=1" "DOTNET_GENERATE_ASPNET_CERTIFICATE=false" "DOTNET_ADD_GLOBAL_TOOLS_TO_PATH=false"
+        "DOTNET_CLI_WORKLOAD_UPDATE_NOTIFY_DISABLE=1" "MSBuildEnableWorkloadResolver=false"
+        "NUGET_PACKAGES=${XRAY_MANAGED_EDITOR_DIR}/packages"
+        "${XRAY_DOTNET_EXECUTABLE}" build "${CMAKE_SOURCE_DIR}/xray/editor/avalonia_controls.tests/xray.editor.avalonia_controls.tests.csproj"
+        --configuration "${CMAKE_BUILD_TYPE}" --output "${XRAY_AVALONIA_TEST_OUT}"
+        --artifacts-path "${XRAY_MANAGED_EDITOR_DIR}/avalonia-tests-artifacts"
+        --configfile "${XRAY_MANAGED_EDITOR_DIR}/NuGet.Config" --nologo
+    DEPENDS ${editor_avalonia_inputs} ${editor_avalonia_test_inputs} ${editor_core_inputs}
+        "${CMAKE_SOURCE_DIR}/xray/editor/core/xray.editor.core.csproj"
+        "${CMAKE_SOURCE_DIR}/xray/editor/avalonia_controls/xray.editor.avalonia_controls.csproj"
+        "${CMAKE_SOURCE_DIR}/xray/editor/avalonia_controls/packages.lock.json"
+        "${CMAKE_SOURCE_DIR}/xray/editor/avalonia_controls.tests/xray.editor.avalonia_controls.tests.csproj"
+        "${CMAKE_SOURCE_DIR}/xray/editor/avalonia_controls.tests/packages.lock.json"
+        "${XRAY_MANAGED_EDITOR_DIR}/NuGet.Config"
+    VERBATIM)
+add_custom_target(xray_avalonia_headless_tests ALL DEPENDS
+    "${XRAY_AVALONIA_TEST_OUT}/xray.editor.avalonia_controls.tests.dll"
+    "${XRAY_AVALONIA_TEST_OUT}/xray.editor.avalonia_controls.tests.runtimeconfig.json")
 
 set(SOURCES
     "sources/sdk_gizmo.cpp"

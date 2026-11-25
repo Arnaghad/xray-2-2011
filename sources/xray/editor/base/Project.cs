@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Numerics;
 using System.Text;
-using System.Windows.Forms;
 
 namespace xray.editor_base
 {
@@ -55,7 +54,6 @@ namespace xray.editor_base
         public SdkNavMesh? NavMesh { get; set; }
 
         public bool SimulatedSaveFailure { get; set; }
-        public Func<string, DialogResult>? SaveConfirmationPromptOverride { get; set; }
 
         public IReadOnlyList<ProjectItemBase> SelectedItems => _selectedItems;
         public IReadOnlyList<string> RecentProjects => _recentProjects;
@@ -812,17 +810,6 @@ namespace xray.editor_base
             foreach (string path in paths.Append(_pendingRecoveryPath).Where(p => !string.IsNullOrEmpty(p)))
             { SdkVfsManager.EnsurePathWritable(path); if (File.Exists(path)) File.Delete(path); }
             _pendingRecoveryPath = string.Empty;
-        }
-
-        public DialogResult save_confirmation()
-        {
-            if (!save_needed() || empty())
-                return DialogResult.No;
-
-            if (SaveConfirmationPromptOverride != null)
-                return SaveConfirmationPromptOverride(_projectName);
-
-            return MessageBox.Show($"Save changes to project '{_projectName}'?", "X-Ray SDK", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
         }
 
         public IReadOnlyList<string> get_recent_list() => _recentProjects;

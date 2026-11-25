@@ -1,0 +1,103 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="using:xray.editor.avalonia_controls.Ide.Controls"
+             xmlns:themes="using:xray.editor.avalonia_controls.Themes"
+             x:Class="xray.editor.avalonia_controls.Ide.Controls.SdkTreeView"
+             Background="{x:Static themes:SdkWorkspaceTheme.Surface}">
+    <DockPanel LastChildFill="True">
+        <Border x:Name="m_filter_panel"
+                DockPanel.Dock="Top"
+                IsVisible="False"
+                Background="{x:Static themes:SdkWorkspaceTheme.Chrome}"
+                BorderBrush="{x:Static themes:SdkWorkspaceTheme.Divider}"
+                BorderThickness="0,0,0,1"
+                Padding="4,3">
+            <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="4">
+                <TextBlock Grid.Column="0"
+                           VerticalAlignment="Center"
+                           Foreground="{x:Static themes:SdkWorkspaceTheme.Text}"
+                           Text="Filter:" />
+                <TextBox x:Name="m_filter_text_box"
+                         Grid.Column="1"
+                         PlaceholderText="Filter..." />
+                <Button x:Name="m_clear_filter_button"
+                        Grid.Column="2"
+                        Padding="6,2"
+                        Content="×"
+                        ToolTip.Tip="Clear filter" />
+            </Grid>
+        </Border>
+
+        <Border x:Name="m_search_panel"
+                DockPanel.Dock="Bottom"
+                IsVisible="False"
+                Background="{x:Static themes:SdkWorkspaceTheme.Chrome}"
+                BorderBrush="{x:Static themes:SdkWorkspaceTheme.Divider}"
+                BorderThickness="0,1,0,0"
+                Padding="4,4">
+            <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="Auto,*,Auto" RowSpacing="4" ColumnSpacing="4">
+                <TextBlock Grid.Row="0" Grid.Column="0"
+                           VerticalAlignment="Center"
+                           Foreground="{x:Static themes:SdkWorkspaceTheme.Text}"
+                           Text="Search:" />
+                <TextBox x:Name="m_search_text_box"
+                         Grid.Row="0" Grid.Column="1"
+                         PlaceholderText="Search path or name..." />
+                <Button x:Name="m_search_button"
+                        Grid.Row="0" Grid.Column="2"
+                        Padding="8,2"
+                        Content="Search" />
+
+                <TextBlock x:Name="m_result_label"
+                           Grid.Row="1" Grid.Column="0"
+                           VerticalAlignment="Center"
+                           Foreground="{x:Static themes:SdkWorkspaceTheme.MutedText}"
+                           Text="Results: - / -" />
+                <StackPanel Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Right"
+                            Spacing="4">
+                    <Button x:Name="m_search_prev"
+                            Padding="8,2"
+                            IsEnabled="False"
+                            Content="Prev" />
+                    <Button x:Name="m_search_next"
+                            Padding="8,2"
+                            IsEnabled="False"
+                            Content="Next" />
+                    <Button x:Name="m_search_close"
+                            Padding="8,2"
+                            Content="Close" />
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <TreeView x:Name="m_tree_view"
+                  Background="{x:Static themes:SdkWorkspaceTheme.Surface}">
+            <TreeView.Styles>
+                <Style Selector="TreeViewItem" x:DataType="local:SdkTreeNode">
+                    <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
+                    <Setter Property="IsVisible" Value="{Binding IsVisible}" />
+                </Style>
+            </TreeView.Styles>
+            <TreeView.ItemTemplate>
+                <TreeDataTemplate x:DataType="local:SdkTreeNode" ItemsSource="{Binding Children}">
+                    <Border Background="{Binding HighlightBackground}"
+                            CornerRadius="2"
+                            Padding="2,1">
+                        <StackPanel Orientation="Horizontal" Spacing="5">
+                            <Image Source="{Binding CurrentIcon}"
+                                   Width="16"
+                                   Height="16"
+                                   IsVisible="{Binding HasIcon}" />
+                            <TextBlock Text="{Binding Text}"
+                                       VerticalAlignment="Center"
+                                       Foreground="{x:Static themes:SdkWorkspaceTheme.Text}"
+                                       TextDecorations="{Binding LabelDecorations}" />
+                        </StackPanel>
+                    </Border>
+                </TreeDataTemplate>
+            </TreeView.ItemTemplate>
+        </TreeView>
+    </DockPanel>
+</UserControl>

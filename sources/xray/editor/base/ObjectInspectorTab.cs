@@ -1,61 +1,36 @@
 using System;
-using System.Drawing;
-using System.Windows.Forms;
-using WeifenLuo.WinFormsUI.Docking;
-using PropertyHost = xray.editor.wpf_controls.property_grid.host;
+using xray.editor.avalonia_controls.Ide.Panels;
+using xray.editor.avalonia_controls.property_grid;
 
-namespace xray.editor_base
+namespace xray.editor_base;
+
+// C# port of world/sources/object_inspector_tab.{h,cpp}
+public class ObjectInspectorTab : IDisposable
 {
-    // C# port of world/sources/object_inspector_tab.{h,cpp}
-    public class ObjectInspectorTab : DockContent
+    public const string PersistIdentity = SdkObjectInspectorPanel.PersistId;
+    public const string SharedControlsAlias = SdkObjectInspectorPanel.PersistId;
+
+    private readonly SdkObjectInspectorPanel m_view;
+
+    public ObjectInspectorTab()
     {
-        public const string PersistIdentity = "xray.editor.object_inspector_tab";
-        public const string SharedControlsAlias = "xray.editor.controls.item_properties_panel_base";
+        SdkAvaloniaBootstrap.EnsureInitialized();
+        m_view = new SdkObjectInspectorPanel();
+    }
 
-        private readonly PropertyHost m_property_grid_host;
+    public SdkObjectInspectorPanel View => m_view;
+    public property_grid_control PropertyGrid => m_view.PropertyGridControl;
+    public bool Enabled { get => m_view.IsEnabled; set => m_view.IsEnabled = value; }
 
-        public ObjectInspectorTab()
-        {
-            m_property_grid_host = new PropertyHost
-            {
-                Dock = DockStyle.Fill,
-                auto_update = false
-            };
-            SuspendLayout();
-            AutoScaleDimensions = new SizeF(6F, 13F);
-            AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(284, 476);
-            DockAreas = DockAreas.Float | DockAreas.DockLeft | DockAreas.DockRight | DockAreas.DockTop | DockAreas.DockBottom;
-            HideOnClose = true;
-            Controls.Add(m_property_grid_host);
-            Name = "object_inspector_tab";
-            Text = "Object Inspector";
-            TabText = Text;
-            ResumeLayout(false);
-        }
+    public void show_properties(object? obj, bool readOnly = false) => m_view.ShowProperties(obj, readOnly);
+    public void ShowProperties(object? obj) => show_properties(obj, false);
+    public void update() => m_view.UpdateGrid();
+    public void UpdateGrid() => m_view.UpdateGrid();
+    public void reset() => m_view.Reset();
+    public void Reset() => reset();
 
-        protected override string GetPersistString() => PersistIdentity;
-
-        public PropertyHost PropertyGridHost => m_property_grid_host;
-
-        public void show_properties(object? obj, bool readOnly = false)
-        {
-            m_property_grid_host.read_only_mode = readOnly;
-            if (obj is object[] arr)
-                m_property_grid_host.selected_objects = arr;
-            else
-                m_property_grid_host.selected_object = obj;
-        }
-
-        public void ShowProperties(object? obj) => show_properties(obj, false);
-
-        public void update() => m_property_grid_host.update();
-        public void UpdateGrid() => m_property_grid_host.update();
-
-        public void reset()
-        {
-            m_property_grid_host.selected_object = null;
-        }
-        public void Reset() => reset();
+    public void Dispose()
+    {
+        m_view.Reset();
     }
 }

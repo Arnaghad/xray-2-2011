@@ -1,0 +1,48 @@
+<Border xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:hypergraph="using:xray.editor.avalonia_controls.hypergraph"
+        x:Class="xray.editor.avalonia_controls.logic_view.logic_scenes_view"
+        BorderThickness="4"
+        Focusable="True"
+        Height="150"
+        Background="Transparent"
+        BorderBrush="DarkRed">
+    <DockPanel>
+        <Border BorderThickness="0,0,0,4" BorderBrush="DarkRed" DockPanel.Dock="Top" Height="30">
+            <TextBlock Text="S C E N E S" Foreground="Gray" TextAlignment="Center" FontSize="18" Background="LightGray" />
+        </Border>
+        <Thumb x:Name="bottom_grip" DragDelta="on_bottom_drag" DockPanel.Dock="Bottom" Cursor="SizeNorthSouth">
+            <Thumb.Template>
+                <ControlTemplate>
+                    <Border Height="10" Background="LightBlue" BorderBrush="Gray" BorderThickness="3" />
+                </ControlTemplate>
+            </Thumb.Template>
+        </Thumb>
+        <DockPanel DockPanel.Dock="Left">
+            <Border DockPanel.Dock="Top"
+                    x:Name="logic_entity_resource_top"
+                    Height="20"
+                    Width="150"
+                    BorderThickness="2,2,2,0"
+                    Background="LightGray"
+                    Focusable="True"
+                    BorderBrush="SteelBlue">
+                <TextBlock x:Name="item_text" x:FieldModifier="public" Text="ItemName" TextAlignment="Center" />
+            </Border>
+            <Border DockPanel.Dock="Bottom" BorderThickness="2,0,2,2" Background="LightGray" BorderBrush="SteelBlue" />
+        </DockPanel>
+        <hypergraph:hypergraph_control x:Name="logic_hypergraph"
+                                       x:FieldModifier="public"
+                                       top_limit="0"
+                                       left_limit="0"
+                                       need_expand_to_field="true"
+                                       viewport_origin="0,0"
+                                       is_zoomable="false"
+                                       is_panable="false"
+                                       is_nodes_moveable="True"
+                                       is_fix_min_field_size="false"
+                                       field_bounds_inflate="0,0"
+                                       is_grid_enabled="false"
+                                       FontSize="10" />
+    </DockPanel>
+</Border>

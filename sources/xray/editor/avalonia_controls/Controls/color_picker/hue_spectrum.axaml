@@ -1,0 +1,17 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="xray.editor.avalonia_controls.color_picker.hue_spectrum"
+             Width="265"
+             Height="265">
+  <Grid x:Name="m_hue_spectrum" Cursor="Cross" Background="Transparent">
+    <Image Source="avares://xray.editor.avalonia_controls/controls/color_picker/HueCircle.png" />
+    <Path x:Name="m_hue_marker"
+          Margin="50,50,0,0"
+          Stroke="Black"
+          StrokeThickness="2"
+          Cursor="Cross"
+          VerticalAlignment="Top"
+          HorizontalAlignment="Left"
+          Data="M -7,0 A 7,7 0 1 0 7,0 A 7,7 0 1 0 -7,0" />
+  </Grid>
+</UserControl>

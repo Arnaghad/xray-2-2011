@@ -1,0 +1,38 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="xray.editor.avalonia_controls.Controls.SdkAboutView"
+             Background="{DynamicResource SdkCanvasBrush}"
+             FontFamily="{DynamicResource SdkFontFamily}"
+             FontSize="{DynamicResource SdkFontSize}">
+  <Border Padding="24,20"
+          Background="{DynamicResource SdkSurfaceBrush}"
+          BorderBrush="{DynamicResource SdkDividerBrush}"
+          BorderThickness="1">
+    <Grid RowDefinitions="Auto,Auto,Auto,*,Auto" RowSpacing="10">
+      <TextBlock Grid.Row="0"
+                 x:Name="TitleTextBlock"
+                 Text="X-Ray Engine 2.0 SDK"
+                 FontSize="15"
+                 FontWeight="SemiBold"
+                 Foreground="{DynamicResource SdkTextBrush}" />
+
+      <TextBlock Grid.Row="1"
+                 x:Name="BuildTextBlock"
+                 Foreground="{DynamicResource SdkMutedTextBrush}" />
+
+      <TextBlock Grid.Row="2"
+                 x:Name="CopyrightTextBlock"
+                 Text="Copyright (C) GSC Game World 2010"
+                 Foreground="{DynamicResource SdkMutedTextBrush}" />
+
+      <Button Grid.Row="4"
+              x:Name="OkButton"
+              Content="OK"
+              Width="84"
+              HorizontalAlignment="Center"
+              HorizontalContentAlignment="Center"
+              IsDefault="True"
+              IsCancel="True" />
+    </Grid>
+  </Border>
+</UserControl>

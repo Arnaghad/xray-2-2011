@@ -5,8 +5,8 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Numerics;
-using System.Windows;
-using Controls = xray.editor.wpf_controls;
+using Avalonia;
+using CurveTypes = xray.editor.avalonia_controls;
 
 namespace xray.editor_base;
 
@@ -19,7 +19,7 @@ public sealed record SdkLevelAnimationEntry(
 public sealed record SdkCurveKeyframe(
     float TimeSeconds,
     float Value,
-    int KeyType = (int)Controls.float_curve_key_type.linear,
+    int KeyType = (int)CurveTypes.float_curve_key_type.linear,
     Vector2 LeftTangent = default,
     Vector2 RightTangent = default);
 
@@ -119,11 +119,11 @@ public static class SdkAnimationPlacement
         {
             var keys = name == "Time"
                 ? ImmutableArray.Create(
-                    new SdkCurveKeyframe(0f, 0f, (int)Controls.float_curve_key_type.linear),
-                    new SdkCurveKeyframe(maxTime, maxTime, (int)Controls.float_curve_key_type.linear))
+                    new SdkCurveKeyframe(0f, 0f, (int)CurveTypes.float_curve_key_type.linear),
+                    new SdkCurveKeyframe(maxTime, maxTime, (int)CurveTypes.float_curve_key_type.linear))
                 : ImmutableArray.Create(
-                    new SdkCurveKeyframe(0f, def, (int)Controls.float_curve_key_type.linear),
-                    new SdkCurveKeyframe(maxTime, def, (int)Controls.float_curve_key_type.linear));
+                    new SdkCurveKeyframe(0f, def, (int)CurveTypes.float_curve_key_type.linear),
+                    new SdkCurveKeyframe(maxTime, def, (int)CurveTypes.float_curve_key_type.linear));
             builder.Add(new SdkAnimationCurveChannel(name, 0f, maxTime, def, keys));
         }
         return builder.ToImmutable();
@@ -156,7 +156,7 @@ public static class SdkAnimationPlacement
                     {
                         float t = kCfg.ValueExists("time") ? kCfg["time"].GetFloat() : 0f;
                         float val = kCfg.ValueExists("value") ? kCfg["value"].GetFloat() : def;
-                        int kt = kCfg.ValueExists("key_type") ? kCfg["key_type"].GetInt() : (int)Controls.float_curve_key_type.linear;
+                        int kt = kCfg.ValueExists("key_type") ? kCfg["key_type"].GetInt() : (int)CurveTypes.float_curve_key_type.linear;
                         var lt = kCfg.ValueExists("left_tangent") && kCfg["left_tangent"].Type == LuaValueType.Float2
                             ? new Vector2(kCfg["left_tangent"].Float2.X, kCfg["left_tangent"].Float2.Y)
                             : new Vector2(t - 0.05f, val);
@@ -245,34 +245,32 @@ public static class SdkAnimationPlacement
         var k0 = channel.Keys[i];
         var k1 = channel.Keys[i + 1];
 
-        if (k0.KeyType == (int)Controls.float_curve_key_type.step)
+        if (k0.KeyType == (int)CurveTypes.float_curve_key_type.step)
             return k0.Value;
 
         float dt = k1.TimeSeconds - k0.TimeSeconds;
         if (dt <= 1e-6f)
             return k1.Value;
 
-        if (k0.KeyType == (int)Controls.float_curve_key_type.linear &&
-            k1.KeyType == (int)Controls.float_curve_key_type.linear)
+        if (k0.KeyType == (int)CurveTypes.float_curve_key_type.linear &&
+            k1.KeyType == (int)CurveTypes.float_curve_key_type.linear)
         {
             float alpha = (float)((timeSeconds - k0.TimeSeconds) / dt);
             return k0.Value + (k1.Value - k0.Value) * alpha;
         }
 
-        // Delegate non-linear segments to the shared WPF float_curve_evaluator Hermite spline.
-        var fc = new Controls.float_curve(new List<Controls.float_curve_key>
+        // Use the same Hermite evaluator as the curve editor for non-linear segments.
+        var fc = new CurveTypes.float_curve(new List<CurveTypes.float_curve_key>
         {
-            new(new System.Windows.Point(k0.TimeSeconds, k0.Value),
-                (Controls.float_curve_key_type)k0.KeyType,
-                new System.Windows.Point(k0.LeftTangent.X, k0.LeftTangent.Y),
-                new System.Windows.Point(k0.RightTangent.X, k0.RightTangent.Y)),
-            new(new System.Windows.Point(k1.TimeSeconds, k1.Value),
-                (Controls.float_curve_key_type)k1.KeyType,
-                new System.Windows.Point(k1.LeftTangent.X, k1.LeftTangent.Y),
-                new System.Windows.Point(k1.RightTangent.X, k1.RightTangent.Y)),
+            ToEditorKey(k0),
+            ToEditorKey(k1)
         });
-        return (float)new Controls.float_curve_evaluator(fc).evaluate(timeSeconds).Y;
+        return (float)new CurveTypes.float_curve_evaluator(fc).evaluate(timeSeconds).Y;
     }
+
+    private static CurveTypes.float_curve_key ToEditorKey(SdkCurveKeyframe key) =>
+        new(new Point(key.TimeSeconds, key.Value), (CurveTypes.float_curve_key_type)key.KeyType,
+            new Point(key.LeftTangent.X, key.LeftTangent.Y), new Point(key.RightTangent.X, key.RightTangent.Y));
 
     public static (Vector3 Position, Vector3 Rotation, float AnimationTime) EvaluateTransformAt(
         SdkLevelObjectAnimationBinding binding,
@@ -298,7 +296,7 @@ public static class SdkAnimationPlacement
         return (pos, rot, animTime);
     }
 
-    public static IReadOnlyDictionary<string, Controls.float_curve> PopulateCurveEditorPanel(
+    public static IReadOnlyDictionary<string, CurveTypes.float_curve> PopulateCurveEditorPanel(
         AnimationCurveEditorPanel panel,
         ProjectEditing editing,
         ProjectItemObject item)
@@ -315,16 +313,12 @@ public static class SdkAnimationPlacement
         var posGroup = rootGroup.add_group("Position");
         var rotGroup = rootGroup.add_group("Rotation");
         var timeGroup = rootGroup.add_group("Timing");
-        var map = new Dictionary<string, Controls.float_curve>(StringComparer.Ordinal);
+        var map = new Dictionary<string, CurveTypes.float_curve>(StringComparer.Ordinal);
 
-        Controls.float_curve BuildCurve(SdkAnimationCurveChannel ch)
+        CurveTypes.float_curve BuildCurve(SdkAnimationCurveChannel ch)
         {
-            var keys = ch.Keys.Select(k => new Controls.float_curve_key(
-                new System.Windows.Point(k.TimeSeconds, k.Value),
-                (Controls.float_curve_key_type)k.KeyType,
-                new System.Windows.Point(k.LeftTangent.X, k.LeftTangent.Y),
-                new System.Windows.Point(k.RightTangent.X, k.RightTangent.Y))).ToList();
-            var fc = new Controls.float_curve(keys) { name = ch.Name };
+            var keys = ch.Keys.Select(ToEditorKey).ToList();
+            var fc = new CurveTypes.float_curve(keys) { name = ch.Name };
             fc.edit_completed += (_, _) =>
             {
                 var current = ReadFromObject(item);

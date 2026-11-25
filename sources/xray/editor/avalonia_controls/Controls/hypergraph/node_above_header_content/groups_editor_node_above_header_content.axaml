@@ -1,0 +1,16 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:themes="using:xray.editor.avalonia_controls.Themes"
+             x:Class="xray.editor.avalonia_controls.hypergraph.groups_editor_node_above_header_content">
+    <DockPanel>
+        <NumericUpDown x:Name="m_up_down"
+                       DockPanel.Dock="Top"
+                       Value="0.0"
+                       Minimum="0.0"
+                       Maximum="10000.0"
+                       Increment="0.1"
+                       FormatString="0.00"
+                       Background="{x:Static themes:SdkWorkspaceTheme.Surface}" />
+        <Path Data="M 0,0 L 0,20" HorizontalAlignment="Center" Stroke="Black" StrokeThickness="3" />
+    </DockPanel>
+</UserControl>

@@ -1,0 +1,28 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:converters="clr-namespace:xray.editor.avalonia_controls.converters"
+                    xmlns:panels="clr-namespace:xray.editor.avalonia_controls.panels"
+                    xmlns:type_editors="clr-namespace:xray.editor.avalonia_controls.type_editors">
+  <converters:number_to_double_converter x:Key="number_to_double_converter" />
+
+  <ControlTheme x:Key="{x:Type type_editors:number_editor}" TargetType="type_editors:number_editor">
+    <Setter Property="Template">
+      <ControlTemplate x:DataType="type_editors:number_editor">
+        <panels:single_place_panel>
+          <ProgressBar VerticalAlignment="Stretch"
+                       HorizontalAlignment="Stretch"
+                       BorderThickness="0"
+                       IsVisible="False"
+                       Opacity="0.5"
+                       IsTabStop="False"
+                       Value="{TemplateBinding value, Converter={StaticResource number_to_double_converter}}"
+                       Minimum="{TemplateBinding min_value, Converter={StaticResource number_to_double_converter}}"
+                       Maximum="{TemplateBinding max_value, Converter={StaticResource number_to_double_converter}}" />
+          <Border>
+            <TextBox Name="PART_text_box" Background="Transparent" Focusable="True" />
+          </Border>
+        </panels:single_place_panel>
+      </ControlTemplate>
+    </Setter>
+  </ControlTheme>
+</ResourceDictionary>

@@ -1,0 +1,28 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="using:xray.editor.avalonia_controls.Ide.Panels"
+             xmlns:themes="using:xray.editor.avalonia_controls.Themes"
+             x:Class="xray.editor.avalonia_controls.Ide.Panels.SdkTriangulationTesterPanel"
+             Background="{x:Static themes:SdkWorkspaceTheme.Surface}">
+    <DockPanel LastChildFill="True">
+        <Border DockPanel.Dock="Top"
+                Background="{x:Static themes:SdkWorkspaceTheme.Chrome}"
+                BorderBrush="{x:Static themes:SdkWorkspaceTheme.Divider}"
+                BorderThickness="0,0,0,1"
+                Padding="4,3">
+            <WrapPanel Orientation="Horizontal">
+                <Button x:Name="m_open_button" Margin="0,0,6,0" Content="Load Vertices" />
+                <Button x:Name="m_save_button" Margin="0,0,6,0" Content="Save Vertices" />
+                <ComboBox x:Name="m_triangulation_type" Margin="0,0,6,0" SelectedIndex="0">
+                    <ComboBoxItem Content="Regular" />
+                    <ComboBoxItem Content="Constrained" />
+                </ComboBox>
+                <CheckBox x:Name="m_show_bounding_triangle" Margin="0,0,6,0" Content="Show bounding triangle" />
+                <Button x:Name="m_clear_vertices_button" Margin="0,0,6,0" Content="Clear Vertices" />
+                <CheckBox x:Name="m_show_errors" Content="Visualize Errors" />
+            </WrapPanel>
+        </Border>
+
+        <local:SdkTriangulationCanvas x:Name="m_canvas" />
+    </DockPanel>
+</UserControl>

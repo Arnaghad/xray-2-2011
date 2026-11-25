@@ -1,0 +1,24 @@
+<value:value_editor_base xmlns="https://github.com/avaloniaui"
+                         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                         xmlns:value="clr-namespace:xray.editor.avalonia_controls.property_editors.value"
+                         xmlns:converters="clr-namespace:xray.editor.avalonia_controls.converters"
+                         x:Class="xray.editor.avalonia_controls.property_editors.value.color_editor"
+                         x:CompileBindings="False">
+  <value:value_editor_base.Resources>
+    <converters:color_to_brush_converter x:Key="color_to_brush_converter" />
+    <converters:color_to_string_converter x:Key="color_to_string_converter" />
+  </value:value_editor_base.Resources>
+  <DockPanel>
+    <Button DockPanel.Dock="Left"
+            Width="18"
+            Height="18"
+            Padding="1"
+            ToolTip.Tip="Pick Color"
+            Name="m_pick_color_button">
+      <Rectangle Width="14"
+                 Height="14"
+                 Fill="{Binding value, Converter={StaticResource color_to_brush_converter}}" />
+    </Button>
+    <TextBlock Margin="5,0,0,0" Name="m_multivalue_text_block" VerticalAlignment="Center" />
+  </DockPanel>
+</value:value_editor_base>

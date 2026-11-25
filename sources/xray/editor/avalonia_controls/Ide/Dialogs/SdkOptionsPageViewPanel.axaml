@@ -1,0 +1,13 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:themes="using:xray.editor.avalonia_controls.Themes"
+             x:Class="xray.editor.avalonia_controls.Ide.Dialogs.SdkOptionsPageViewPanel"
+             Background="{x:Static themes:SdkWorkspaceTheme.Surface}">
+    <Grid Margin="12" ColumnDefinitions="130,*" RowDefinitions="Auto,Auto" RowSpacing="8" ColumnSpacing="10">
+        <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Text="Near plane:" />
+        <NumericUpDown x:Name="m_near_plane_box" Grid.Row="0" Grid.Column="1" Minimum="0.01" Maximum="100" Increment="0.1" FormatString="0.00" />
+
+        <TextBlock Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Text="Far plane:" />
+        <NumericUpDown x:Name="m_far_plane_box" Grid.Row="1" Grid.Column="1" Minimum="1" Maximum="10000" Increment="10" FormatString="0.0" />
+    </Grid>
+</UserControl>

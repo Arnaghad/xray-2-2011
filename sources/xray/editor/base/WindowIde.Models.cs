@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Windows.Forms;
+using Avalonia.Threading;
 namespace xray.editor_base;
 public partial class WindowIde {
     private readonly List<SdkModelEditor> modelEditors=new();
@@ -26,7 +26,7 @@ public partial class WindowIde {
         var outputs=ViewportOutputs;ProjectViewportOutputs.Lease? preview=null;
         void Preview(ulong handle,bool simulate){if(outputs==null)throw new InvalidOperationException("Native model previews are unavailable.");var next=outputs.PreviewPreparedModel(handle,simulate:simulate);if(preview is {Closing:false})outputs.Close(preview);preview=next;}
         var editor=new SdkModelEditor(new SdkModelDocument(uri,ModelAuthoring),handle=>Preview(handle,false),handle=>Preview(handle,true));
-        SdkModelPlayback? playback=null;var animationClock=new System.Diagnostics.Stopwatch();var animationTimer=new Timer{Interval=33};
+        SdkModelPlayback? playback=null;var animationClock=new System.Diagnostics.Stopwatch();var animationTimer=new DispatcherTimer{Interval=TimeSpan.FromMilliseconds(33)};
         void Bind(){animationClock.Reset();playback?.Dispose();playback=null;if(preview is {Closing:false,Status.State:1} && assetScene is ISdkSkeletalOutputScene skeletal && editor.Document.Geometry.Bones.Length>0)skeletal.PoseOutput(preview.Settings.Id,SdkSkeletalPose.Bind(editor.Document.Geometry));}
         editor.AnimationRequested+=clip=>{
             if(RuntimeActive || ResourcePipeline?.Backend is not ISdkDccResources resources || assetScene is not ISdkSkeletalOutputScene)throw new InvalidOperationException("Stop runtime before previewing a skeletal clip.");
@@ -34,8 +34,8 @@ public partial class WindowIde {
             try{editor.ApplyDraftPreview();}catch{next.Dispose();throw;}playback?.Dispose();playback=next;animationClock.Restart();animationTimer.Start();
         };
         editor.AnimationPaused+=()=>{if(animationClock.IsRunning)animationClock.Stop();else if(playback!=null)animationClock.Start();};editor.AnimationStopped+=Bind;
-        animationTimer.Tick+=(_,_)=>{if(playback==null || preview is not {Closing:false,Status.State:1} || !animationClock.IsRunning)return;try{float seconds=playback.Duration>0?(float)(animationClock.Elapsed.TotalSeconds%playback.Duration):0;((ISdkSkeletalOutputScene)assetScene!).PoseOutput(preview.Settings.Id,playback.Sample(seconds));editor.Status.Text=$"Skeletal clip: {seconds:F2} / {playback.Duration:F2} seconds";}catch(Exception error){animationClock.Stop();editor.Status.Text="Animation preview failed: "+error.Message;}};
-        editor.Disposed+=(_,_)=>{animationTimer.Dispose();playback?.Dispose();};
+        animationTimer.Tick+=(_,_)=>{if(playback==null || preview is not {Closing:false,Status.State:1} || !animationClock.IsRunning)return;try{float seconds=playback.Duration>0?(float)(animationClock.Elapsed.TotalSeconds%playback.Duration):0;((ISdkSkeletalOutputScene)assetScene!).PoseOutput(preview.Settings.Id,playback.Sample(seconds));editor.SetStatus($"Skeletal clip: {seconds:F2} / {playback.Duration:F2} seconds");}catch(Exception error){animationClock.Stop();editor.SetStatus("Animation preview failed: "+error.Message);}};
+        editor.Disposed+=(_,_)=>{animationTimer.Stop();playback?.Dispose();};
         editor.DccRequested+=()=>ShowDccSource(uri);
         modelEditors.Add(editor);editor.Disposed+=(_,_)=>{modelEditors.Remove(editor);if(preview is {Closing:false})outputs!.Close(preview);};if(!BackgroundMode)editor.Show(this);SetStatus("Model source opened: "+uri);return editor;
     }
@@ -58,5 +58,5 @@ public partial class WindowIde {
         if(Project.SessionId!=session)throw new OperationCanceledException("Project changed during OBJ export.");SdkObjExporter.Save(file,instances);SetStatus("OBJ exported: "+file);
         }finally{exportingModels=false;Commands.EditingEnabled=editing;}
     }
-    private void ShowObjExport(bool selection){if(BackgroundMode)return;using var dialog=new SaveFileDialog{Title=selection?"Export selected models":"Export project models",Filter="Wavefront OBJ|*.obj",FileName=Project.Name+".obj"};if(dialog.ShowDialog(this)==DialogResult.OK)RunProjectAction(()=>ExportObj(dialog.FileName,selection));}
+    private void ShowObjExport(bool selection){if(BackgroundMode)return;string? file=SdkAvaloniaBootstrap.PickSaveFile(selection?"Export selected models":"Export project models","Wavefront OBJ|*.obj",defaultFileName:Project.Name+".obj",defaultExtension:"obj",anchor:ObjectInspectorTab.View);if(!string.IsNullOrEmpty(file))RunProjectAction(()=>ExportObj(file,selection));}
 }

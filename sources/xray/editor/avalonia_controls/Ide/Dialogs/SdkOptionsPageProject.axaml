@@ -1,0 +1,10 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:themes="using:xray.editor.avalonia_controls.Themes"
+             x:Class="xray.editor.avalonia_controls.Ide.Dialogs.SdkOptionsPageProject"
+             Background="{x:Static themes:SdkWorkspaceTheme.Surface}">
+    <StackPanel Margin="12">
+        <CheckBox x:Name="m_track_active_item_check"
+                  Content="Track active item in project tree" />
+    </StackPanel>
+</UserControl>

@@ -1,0 +1,107 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="using:xray.editor.avalonia_controls.Ide.Dialogs"
+             xmlns:themes="using:xray.editor.avalonia_controls.Themes"
+             x:Class="xray.editor.avalonia_controls.Ide.Dialogs.SdkPropertyConnectionView"
+             Background="{x:Static themes:SdkWorkspaceTheme.Surface}">
+    <DockPanel LastChildFill="True">
+        <Border DockPanel.Dock="Top"
+                Background="{x:Static themes:SdkWorkspaceTheme.Surface}"
+                BorderBrush="{x:Static themes:SdkWorkspaceTheme.Divider}"
+                BorderThickness="0,0,0,1">
+            <Menu>
+                <MenuItem Header="Menu">
+                    <MenuItem Header="View Mode">
+                        <MenuItem x:Name="m_details_mode_item" Header="Details" IsChecked="True" ToggleType="Radio" />
+                        <MenuItem x:Name="m_list_mode_item" Header="List" ToggleType="Radio" />
+                    </MenuItem>
+                </MenuItem>
+                <MenuItem Header="Left">
+                    <MenuItem x:Name="m_left_grab_menu" Header="Grab selected" />
+                    <MenuItem x:Name="m_left_clear_menu" Header="Clear" />
+                </MenuItem>
+                <MenuItem Header="Right">
+                    <MenuItem x:Name="m_right_grab_menu" Header="Grab selected" />
+                    <MenuItem x:Name="m_right_clear_menu" Header="Clear" />
+                </MenuItem>
+            </Menu>
+        </Border>
+
+        <Border DockPanel.Dock="Top"
+                Background="{x:Static themes:SdkWorkspaceTheme.Chrome}"
+                BorderBrush="{x:Static themes:SdkWorkspaceTheme.Divider}"
+                BorderThickness="0,0,0,1"
+                Padding="8,5">
+            <Grid ColumnDefinitions="*,Auto,Auto,Auto,*">
+                <TextBlock x:Name="m_left_label"
+                           Grid.Column="0"
+                           VerticalAlignment="Center"
+                           FontWeight="SemiBold"
+                           TextTrimming="CharacterEllipsis"
+                           Text="None" />
+                <Button x:Name="m_grab_left_btn" Grid.Column="1" Margin="4,0" Content="grab left" />
+                <Button x:Name="m_swap_btn" Grid.Column="2" Margin="4,0" Content="&lt;--&gt;" />
+                <Button x:Name="m_grab_right_btn" Grid.Column="3" Margin="4,0" Content="grab right" />
+                <TextBlock x:Name="m_right_label"
+                           Grid.Column="4"
+                           VerticalAlignment="Center"
+                           TextAlignment="Right"
+                           FontWeight="SemiBold"
+                           TextTrimming="CharacterEllipsis"
+                           Text="None" />
+            </Grid>
+        </Border>
+
+        <Border DockPanel.Dock="Bottom"
+                Background="{x:Static themes:SdkWorkspaceTheme.Chrome}"
+                BorderBrush="{x:Static themes:SdkWorkspaceTheme.Divider}"
+                BorderThickness="0,1,0,0"
+                Padding="8,6">
+            <StackPanel Spacing="6">
+                <TextBlock x:Name="m_status_label" IsVisible="False" TextWrapping="Wrap" />
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="8">
+                    <Button x:Name="m_disconnect_btn" Width="102" Content="Disconnect" />
+                    <Button x:Name="m_connect_btn" Width="102" Content="Connect" />
+                    <Button x:Name="m_close_btn" Width="102" Content="Close" />
+                </StackPanel>
+            </StackPanel>
+        </Border>
+
+        <Grid ColumnDefinitions="*,4,*">
+            <Grid.Styles>
+                <Style Selector="ListBoxItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                </Style>
+            </Grid.Styles>
+            <ListBox x:Name="m_left_props_list" Grid.Column="0">
+                <ListBox.ItemTemplate>
+                    <DataTemplate x:DataType="local:SdkConnectableProperty">
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                            <TextBlock Grid.Column="0" Text="{Binding Name}" />
+                            <TextBlock Grid.Column="1"
+                                       Text="{Binding DataType}"
+                                       IsVisible="{Binding ShowDetails}"
+                                       Foreground="{x:Static themes:SdkWorkspaceTheme.MutedText}" />
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+            <GridSplitter Grid.Column="1" Background="{x:Static themes:SdkWorkspaceTheme.Divider}" />
+
+            <ListBox x:Name="m_right_props_list" Grid.Column="2">
+                <ListBox.ItemTemplate>
+                    <DataTemplate x:DataType="local:SdkConnectableProperty">
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                            <TextBlock Grid.Column="0" Text="{Binding Name}" />
+                            <TextBlock Grid.Column="1"
+                                       Text="{Binding DataType}"
+                                       IsVisible="{Binding ShowDetails}"
+                                       Foreground="{x:Static themes:SdkWorkspaceTheme.MutedText}" />
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
+    </DockPanel>
+</UserControl>

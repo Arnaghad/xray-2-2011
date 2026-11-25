@@ -1,0 +1,46 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:property_grid="clr-namespace:xray.editor.avalonia_controls.property_grid">
+  <ControlTheme x:Key="{x:Type property_grid:property_grid_item}" TargetType="property_grid:property_grid_item">
+    <Setter Property="Template">
+      <ControlTemplate x:DataType="property_grid:property_grid_item" x:CompileBindings="False">
+        <StackPanel>
+          <Border Name="PART_item_property_editor"
+                  Classes="pgRow"
+                  BorderThickness="0,0,0,1"
+                  MinHeight="25">
+            <Border.Styles>
+              <Style Selector="Border.pgRow">
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="BorderBrush" Value="{DynamicResource SdkGridLineBrush}" />
+              </Style>
+              <Style Selector="Border.pgRow:pointerover">
+                <Setter Property="Background" Value="{DynamicResource SdkHoverBrush}" />
+              </Style>
+              <Style Selector="Border.pgRow:focus-within">
+                <Setter Property="BorderBrush" Value="{DynamicResource SdkAccentBrush}" />
+              </Style>
+              <Style Selector="Border.pgRow.selected">
+                <Setter Property="Background" Value="{DynamicResource SdkSelectionBrush}" />
+              </Style>
+            </Border.Styles>
+            <DockPanel>
+              <ContentPresenter DockPanel.Dock="Left" Content="{TemplateBinding left_pocket}" />
+              <Grid DockPanel.Dock="Left" Width="24">
+                <ToggleButton Theme="{StaticResource SdkDisclosure}"
+                              Margin="1,0"
+                              Padding="0"
+                              IsChecked="{Binding is_expanded, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                              IsVisible="{TemplateBinding is_expand_visible}" />
+              </Grid>
+              <ContentPresenter DockPanel.Dock="Right" Content="{TemplateBinding right_pocket}" />
+              <ContentPresenter Content="{TemplateBinding Header}" />
+            </DockPanel>
+          </Border>
+          <ItemsPresenter Name="PART_ItemsPresenter"
+                          IsVisible="{TemplateBinding is_expanded}" />
+        </StackPanel>
+      </ControlTemplate>
+    </Setter>
+  </ControlTheme>
+</ResourceDictionary>

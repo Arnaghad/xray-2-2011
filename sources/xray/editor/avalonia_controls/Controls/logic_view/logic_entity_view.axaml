@@ -1,0 +1,96 @@
+<Border xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:hypergraph="using:xray.editor.avalonia_controls.hypergraph"
+        x:Class="xray.editor.avalonia_controls.logic_view.logic_entity_view"
+        x:Name="parent_control"
+        BorderThickness="4"
+        BorderBrush="DarkGray"
+        Focusable="True"
+        Height="150"
+        Background="Transparent">
+    <DockPanel>
+        <Thumb x:Name="bottom_grip" DragDelta="on_bottom_drag" DockPanel.Dock="Bottom" Cursor="SizeNorthSouth">
+            <Thumb.Template>
+                <ControlTemplate>
+                    <Border Height="10" Background="LightBlue" BorderBrush="Gray" BorderThickness="3" />
+                </ControlTemplate>
+            </Thumb.Template>
+        </Thumb>
+        <DockPanel DockPanel.Dock="Left">
+            <Border DockPanel.Dock="Top"
+                    x:Name="logic_entity_resource_top"
+                    Height="20"
+                    Width="150"
+                    BorderThickness="2,2,2,0"
+                    Background="LightGray"
+                    Focusable="True"
+                    BorderBrush="SteelBlue">
+                <TextBlock x:Name="item_text" x:FieldModifier="public" Text="ItemName" TextAlignment="Center" />
+            </Border>
+            <Border DockPanel.Dock="Top"
+                    Width="150"
+                    Height="26"
+                    BorderBrush="SteelBlue"
+                    BorderThickness="2"
+                    Background="SteelBlue">
+                <Button HorizontalContentAlignment="Stretch" Click="on_add_behaviour_button_clicked">
+                    <TextBlock Text="Add Behaviour" TextAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" />
+                </Button>
+            </Border>
+            <Border DockPanel.Dock="Bottom"
+                    Height="30"
+                    Width="150"
+                    BorderThickness="2,0,2,2"
+                    Background="LightGray"
+                    Focusable="True"
+                    BorderBrush="SteelBlue">
+                <DockPanel>
+                    <TextBlock Height="20" DockPanel.Dock="Left" Text="StartEvent: " VerticalAlignment="Center" TextAlignment="Center" />
+                    <ComboBox VerticalAlignment="Center"
+                              x:Name="start_event_combobox"
+                              x:FieldModifier="public"
+                              DropDownClosed="start_event_combo_box_drop_down_closed"
+                              SelectionChanged="on_start_event_combobox_selection_changed" />
+                </DockPanel>
+            </Border>
+            <Border DockPanel.Dock="Bottom"
+                    Width="150"
+                    BorderBrush="SteelBlue"
+                    BorderThickness="2"
+                    Background="SteelBlue">
+                <Button VerticalContentAlignment="Stretch"
+                        HorizontalContentAlignment="Stretch"
+                        x:Name="logic_entity_resource_button"
+                        x:FieldModifier="public"
+                        Click="on_select_object_button_clicked">
+                    <Border x:Name="logic_entity_resource_button_border"
+                            x:FieldModifier="public"
+                            BorderThickness="3"
+                            Background="LightGray"
+                            BorderBrush="SteelBlue">
+                        <TextBlock x:Name="selected_resource"
+                                   x:FieldModifier="public"
+                                   Text="Selected Resource: none"
+                                   TextAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   TextWrapping="Wrap" />
+                    </Border>
+                </Button>
+            </Border>
+        </DockPanel>
+
+        <hypergraph:hypergraph_control x:Name="logic_hypergraph"
+                                       x:FieldModifier="public"
+                                       top_limit="0"
+                                       left_limit="0"
+                                       need_expand_to_field="true"
+                                       viewport_origin="0,0"
+                                       is_zoomable="false"
+                                       is_panable="false"
+                                       is_nodes_moveable="True"
+                                       is_fix_min_field_size="false"
+                                       field_bounds_inflate="0,0"
+                                       is_grid_enabled="false"
+                                       FontSize="10" />
+    </DockPanel>
+</Border>

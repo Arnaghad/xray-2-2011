@@ -1,0 +1,26 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:item="clr-namespace:xray.editor.avalonia_controls.property_editors.item">
+  <ControlTheme x:Key="{x:Type item:material_stage_editor}" TargetType="item:material_stage_editor">
+    <Setter Property="Template">
+      <ControlTemplate x:DataType="item:material_stage_editor" x:CompileBindings="False">
+        <Grid MinHeight="22">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" SharedSizeGroup="PropertyName" />
+            <ColumnDefinition Width="5" />
+            <ColumnDefinition Width="*" />
+          </Grid.ColumnDefinitions>
+
+          <Border Grid.Column="0" Padding="4,0,6,0" Background="{DynamicResource SdkSurfaceBrush}">
+            <StackPanel Orientation="Horizontal" Name="item_text_panel">
+              <Control Width="{TemplateBinding item_indent}" Focusable="False" />
+              <TextBlock Text="{Binding name}" VerticalAlignment="Center" />
+            </StackPanel>
+          </Border>
+
+          <GridSplitter Grid.Column="1" Width="5" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="{DynamicResource SdkDividerBrush}" />
+        </Grid>
+      </ControlTemplate>
+    </Setter>
+  </ControlTheme>
+</ResourceDictionary>

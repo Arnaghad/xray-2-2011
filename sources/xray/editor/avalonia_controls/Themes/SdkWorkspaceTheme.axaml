@@ -1,0 +1,67 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <FontFamily x:Key="SdkFontFamily">Segoe UI</FontFamily>
+  <x:Double x:Key="SdkFontSize">12</x:Double>
+
+  <ResourceDictionary.ThemeDictionaries>
+    <ResourceDictionary x:Key="Default">
+      <Color x:Key="SdkSurfaceColor">#FFFFFF</Color>
+      <Color x:Key="SdkCanvasColor">#F5F8FB</Color>
+      <Color x:Key="SdkChromeColor">#EAF0F5</Color>
+      <Color x:Key="SdkDividerColor">#D6E0E9</Color>
+      <Color x:Key="SdkGridLineColor">#E3EAF0</Color>
+      <Color x:Key="SdkAxisColor">#8093A5</Color>
+      <Color x:Key="SdkTextColor">#233447</Color>
+      <Color x:Key="SdkMutedTextColor">#4D6175</Color>
+      <Color x:Key="SdkAccentColor">#176B80</Color>
+      <Color x:Key="SdkHoverColor">#EEF5F8</Color>
+      <Color x:Key="SdkSelectionColor">#D9EBF2</Color>
+      <Color x:Key="SdkSelectionTextColor">#183B4C</Color>
+      <Color x:Key="SdkWarningColor">#AB413F</Color>
+
+      <SolidColorBrush x:Key="SdkSurfaceBrush" Color="{StaticResource SdkSurfaceColor}" />
+      <SolidColorBrush x:Key="SdkCanvasBrush" Color="{StaticResource SdkCanvasColor}" />
+      <SolidColorBrush x:Key="SdkChromeBrush" Color="{StaticResource SdkChromeColor}" />
+      <SolidColorBrush x:Key="SdkDividerBrush" Color="{StaticResource SdkDividerColor}" />
+      <SolidColorBrush x:Key="SdkGridLineBrush" Color="{StaticResource SdkGridLineColor}" />
+      <SolidColorBrush x:Key="SdkAxisBrush" Color="{StaticResource SdkAxisColor}" />
+      <SolidColorBrush x:Key="SdkTextBrush" Color="{StaticResource SdkTextColor}" />
+      <SolidColorBrush x:Key="SdkMutedTextBrush" Color="{StaticResource SdkMutedTextColor}" />
+      <SolidColorBrush x:Key="SdkAccentBrush" Color="{StaticResource SdkAccentColor}" />
+      <SolidColorBrush x:Key="SdkHoverBrush" Color="{StaticResource SdkHoverColor}" />
+      <SolidColorBrush x:Key="SdkSelectionBrush" Color="{StaticResource SdkSelectionColor}" />
+      <SolidColorBrush x:Key="SdkSelectionTextBrush" Color="{StaticResource SdkSelectionTextColor}" />
+      <SolidColorBrush x:Key="SdkWarningBrush" Color="{StaticResource SdkWarningColor}" />
+    </ResourceDictionary>
+
+    <ResourceDictionary x:Key="Dark">
+      <Color x:Key="SdkSurfaceColor">#000000</Color>
+      <Color x:Key="SdkCanvasColor">#000000</Color>
+      <Color x:Key="SdkChromeColor">#000000</Color>
+      <Color x:Key="SdkDividerColor">#FFFFFF</Color>
+      <Color x:Key="SdkGridLineColor">#808080</Color>
+      <Color x:Key="SdkAxisColor">#FFFFFF</Color>
+      <Color x:Key="SdkTextColor">#FFFFFF</Color>
+      <Color x:Key="SdkMutedTextColor">#FFFFFF</Color>
+      <Color x:Key="SdkAccentColor">#1AEBFF</Color>
+      <Color x:Key="SdkHoverColor">#1AEBFF</Color>
+      <Color x:Key="SdkSelectionColor">#1AEBFF</Color>
+      <Color x:Key="SdkSelectionTextColor">#000000</Color>
+      <Color x:Key="SdkWarningColor">#FFFF00</Color>
+
+      <SolidColorBrush x:Key="SdkSurfaceBrush" Color="{StaticResource SdkSurfaceColor}" />
+      <SolidColorBrush x:Key="SdkCanvasBrush" Color="{StaticResource SdkCanvasColor}" />
+      <SolidColorBrush x:Key="SdkChromeBrush" Color="{StaticResource SdkChromeColor}" />
+      <SolidColorBrush x:Key="SdkDividerBrush" Color="{StaticResource SdkDividerColor}" />
+      <SolidColorBrush x:Key="SdkGridLineBrush" Color="{StaticResource SdkGridLineColor}" />
+      <SolidColorBrush x:Key="SdkAxisBrush" Color="{StaticResource SdkAxisColor}" />
+      <SolidColorBrush x:Key="SdkTextBrush" Color="{StaticResource SdkTextColor}" />
+      <SolidColorBrush x:Key="SdkMutedTextBrush" Color="{StaticResource SdkMutedTextColor}" />
+      <SolidColorBrush x:Key="SdkAccentBrush" Color="{StaticResource SdkAccentColor}" />
+      <SolidColorBrush x:Key="SdkHoverBrush" Color="{StaticResource SdkHoverColor}" />
+      <SolidColorBrush x:Key="SdkSelectionBrush" Color="{StaticResource SdkSelectionColor}" />
+      <SolidColorBrush x:Key="SdkSelectionTextBrush" Color="{StaticResource SdkSelectionTextColor}" />
+      <SolidColorBrush x:Key="SdkWarningBrush" Color="{StaticResource SdkWarningColor}" />
+    </ResourceDictionary>
+  </ResourceDictionary.ThemeDictionaries>
+</ResourceDictionary>

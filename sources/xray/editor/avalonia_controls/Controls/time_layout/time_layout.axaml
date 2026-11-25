@@ -1,0 +1,77 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="using:xray.editor.avalonia_controls"
+             xmlns:themes="using:xray.editor.avalonia_controls.Themes"
+             x:Class="xray.editor.avalonia_controls.time_layout"
+             x:Name="time_layout_control"
+             PointerWheelChanged="time_layout_control_mouse_wheel">
+    <UserControl.Resources>
+        <local:time_layout_item_template_selector x:Key="time_layout_item_template_selector" />
+    </UserControl.Resources>
+
+    <ScrollViewer x:Name="horizontal_scroll"
+                  HorizontalScrollBarVisibility="Hidden"
+                  VerticalScrollBarVisibility="Disabled"
+                  ScrollChanged="horizontal_scroll_scroll_changed">
+        <DockPanel x:Name="main_dock_panel"
+                   Background="{x:Static themes:SdkWorkspaceTheme.Canvas}"
+                   HorizontalAlignment="Left"
+                   LastChildFill="True"
+                   PointerPressed="dock_panel_mouse_left_button_down"
+                   PointerMoved="dock_panel_mouse_move"
+                   PointerReleased="dock_panel_mouse_left_button_up">
+            <DockPanel x:Name="parent_node_panel"
+                       DockPanel.Dock="Top"
+                       Background="#5F9EA0"
+                       HorizontalAlignment="Left"
+                       LastChildFill="True"
+                       MinWidth="40">
+                <TextBlock Text="0" DockPanel.Dock="Left" TextAlignment="Left" Padding="4,2" Foreground="White" />
+                <Border x:Name="parent_node_time_layout_right_edge"
+                        DockPanel.Dock="Right"
+                        Width="10"
+                        Background="Transparent"
+                        Cursor="SizeWestEast"
+                        PointerPressed="parent_node_time_layout_right_edge_mouse_left_button_down" />
+                <TextBox x:Name="parent_length"
+                         DockPanel.Dock="Right"
+                         BorderThickness="0"
+                         Background="Transparent"
+                         TextAlignment="Right"
+                         Padding="4,2"
+                         Foreground="White"
+                         KeyDown="parent_length_key_down"
+                         LostFocus="parent_length_lost_focus"
+                         DoubleTapped="parent_length_mouse_double_click" />
+                <TextBlock x:Name="m_parent_text_block"
+                           TextAlignment="Center"
+                           VerticalAlignment="Center"
+                           Foreground="White"
+                           FontWeight="SemiBold" />
+            </DockPanel>
+
+            <local:ruler x:Name="time_layout_ruler"
+                         Height="20"
+                         DockPanel.Dock="Bottom" />
+
+            <ScrollViewer VerticalScrollBarVisibility="Hidden"
+                          HorizontalScrollBarVisibility="Disabled">
+                <Grid x:Name="items_grid_panel"
+                      Background="Transparent"
+                      PointerPressed="items_grid_panel_preview_mouse_left_button_down"
+                      PointerMoved="items_grid_panel_preview_mouse_move"
+                      PointerReleased="items_grid_panel_preview_mouse_left_button_up">
+                    <Canvas ZIndex="5" IsHitTestVisible="False">
+                        <Path x:Name="selection_path"
+                              Stroke="Black"
+                              StrokeDashArray="3,2"
+                              StrokeThickness="1"
+                              IsVisible="False" />
+                    </Canvas>
+                    <ItemsControl x:Name="m_items"
+                                  ItemTemplate="{StaticResource time_layout_item_template_selector}" />
+                </Grid>
+            </ScrollViewer>
+        </DockPanel>
+    </ScrollViewer>
+</UserControl>

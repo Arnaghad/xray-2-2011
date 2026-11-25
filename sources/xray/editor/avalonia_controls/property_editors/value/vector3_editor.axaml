@@ -1,0 +1,9 @@
+<value:value_editor_base xmlns="https://github.com/avaloniaui"
+                         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                         xmlns:value="clr-namespace:xray.editor.avalonia_controls.property_editors.value"
+                         x:Class="xray.editor.avalonia_controls.property_editors.value.vector3_editor"
+                         x:CompileBindings="False">
+  <TextBox Name="m_text_box"
+           BorderThickness="0"
+           Background="Transparent" />
+</value:value_editor_base>

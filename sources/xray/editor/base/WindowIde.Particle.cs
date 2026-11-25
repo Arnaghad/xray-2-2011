@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Windows.Forms;
 
 namespace xray.editor_base;
 
@@ -19,18 +18,18 @@ public partial class WindowIde
 
         if (!string.IsNullOrWhiteSpace(virtualUri))
         {
-            var doc = editor.OpenFile(virtualUri);
-            WireParticleDocumentLifecycle(editor, doc);
+            if (!editor.ConfirmClose())
+                return editor;
+            PublishParticlePreview(editor.View.OpenFile(virtualUri));
         }
         else if (editor.Document == null)
         {
-            var doc = editor.CreateNew("resources/particles/new_particle.particle");
-            WireParticleDocumentLifecycle(editor, doc);
+            PublishParticlePreview(editor.View.CreateNew());
         }
 
         if (!BackgroundMode)
         {
-            if (existing == null) editor.Show(this);
+            if (!editor.Visible) editor.Show(this);
             else editor.Activate();
         }
         SetStatus("Particle editor opened" + (string.IsNullOrWhiteSpace(virtualUri) ? string.Empty : ": " + virtualUri));
@@ -41,11 +40,13 @@ public partial class WindowIde
     {
         var existing = particleEditors.FirstOrDefault(e => !e.IsDisposed);
         var editor = existing ?? CreateParticleEditor();
-        var doc = editor.CreateNew(virtualUri);
-        WireParticleDocumentLifecycle(editor, doc);
+        if (!editor.ConfirmClose())
+            return editor;
+        var doc = editor.View.CreateNew(virtualUri);
+        PublishParticlePreview(doc);
         if (!BackgroundMode)
         {
-            if (existing == null) editor.Show(this);
+            if (!editor.Visible) editor.Show(this);
             else editor.Activate();
         }
         SetStatus("Particle editor created: " + doc.VirtualPath);
@@ -55,19 +56,18 @@ public partial class WindowIde
     private SdkParticleEditor CreateParticleEditor()
     {
         var editor = new SdkParticleEditor();
-        editor.DocumentSaved += OnParticleDocumentSaved;
+        editor.View.DocumentSaved += OnParticleDocumentSaved;
         particleEditors.Add(editor);
         editor.Disposed += (_, _) =>
         {
-            editor.DocumentSaved -= OnParticleDocumentSaved;
+            editor.View.DocumentSaved -= OnParticleDocumentSaved;
             particleEditors.Remove(editor);
         };
         return editor;
     }
 
-    private void WireParticleDocumentLifecycle(SdkParticleEditor editor, SdkParticleDocument doc)
+    private static void PublishParticlePreview(SdkParticleDocument doc)
     {
-        doc.Saved += () => OnParticleDocumentSaved(doc);
         if (SdkVfsManager.IsConfigured && !SdkParticleRuntimeRegistry.IsProtectedRepoAssetsRoot(SdkVfsManager.AssetPackRoot))
             SdkParticleRuntimeRegistry.PublishCompiled(doc);
     }
@@ -75,8 +75,7 @@ public partial class WindowIde
     private void OnParticleDocumentSaved(SdkParticleDocument doc)
     {
         ResourcePipeline?.InvalidateAllCache();
-        if (SdkVfsManager.IsConfigured && !SdkParticleRuntimeRegistry.IsProtectedRepoAssetsRoot(SdkVfsManager.AssetPackRoot))
-            SdkParticleRuntimeRegistry.PublishCompiled(doc);
+        PublishParticlePreview(doc);
 
         if (m_project.IsProjectOpen)
         {
@@ -101,13 +100,12 @@ public partial class WindowIde
         string initialDir = SdkVfsManager.IsConfigured
             ? SdkVfsManager.ResolveVirtualToPhysical("resources/particles")
             : Environment.CurrentDirectory;
-        using var dialog = new OpenFileDialog
-        {
-            Title = "Open particle effect",
-            Filter = "Particle files|*.particle",
-            InitialDirectory = Directory.Exists(initialDir) ? initialDir : Environment.CurrentDirectory
-        };
-        if (dialog.ShowDialog(this) != DialogResult.OK)
+        string? fileName = SdkAvaloniaBootstrap.PickOpenFile(
+            "Open particle effect",
+            "Particle files|*.particle",
+            Directory.Exists(initialDir) ? initialDir : Environment.CurrentDirectory,
+            ObjectInspectorTab.View);
+        if (string.IsNullOrEmpty(fileName))
         {
             OpenParticleEditor();
             return;
@@ -115,13 +113,13 @@ public partial class WindowIde
 
         var mount = SdkVfsManager.GetMounts()
             .Where(m => string.Equals(m.VirtualPrefix, "resources/particles", StringComparison.OrdinalIgnoreCase) &&
-                        SdkVfsManager.IsInside(dialog.FileName, m.PhysicalDirectory))
+                        SdkVfsManager.IsInside(fileName, m.PhysicalDirectory))
             .OrderByDescending(m => m.PhysicalDirectory.Length)
             .FirstOrDefault();
 
         string uri = mount != null
-            ? mount.VirtualPrefix + "/" + Path.GetRelativePath(mount.PhysicalDirectory, dialog.FileName).Replace('\\', '/')
-            : dialog.FileName;
+            ? mount.VirtualPrefix + "/" + Path.GetRelativePath(mount.PhysicalDirectory, fileName).Replace('\\', '/')
+            : fileName;
         OpenParticleEditor(uri);
     }
 }

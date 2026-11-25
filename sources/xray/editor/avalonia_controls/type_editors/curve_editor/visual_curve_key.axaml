@@ -1,0 +1,14 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="xray.editor.avalonia_controls.curve_editor.visual_curve_key"
+             Width="9"
+             Height="9"
+             Background="Transparent"
+             Cursor="Hand">
+    <Rectangle x:Name="m_rect"
+               Width="8"
+               Height="8"
+               Fill="#FFFFFF"
+               Stroke="#183B4C"
+               StrokeThickness="1.2" />
+</UserControl>

@@ -1,0 +1,81 @@
+<ContentControl xmlns="https://github.com/avaloniaui"
+                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                xmlns:panels="clr-namespace:xray.editor.avalonia_controls.panels"
+                xmlns:pg="clr-namespace:xray.editor.avalonia_controls.property_grid"
+                x:Class="xray.editor.avalonia_controls.property_grid.property_grid_control"
+                x:CompileBindings="False"
+                MinHeight="23"
+                MinWidth="50"
+                FontFamily="{DynamicResource SdkFontFamily}"
+                FontSize="{DynamicResource SdkFontSize}"
+                Foreground="{DynamicResource SdkTextBrush}">
+  <Border Name="m_root_border" Background="{DynamicResource SdkSurfaceBrush}">
+    <Grid Grid.IsSharedSizeScope="True">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="*" />
+      </Grid.RowDefinitions>
+
+      <Border Name="m_header_border"
+              IsVisible="False"
+              Background="{DynamicResource SdkCanvasBrush}"
+              BorderBrush="{DynamicResource SdkDividerBrush}"
+              BorderThickness="0,0,0,1">
+        <Grid Height="29" Margin="24,0,0,0">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" SharedSizeGroup="PropertyName" />
+            <ColumnDefinition Width="5" />
+            <ColumnDefinition Width="*" />
+          </Grid.ColumnDefinitions>
+          <TextBlock Text="Property"
+                     Margin="4,0"
+                     VerticalAlignment="Center"
+                     FontWeight="SemiBold"
+                     Foreground="{DynamicResource SdkMutedTextBrush}"
+                     TextTrimming="CharacterEllipsis" />
+          <TextBlock Grid.Column="2"
+                     Text="Value"
+                     Margin="7,0"
+                     VerticalAlignment="Center"
+                     FontWeight="SemiBold"
+                     Foreground="{DynamicResource SdkMutedTextBrush}" />
+        </Grid>
+      </Border>
+
+      <panels:scroll_viewer Grid.Row="1"
+                            VerticalScrollBarVisibility="Auto"
+                            HorizontalScrollBarVisibility="Disabled">
+        <ItemsControl Name="m_groups_panel" BorderThickness="0">
+          <ItemsControl.ItemTemplate>
+            <DataTemplate DataType="pg:property_category_group">
+              <StackPanel>
+                <Border Background="{DynamicResource SdkChromeBrush}"
+                        BorderBrush="{DynamicResource SdkDividerBrush}"
+                        BorderThickness="0,0,0,1">
+                  <ToggleButton Theme="{StaticResource SdkDisclosure}"
+                                IsChecked="{Binding IsExpanded, Mode=TwoWay}"
+                                MinHeight="29"
+                                FontWeight="SemiBold"
+                                Content="{Binding Name}" />
+                </Border>
+                <ItemsControl ItemsSource="{Binding Items}"
+                              IsVisible="{Binding IsExpanded}" />
+              </StackPanel>
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+      </panels:scroll_viewer>
+
+      <TextBlock Name="m_empty_text"
+                 Grid.Row="1"
+                 Text="No properties to display."
+                 Foreground="{DynamicResource SdkMutedTextBrush}"
+                 HorizontalAlignment="Center"
+                 VerticalAlignment="Center"
+                 Margin="12"
+                 TextWrapping="Wrap"
+                 TextAlignment="Center"
+                 IsHitTestVisible="False" />
+    </Grid>
+  </Border>
+</ContentControl>

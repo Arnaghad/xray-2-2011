@@ -1,0 +1,50 @@
+<Thumb xmlns="https://github.com/avaloniaui"
+       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+       xmlns:logic_view="using:xray.editor.avalonia_controls.logic_view"
+       x:Class="xray.editor.avalonia_controls.logic_view.event_control"
+       x:CompileBindings="False"
+       DragDelta="thumb_drag_delta"
+       Cursor="SizeWestEast"
+       MinWidth="24"
+       MinHeight="32">
+    <Thumb.ContextMenu>
+        <ContextMenu x:Name="m_context_menu">
+            <MenuItem x:Name="cm_delete_selected_events" Header="Delete selected event(s)" Click="delete_selected_click" />
+            <MenuItem x:Name="cm_view_event_properties" Header="Properties" Click="view_event_properties_click" />
+        </ContextMenu>
+    </Thumb.ContextMenu>
+    <Thumb.Template>
+        <ControlTemplate TargetType="logic_view:event_control">
+            <Grid ColumnDefinitions="*,*">
+                <Border x:Name="PART_stem"
+                        Margin="3,31,0,0"
+                        Grid.ColumnSpan="2"
+                        VerticalAlignment="Stretch"
+                        HorizontalAlignment="Center"
+                        Width="2"
+                        BorderThickness="2"
+                        BorderBrush="DarkGray" />
+                <Path x:Name="PART_event_border"
+                      Grid.ColumnSpan="2"
+                      HorizontalAlignment="Center"
+                      Data="M 4,4 L 18,4 L 18,26 L 4,26 Z"
+                      StrokeThickness="2"
+                      Stroke="DarkGray"
+                      Fill="SteelBlue" />
+                <Canvas VerticalAlignment="Top">
+                    <TextBox x:Name="PART_name_box"
+                             Canvas.Top="6"
+                             Canvas.Left="20"
+                             Margin="0,0,0,6"
+                             Text="{Binding event_name, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                             FontSize="12"
+                             HorizontalAlignment="Left"
+                             Foreground="Black"
+                             Background="Transparent"
+                             BorderThickness="0"
+                             KeyDown="text_key_down" />
+                </Canvas>
+            </Grid>
+        </ControlTemplate>
+    </Thumb.Template>
+</Thumb>

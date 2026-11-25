@@ -1,0 +1,20 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:themes="using:xray.editor.avalonia_controls.Themes"
+             x:Class="xray.editor.avalonia_controls.Ide.Panels.SdkToolsPanel"
+             Background="{x:Static themes:SdkWorkspaceTheme.Canvas}">
+    <TabControl x:Name="m_tab_control" Padding="0">
+        <TabControl.Styles>
+            <Style Selector="TabItem">
+                <Setter Property="FontSize" Value="{StaticResource SdkFontSize}" />
+                <Setter Property="MinHeight" Value="26" />
+                <Setter Property="Padding" Value="8,4" />
+            </Style>
+        </TabControl.Styles>
+        <TabControl.ItemsPanel>
+            <ItemsPanelTemplate>
+                <WrapPanel Orientation="Horizontal" />
+            </ItemsPanelTemplate>
+        </TabControl.ItemsPanel>
+    </TabControl>
+</UserControl>

@@ -1,0 +1,186 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:color_picker="clr-namespace:xray.editor.avalonia_controls.color_picker"
+             xmlns:converters="clr-namespace:xray.editor.avalonia_controls.converters"
+             xmlns:panels="clr-namespace:xray.editor.avalonia_controls.panels"
+             x:Class="xray.editor.avalonia_controls.color_picker.color_palette"
+             x:DataType="color_picker:color_palette"
+             x:Name="this_control">
+  <UserControl.Resources>
+    <converters:color_to_brush_converter x:Key="color_to_brush_converter" />
+    <DrawingBrush DestinationRect="0,0,12,12" TileMode="Tile" x:Key="mozaik_brush">
+      <DrawingBrush.Drawing>
+        <DrawingGroup>
+          <GeometryDrawing Brush="White">
+            <GeometryDrawing.Geometry>
+              <RectangleGeometry Rect="0,0,12,12" />
+            </GeometryDrawing.Geometry>
+          </GeometryDrawing>
+          <GeometryDrawing Brush="Black">
+            <GeometryDrawing.Geometry>
+              <GeometryGroup>
+                <RectangleGeometry Rect="0,0,6,6" />
+                <RectangleGeometry Rect="6,6,6,6" />
+              </GeometryGroup>
+            </GeometryDrawing.Geometry>
+          </GeometryDrawing>
+        </DrawingGroup>
+      </DrawingBrush.Drawing>
+    </DrawingBrush>
+  </UserControl.Resources>
+  <Grid RowDefinitions="35,*,2*">
+    <DockPanel LastChildFill="False" VerticalAlignment="Top">
+      <panels:single_place_panel Width="60" Height="30" DockPanel.Dock="Left">
+        <Border Background="{StaticResource mozaik_brush}" />
+        <Border x:Name="m_startup_color_border"
+                BorderBrush="Black"
+                BorderThickness="2,2,0,2"
+                HorizontalAlignment="Left"
+                Width="30"
+                Background="Red" />
+        <Border x:Name="m_selected_color_border"
+                BorderBrush="Black"
+                BorderThickness="0,2,2,2"
+                HorizontalAlignment="Right"
+                Width="30"
+                Background="{Binding #this_control.selected_color, Converter={StaticResource color_to_brush_converter}}" />
+      </panels:single_place_panel>
+      <Button x:Name="m_rgb_button" DockPanel.Dock="Right" Content="RGB" TabIndex="200" />
+      <Button x:Name="m_hsv_button" DockPanel.Dock="Right" Content="HSV" TabIndex="100" />
+    </DockPanel>
+
+    <UniformGrid Rows="1" Grid.Row="1">
+      <color_picker:color_component_slider title="H"
+                                           x:Name="h_slider"
+                                           minimum="0"
+                                           maximum="360"
+                                           small_change="1"
+                                           large_change="10"
+                                           gradient="{x:Static color_picker:color_palette.hue_gradient}"
+                                           selected_color="{Binding #this_control.selected_color, Mode=TwoWay}"
+                                           IsTabStop="False"
+                                           Focusable="False"
+                                           TabIndex="500">
+        <color_picker:color_component_slider.worker>
+          <color_picker:hue_worker />
+        </color_picker:color_component_slider.worker>
+      </color_picker:color_component_slider>
+
+      <color_picker:color_component_slider Focusable="True"
+                                           title="S"
+                                           x:Name="s_slider"
+                                           selected_color="{Binding #this_control.selected_color, Mode=TwoWay}"
+                                           use_hue_for_first_stop="True"
+                                           TabIndex="500">
+        <color_picker:color_component_slider.gradient>
+          <LinearGradientBrush>
+            <GradientStop Color="Red" Offset="0" />
+            <GradientStop Color="White" Offset="1" />
+          </LinearGradientBrush>
+        </color_picker:color_component_slider.gradient>
+        <color_picker:color_component_slider.worker>
+          <color_picker:saturation_worker />
+        </color_picker:color_component_slider.worker>
+      </color_picker:color_component_slider>
+
+      <color_picker:color_component_slider title="V"
+                                           x:Name="v_slider"
+                                           selected_color="{Binding #this_control.selected_color, Mode=TwoWay}"
+                                           use_hue_for_first_stop="True"
+                                           TabIndex="500">
+        <color_picker:color_component_slider.gradient>
+          <LinearGradientBrush>
+            <GradientStop Color="Red" Offset="0" />
+            <GradientStop Color="Black" Offset="1" />
+          </LinearGradientBrush>
+        </color_picker:color_component_slider.gradient>
+        <color_picker:color_component_slider.worker>
+          <color_picker:brightness_worker />
+        </color_picker:color_component_slider.worker>
+      </color_picker:color_component_slider>
+
+      <color_picker:color_component_slider title="R"
+                                           x:Name="r_slider"
+                                           minimum="0"
+                                           maximum="255"
+                                           selected_color="{Binding #this_control.selected_color, Mode=TwoWay}">
+        <color_picker:color_component_slider.gradient>
+          <LinearGradientBrush>
+            <GradientStop Color="Red" Offset="0" />
+            <GradientStop Color="Black" Offset="1" />
+          </LinearGradientBrush>
+        </color_picker:color_component_slider.gradient>
+        <color_picker:color_component_slider.worker>
+          <color_picker:red_worder />
+        </color_picker:color_component_slider.worker>
+      </color_picker:color_component_slider>
+
+      <color_picker:color_component_slider title="G"
+                                           x:Name="g_slider"
+                                           minimum="0"
+                                           maximum="255"
+                                           selected_color="{Binding #this_control.selected_color, Mode=TwoWay}">
+        <color_picker:color_component_slider.gradient>
+          <LinearGradientBrush>
+            <GradientStop Color="#ff00ff00" Offset="0" />
+            <GradientStop Color="Black" Offset="1" />
+          </LinearGradientBrush>
+        </color_picker:color_component_slider.gradient>
+        <color_picker:color_component_slider.worker>
+          <color_picker:green_worker />
+        </color_picker:color_component_slider.worker>
+      </color_picker:color_component_slider>
+
+      <color_picker:color_component_slider title="B"
+                                           x:Name="b_slider"
+                                           minimum="0"
+                                           maximum="255"
+                                           selected_color="{Binding #this_control.selected_color, Mode=TwoWay}">
+        <color_picker:color_component_slider.gradient>
+          <LinearGradientBrush>
+            <GradientStop Color="Blue" Offset="0" />
+            <GradientStop Color="Black" Offset="1" />
+          </LinearGradientBrush>
+        </color_picker:color_component_slider.gradient>
+        <color_picker:color_component_slider.worker>
+          <color_picker:blue_worker />
+        </color_picker:color_component_slider.worker>
+      </color_picker:color_component_slider>
+
+      <color_picker:color_component_slider title="A"
+                                           minimum="0"
+                                           maximum="255"
+                                           selected_color="{Binding #this_control.selected_color, Mode=TwoWay}">
+        <color_picker:color_component_slider.gradient>
+          <LinearGradientBrush>
+            <GradientStop Color="White" Offset="0" />
+            <GradientStop Color="Black" Offset="1" />
+          </LinearGradientBrush>
+        </color_picker:color_component_slider.gradient>
+        <color_picker:color_component_slider.worker>
+          <color_picker:alpha_worker />
+        </color_picker:color_component_slider.worker>
+      </color_picker:color_component_slider>
+
+      <color_picker:color_component_slider x:Name="m_multiply_slider"
+                                           title="M"
+                                           minimum="0"
+                                           maximum="4"
+                                           selected_color="{Binding #this_control.selected_color, Mode=TwoWay}">
+        <color_picker:color_component_slider.gradient>
+          <LinearGradientBrush>
+            <GradientStop Color="White" Offset="0" />
+            <GradientStop Color="Black" Offset="1" />
+          </LinearGradientBrush>
+        </color_picker:color_component_slider.gradient>
+        <color_picker:color_component_slider.worker>
+          <color_picker:multiply_worker />
+        </color_picker:color_component_slider.worker>
+      </color_picker:color_component_slider>
+    </UniformGrid>
+
+    <panels:scale_to_fit_control Grid.Row="2" Focusable="False">
+      <color_picker:hsv_circle selected_color="{Binding #this_control.selected_color, Mode=TwoWay}" Focusable="False" />
+    </panels:scale_to_fit_control>
+  </Grid>
+</UserControl>

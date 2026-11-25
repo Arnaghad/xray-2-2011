@@ -1,0 +1,19 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="using:xray.editor.avalonia_controls.data_sources"
+             x:Class="xray.editor.avalonia_controls.data_sources.data_sources_panel">
+    <UserControl.Resources>
+        <DataTemplate x:Key="data_source_item_template" x:DataType="x:Object">
+            <local:data_source_item />
+        </DataTemplate>
+    </UserControl.Resources>
+    <ItemsControl Margin="0,30,0,0"
+                  x:Name="m_data_sources"
+                  ItemTemplate="{StaticResource data_source_item_template}">
+        <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate>
+                <WrapPanel Orientation="Horizontal" />
+            </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+    </ItemsControl>
+</UserControl>

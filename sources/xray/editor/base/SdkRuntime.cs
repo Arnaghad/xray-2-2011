@@ -101,7 +101,7 @@ public partial class WindowIde {
     public bool RuntimeActive {get;private set;}
     public bool RuntimePaused=>runtimePaused;
     public RuntimeStatus LastRuntimeStatus {get;private set;}
-    private void RuntimeUi(bool editing){m_project_tab.Enabled=editing;m_object_inspector_tab.Enabled=editing;m_tools_tab.Enabled=editing;ProjectMenuItem.Enabled=editing;EditMenuItem.Enabled=editing;}
+    private void RuntimeUi(bool editing){m_project_tab.Enabled=editing;m_object_inspector_tab.Enabled=editing;m_tools_tab.Enabled=editing;ProjectMenuItem.IsEnabled=editing;EditMenuItem.IsEnabled=editing;}
     private void ClearRuntimeAnimations() {
         foreach(var anim in runtimeAnimations) {
             if(anim.Resources!=null) {
@@ -268,19 +268,19 @@ public partial class WindowIde {
             ApplyRuntimeAnimations(0.0);
             if(!m_background_mode) { m_active_context="View"; m_view_window.view_panel.Focus(); }
             SetStatus(simulate?"Simulating authored scene":"Playing authored scene");
-            m_gui_binder.update_items();
+            UpdateCommandUi();
         }catch{ClearRuntimeAnimations();Commands.EditingEnabled=true;throw;}
     }
     public void PauseRuntime() {
         CheckRuntimeOwner();
-        if(!RuntimeActive)throw new InvalidOperationException("No active runtime.");runtimePaused=!runtimePaused;UpdateRuntimeFrame();SetStatus(runtimePaused?"Runtime paused":"Runtime resumed");m_gui_binder.update_items();
+        if(!RuntimeActive)throw new InvalidOperationException("No active runtime.");runtimePaused=!runtimePaused;UpdateRuntimeFrame();SetStatus(runtimePaused?"Runtime paused":"Runtime resumed");UpdateCommandUi();
     }
     public void StepRuntime() {
         CheckRuntimeOwner();
         if(!RuntimeActive || !runtimePaused)throw new InvalidOperationException("Pause runtime before stepping.");LastRuntimeStatus=runtimeScene!.StepRuntime(Project);
         ApplyRuntimeAnimations(LastRuntimeStatus.Seconds);
         SetStatus($"Runtime stepped (tick {LastRuntimeStatus.Ticks})");
-        m_gui_binder.update_items();
+        UpdateCommandUi();
     }
     public void UpdateRuntimeFrame() {
         CheckRuntimeOwner();
@@ -295,6 +295,6 @@ public partial class WindowIde {
         ViewWindow.view_point_distance=runtimeViewDistance;ViewWindow.SetCameraWorld(runtimeEditorCamera);
         Project.CameraPosition=runtimeEditorPosition;Project.CameraDirection=runtimeEditorDirection;Project.CameraDistance=runtimeEditorDistance;
         SetStatus("Returned to editing");
-        m_gui_binder.update_items();
+        UpdateCommandUi();
     }
 }

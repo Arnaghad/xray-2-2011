@@ -1,0 +1,32 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="xray.editor.avalonia_controls.Editors.SdkNavigationEditorPanel">
+    <Grid RowDefinitions="Auto,Auto,Auto,*,Auto" Margin="8">
+        <WrapPanel Margin="0,0,0,6" ItemSpacing="6" LineSpacing="4">
+            <TextBlock Text="Cell" VerticalAlignment="Center" />
+            <NumericUpDown x:Name="CellSizeBox" AutomationProperties.Name="Cell size"
+                           Minimum="0.5" Maximum="10" Increment="0.25" Value="1.5" FormatString="F2" Width="100" />
+            <TextBlock Text="Radius" VerticalAlignment="Center" />
+            <NumericUpDown x:Name="AgentRadiusBox" AutomationProperties.Name="Agent radius"
+                           Minimum="0.1" Maximum="3" Increment="0.05" Value="0.45" FormatString="F2" Width="100" />
+            <TextBlock Text="Slope" VerticalAlignment="Center" />
+            <NumericUpDown x:Name="MaxSlopeBox" AutomationProperties.Name="Maximum slope"
+                           Minimum="5" Maximum="85" Increment="5" Value="45" FormatString="F1" Width="100" />
+            <Button x:Name="GenerateButton" Content="Generate NavMesh" />
+            <Button x:Name="SaveButton" Content="Save navmesh.lua" />
+            <Button x:Name="LoadButton" Content="Load navmesh.lua" />
+            <Button x:Name="UndoButton" Content="Undo" />
+            <Button x:Name="RedoButton" Content="Redo" />
+        </WrapPanel>
+        <WrapPanel Grid.Row="1" Margin="0,0,0,6" ItemSpacing="6" LineSpacing="4">
+            <TextBlock Text="Start" VerticalAlignment="Center" />
+            <TextBox x:Name="StartBox" AutomationProperties.Name="Start coordinates" Text="-4.5, 0, 0" Width="120" />
+            <TextBlock Text="Goal" VerticalAlignment="Center" />
+            <TextBox x:Name="GoalBox" AutomationProperties.Name="Goal coordinates" Text="4.5, 0, 0" Width="120" />
+            <Button x:Name="QueryButton" Content="Query Path" />
+        </WrapPanel>
+        <TextBlock x:Name="StatsLabel" Grid.Row="2" Margin="0,2,0,6" TextWrapping="Wrap" />
+        <ListBox x:Name="WaypointsList" Grid.Row="3" AutomationProperties.Name="Path waypoints" />
+        <TextBlock x:Name="StatusLabel" Grid.Row="4" Margin="0,6,0,0" TextWrapping="Wrap" />
+    </Grid>
+</UserControl>

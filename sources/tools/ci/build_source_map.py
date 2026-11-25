@@ -182,8 +182,6 @@ def classify_path(rel_path: str, compile_units: set[str], ninja_deps: set[str]) 
 
     if rel_path in {"sources/lua"}:
         return "runtime", cc_count, dep_count
-    if rel_path in {"sources/xray/wpf_controls"}:
-        return "tool", cc_count, dep_count
     if rel_path in {"sources/.idea", "sources/.vs"}:
         return "tool", cc_count, dep_count
     if any(rel_path == p or rel_path.startswith(p + "/") for p in ARCHIVAL_EXPLICIT):

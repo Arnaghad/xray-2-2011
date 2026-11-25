@@ -1,0 +1,41 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="using:xray.editor.avalonia_controls.Ide.Dialogs"
+             xmlns:themes="using:xray.editor.avalonia_controls.Themes"
+             x:Class="xray.editor.avalonia_controls.Ide.Dialogs.SdkOptionsPageInput"
+             Background="{x:Static themes:SdkWorkspaceTheme.Surface}">
+    <Grid Margin="12" RowDefinitions="Auto,*,Auto,Auto,Auto" RowSpacing="8">
+        <Grid Grid.Row="0" ColumnDefinitions="Auto,*" ColumnSpacing="8">
+            <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Filter actions:" />
+            <TextBox x:Name="m_filter_text_box" Grid.Column="1" PlaceholderText="Filter..." />
+        </Grid>
+
+        <ListBox x:Name="m_actions_list" Grid.Row="1">
+            <ListBox.ItemTemplate>
+                <DataTemplate x:DataType="local:SdkActionShortcutRow">
+                    <Grid ColumnDefinitions="*,140" ColumnSpacing="8">
+                        <TextBlock Grid.Column="0" Text="{Binding ActionName}" />
+                        <TextBlock Grid.Column="1" Text="{Binding FirstShortcut}" Foreground="{x:Static themes:SdkWorkspaceTheme.MutedText}" />
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <Grid Grid.Row="2" ColumnDefinitions="Auto,*,Auto" ColumnSpacing="8">
+            <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="Current shortcuts:" />
+            <ComboBox x:Name="m_shortcuts_combo_box" Grid.Column="1" HorizontalAlignment="Stretch" />
+            <Button x:Name="m_remove_button" Grid.Column="2" Width="76" Content="Remove" />
+        </Grid>
+
+        <Grid Grid.Row="3" ColumnDefinitions="Auto,*,Auto" ColumnSpacing="8">
+            <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="New shortcut:" />
+            <TextBox x:Name="m_shortcut_text_box" Grid.Column="1" PlaceholderText="e.g. Ctrl+Z(Global)" />
+            <Button x:Name="m_assign_button" Grid.Column="2" Width="76" Content="Assign" />
+        </Grid>
+
+        <Button x:Name="m_reset_all_button"
+                Grid.Row="4"
+                HorizontalAlignment="Right"
+                Content="Reset to default" />
+    </Grid>
+</UserControl>

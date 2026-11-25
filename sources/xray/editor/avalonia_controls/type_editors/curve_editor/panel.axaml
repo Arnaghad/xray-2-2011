@@ -1,0 +1,120 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="using:xray.editor.avalonia_controls.curve_editor"
+             xmlns:themes="using:xray.editor.avalonia_controls.Themes"
+             x:Class="xray.editor.avalonia_controls.curve_editor.curve_editor_panel"
+             Focusable="True">
+    <DockPanel>
+        <Border x:Name="m_tool_bar_border"
+                DockPanel.Dock="Top"
+                Background="{x:Static themes:SdkWorkspaceTheme.Chrome}"
+                BorderBrush="{x:Static themes:SdkWorkspaceTheme.Divider}"
+                BorderThickness="0,0,0,1"
+                Padding="4,2">
+            <WrapPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <ToggleButton x:Name="m_move_tool_button" ToolTip.Tip="Move (W)" IsChecked="True" Padding="3" Margin="1">
+                    <Image Width="16" Height="16" Source="avares://xray.editor.avalonia_controls/type_editors/curve_editor/icons/movenodes.png" />
+                </ToggleButton>
+                <ToggleButton x:Name="m_scale_tool_button" ToolTip.Tip="Scale (R)" Padding="3" Margin="1">
+                    <Image Width="16" Height="16" Source="avares://xray.editor.avalonia_controls/type_editors/curve_editor/icons/scalenodes.png" />
+                </ToggleButton>
+                <ToggleButton x:Name="m_move_range_tool_button" ToolTip.Tip="Move Range" Padding="3" Margin="1">
+                    <Image Width="16" Height="16" Source="avares://xray.editor.avalonia_controls/type_editors/curve_editor/icons/moverange.png" />
+                </ToggleButton>
+                <ToggleButton x:Name="m_add_tool_button" ToolTip.Tip="Add Key (A)" Padding="3" Margin="1">
+                    <Image Width="16" Height="16" Source="avares://xray.editor.avalonia_controls/type_editors/curve_editor/icons/addkey.png" />
+                </ToggleButton>
+                <ToggleButton x:Name="m_remove_tool_button" ToolTip.Tip="Remove Key" Padding="3" Margin="1">
+                    <Image Width="16" Height="16" Source="avares://xray.editor.avalonia_controls/type_editors/curve_editor/icons/removekey.png" />
+                </ToggleButton>
+
+                <Border Width="1" Background="{x:Static themes:SdkWorkspaceTheme.Divider}" Margin="4,2" />
+
+                <ToggleButton x:Name="m_snap_to_grid_toggle" ToolTip.Tip="Snap to Grid" Padding="3" Margin="1">
+                    <Image Width="16" Height="16" Source="avares://xray.editor.avalonia_controls/type_editors/curve_editor/icons/snaptogrid.png" />
+                </ToggleButton>
+                <ToggleButton x:Name="m_snap_to_point_toggle" ToolTip.Tip="Snap to Point" Padding="3" Margin="1">
+                    <Image Width="16" Height="16" Source="avares://xray.editor.avalonia_controls/type_editors/curve_editor/icons/snaptonodes.png" />
+                </ToggleButton>
+                <ToggleButton x:Name="m_toggle_range_button" ToolTip.Tip="Toggle Range" Padding="3" Margin="1" Click="toggle_range_button_click">
+                    <Image Width="16" Height="16" Source="avares://xray.editor.avalonia_controls/type_editors/curve_editor/icons/togglerange0.png" />
+                </ToggleButton>
+
+                <Border Width="1" Background="{x:Static themes:SdkWorkspaceTheme.Divider}" Margin="4,2" />
+
+                <StackPanel x:Name="m_key_type_buttons" Orientation="Horizontal">
+                    <ToggleButton x:Name="m_linked_auto_button" ToolTip.Tip="Auto Tangent" IsEnabled="False" Padding="3" Margin="1" Click="linked_auto_click">
+                        <Image Width="16" Height="16" Source="avares://xray.editor.avalonia_controls/type_editors/curve_editor/icons/nodetype1.png" />
+                    </ToggleButton>
+                    <ToggleButton x:Name="m_linear_button" ToolTip.Tip="Linear" IsEnabled="False" Padding="3" Margin="1" Click="linear_click">
+                        <Image Width="16" Height="16" Source="avares://xray.editor.avalonia_controls/type_editors/curve_editor/icons/nodetype2.png" />
+                    </ToggleButton>
+                    <ToggleButton x:Name="m_step_button" ToolTip.Tip="Step" IsEnabled="False" Padding="3" Margin="1" Click="step_click">
+                        <Image Width="16" Height="16" Source="avares://xray.editor.avalonia_controls/type_editors/curve_editor/icons/nodetype3.png" />
+                    </ToggleButton>
+                    <ToggleButton x:Name="m_linked_manual_button" ToolTip.Tip="Locked Manual" IsEnabled="False" Padding="3" Margin="1" Click="linked_manual_click">
+                        <Image Width="16" Height="16" Source="avares://xray.editor.avalonia_controls/type_editors/curve_editor/icons/nodetype4.png" />
+                    </ToggleButton>
+                    <ToggleButton x:Name="m_breaked_button" ToolTip.Tip="Broken" IsEnabled="False" Padding="3" Margin="1" Click="breaked_click">
+                        <Image Width="16" Height="16" Source="avares://xray.editor.avalonia_controls/type_editors/curve_editor/icons/nodetype5.png" />
+                    </ToggleButton>
+                </StackPanel>
+
+                <Border Width="1" Background="{x:Static themes:SdkWorkspaceTheme.Divider}" Margin="4,2" />
+
+                <Button x:Name="m_focus_button" ToolTip.Tip="Focus (F)" Padding="3" Margin="1" Click="focus_click">
+                    <Image Width="16" Height="16" Source="avares://xray.editor.avalonia_controls/type_editors/curve_editor/icons/focus.png" />
+                </Button>
+                <Button x:Name="m_focus_range_button" ToolTip.Tip="Focus Default Range (D)" Padding="3" Margin="1" Click="focus_default_range_click">
+                    <Image Width="16" Height="16" Source="avares://xray.editor.avalonia_controls/type_editors/curve_editor/icons/focustodefaultrange.png" />
+                </Button>
+
+                <Border Width="1" Background="{x:Static themes:SdkWorkspaceTheme.Divider}" Margin="4,2" />
+
+                <StackPanel x:Name="m_keys_position_panel" Orientation="Horizontal" VerticalAlignment="Center" Spacing="4">
+                    <TextBlock Text="X:" VerticalAlignment="Center" Foreground="{x:Static themes:SdkWorkspaceTheme.MutedText}" />
+                    <TextBox x:Name="m_keys_x_position_text_box" Width="56" MinHeight="22" Padding="4,1" />
+                    <TextBlock Text="Y:" VerticalAlignment="Center" Foreground="{x:Static themes:SdkWorkspaceTheme.MutedText}" />
+                    <TextBox x:Name="m_keys_y_position_text_box" Width="56" MinHeight="22" Padding="4,1" />
+                </StackPanel>
+            </WrapPanel>
+        </Border>
+
+        <Grid x:Name="m_main_grid">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Border x:Name="m_hierarchy_border"
+                    Grid.Column="0"
+                    Background="{x:Static themes:SdkWorkspaceTheme.Surface}"
+                    BorderBrush="{x:Static themes:SdkWorkspaceTheme.Divider}"
+                    BorderThickness="0,0,1,0"
+                    PointerPressed="groups_panel_mouse_down">
+                <ScrollViewer>
+                    <ItemsControl x:Name="m_curves_groups" />
+                </ScrollViewer>
+            </Border>
+
+            <GridSplitter x:Name="m_hierarchy_splitter"
+                          Grid.Column="1"
+                          Width="3"
+                          Background="{x:Static themes:SdkWorkspaceTheme.Divider}" />
+
+            <DockPanel Grid.Column="2">
+                <ScrollBar x:Name="m_curves_scroll_bar"
+                           DockPanel.Dock="Bottom"
+                           Orientation="Horizontal"
+                           AllowAutoHide="False"
+                           SizeChanged="scroll_bar_size_changed" />
+
+                <Grid x:Name="m_curves_host_grid">
+                    <local:curves_panel x:Name="m_curves_panel" />
+                    <ContentControl x:Name="m_decorator_panel" />
+                </Grid>
+            </DockPanel>
+        </Grid>
+    </DockPanel>
+</UserControl>

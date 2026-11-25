@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Windows.Forms;
 namespace xray.editor_base;
 public partial class WindowIde {
     private readonly List<SdkMaterialEditor> materialEditors=new();
@@ -39,10 +38,10 @@ public partial class WindowIde {
     public void ShowMaterialEditor() {
         if(ResourcePipeline?.Backend==null || assetScene is not ISdkMaterialScene){SetStatus("Configure native material services first");return;}
         if(BackgroundMode){SetStatus("Material selection requires an interactive session");return;}
-        using var dialog=new OpenFileDialog {Title="Open material or instance source",Filter="Material source|*.material",InitialDirectory=SdkVfsManager.ResolveVirtualToPhysical("resources/material_instances")};
-        if(dialog.ShowDialog(this)!=DialogResult.OK)return;
-        var mount=SdkVfsManager.GetMounts().Where(m=>m.VirtualPrefix.StartsWith("resources/material",StringComparison.Ordinal) && SdkVfsManager.IsInside(dialog.FileName,m.PhysicalDirectory)).OrderByDescending(m=>m.PhysicalDirectory.Length).FirstOrDefault();
+        string? fileName=SdkAvaloniaBootstrap.PickOpenFile("Open material or instance source","Material source|*.material",SdkVfsManager.ResolveVirtualToPhysical("resources/material_instances"),ObjectInspectorTab.View);
+        if(string.IsNullOrEmpty(fileName))return;
+        var mount=SdkVfsManager.GetMounts().Where(m=>m.VirtualPrefix.StartsWith("resources/material",StringComparison.Ordinal) && SdkVfsManager.IsInside(fileName,m.PhysicalDirectory)).OrderByDescending(m=>m.PhysicalDirectory.Length).FirstOrDefault();
         if(mount==null){SetStatus("Select a material inside configured resource mounts");return;}
-        RunProjectAction(()=>OpenMaterialSource(mount.VirtualPrefix+"/"+Path.GetRelativePath(mount.PhysicalDirectory,dialog.FileName).Replace('\\','/')));
+        RunProjectAction(()=>OpenMaterialSource(mount.VirtualPrefix+"/"+Path.GetRelativePath(mount.PhysicalDirectory,fileName).Replace('\\','/')));
     }
 }

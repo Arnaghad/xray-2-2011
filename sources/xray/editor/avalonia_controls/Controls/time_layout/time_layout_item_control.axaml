@@ -1,0 +1,79 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="xray.editor.avalonia_controls.time_layout_item_control"
+             HorizontalAlignment="Stretch"
+             PointerMoved="user_control_mouse_move"
+             PointerPressed="user_control_mouse_left_button_down"
+             PointerReleased="user_control_mouse_left_button_up">
+    <Canvas Height="32" HorizontalAlignment="Stretch">
+        <Border x:Name="ControlBorder"
+                Height="30"
+                Canvas.Top="1"
+                Canvas.Left="0"
+                BorderBrush="#183B4C"
+                BorderThickness="1"
+                MinWidth="1"
+                Focusable="True">
+            <DockPanel x:Name="m_body_dock"
+                       LastChildFill="True"
+                       Background="#4682B4"
+                       Cursor="SizeAll"
+                       PointerPressed="dock_panel_mouse_left_button_down">
+                <Border x:Name="LeftEdge"
+                        DockPanel.Dock="Left"
+                        Width="5"
+                        Background="Transparent"
+                        Cursor="SizeWestEast"
+                        PointerPressed="left_edge_mouse_left_button_down" />
+                <Border x:Name="RightEdge"
+                        DockPanel.Dock="Right"
+                        Width="5"
+                        Background="Transparent"
+                        Cursor="SizeWestEast"
+                        PointerPressed="right_edge_mouse_left_button_down" />
+
+                <TextBox x:Name="start_time_text"
+                         Focusable="False"
+                         BorderThickness="0"
+                         Background="Transparent"
+                         DockPanel.Dock="Left"
+                         VerticalAlignment="Center"
+                         TextAlignment="Left"
+                         Padding="2,0"
+                         DoubleTapped="text_mouse_double_click"
+                         LostFocus="text_lost_focus"
+                         KeyDown="text_key_down" />
+
+                <TextBox x:Name="end_time_text"
+                         Focusable="False"
+                         BorderThickness="0"
+                         Background="Transparent"
+                         DockPanel.Dock="Right"
+                         VerticalAlignment="Center"
+                         TextAlignment="Right"
+                         Padding="2,0"
+                         DoubleTapped="text_mouse_double_click"
+                         LostFocus="text_lost_focus"
+                         KeyDown="text_key_down" />
+
+                <TextBox x:Name="length_time_text"
+                         Focusable="False"
+                         BorderThickness="0"
+                         Background="Transparent"
+                         DockPanel.Dock="Top"
+                         HorizontalAlignment="Center"
+                         TextAlignment="Center"
+                         Padding="2,0"
+                         DoubleTapped="text_mouse_double_click"
+                         LostFocus="text_lost_focus"
+                         KeyDown="text_key_down" />
+
+                <TextBlock x:Name="m_item_text"
+                           DockPanel.Dock="Bottom"
+                           VerticalAlignment="Bottom"
+                           TextAlignment="Center"
+                           Foreground="White" />
+            </DockPanel>
+        </Border>
+    </Canvas>
+</UserControl>

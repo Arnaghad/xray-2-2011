@@ -1,0 +1,68 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:editors="using:xray.editor.avalonia_controls.Editors"
+             xmlns:hg="using:xray.editor.avalonia_controls.hypergraph"
+             xmlns:pg="using:xray.editor.avalonia_controls.property_grid"
+             x:Class="xray.editor.avalonia_controls.Editors.SdkDialogEditorPanel">
+    <Grid RowDefinitions="Auto,*,Auto" Margin="8">
+        <WrapPanel Margin="0,0,0,6" ItemSpacing="6" LineSpacing="4">
+            <Button x:Name="OpenButton" Content="Open…" />
+            <Button x:Name="SaveButton" Content="Save" />
+            <Button x:Name="UndoButton" Content="Undo" />
+            <Button x:Name="RedoButton" Content="Redo" />
+            <Button x:Name="AddPhraseButton" Content="+ Phrase" />
+            <Button x:Name="AddDialogButton" Content="+ Sub-Dialog" />
+            <Button x:Name="CompileButton" Content="Compile &amp; Test" />
+            <Button x:Name="ExportButton" Content="Export XLSX" />
+            <Button x:Name="ImportButton" Content="Import Excel" />
+            <TextBlock Text="Language" VerticalAlignment="Center" />
+            <ComboBox x:Name="LanguageBox" AutomationProperties.Name="Language" MinWidth="120" />
+        </WrapPanel>
+        <Grid Grid.Row="1" ColumnDefinitions="*,5,300">
+            <Grid RowDefinitions="3*,5,2*">
+                <hg:hypergraph_control x:Name="Graph" />
+                <GridSplitter Grid.Row="1" ResizeDirection="Rows" />
+                <TabControl Grid.Row="2">
+                    <TabItem Header="Localization Strings">
+                        <Grid RowDefinitions="Auto,*">
+                            <Grid ColumnDefinitions="2*,*,3*,3*" Margin="8,4,24,4">
+                                <TextBlock Text="String ID" />
+                                <TextBlock Text="Text Type" Grid.Column="1" />
+                                <TextBlock Text="Original Text" Grid.Column="2" />
+                                <TextBlock Text="Current Language" Grid.Column="3" />
+                            </Grid>
+                            <ListBox x:Name="StringsList" Grid.Row="1">
+                                <ListBox.Styles>
+                                    <Style Selector="ListBoxItem">
+                                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                    </Style>
+                                </ListBox.Styles>
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate x:DataType="editors:SdkDialogLocalizationRow">
+                                        <Grid ColumnDefinitions="2*,*,3*,3*" ColumnSpacing="4">
+                                            <TextBlock Text="{Binding Id}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" />
+                                            <TextBlock Text="{Binding Category}" Grid.Column="1" VerticalAlignment="Center" />
+                                            <TextBox Text="{Binding Origin, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                     AutomationProperties.Name="Original text" Grid.Column="2" />
+                                            <TextBox Text="{Binding Translation, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                     AutomationProperties.Name="Current language text" Grid.Column="3" />
+                                        </Grid>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </Grid>
+                    </TabItem>
+                    <TabItem Header="Links / Preconditions / Actions">
+                        <ListBox x:Name="LinksList" />
+                    </TabItem>
+                    <TabItem Header="Compiled Game Dialog">
+                        <ListBox x:Name="CompiledList" />
+                    </TabItem>
+                </TabControl>
+            </Grid>
+            <GridSplitter Grid.Column="1" ResizeDirection="Columns" />
+            <pg:property_grid_control x:Name="Properties" Grid.Column="2" />
+        </Grid>
+        <TextBlock x:Name="StatusLabel" Grid.Row="2" Margin="0,6,0,0" TextWrapping="Wrap" />
+    </Grid>
+</UserControl>

@@ -1,0 +1,9 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="xray.editor.avalonia_controls.animation_setup.animation_channel_name_view"
+             x:CompileBindings="False"
+             Background="Transparent">
+    <Border Height="40" BorderThickness="1" BorderBrush="Black" Background="Transparent">
+        <TextBlock Text="{Binding name}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+    </Border>
+</UserControl>

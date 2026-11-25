@@ -1,0 +1,42 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="xray.editor.avalonia_controls.Controls.SdkPropertyValuePreviewControl"
+             Background="{DynamicResource SdkSurfaceBrush}"
+             FontFamily="{DynamicResource SdkFontFamily}"
+             FontSize="{DynamicResource SdkFontSize}">
+  <Border Padding="8,6"
+          Background="{DynamicResource SdkSurfaceBrush}"
+          BorderBrush="{DynamicResource SdkDividerBrush}"
+          BorderThickness="1"
+          CornerRadius="3">
+    <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="140,*,Auto" ColumnSpacing="8" RowSpacing="4">
+      <TextBlock Grid.Row="0"
+                 Grid.Column="0"
+                 x:Name="NameTextBlock"
+                 VerticalAlignment="Center"
+                 Foreground="{DynamicResource SdkTextBrush}"
+                 TextTrimming="CharacterEllipsis" />
+
+      <TextBox Grid.Row="0"
+               Grid.Column="1"
+               x:Name="ValueTextBox"
+               VerticalAlignment="Center" />
+
+      <Button Grid.Row="0"
+              Grid.Column="2"
+              x:Name="ResetButton"
+              Content="Reset"
+              Padding="8,4"
+              VerticalAlignment="Center" />
+
+      <TextBlock Grid.Row="1"
+                 Grid.Column="1"
+                 Grid.ColumnSpan="2"
+                 x:Name="ErrorTextBlock"
+                 IsVisible="False"
+                 FontSize="11"
+                 Foreground="{DynamicResource SdkWarningBrush}"
+                 TextWrapping="Wrap" />
+    </Grid>
+  </Border>
+</UserControl>

@@ -1,0 +1,113 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="using:xray.editor.avalonia_controls"
+             xmlns:curve_editor="using:xray.editor.avalonia_controls.curve_editor"
+             xmlns:hypergraph="using:xray.editor.avalonia_controls.hypergraph"
+             xmlns:pg="using:xray.editor.avalonia_controls.property_grid"
+             xmlns:themes="using:xray.editor.avalonia_controls.Themes"
+             xmlns:local="using:xray.editor.avalonia_controls.Editors"
+             x:Class="xray.editor.avalonia_controls.Editors.SdkParticleEditorPanel"
+             Background="{x:Static themes:SdkWorkspaceTheme.Surface}">
+  <DockPanel LastChildFill="True">
+    <!-- Top toolbar -->
+    <Border DockPanel.Dock="Top"
+            Background="{x:Static themes:SdkWorkspaceTheme.Chrome}"
+            BorderBrush="{x:Static themes:SdkWorkspaceTheme.Divider}"
+            BorderThickness="0,0,0,1"
+            Padding="6,4">
+      <StackPanel Orientation="Horizontal" Spacing="6">
+        <Button x:Name="m_save_button" Content="Save" Padding="10,4" />
+        <Button x:Name="m_undo_button" Content="Undo" Padding="10,4" />
+        <Button x:Name="m_redo_button" Content="Redo" Padding="10,4" />
+        <Border Width="1" Background="{x:Static themes:SdkWorkspaceTheme.Divider}" Margin="4,2" />
+        <Button x:Name="m_play_button" Content="Play" Padding="10,4" />
+        <Button x:Name="m_pause_button" Content="Pause" Padding="10,4" />
+        <Button x:Name="m_stop_button" Content="Stop" Padding="10,4" />
+        <Button x:Name="m_step_button" Content="Step" Padding="10,4" />
+      </StackPanel>
+    </Border>
+
+    <!-- Bottom status strip -->
+    <Border DockPanel.Dock="Bottom"
+            Background="{x:Static themes:SdkWorkspaceTheme.Chrome}"
+            BorderBrush="{x:Static themes:SdkWorkspaceTheme.Divider}"
+            BorderThickness="0,1,0,0"
+            Padding="8,4">
+      <TextBlock x:Name="m_status_label"
+                 Text="Particle editor ready"
+                 Foreground="{x:Static themes:SdkWorkspaceTheme.MutedText}"
+                 FontSize="12" />
+    </Border>
+
+    <!-- Main 3-column workspace -->
+    <Grid ColumnDefinitions="210,Auto,*,Auto,290">
+      <!-- Node Palette -->
+      <Border Grid.Column="0"
+              Background="{x:Static themes:SdkWorkspaceTheme.Surface}"
+              BorderBrush="{x:Static themes:SdkWorkspaceTheme.Divider}"
+              BorderThickness="0,0,1,0">
+        <DockPanel LastChildFill="True">
+          <Border DockPanel.Dock="Top"
+                  Background="{x:Static themes:SdkWorkspaceTheme.Chrome}"
+                  BorderBrush="{x:Static themes:SdkWorkspaceTheme.Divider}"
+                  BorderThickness="0,0,0,1"
+                  Padding="8,5">
+            <TextBlock Text="Node Palette" Foreground="{x:Static themes:SdkWorkspaceTheme.Text}" FontSize="12" />
+          </Border>
+          <TreeView x:Name="m_palette_tree" BorderThickness="0" Padding="4">
+            <TreeView.Styles>
+              <Style Selector="TreeViewItem" x:DataType="local:SdkParticlePaletteTreeNode">
+                <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
+              </Style>
+            </TreeView.Styles>
+            <TreeView.ItemTemplate>
+              <TreeDataTemplate x:DataType="local:SdkParticlePaletteTreeNode" ItemsSource="{Binding Children}">
+                <TextBlock Text="{Binding Name}" Foreground="{x:Static themes:SdkWorkspaceTheme.Text}" FontSize="12" Margin="2,1" />
+              </TreeDataTemplate>
+            </TreeView.ItemTemplate>
+          </TreeView>
+        </DockPanel>
+      </Border>
+
+      <GridSplitter Grid.Column="1" Width="4" ResizeDirection="Columns" Background="{x:Static themes:SdkWorkspaceTheme.Divider}" />
+
+      <!-- Hypergraph + Timeline / Curves -->
+      <Grid Grid.Column="2" RowDefinitions="*,Auto,240">
+        <hypergraph:hypergraph_control x:Name="m_hypergraph" Grid.Row="0" />
+
+        <GridSplitter Grid.Row="1" Height="4" ResizeDirection="Rows" Background="{x:Static themes:SdkWorkspaceTheme.Divider}" />
+
+        <TabControl x:Name="m_bottom_tabs" Grid.Row="2" Margin="2">
+          <TabItem Header="Timeline">
+            <controls:time_layout x:Name="m_time_layout" />
+          </TabItem>
+          <TabItem Header="Data Sources / Curves">
+            <Grid ColumnDefinitions="180,Auto,*">
+              <ListBox x:Name="m_data_sources_list"
+                       Grid.Column="0"
+                       Background="{x:Static themes:SdkWorkspaceTheme.Surface}"
+                       BorderBrush="{x:Static themes:SdkWorkspaceTheme.Divider}"
+                       BorderThickness="0,0,1,0" />
+              <GridSplitter Grid.Column="1" Width="4" ResizeDirection="Columns" Background="{x:Static themes:SdkWorkspaceTheme.Divider}" />
+              <curve_editor:curve_editor_panel x:Name="m_curve_panel"
+                                               Grid.Column="2"
+                                               is_toolbar_visible="True"
+                                               is_hierarchy_visible="False" />
+            </Grid>
+          </TabItem>
+        </TabControl>
+      </Grid>
+
+      <GridSplitter Grid.Column="3" Width="4" ResizeDirection="Columns" Background="{x:Static themes:SdkWorkspaceTheme.Divider}" />
+
+      <!-- Property Inspector -->
+      <Border Grid.Column="4"
+              Background="{x:Static themes:SdkWorkspaceTheme.Surface}"
+              BorderBrush="{x:Static themes:SdkWorkspaceTheme.Divider}"
+              BorderThickness="1,0,0,0"
+              Padding="4">
+        <pg:property_grid_control x:Name="m_grid" />
+      </Border>
+    </Grid>
+  </DockPanel>
+</UserControl>

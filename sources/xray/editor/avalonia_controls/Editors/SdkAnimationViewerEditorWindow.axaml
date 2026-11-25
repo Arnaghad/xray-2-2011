@@ -1,0 +1,95 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:hg="using:xray.editor.avalonia_controls.hypergraph"
+        xmlns:pg="using:xray.editor.avalonia_controls.property_grid"
+        xmlns:themes="using:xray.editor.avalonia_controls.Themes"
+        x:Class="xray.editor.avalonia_controls.Editors.SdkAnimationViewerEditorWindow"
+        Title="Animation viewer"
+        Width="1240"
+        Height="860"
+        Background="{x:Static themes:SdkWorkspaceTheme.Surface}">
+    <DockPanel LastChildFill="True">
+        <Border DockPanel.Dock="Top"
+                Background="{x:Static themes:SdkWorkspaceTheme.Chrome}"
+                BorderBrush="{x:Static themes:SdkWorkspaceTheme.Divider}"
+                BorderThickness="0,0,0,1"
+                Padding="6,4">
+            <WrapPanel x:Name="m_toolbar_panel" Orientation="Horizontal">
+                <Button x:Name="m_save_button" Margin="0,0,4,4" Content="Save source" />
+                <Button x:Name="m_revert_button" Margin="0,0,4,4" Content="Revert" />
+                <Button x:Name="m_undo_button" Margin="0,0,4,4" Content="Undo" />
+                <Button x:Name="m_redo_button" Margin="0,0,4,4" Content="Redo" />
+                <Button x:Name="m_cancel_button" Margin="0,0,8,4" Content="Cancel loading" />
+
+                <Button x:Name="m_add_animation_button" Margin="0,0,4,4" Content="Add animation" />
+                <Button x:Name="m_add_addition_button" Margin="0,0,4,4" Content="Add addition" />
+                <Button x:Name="m_add_target_button" Margin="0,0,4,4" Content="Add target" />
+                <Button x:Name="m_delete_selection_button" Margin="0,0,8,4" Content="Delete selection" />
+
+                <TextBlock VerticalAlignment="Center" Margin="0,0,4,4" Text="Source → destination" />
+                <ComboBox x:Name="m_source_box" Width="70" Margin="0,0,4,4" />
+                <ComboBox x:Name="m_destination_box" Width="70" Margin="0,0,4,4" />
+                <TextBlock VerticalAlignment="Center" Margin="0,0,4,4" Text="Weight" />
+                <NumericUpDown x:Name="m_weight_box" Width="80" Margin="0,0,4,4" Minimum="0" Maximum="1" Increment="0.05" Value="0.5" FormatString="0.000" />
+                <TextBlock VerticalAlignment="Center" Margin="0,0,4,4" Text="Target time" />
+                <NumericUpDown x:Name="m_playing_time_box" Width="85" Margin="0,0,4,4" Minimum="0.001" Maximum="3600" Increment="0.1" Value="1" FormatString="0.000" />
+                <Button x:Name="m_connect_button" Margin="0,0,4,4" Content="Connect" />
+                <Button x:Name="m_disconnect_button" Margin="0,0,8,4" Content="Disconnect" />
+
+                <TextBlock VerticalAlignment="Center" Margin="0,0,4,4" Text="Preview node" />
+                <ComboBox x:Name="m_target_box" Width="70" Margin="0,0,4,4" />
+                <TextBlock VerticalAlignment="Center" Margin="0,0,4,4" Text="Scene models" />
+                <ComboBox x:Name="m_scene_models_box" Width="140" Margin="0,0,4,4" />
+                <TextBox x:Name="m_model_uri_box"
+                         Width="320"
+                         Margin="0,0,4,4"
+                         Text="resources/models/character/human/neutral/neutral_01/neutral_01.skinned_model" />
+                <Button x:Name="m_apply_preview_button" Margin="0,0,4,4" Content="Apply target preview" />
+                <Button x:Name="m_play_button" Margin="0,0,4,4" Content="Play" />
+                <Button x:Name="m_pause_button" Margin="0,0,4,4" Content="Pause" />
+                <Button x:Name="m_stop_button" Margin="0,0,8,4" Content="Stop" />
+
+                <CheckBox x:Name="m_loop_check" Margin="0,0,8,4" IsChecked="True" Content="Loop timeline" />
+                <TextBlock VerticalAlignment="Center" Margin="0,0,4,4" Text="Rate" />
+                <NumericUpDown x:Name="m_rate_box" Width="85" Margin="0,0,4,4" Minimum="0.01" Maximum="4" Increment="0.1" Value="1" FormatString="0.00" />
+                <TextBlock VerticalAlignment="Center" Margin="0,0,4,4" Text="Seconds" />
+                <NumericUpDown x:Name="m_seconds_box" Width="95" Margin="0,0,0,4" Minimum="0" Maximum="3600" Increment="0.0333" Value="0" FormatString="0.0000" />
+            </WrapPanel>
+        </Border>
+
+        <Border DockPanel.Dock="Bottom"
+                Background="{x:Static themes:SdkWorkspaceTheme.Chrome}"
+                BorderBrush="{x:Static themes:SdkWorkspaceTheme.Divider}"
+                BorderThickness="0,1,0,0"
+                Padding="6,4">
+            <StackPanel Spacing="4">
+                <WrapPanel x:Name="m_interval_bar" Orientation="Horizontal">
+                    <TextBox x:Name="m_clip_uri_box" Width="280" Margin="0,0,6,4" PlaceholderText="Clip URI..." />
+                    <TextBlock VerticalAlignment="Center" Margin="0,0,4,4" Text="Partition (-1 = explicit)" />
+                    <NumericUpDown x:Name="m_partition_box" Width="80" Margin="0,0,6,4" Minimum="-1" Maximum="1024" Value="-1" FormatString="0" />
+                    <TextBlock VerticalAlignment="Center" Margin="0,0,4,4" Text="Offset / length (s)" />
+                    <NumericUpDown x:Name="m_interval_offset_box" Width="95" Margin="0,0,4,4" Minimum="0" Maximum="3600" Increment="0.0333" Value="0" FormatString="0.0000" />
+                    <NumericUpDown x:Name="m_interval_length_box" Width="95" Margin="0,0,6,4" Minimum="0.0001" Maximum="3600" Increment="0.0333" Value="1" FormatString="0.0000" />
+                    <Button x:Name="m_add_interval_button" Margin="0,0,4,4" Content="Add interval" />
+                    <Button x:Name="m_apply_interval_button" Margin="0,0,4,4" Content="Apply interval" />
+                    <Button x:Name="m_remove_interval_button" Margin="0,0,4,4" Content="Remove interval" />
+                    <Button x:Name="m_interval_up_button" Margin="0,0,4,4" Content="Interval up" />
+                    <Button x:Name="m_interval_down_button" Margin="0,0,0,4" Content="Interval down" />
+                </WrapPanel>
+                <Slider x:Name="m_timeline_slider" Minimum="0" Maximum="10000" />
+                <TextBlock x:Name="m_playback_status_label" Foreground="{x:Static themes:SdkWorkspaceTheme.MutedText}" />
+                <TextBlock x:Name="m_status_label" Height="40" TextWrapping="Wrap" Foreground="{x:Static themes:SdkWorkspaceTheme.Text}" />
+            </StackPanel>
+        </Border>
+
+        <Grid ColumnDefinitions="*,4,380">
+            <hg:hypergraph_control x:Name="m_hypergraph" Grid.Column="0" />
+            <GridSplitter Grid.Column="1" Background="{x:Static themes:SdkWorkspaceTheme.Divider}" />
+            <Grid Grid.Column="2" RowDefinitions="*,4,220">
+                <pg:property_grid_control x:Name="m_grid" Grid.Row="0" />
+                <GridSplitter Grid.Row="1" Background="{x:Static themes:SdkWorkspaceTheme.Divider}" />
+                <ListBox x:Name="m_intervals_list" Grid.Row="2" />
+            </Grid>
+        </Grid>
+    </DockPanel>
+</Window>

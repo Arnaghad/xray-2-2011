@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Windows.Forms;
+using Avalonia.Input;
 
 namespace xray.editor_base
 {
@@ -9,17 +9,18 @@ namespace xray.editor_base
 
     public interface IInputHandler
     {
-        bool on_key_down(KeyEventArgs k);
-        bool on_key_up(KeyEventArgs k);
+        bool on_key_down(Key key, KeyModifiers modifiers);
+        bool on_key_up(Key key);
     }
 
     public struct InputEvent
     {
-        public KeyEventArgs m_key;
+        public Key m_key;
+        public KeyModifiers m_modifiers;
         public bool m_key_down;
     }
 
-    public class InputKeysHolder : IMessageFilter
+    public class InputKeysHolder
     {
         private static InputKeysHolder? m_ref;
         public static InputKeysHolder Ref
@@ -34,11 +35,7 @@ namespace xray.editor_base
 
         public static void Create()
         {
-            if (m_ref != null) return;
-            m_ref = new InputKeysHolder();
-            Application.AddMessageFilter(m_ref);
-            m_ref.m_lastActiveForm = Form.ActiveForm;
-            Application.LeaveThreadModal += (s, e) => m_ref.reset();
+            m_ref ??= new InputKeysHolder();
         }
 
         private InputKeysHolder()
@@ -46,155 +43,72 @@ namespace xray.editor_base
             m_iterator = new KeysIterator(this);
         }
 
-        private readonly List<IInputHandler> m_externalInputHandlers = new List<IInputHandler>();
-        private readonly List<Keys> m_heldKeys = new List<Keys>();
-        private readonly Queue<InputEvent> m_inputEvents = new Queue<InputEvent>();
-        private readonly KeysConverter m_keyConverter = new KeysConverter();
-        private Form? m_lastActiveForm;
+        private readonly List<IInputHandler> m_externalInputHandlers = new();
+        private readonly List<Key> m_heldKeys = new();
+        private readonly Queue<InputEvent> m_inputEvents = new();
+        private KeyModifiers m_activeModifiers;
         private readonly KeysIterator m_iterator;
         private string m_lastCombinationString = string.Empty;
 
         public event keys_combination_changed? m_changed_delegate;
 
-        private bool m_lButtonLastDown;
-        private bool m_rButtonLastDown;
-        private bool m_mButtonLastDown;
-        private bool m_x1ButtonLastDown;
-        private bool m_x2ButtonLastDown;
-
         public KeysIterator key_combinations => m_iterator;
+        public KeyModifiers ActiveModifiers => m_activeModifiers;
 
         public void subscribe_on_changed(keys_combination_changed d) => m_changed_delegate += d;
 
         public void subscribe_input_handler(IInputHandler h, bool subscribe)
         {
-            if (subscribe) m_externalInputHandlers.Add(h);
-            else m_externalInputHandlers.Remove(h);
+            if (subscribe)
+                m_externalInputHandlers.Add(h);
+            else
+                m_externalInputHandlers.Remove(h);
         }
 
         public void reset()
         {
             m_inputEvents.Clear();
             m_heldKeys.Clear();
+            m_activeModifiers = KeyModifiers.None;
             combination_changed();
         }
 
-        private void register_down_key_event(Keys key)
+        private void register_down_key_event(Key key, KeyModifiers modifiers)
         {
-            if (m_heldKeys.Contains(key)) return;
+            if (m_heldKeys.Contains(key) && m_activeModifiers == modifiers)
+                return;
 
             bool doNotAdd = false;
             foreach (var e in m_inputEvents)
             {
-                if (e.m_key.KeyData == key)
+                if (e.m_key == key && e.m_modifiers == modifiers)
                     doNotAdd = e.m_key_down;
             }
 
-            if (doNotAdd) return;
-
-            var ev = new InputEvent { m_key = new KeyEventArgs(key), m_key_down = true };
-
-            foreach (var h in m_externalInputHandlers)
-                if (h.on_key_down(ev.m_key)) return;
-
-            m_inputEvents.Enqueue(ev);
-        }
-
-        private void register_up_key_event(Keys key)
-        {
-            var ev = new InputEvent { m_key = new KeyEventArgs(key), m_key_down = false };
+            if (doNotAdd)
+                return;
 
             foreach (var h in m_externalInputHandlers)
-                if (h.on_key_up(ev.m_key)) return;
-
-            m_inputEvents.Enqueue(ev);
-        }
-
-        private void register_mouse_down_event(Keys key)
-        {
-            switch (key)
             {
-                case Keys.LButton: m_lButtonLastDown = true; break;
-                case Keys.RButton: m_rButtonLastDown = true; break;
-                case Keys.MButton: m_mButtonLastDown = true; break;
-                case Keys.XButton1: m_x1ButtonLastDown = true; break;
-                case Keys.XButton2: m_x2ButtonLastDown = true; break;
+                if (h.on_key_down(key, modifiers))
+                    return;
             }
-            m_inputEvents.Enqueue(new InputEvent { m_key = new KeyEventArgs(key), m_key_down = true });
+
+            m_inputEvents.Enqueue(new InputEvent { m_key = key, m_modifiers = modifiers, m_key_down = true });
         }
 
-        private void register_mouse_up_event(Keys key)
+        private void register_up_key_event(Key key)
         {
-            switch (key)
+            foreach (var h in m_externalInputHandlers)
             {
-                case Keys.LButton: m_lButtonLastDown = false; break;
-                case Keys.RButton: m_rButtonLastDown = false; break;
-                case Keys.MButton: m_mButtonLastDown = false; break;
-                case Keys.XButton1: m_x1ButtonLastDown = false; break;
-                case Keys.XButton2: m_x2ButtonLastDown = false; break;
+                if (h.on_key_up(key))
+                    return;
             }
-            m_inputEvents.Enqueue(new InputEvent { m_key = new KeyEventArgs(key), m_key_down = false });
+
+            m_inputEvents.Enqueue(new InputEvent { m_key = key, m_modifiers = KeyModifiers.None, m_key_down = false });
         }
 
-        public bool PreFilterMessage(ref Message msg)
-        {
-            switch (msg.Msg)
-            {
-                case 0x100: // WM_KEYDOWN
-                case 0x0104: // WM_SYSKEYDOWN
-                    register_down_key_event((Keys)msg.WParam.ToInt32() & Keys.KeyCode);
-                    break;
-                case 0x101: // WM_KEYUP
-                case 0x0105: // WM_SYSKEYUP
-                    register_up_key_event((Keys)msg.WParam.ToInt32() & Keys.KeyCode);
-                    break;
-                case 0x201: // WM_LBUTTONDOWN
-                    register_mouse_down_event(Keys.LButton);
-                    break;
-                case 0x202: // WM_LBUTTONUP
-                    register_mouse_up_event(Keys.LButton);
-                    break;
-                case 0x0207: // WM_MBUTTONDOWN
-                    register_mouse_down_event(Keys.MButton);
-                    break;
-                case 0x208: // WM_MBUTTONUP
-                    register_mouse_up_event(Keys.MButton);
-                    break;
-                case 0x0204: // WM_RBUTTONDOWN
-                    register_mouse_down_event(Keys.RButton);
-                    break;
-                case 0x0205: // WM_RBUTTONUP
-                    register_mouse_up_event(Keys.RButton);
-                    break;
-                case 0x020b: // WM_XBUTTONDOWN
-                    register_mouse_down_event((msg.WParam.ToInt32() >> 16 == 1) ? Keys.XButton1 : Keys.XButton2);
-                    break;
-                case 0x020c: // WM_XBUTTONUP
-                    register_mouse_up_event((msg.WParam.ToInt32() >> 16 == 1) ? Keys.XButton1 : Keys.XButton2);
-                    break;
-                case 0x0200: // WM_MOUSEMOVE
-                    if (msg.WParam.ToInt32() == 0)
-                    {
-                        if (m_lButtonLastDown) register_mouse_up_event(Keys.LButton);
-                        if (m_rButtonLastDown) register_mouse_up_event(Keys.RButton);
-                        if (m_mButtonLastDown) register_mouse_up_event(Keys.MButton);
-                        if (m_x1ButtonLastDown) register_mouse_up_event(Keys.XButton1);
-                        if (m_x2ButtonLastDown) register_mouse_up_event(Keys.XButton2);
-                    }
-                    break;
-            }
-            return false;
-        }
-
-        public List<Keys> get_held_keys()
-        {
-            if (Form.ActiveForm != m_lastActiveForm)
-            {
-                m_lastActiveForm = Form.ActiveForm;
-                reset();
-            }
-            return m_heldKeys;
-        }
+        public List<Key> get_held_keys() => m_heldKeys;
 
         public string get_current_pressed_keys()
         {
@@ -214,6 +128,12 @@ namespace xray.editor_base
 
         public bool has_unprocessed_keys() => m_inputEvents.Count > 0;
 
+        private static bool IsPureModifierKey(Key key) => key is
+            Key.LeftCtrl or Key.RightCtrl or
+            Key.LeftShift or Key.RightShift or
+            Key.LeftAlt or Key.RightAlt or
+            Key.LWin or Key.RWin;
+
         private bool peek_registered_key()
         {
             bool retVal = false;
@@ -224,22 +144,24 @@ namespace xray.editor_base
                 var entry = m_inputEvents.Dequeue();
                 if (entry.m_key_down)
                 {
-                    if (!m_heldKeys.Contains(entry.m_key.KeyData))
+                    m_activeModifiers = entry.m_modifiers;
+                    if (entry.m_key != Key.None && !m_heldKeys.Contains(entry.m_key))
                     {
-                        m_heldKeys.Add(entry.m_key.KeyData);
-                        Keys key = entry.m_key.KeyData;
-                        if (key != Keys.LShiftKey && key != Keys.RShiftKey &&
-                            key != Keys.LControlKey && key != Keys.RControlKey &&
-                            key != Keys.LMenu && key != Keys.RMenu)
-                        {
+                        m_heldKeys.Add(entry.m_key);
+                        if (!IsPureModifierKey(entry.m_key))
                             retVal = true;
-                        }
+                    }
+                    else if (entry.m_modifiers != KeyModifiers.None)
+                    {
+                        retVal = true;
                     }
                     break;
                 }
                 else
                 {
-                    m_heldKeys.Remove(entry.m_key.KeyData);
+                    m_heldKeys.Remove(entry.m_key);
+                    if (m_heldKeys.Count == 0)
+                        m_activeModifiers = KeyModifiers.None;
                 }
             }
 
@@ -249,67 +171,36 @@ namespace xray.editor_base
             return retVal;
         }
 
-        public void InjectKeyDown(Keys key) => register_down_key_event(key);
-        public void InjectKeyUp(Keys key) => register_up_key_event(key);
+        public void InjectKeyDown(Key key, KeyModifiers modifiers = KeyModifiers.None) =>
+            register_down_key_event(key, modifiers);
+
+        public void InjectKeyUp(Key key) => register_up_key_event(key);
+
         public int GetCurrentKeysString(out string combination) => get_current_keys_string(out combination);
 
         private int get_current_keys_string(out string combination)
         {
-            if (Form.ActiveForm != m_lastActiveForm)
-            {
-                m_lastActiveForm = Form.ActiveForm;
-                reset();
-            }
-
-            List<Keys> keys = new List<Keys>(m_heldKeys);
-            Keys modifiers = Keys.None;
+            var keys = new List<Key>(m_heldKeys);
+            KeyModifiers modifiers = m_activeModifiers;
             int count = keys.Count;
 
             extract_modifier_keys(keys, ref modifiers);
             count -= keys.Count;
 
-            combination = combine_string(modifiers, keys);
+            combination = ActionShortcut.FormatCombination(modifiers, keys);
             return keys.Count + count;
         }
 
-        private void extract_modifier_keys(List<Keys> keys, ref Keys modifiers)
+        private static void extract_modifier_keys(List<Key> keys, ref KeyModifiers modifiers)
         {
-            int ind = keys.IndexOf(Keys.ControlKey);
-            if (ind != -1) { modifiers |= Keys.Control; keys.RemoveAt(ind); }
-            ind = keys.IndexOf(Keys.LControlKey);
-            if (ind != -1) { modifiers |= Keys.Control; keys.RemoveAt(ind); }
-            ind = keys.IndexOf(Keys.RControlKey);
-            if (ind != -1) { modifiers |= Keys.Control; keys.RemoveAt(ind); }
-
-            ind = keys.IndexOf(Keys.ShiftKey);
-            if (ind != -1) { modifiers |= Keys.Shift; keys.RemoveAt(ind); }
-            ind = keys.IndexOf(Keys.LShiftKey);
-            if (ind != -1) { modifiers |= Keys.Shift; keys.RemoveAt(ind); }
-            ind = keys.IndexOf(Keys.RShiftKey);
-            if (ind != -1) { modifiers |= Keys.Shift; keys.RemoveAt(ind); }
-
-            ind = keys.IndexOf(Keys.Menu);
-            if (ind != -1) { modifiers |= Keys.Alt; keys.RemoveAt(ind); }
-            ind = keys.IndexOf(Keys.LMenu);
-            if (ind != -1) { modifiers |= Keys.Alt; keys.RemoveAt(ind); }
-            ind = keys.IndexOf(Keys.RMenu);
-            if (ind != -1) { modifiers |= Keys.Alt; keys.RemoveAt(ind); }
-        }
-
-        private string combine_string(Keys modifiers, List<Keys> keys)
-        {
-            keys.Sort();
-            string result;
-
-            if (keys.Count > 0)
-                result = m_keyConverter.ConvertToString(modifiers | keys[0]) ?? string.Empty;
-            else
-                result = m_keyConverter.ConvertToString(modifiers) ?? string.Empty;
-
-            for (int i = 1; i < keys.Count; ++i)
-                result += "+" + (m_keyConverter.ConvertToString(keys[i]) ?? string.Empty);
-
-            return result;
+            if (keys.Remove(Key.LeftCtrl) | keys.Remove(Key.RightCtrl))
+                modifiers |= KeyModifiers.Control;
+            if (keys.Remove(Key.LeftShift) | keys.Remove(Key.RightShift))
+                modifiers |= KeyModifiers.Shift;
+            if (keys.Remove(Key.LeftAlt) | keys.Remove(Key.RightAlt))
+                modifiers |= KeyModifiers.Alt;
+            if (keys.Remove(Key.LWin) | keys.Remove(Key.RWin))
+                modifiers |= KeyModifiers.Meta;
         }
 
         private void combination_changed()
@@ -329,16 +220,13 @@ namespace xray.editor_base
 
             public bool MoveNext()
             {
-                if (_holder.m_inputEvents.Count > 0)
+                if (_holder.m_inputEvents.Count > 0 && _holder.peek_registered_key())
                 {
-                    if (_holder.peek_registered_key())
-                    {
-                        _holder.get_current_keys_string(out string combination);
-                        _holder.m_lastCombinationString = combination;
-                        _currentString = combination;
-                        _holder.combination_changed();
-                        return true;
-                    }
+                    _holder.get_current_keys_string(out string combination);
+                    _holder.m_lastCombinationString = combination;
+                    _currentString = combination;
+                    _holder.combination_changed();
+                    return true;
                 }
                 return false;
             }

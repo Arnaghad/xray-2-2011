@@ -1,0 +1,48 @@
+<templates:curve_template_base
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:editors="using:xray.editor.avalonia_controls.type_editors"
+    xmlns:templates="using:xray.editor.avalonia_controls.curve_editor.templates"
+    x:Class="xray.editor.avalonia_controls.curve_editor.templates.sinusoid_curve_template">
+    <DockPanel Margin="6">
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="6" Margin="0,4,0,0">
+            <Button Content="OK" Width="80" Click="ok_click" />
+            <Button Content="Cancel" Width="80" Click="cancel_click" />
+        </StackPanel>
+        <Separator DockPanel.Dock="Bottom" Margin="0,4" />
+        <Grid ColumnDefinitions="*,*" RowDefinitions="24,24,24,24,24,24,24">
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="Amplitude: " TextAlignment="Right" VerticalAlignment="Center" />
+            <editors:number_editor Grid.Row="0" Grid.Column="1" x:Name="m_amplitude_editor" />
+
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="Period: " TextAlignment="Right" VerticalAlignment="Center" />
+            <editors:number_editor Grid.Row="1" Grid.Column="1" x:Name="m_period_editor" min_value="0.001" />
+
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="Phase: " TextAlignment="Right" VerticalAlignment="Center" />
+            <editors:number_editor Grid.Row="2" Grid.Column="1" x:Name="m_phase_editor" step_size="0.01" min_value="0" />
+
+            <TextBlock Grid.Row="3" Grid.Column="0" Text="Y Offset: " TextAlignment="Right" VerticalAlignment="Center" />
+            <editors:number_editor Grid.Row="3" Grid.Column="1" x:Name="m_y_offset_editor" />
+
+            <TextBlock Grid.Row="4" Grid.Column="0" Text="Peak Offset: " TextAlignment="Right" VerticalAlignment="Center" />
+            <editors:number_editor Grid.Row="4" Grid.Column="1" x:Name="m_peak_offset_editor" min_value="-1" max_value="1" step_size="0.01" />
+
+            <StackPanel Grid.Row="5" Grid.Column="0" Orientation="Horizontal">
+                <TextBlock Text="Fade In: " Margin="4,0,0,0" VerticalAlignment="Center" />
+                <editors:number_editor Width="60" x:Name="m_fade_in_editor" min_value="0" />
+            </StackPanel>
+            <StackPanel Grid.Row="5" Grid.Column="1" Orientation="Horizontal">
+                <TextBlock Text="Fade Out: " Margin="4,0,0,0" VerticalAlignment="Center" />
+                <editors:number_editor Width="60" x:Name="m_fade_out_editor" min_value="0" />
+            </StackPanel>
+
+            <StackPanel Grid.Row="6" Grid.Column="0" Orientation="Horizontal" x:Name="m_left_limit_panel">
+                <TextBlock Text="Left Limit: " Margin="4,0,0,0" VerticalAlignment="Center" />
+                <editors:number_editor Width="60" x:Name="m_left_limit_editor" min_value="0" />
+            </StackPanel>
+            <StackPanel Grid.Row="6" Grid.Column="1" Orientation="Horizontal" x:Name="m_right_limit_panel">
+                <TextBlock Text="Right Limit: " Margin="4,0,0,0" VerticalAlignment="Center" />
+                <editors:number_editor Width="60" x:Name="m_right_limit_editor" min_value="0" />
+            </StackPanel>
+        </Grid>
+    </DockPanel>
+</templates:curve_template_base>

@@ -3,7 +3,6 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.IO;
 using System.Threading;
-using System.Windows.Forms;
 namespace xray.editor_base;
 [StructLayout(LayoutKind.Sequential)]
 public struct AssetPublishStatus {public uint Version,Size,Affected,Reserved;public ulong Requested,Reloaded,Unchanged,Failed,Cancelled,Pending;}
@@ -34,7 +33,7 @@ public sealed class SdkTextureAuthoring(ISdkResourceBackend resources,ISdkAssetS
         var deadline=DateTime.UtcNow.AddSeconds(60);
         while(result.Pending!=0) {
             if(DateTime.UtcNow>deadline)throw new TimeoutException("Texture publication did not drain.");
-            Application.DoEvents();Thread.Sleep(1);result=scene.AssetReloadStatus();
+            SdkUiHost.PumpEvents();Thread.Sleep(1);result=scene.AssetReloadStatus();
         }
         if(result.Failed!=baseline.Failed || result.Cancelled!=baseline.Cancelled)throw new IOException("Native texture publication failed; the previous image was retained.");
         cancellation.ThrowIfCancellationRequested();
