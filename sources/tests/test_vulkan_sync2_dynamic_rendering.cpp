@@ -2,19 +2,53 @@
 #include "test_check.hpp"
 
 #include <xray/extensions.h>
-#include <xray/os_include.h>
+#include <xray/platform_surface.h>
+#include <xray/engine/capture_control_bus.h>
 #include <xray/render/vulkan/api.h>
 #include <xray/render/vulkan/diagnostics.h>
+#include <xray/render/vulkan/platform_surface.h>
 #include <xray/render/vulkan/sources/vulkan_backend.h>
+#include <SDL3/SDL.h>
 
 #include <algorithm>
 #include <cstdlib>
+#include <cstring>
 #include <vector>
 
 namespace {
 
-LRESULT CALLBACK dummy_wndproc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
-    return DefWindowProcA(hwnd, msg, wp, lp);
+bool validation_layer_available() {
+    uint32_t layer_count = 0;
+    if (vkEnumerateInstanceLayerProperties(&layer_count, nullptr) != VK_SUCCESS || !layer_count) {
+        return false;
+    }
+    std::vector<VkLayerProperties> layers(layer_count);
+    if (vkEnumerateInstanceLayerProperties(&layer_count, layers.data()) != VK_SUCCESS) {
+        return false;
+    }
+    uint32_t ext_count = 0;
+    if (vkEnumerateInstanceExtensionProperties(nullptr, &ext_count, nullptr) != VK_SUCCESS || !ext_count) {
+        return false;
+    }
+    std::vector<VkExtensionProperties> exts(ext_count);
+    if (vkEnumerateInstanceExtensionProperties(nullptr, &ext_count, exts.data()) != VK_SUCCESS) {
+        return false;
+    }
+    bool const has_layer = std::any_of(layers.begin(), layers.end(), [](VkLayerProperties const& l) {
+        return std::strcmp(l.layerName, "VK_LAYER_KHRONOS_validation") == 0;
+    });
+    bool const has_dbg = std::any_of(exts.begin(), exts.end(), [](VkExtensionProperties const& e) {
+        return std::strcmp(e.extensionName, VK_EXT_DEBUG_UTILS_EXTENSION_NAME) == 0;
+    });
+    return has_layer && has_dbg;
+}
+
+void set_env_var(char const* key, char const* value) {
+#if defined(_WIN32)
+    _putenv_s(key, value);
+#else
+    setenv(key, value, 1);
+#endif
 }
 
 } // namespace
@@ -22,35 +56,36 @@ LRESULT CALLBACK dummy_wndproc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
 int main() {
     using namespace xray::render::vulkan;
     using namespace xray::render::rhi;
+    using xray::platform::native_surface_handle;
 
-    _putenv("XRAY_VULKAN_REQUIRE_VALIDATION=1");
-    _putenv("DISABLE_RTSS_LAYER=1");
-    _putenv("DISABLE_VULKAN_OBS_CAPTURE=1");
+    bool const val_available = validation_layer_available();
+    if (val_available) {
+        set_env_var("XRAY_VULKAN_REQUIRE_VALIDATION", "1");
+    }
+    set_env_var("DISABLE_RTSS_LAYER", "1");
+    set_env_var("DISABLE_VULKAN_OBS_CAPTURE", "1");
 
     vulkan_allocator_type alloc;
     set_memory_allocator(alloc);
 
-    WNDCLASSA wc = {};
-    wc.lpfnWndProc = &dummy_wndproc;
-    wc.hInstance = GetModuleHandleA(nullptr);
-    wc.lpszClassName = "xray_stage07_sync2_dyn_win";
-    XRAY_TEST_CHECK(RegisterClassA(&wc) != 0);
-
-    HWND hwnd = CreateWindowExA(
-        WS_EX_LAYERED | WS_EX_NOACTIVATE | WS_EX_TRANSPARENT | WS_EX_TOOLWINDOW,
-        wc.lpszClassName,
+    XRAY_TEST_CHECK(SDL_InitSubSystem(SDL_INIT_VIDEO));
+    SDL_Window* win = SDL_CreateWindow(
         "xray_stage07_sync2_dyn_win",
-        WS_POPUP,
-        0, 0, 320, 240,
-        nullptr, nullptr, wc.hInstance, nullptr
+        320,
+        240,
+        SDL_WINDOW_VULKAN | SDL_WINDOW_HIDDEN | SDL_WINDOW_RESIZABLE | SDL_WINDOW_HIGH_PIXEL_DENSITY
     );
-    XRAY_TEST_CHECK(hwnd != nullptr);
-    SetLayeredWindowAttributes(hwnd, 0, 0, LWA_ALPHA);
-    XRAY_TEST_CHECK(SetPropA(hwnd, "XRAY_VULKAN_TEST_CAPTURE", HANDLE(1)) != 0);
+    XRAY_TEST_CHECK(win != nullptr);
+    SDL_SetWindowFocusable(win, false);
+
+    native_surface_handle const surface = native_surface_handle::from_sdl_window(win);
+    XRAY_TEST_CHECK(surface.valid());
+    surface_adapter::register_sdl_window(surface, win);
+    XRAY_TEST_CHECK(xray::engine::capture_control_bus::set_flag(surface, "XRAY_VULKAN_TEST_CAPTURE"));
 
     {
         vulkan_backend backend;
-        XRAY_TEST_CHECK(backend.initialize(hwnd));
+        XRAY_TEST_CHECK(backend.initialize(surface));
         XRAY_TEST_CHECK(backend.synchronization2_enabled());
         XRAY_TEST_CHECK(backend.dynamic_rendering_enabled());
 
@@ -102,7 +137,8 @@ int main() {
 
         for (int frame_idx = 0; frame_idx < 4; ++frame_idx) {
             if (frame_idx == 2) {
-                SetWindowPos(hwnd, nullptr, 0, 0, 400, 300, SWP_NOMOVE | SWP_NOZORDER | SWP_NOACTIVATE);
+                SDL_SetWindowSize(win, 400, 300);
+                SDL_SyncWindow(win);
                 backend.resize_swapchain(400, 300);
             }
             backend.clear_render_target(format::r8g8b8a8_unorm, 0.1f, 0.2f, 0.3f, 1.0f);
@@ -147,14 +183,22 @@ int main() {
     reset_memory_allocator();
 
     auto snap = diagnostics();
-    XRAY_TEST_CHECK(snap.validation_enabled);
+    if (val_available || std::getenv("XRAY_VULKAN_REQUIRE_VALIDATION")) {
+        XRAY_TEST_CHECK(snap.validation_enabled);
+    }
     XRAY_TEST_CHECK(snap.validation_errors == 0);
     XRAY_TEST_CHECK(snap.validation_warnings == 0);
 
-    RemovePropA(hwnd, "XRAY_VULKAN_TEST_CAPTURE");
-    DestroyWindow(hwnd);
-    UnregisterClassA(wc.lpszClassName, wc.hInstance);
+    char const* const current_driver = SDL_GetCurrentVideoDriver();
+    std::string const driver_name = current_driver ? current_driver : "unknown";
 
-    std::cout << "PASS: xray_vulkan_sync2_dynamic_rendering_contract\n";
+    xray::engine::capture_control_bus::clear_surface(surface);
+    surface_adapter::unregister_sdl_window(surface);
+    SDL_DestroyWindow(win);
+    SDL_QuitSubSystem(SDL_INIT_VIDEO);
+
+    std::cout << "PASS: xray_vulkan_sync2_dynamic_rendering_contract (driver="
+              << driver_name
+              << ", validation=" << (snap.validation_enabled ? "on" : "off") << ")\n";
     return 0;
 }

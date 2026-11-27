@@ -6,7 +6,7 @@
 
 #include "pch.h"
 #include "portal_collision_object.h"
-#include <xray\editor\base\collision_object_types.h>
+#include <xray/editor/base/collision_object_types.h>
 #include "edit_portal.h"
 namespace xray {
 namespace model_editor {

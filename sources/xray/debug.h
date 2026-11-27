@@ -21,16 +21,16 @@ struct _EXCEPTION_POINTERS;
 namespace xray {
 namespace debug {
 
-XRAY_CORE_API	void __cdecl	on_error			( bool* do_debug_break, process_error_enum process_error, bool* ignore_always, assert_enum assert_type, pcstr reason, pcstr expression, pcstr file, pcstr function, u32 line, pcstr format, ... );
+XRAY_CORE_API	void XRAY_CDECL	on_error			( bool* do_debug_break, process_error_enum process_error, bool* ignore_always, assert_enum assert_type, pcstr reason, pcstr expression, pcstr file, pcstr function, u32 line, pcstr format, ... );
 XRAY_CORE_API	void			on_error			( bool* do_debug_break, process_error_enum process_error, bool* ignore_always, assert_enum assert_type, pcstr reason, pcstr expression, pcstr file, pcstr function, u32 line );
 
-XRAY_CORE_API	void __cdecl	on_error			( bool* do_debug_break, process_error_enum process_error, bool* ignore_always, int error_code, pcstr expression, pcstr file, pcstr function, u32 line, pcstr format, ... );
+XRAY_CORE_API	void XRAY_CDECL	on_error			( bool* do_debug_break, process_error_enum process_error, bool* ignore_always, int error_code, pcstr expression, pcstr file, pcstr function, u32 line, pcstr format, ... );
 XRAY_CORE_API	void			on_error			( bool* do_debug_break, process_error_enum process_error, bool* ignore_always, int error_code, pcstr expression, pcstr file, pcstr function, u32 line );
 
-XRAY_CORE_API	void __cdecl	terminate			( pcstr format, ... );
+XRAY_CORE_API	void XRAY_CDECL	terminate			( pcstr format, ... );
 
 XRAY_CORE_API	void			output				( pcstr message );
-XRAY_CORE_API	void __cdecl	printf				( pcstr format, ... );
+XRAY_CORE_API	void XRAY_CDECL	printf				( pcstr format, ... );
 
 XRAY_CORE_API	void			change_bugtrap_usage( error_mode, bugtrap_usage );
 
@@ -49,14 +49,18 @@ XRAY_CORE_API	void			protected_call		( protected_function_type* function_to_call
 XRAY_CORE_API	int				on_math_error		( struct ::_exception* exception );
 
 XRAY_CORE_API	bool			is_debugger_present	( );
+XRAY_CORE_API	void			debug_break			( );
+XRAY_CORE_API	void			show_error_dialog	( pcstr title, pcstr message );
+XRAY_CORE_API	bool			format_system_error	( int error_code, char* buffer, u32 buffer_size );
+XRAY_CORE_API	bool			write_crash_report	( pcstr output_file_name, void* platform_context );
 
-#ifdef _WIN32
+#if XRAY_PLATFORM_WINDOWS
 	// Явне визначення типів Windows API, щоб уникнути підключення <windows.h>
 	typedef unsigned long DWORD;
-#endif
 
 	XRAY_CORE_API	int		unhandled_exception_filter	( DWORD const exception_code, 
 													 _EXCEPTION_POINTERS* const exception_information );
+#endif
 
 
 

@@ -14,7 +14,11 @@
 #include <xray/core_entry_point.h>
 #include <xray/fs/path_string_utils.h>	// for xray::core::current_directory
 #include <time.h>				// for _time64, _localtime64_s, strftime
-#include <direct.h>				// for _mkdir
+#if XRAY_PLATFORM_WINDOWS
+#	include <direct.h>			// for _mkdir
+#else
+#	include <sys/stat.h>
+#endif
 
 namespace xray {
 namespace memory {
@@ -65,8 +69,9 @@ void initialize	( )
 
 	string_path					output_folder;
 	strings::copy				( output_folder, xray::fs_new::get_current_directory().c_str() );
-	strcat_s					( output_folder, "memory_monitor\\");
+	strcat_s					( output_folder, "memory_monitor/" );
 
+#if XRAY_PLATFORM_WINDOWS
 	if ( _mkdir( output_folder ) != 0 )
 		(void)0;
 
@@ -76,6 +81,14 @@ void initialize	( )
 	tm							new_time;
 	errno_t error				= _localtime64_s( &new_time, &long_time);
 	R_ASSERT					( !error );
+#else
+	if ( ::mkdir( output_folder, 0755 ) != 0 )
+		(void)0;
+
+	time_t const				long_time = ::time( nullptr );
+	tm							new_time = {};
+	::localtime_r				( &long_time, &new_time );
+#endif
 
 	string_path					file_name;
 	strftime					( file_name, sizeof( file_name ), "%Y.%m.%d.%H.%M.%S", &new_time );

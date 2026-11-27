@@ -4,7 +4,9 @@
 //	Copyright (C) GSC Game World - 2011
 ////////////////////////////////////////////////////////////////////////////
 
-#include <xray/os_include.h>
+#if XRAY_PLATFORM_WINDOWS
+#	include <xray/os_include.h>
+#endif
 
 namespace xray {
 namespace vfs {

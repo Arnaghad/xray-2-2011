@@ -15,7 +15,7 @@
 #	error you should define XRAY_LOG_MODULE_INITIATOR macro before including this header
 #endif // #ifndef XRAY_LOG_MODULE_INITIATOR
 
-#include <fastdelegate/fastdelegate.h>
+#include <fastdelegate/FastDelegate.h>
 
 namespace xray {
 namespace logging {

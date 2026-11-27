@@ -1,6 +1,6 @@
 # X-Ray Engine 2.0 — Modern C++26, Vulkan 1.4, .NET 11 SDK & Blender 5.3 Pipeline
 
-Модернізований рушій, редакторський SDK та DCC-конвеєр **X-Ray Engine 2.0** (кодова база *S.T.A.L.K.E.R. 2* зразка 2011 року), перенесені зі спадкового 32/64-бітного стека Visual Studio 2008/2010 + DirectX 9/10/11 + .NET Framework 3.5 + Maya 2011 C++ `.mll` на сучасну архітектуру **C++26 (GCC 16 / MinGW-w64 + CMake + Ninja)**, **Vulkan 1.4 RHI (HLSL → SPIR-V через DXC)**, **Avalonia 12.2 на .NET 11 (`net11.0`)** та **Blender 5.3 / Maya 2027 (`xray-dcc-exchange/v2`)**.
+Модернізований кросплатформений рушій, редакторський SDK та DCC-конвеєр **X-Ray Engine 2.0** (кодова база *S.T.A.L.K.E.R. 2* зразка 2011 року), перенесені зі спадкового 32/64-бітного стека Visual Studio 2008/2010 + DirectX 9/10/11 + .NET Framework 3.5 + Maya 2011 C++ `.mll` на сучасну архітектуру для **Windows x64 та Linux x86_64 (Wayland / X11)**: **C++26 (GCC 16 + CMake + Ninja)**, **Vulkan 1.4 RHI (HLSL → SPIR-V через портативний DXC)**, **SDL3**, **Avalonia 12.2 на .NET 11 (`net11.0`)** та **Blender 5.3 / Maya 2027 (`xray-dcc-exchange/v2`)**.
 
 ---
 
@@ -8,15 +8,16 @@
 
 | Підсистема | Базовий X-Ray 2.0 (2011) | Модернізована версія (цей репозиторій) |
 | --- | --- | --- |
-| **Мова та система збірки** | C++03, MSVC 2008/2010 (`.sln` / `.vcproj`), Win32 / x64 / Xbox 360 / PS3 | **C++26**, єдиний **CMake 4.3+ + Ninja**, **GCC 16 (MSYS2 MinGW-w64 x64)** |
-| **Графічний бекенд (RHI)** | DirectX 9 / DirectX 10 / DirectX 11 (`xray/render/dx11`) | **Vulkan 1.4 RHI** (`xray/render/vulkan`), системний `vulkan-1.dll`, 0 помилок Khronos Validation |
-| **Шейдерний конвеєр** | HLSL → D3DCompiler (DXBC SM 4.0/5.0) | **HLSL → SPIR-V (Vulkan 1.3 target)** через **DXC** + інтроспекція **SPIRV-Reflect** |
+| **Мова, ОС та система збірки** | C++03, MSVC 2008/2010 (`.sln` / `.vcproj`), Win32 / x64 / Xbox 360 / PS3 | **C++26**, єдиний **CMake 4.3+ + Ninja**, **GCC 16** на **Windows x64 (MSYS2 MinGW-w64 / UCRT64)** і **Linux x86_64** (`PAL-0..PAL-8`, ABI LLP64/LP64) |
+| **Графічний бекенд (RHI)** | DirectX 9 / DirectX 10 / DirectX 11 (`xray/render/dx11`) | **Vulkan 1.4 RHI** (`xray/render/vulkan`, `sync2`/`dynamicRendering`), `vulkan-1.dll` / `libvulkan.so.1`, `VK_KHR_wayland_surface` / `xlib` / `xcb` / `win32`, 0 помилок Khronos Validation |
+| **Шейдерний конвеєр** | HLSL → D3DCompiler (DXBC SM 4.0/5.0) | **Портативний DXC** (`dxcompiler.dll` / `libdxcompiler.so` + CLI fallback `dxc` і дисковий кеш SPIR-V) → **Vulkan 1.3 SPIR-V** + **SPIRV-Reflect** |
 | **Текстури та матеріали** | Фіксовані слоти DX10/11, одностадійні обмеження в ранніх портах | **Vulkan 1.2 Bindless (`VK_EXT_descriptor_indexing`)** (`Texture2D[1024]`, `TextureCube[128]`), багатостадійні (`multi-stage`) матеріали |
 | **Освітлення та поверхні** | Legacy Light Pre-Pass у DX10/11 | **2-Pass Light Pre-Pass / Deferred Material** у Vulkan: анізотропний BRDF, **Pre-Integrated Skin/Organic SSS**, POM, Triplanar, Soft Particles, Cubemap Reflections, Burning Wood |
 | **Скінінг та LOD** | CPU-скінінг / DX константні буфери, жорсткий ліміт **80 кісток** (`79 + 1`), без runtime LOD у Vulkan | **GPU Compute Skinning (`skinning.comp.hlsl`)** на SSBO, ліміт **128 кісток** (`127 + object_movement`), автоматичне перемикання **Runtime LOD (`LOD0..LOD2`)** за екранним AABB |
-| **Редакторський SDK** | C++/CLI + .NET Framework 3.5 (`AvalonAdapter`, старий WinForms/WPF) | **.NET 11 (`net11.0`)**, оболонка **Avalonia** з `Dock.Avalonia`, нативний Vulkan-в’юпорт через C ABI та `PerMonitorV2` DPI на Windows x64 |
+| **Аудіо, Ввід та Мережа** | XAudio2.9 / WinMM, DirectInput 8 / HWND, WinSock2 | Інтерфейс `i_audio_backend` (**XAudio2.9** на Windows + програмний мікшер **SDL3 Audio / PipeWire / PulseAudio** на Linux), **SDL3 Input** (Wayland/X11/Win32), **standalone Asio** |
+| **Редакторський SDK** | C++/CLI + .NET Framework 3.5 (`AvalonAdapter`, старий WinForms/WPF) | **.NET 11 (`net11.0`, `hostfxr.dll` / `libhostfxr.so`)**, **Avalonia 12.2** з `Dock.Avalonia`, C ABI v3 (`surface_descriptor`), Win32 / X11 / Wayland / Offscreen Vulkan-в’юпорти |
 | **DCC-інструменти (3D/Анімація)** | Тільки Autodesk Maya 2011 (32/64-bit C++ `.mll` плагін + пропрієтарний SISL) | **Blender 5.3** як основний DCC (`xray_blender` v0.3.3) + **Maya 2022–2027 Python API 2.0** (`xray_maya_plugin.py` v2.1), спільний формат **`xray-dcc-exchange/v2`** |
-| **Кукер асетів та математика кривих** | Прив’язаний до Maya runtime (`xray/maya_animation` + SISL + Win32) | Автономний портативний **C++26 `xray_asset_cook_cli`** та header-only бібліотека **`xray_animation_math`** (кубічний B-spline фітер без Maya/SISL) |
+| **Кукер асетів та математика кривих** | Прив’язаний до Maya runtime (`xray/maya_animation` + SISL + Win32) | Автономний кросплатформений **C++26 `xray_asset_cook_cli`** та header-only бібліотека **`xray_animation_math`** (кубічний B-spline фітер без Maya/SISL) |
 | **Міграція спадкового контенту** | Ручний експорт із Maya 2011 | Автоматичний конвеєр **`migrate_legacy.py`**: декомпіляція `.model`/`.skeleton`/`.skinned_model`/`.clip`/`.physics` без Maya, парсер `.ma` (включно з Trax `clipLibrary`), batch-міграція `.mb` |
 
 ---
@@ -25,11 +26,11 @@
 
 ### 1. Ядро рушія, C++26 та система збірки (`sources/CMakeLists.txt`)
 
-- **Сучасний C++26 та x64-only контракт:** проєкт переведено на стандарт `CMAKE_CXX_STANDARD 26` зі збіркою через **CMake + Ninja** компілятором **GCC 16 (MinGW-w64 x64)**. Застарілі 32-бітні та консольні (Xbox 360 / PS3 Cell) гілки ізольовані; додано контрактні тести `xray_source_contract` і `xray_windows_x64_contract` (перевірка ABI м’ютексів Windows та багатопотокової синхронізації).
+- **Сучасний C++26 та кросплатформений x64-контракт (Windows x64 + Linux x86_64):** проєкт переведено на стандарт `CMAKE_CXX_STANDARD 26` зі збіркою через **CMake 4.3+ + Ninja** компілятором **GCC 16**. Застарілі 32-бітні та консольні (Xbox 360 / PS3 Cell) гілки ізольовані; Win32-примітиви (`xray::os`, потоки, `futex`/`pthread`, ФС/`inotify`, `sigaction`/stacktrace) винесено за платформенний шар **PAL**; додано контрактні тести `xray_source_contract`, `xray_platform_x64_contract` та `xray_windows_x64_contract`.
 - **Уніфікація сторонніх залежностей:**
   - **Lua 5.5 + `sol2`:** усі модулі рушія, кукера та редактора використовують єдиний системний рантайм Lua 5.5 із пропатченим знімком `sources/third_party/sol2` (перевіряється тестом `xray_lua_sol_binding`).
-  - **Системні пакети MSYS2 (єдине джерело заголовків і бібліотек):** `Boost` 1.92.0 (`Boost::headers`, `filesystem`, `system`, `thread`), `SDL2`, `mimalloc`, `zlib` (`ZLIB::ZLIB` для декодування terrain chunk 103), `Bullet` (`PkgConfig::BULLET`), `Ogg` / `Vorbis` (`PkgConfig::OGG_VORBIS`), `Asio` (`asio::asio`).
-  - **Збережені вбудовані бібліотеки:** `ODE`, `OPCODE`, `FastDelegate`, `BugTrap` та відновлені алгоритми геометричного фітингу `WildMagic4` (`Wm4ContBox3` / `Wm4ContSphere3` у `sources/third_party/wildmagic4`).
+  - **Системні пакети (MSYS2 MinGW-w64 / UCRT64 на Windows, системні `-devel` пакети на Linux):** `Boost` 1.92.0 (`Boost::headers`, `filesystem`, `system`, `thread`), **`SDL3`** (вікна Wayland/X11/Win32, ввід, аудіо), `mimalloc`, `zlib` (`ZLIB::ZLIB`), `Bullet` (`PkgConfig::BULLET`), `Ogg` / `Vorbis` (`PkgConfig::OGG_VORBIS`), `standalone Asio` (`asio::asio`).
+  - **Збережені вбудовані бібліотеки:** `ODE`, `OPCODE`, `FastDelegate`, `BugTrap` (ізольований за `bugtrap_stub.cpp` на Linux) та відновлені алгоритми геометричного фітингу `WildMagic4` (`Wm4ContBox3` / `Wm4ContSphere3` у `sources/third_party/wildmagic4`).
 - **Захищена віртуальна файлова система (VFS) та конфігурації:** додано 64-бітну валідацію бінарних конфігів (`checked_config`), детектування циклів і перевірку меж при читанні VFS hard links та legacy-архівів.
 
 ---
@@ -39,8 +40,8 @@
 Повністю замінено спадковий DirectX-рендер на сучасний багатопотоковий бекенд **Vulkan 1.4** зі збереженням фасадних контрактів X-Ray 2.0 (`logic` / `render` / `resource` потоки):
 
 - **Власність RHI та детермінований життєвий цикл ресурсів:**
-  - Єдиний власник Vulkan RHI (`vulkan_backend.cpp`), який працює через системний Windows loader (`vulkan-1.dll` API ≥ 1.4).
-  - Кадровий конвеєр `begin_frame -> commands -> end_frame/submit -> present` із генераційними хендлами, відкладеним звільненням ресурсів за fence-серіалами (`submit serial`) та повним `drain` кукерів і черг перед знищенням вікон (`HWND`).
+  - Єдиний власник Vulkan RHI (`vulkan_backend.cpp`), який працює через системний loader (`vulkan-1.dll` на Windows, `libvulkan.so.1` на Linux, API ≥ 1.4) та `surface_adapter` поверх переносимого `xray::platform::native_surface_handle` (**SDL3 Wayland/X11/Win32**, `VK_KHR_wayland_surface`, `VK_KHR_xlib_surface`, `VK_KHR_xcb_surface`, `VK_KHR_win32_surface`).
+  - Кадровий конвеєр `begin_frame -> commands -> end_frame/submit -> present` із генераційними хендлами, відкладеним звільненням ресурсів за fence-серіалами (`submit serial`) та повним `drain` кукерів і черг перед знищенням поверхні (`native_surface_handle`).
   - Відсутність `vkDeviceWaitIdle` на звичайних кадрах; повторне використання дескрипторних наборів для кожного frame slot та LRU-кеш `VkRenderPass`/`VkFramebuffer` (до 64 пар на вихід), що забезпечує нульовий ріст пам’яті на довгих прогонах (підтверджено профілем **M9 Performance**).
 - **Двопрохідний Light Pre-Pass / Deferred Material конвеєр:**
   1. **G-Buffer Pass (`static_gbuffer.hlsl`):** записує лінеаризовану глибину $\sqrt{z_{\text{view}} / z_{\text{far}}}$, двокомпонентну шорсткість `roughness.xy`, стиснену нормаль, коефіцієнт Френеля `fresnel_at_0_degree`, дотичний вектор анізотропії `tangent_cross`, ідентифікатор профілю освітлення (`Standard` / `Skin` / `Organic`) та коефіцієнт просвічування `translucency`.
@@ -62,11 +63,11 @@
 
 ### 3. Відновлення та модернізація X-Ray 2.0 SDK (`sources/xray/editor/`, етапи SDK-0 — SDK-12)
 
-Міграцію UI редактора на **Avalonia 12.2** завершено. `EditorHost`, ядро редактора й бібліотека контролів збираються під **.NET 11 (`net11.0`)**. Цільова платформа SDK — Windows x64 з нативним Vulkan-в’юпортом. [План міграції та результати перевірок](ui_migration_plan.md)
+Міграцію UI редактора на **Avalonia 12.2** завершено. `EditorHost`, ядро редактора й бібліотека контролів збираються під **.NET 11 (`net11.0`)**. Цільові платформи SDK — **Windows x64** і **Linux x86_64 (X11 / Wayland)** з нативним та offscreen Vulkan-в’юпортом. [План міграції та результати перевірок](ui_migration_plan.md)
 
 - **Нативно-керований міст та UI-фундамент (SDK-0 — SDK-2):**
-  - Чистий C ABI міст (`host_bridge.h`, `managed_host.cpp`, `Bridge.cs`, `sdk_property_bridge.h`) між нативним `xray_editor_world` і керованим `EditorHost`.
-  - `xray.editor.core` містить моделі та команди редактора. `xray.editor.avalonia_controls` надає PropertyGrid, редактор кривих, палітру кольорів, графи, таймлайни й панелі спеціалізованих редакторів.
+  - Кросплатформений `hostfxr` хостинг (`hostfxr.dll` / `libhostfxr.so`) та чистий C ABI v3 міст (`host_bridge.h`, `surface_descriptor`, `window_control_request`, `managed_host.cpp`, `Bridge.cs`, `sdk_property_bridge.h`) між нативним `xray_editor_world` і керованим `EditorHost`.
+  - `xray.editor.core` містить моделі та команди редактора (із `0` P/Invoke `[DllImport]`). `xray.editor.avalonia_controls` надає PropertyGrid, редактор кривих, палітру кольорів, графи, таймлайни, панелі спеціалізованих редакторів та реалізації `AvaloniaViewportHost` (`Win32NativeSurfaceHostBackend`, `LinuxX11NativeSurfaceHostBackend`, `LinuxWaylandNativeSurfaceHostBackend`, `AvaloniaOffscreenViewportHost`).
   - `WindowIde` керує головною оболонкою `SdkAvaloniaShellWindow`. `Dock.Avalonia` зберігає макет у `workspace-layout.json` і підтримує імпорт попереднього XML-макета. `AvaloniaViewportHost` керує поверхнею Vulkan при зміні докінгу та DPI.
 - **Проєкти, VFS, транзакційний `CommandEngine` та 3D-в’юпорт (SDK-3 — SDK-5):**
   - Повний цикл роботи з проєктами `.xprj` (`New / Open / Save / Save As / Close`, кириличні шляхи, recovery, dirty-індикація, ізоляція робочих копій від read-only оригіналів), `SdkResourceBrowser` та інспектор залежностей поверх нативного resource ABI.
@@ -79,7 +80,7 @@
   - **SDK-9 (Audio):** `sound-editor` та `audio-tools`.
   - **SDK-10 (Particles)** — редактор частинок із графом Avalonia, таймлайном і попереднім переглядом симуляції.
   - **SDK-11 (Narrative & AI):** `dialog-editor`, `dialog-excel`, `scripting`, `navigation`.
-  - **SDK-12 (Packaging & Deployment)** — пакування Debug/Release та запуск `stalker2.exe -editor`. Пакет містить збірки Avalonia, Dock.Avalonia й нативні бібліотеки SkiaSharp та HarfBuzz. Керований хост використовує `Microsoft.NETCore.App` 11.0 без `Microsoft.WindowsDesktop.App`. [Скрипт пакування](sources/tools/sdk/package-sdk-runtime.py)
+  - **SDK-12 (Packaging & Deployment)** — пакування Debug/Release для Windows x64 (`launch-sdk.cmd` / `launch-sdk.ps1`, PE-аудит) та Linux x86_64 (`launch-sdk.sh`, ELF/RUNPATH `$ORIGIN` аудит) і запуск `stalker2 -editor`. Пакет містить збірки Avalonia, Dock.Avalonia й нативні бібліотеки SkiaSharp та HarfBuzz (`runtimes/{win,linux}-x64/native`). Керований хост використовує `Microsoft.NETCore.App` 11.0 без `Microsoft.WindowsDesktop.App`. [Скрипт пакування](sources/tools/sdk/package-sdk-runtime.py)
 
 ---
 
@@ -105,10 +106,20 @@
 
 ---
 
+### 5. Кросплатформенна адаптація Windows x64 + Linux x86_64 (етапи `PAL-0` — `PAL-8`, [`linux_abstraction_plan.md`](linux_abstraction_plan.md))
+
+Повну адаптацію кодової бази під Linux x86_64 реалізовано за стратегією поступового витіснення Win32 без регресій на Windows:
+
+- **PAL-0 — PAL-3 (Гігієна заголовків, Core OS, ФС і Діагностика):** усунуто LP64-конфлікти (`u8..u64` поверх `<cstdint>`, `atomic32_value_type = s32`) і case/backslash проблеми `#include`; реалізовано `xray::os`, реентрантні м’ютекси `PTHREAD_MUTEX_RECURSIVE`, `futex`-події, `posix_hdd_file_system` із кешованим case-insensitive fallback, `folder_watcher` на `inotify`, `logging_posix.cpp`, `std::stacktrace`/`sigaction`/текстові crash-звіти у `xray/debug`.
+- **PAL-4 — PAL-6 (Wayland/X11, Vulkan, DXC, Аудіо та Мережа):** прибрано `HWND` із публічних інтерфейсів (`native_surface_handle` + `capture_control_bus`), переведено `stalker2` та `xray/input` на **SDL3** (нативний Wayland із `wp_fractional_scale_v1`/relative mouse та X11); реалізовано портативний DXC (`dxc_abi.h`, `libdxcompiler.so`/`dxcompiler.dll`, CLI fallback і дисковий кеш SPIR-V); виділено `i_audio_backend` (**XAudio2.9** на Windows + програмний float-мікшер **SDL3 Audio / PipeWire / PulseAudio** на Linux) та `ISdkAudioBackendProbe` у C#.
+- **PAL-7 — PAL-8 (Редакторський SDK, Пакування та CI):** оновлено C ABI v3 (`surface_descriptor`, `window_control_request`), переведено хостинг `.NET 11` на `libhostfxr.so`/`hostfxr.dll`, додано `PlatformWindowService`, `LinuxX11NativeSurfaceHostBackend`, `LinuxWaylandNativeSurfaceHostBackend` та `AvaloniaOffscreenViewportHost`; додано контрактні ворота (`xray_source_contract`, `xray_platform_x64_contract`), мультиплатформене пакування (`package-sdk-runtime.py`), кросплатформений пошук кукера (`cook_bridge.py`) і Linux-завдання у [`.github/workflows/modernization-ci.yml`](.github/workflows/modernization-ci.yml) (`cpu-linux-x64` та `vulkan-wayland-linux-x64` із Lavapipe + headless Weston/Xvfb).
+
+---
+
 ## Структура репозиторію та документація
 
 - [`sources/CMakeLists.txt`](sources/CMakeLists.txt) — головний CMake-файл збірки рушія, рендера, редактора та кукера.
-- [`sources/README.md`](sources/README.md) — опис підтримуваного середовища збірки (Windows x64, MSYS2 MinGW-w64 GCC 16, Ninja).
+- [`sources/README.md`](sources/README.md) — опис підтримуваних середовищ збірки (Windows x64 MSYS2 MinGW-w64/UCRT64 і Linux x86_64 GCC 15+/16, Ninja).
 - [`sources/xray/render/vulkan/`](sources/xray/render/vulkan/README.md) — бекенд Vulkan 1.4, HLSL-шейдери (`assets/`), кукери моделей/матеріалів і контракти продуктивності.
 - [`sources/xray/editor/`](sources/xray/editor/) — нативні модулі SDK (`world/`, `animation/`, `sound/`) та керовані проєкти .NET 11 (`base/`, `core/`, `avalonia_controls/`, `avalonia_controls.tests/`).
 - [`sources/xray/animation_math/`](sources/xray/animation_math/README.md) — DCC-незалежна C++26 математика фітингу та перевірки B-spline анімацій.
@@ -123,14 +134,17 @@
   - [`ui_migration_plan.md`](ui_migration_plan.md) — міграція оболонки, контролів і редакторів на Avalonia (етапи UI-0 — UI-7).
   - [`blender_pipeline_plan.md`](blender_pipeline_plan.md) — архітектура конвеєра Blender 5.3 / Exchange v2 та міграція корпусу (етапи B0 — B8).
   - [`blender_animation_fixes_plan.md`](blender_animation_fixes_plan.md) — виправлення проблемних анімацій, розширення ліміту кісток `80 → 128`, точний скінінг `bindPreMatrix` і Trax `.ma` кліпи.
+  - [`linux_abstraction_plan.md`](linux_abstraction_plan.md) — кросплатформена абстракція та порт на Linux x86_64 з Wayland/X11 (етапи PAL-0 — PAL-8, перевірено на Windows x64 та Linux x86_64).
 
 ---
 
 ## Швидкий старт: збірка та перевірка
 
-### 1. Збірка рушія, Vulkan-рендера, SDK та кукера (Windows x64, MSYS2 MinGW-w64 GCC + Ninja)
+### 1. Збірка рушія, Vulkan-рендера, SDK та кукера
 
-Зафіксовані версії інструментів та пакетів MSYS2 описано в [`sources/tools/ci/toolchain-manifest.json`](sources/tools/ci/toolchain-manifest.json), а ізольовані Debug/Release пресети — у [`sources/CMakePresets.json`](sources/CMakePresets.json).
+Зафіксовані версії інструментів та пакетів (MSYS2 на Windows та системні пакети Linux) описано в [`sources/tools/ci/toolchain-manifest.json`](sources/tools/ci/toolchain-manifest.json), а Debug/Release пресети — у [`sources/CMakePresets.json`](sources/CMakePresets.json).
+
+**Windows x64 (MSYS2 MinGW-w64 / UCRT64 GCC 16 + Ninja, PowerShell):**
 
 ```powershell
 Push-Location sources
@@ -141,7 +155,19 @@ ctest --preset windows-x64-release-all
 Pop-Location
 ```
 
-Для збору базових метрик (версії, імпорти DLL, попередження компілятора, JUnit-звіт CTest):
+**Linux x86_64 (GCC 15+/16 + Ninja + `.NET 11`, bash):**
+
+```bash
+cmake -S sources --preset linux-x64-release
+cmake --build --preset linux-x64-release-cpu-tests --parallel
+ctest --preset linux-x64-release-cpu --output-on-failure
+
+# Повний стек (гра stalker2 + редакторський SDK + Vulkan/DXC):
+cmake --build --preset linux-x64-release --parallel
+ctest --preset linux-x64-release-all --output-on-failure
+```
+
+Для збору базових метрик (версії, імпорти PE/ELF, попередження компілятора, JUnit-звіт CTest):
 
 ```powershell
 python sources/tools/ci/collect_build_baseline.py --preset windows-x64-release --build-dir build/presets/windows-x64-release --output build/modernization-baseline/windows-x64-release/baseline.json
@@ -165,11 +191,18 @@ python sources/tools/blender/build_extension.py
 
 ### 4. Автономне пакування SDK Runtime
 
-Після збірки Release запустіть пакування з кореня репозиторію. Скрипт бере підготовлені SDK-асети з `build/sdk-assets` і записує дистрибутив у `build/sdk-runtime/release`.
+Після збірки Release запустіть пакування з кореня репозиторію. Скрипт бере підготовлені SDK-асети з `build/sdk-assets` і формує автономний пакет (Windows — `launch-sdk.cmd` + PE-аудит, Linux — `launch-sdk.sh` + ELF/`$ORIGIN` аудит):
 
 ```powershell
-python sources/tools/sdk/package-sdk-runtime.py --config release --build-dir build/presets/windows-x64-release --output build/sdk-runtime/release
+# Windows x64
+python sources/tools/sdk/package-sdk-runtime.py --config release --build-dir build/presets/windows-x64-release --output build/sdk-runtime/release --clean
 .\build\sdk-runtime\release\launch-sdk.cmd
 ```
 
-`xray_avalonia_headless_smoke` перевіряє контролі й оболонку без видимого вікна. `xray_sdk_package_smoke` перевіряє склад пакета, аудит DLL-імпортів і запуск `stalker2.exe -editor` з Vulkan Validation. CMake додає тест пакета за наявності підготовлених SDK-асетів, DXC і бібліотеки Vulkan Validation.
+```bash
+# Linux x86_64
+python3 sources/tools/sdk/package-sdk-runtime.py --platform linux-x64 --config release --build-dir build/presets/linux-x64-release --output build/sdk-runtime/linux-release --clean
+./build/sdk-runtime/linux-release/launch-sdk.sh
+```
+
+`xray_avalonia_headless_smoke` перевіряє контролі й оболонку без видимого вікна. `xray_sdk_package_smoke` перевіряє склад пакета, аудит PE/ELF-імпортів і запуск `stalker2 -editor` з Vulkan Validation. CMake додає тест пакета за наявності підготовлених SDK-асетів, DXC і шарів Vulkan Validation.

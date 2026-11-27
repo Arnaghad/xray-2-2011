@@ -5,7 +5,9 @@
 #include <xray/resources_cook_classes.h>
 #include "vulkan_diagnostics.h"
 #include <algorithm>
+#include <filesystem>
 #include <stdexcept>
+#include <system_error>
 
 namespace xray { namespace render { namespace vulkan {
 namespace {
@@ -24,9 +26,12 @@ bool equal_texture(texture_data const& a,texture_data const& b) {
         && a.mips==b.mips;
 }
 bool readable_texture(std::string const& path,texture_configuration const& config) {
-    WIN32_FILE_ATTRIBUTE_DATA info={};
-    if (!GetFileAttributesExA(path.c_str(),GetFileExInfoStandard,&info) || (info.dwFileAttributes&FILE_ATTRIBUTE_DIRECTORY)) return false;
-    uint64_t size=(uint64_t(info.nFileSizeHigh)<<32)|info.nFileSizeLow;
+    std::filesystem::path const fs_path = std::filesystem::u8path(path);
+    std::error_code ec;
+    auto const status = std::filesystem::status(fs_path, ec);
+    if (ec || !std::filesystem::is_regular_file(status)) return false;
+    uint64_t const size = std::filesystem::file_size(fs_path, ec);
+    if (ec) return false;
     return size>=(config.source_tga ? 18u : 128u+unsigned(config.legacy_cooked))
         && size<=(config.source_tga ? 128u : 64u)*1024u*1024u+unsigned(config.legacy_cooked);
 }

@@ -107,6 +107,7 @@ set(FACADE_FILES
 set(RHI_FILES
     ../core/sources/rhi/rhi_device.cpp
     ../core/sources/rhi/shader_compiler.cpp
+    ../core/sources/rhi/shader_disk_cache.cpp
 )
 
 # The active facade and world have one owner. Legacy base platform/renderers

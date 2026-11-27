@@ -230,7 +230,7 @@ static void process				(
 		xray::logging::log_format const *				log_format,
 		xray::logging::log_flags_enum const				log_flags,
 		pcstr const										format,
-		va_list const									args
+		va_list											args
 	)
 {
 	using namespace xray::logging;

@@ -12,7 +12,7 @@
 
 namespace xray {
 
-#if (XRAY_PLATFORM_WINDOWS == 1) && !defined(MASTER_GOLD)
+#if (XRAY_PLATFORM_WINDOWS || XRAY_PLATFORM_LINUX) && !defined(MASTER_GOLD)
 #	define XRAY_FS_NEW_WATCHER_ENABLED	1
 #else
 #	define XRAY_FS_NEW_WATCHER_ENABLED	0

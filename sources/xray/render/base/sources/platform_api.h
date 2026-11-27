@@ -13,7 +13,7 @@ namespace render {
 struct platform;
 namespace engine { struct wrapper; }
 
-	render::platform * create_render_platform( xray::render::engine::wrapper& wrapper, HWND window_handle);
+	render::platform * create_render_platform( xray::render::engine::wrapper& wrapper, xray::platform::native_surface_handle window_handle);
 
 } // namespace render
 } // namespace xray

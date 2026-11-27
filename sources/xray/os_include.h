@@ -7,6 +7,12 @@
 #ifndef XRAY_OS_INCLUDE_H_INCLUDED
 #define XRAY_OS_INCLUDE_H_INCLUDED
 
+#include <xray/macro_platform.h>
+
+#if !XRAY_PLATFORM_WINDOWS
+#	error "<xray/os_include.h> is Windows-only"
+#endif
+
 #include <xray/os_preinclude.h>
 
 

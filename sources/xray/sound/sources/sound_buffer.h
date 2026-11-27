@@ -9,8 +9,7 @@
 
 #include <xray/sound/encoded_sound_interface.h>
 #include <xray/intrusive_double_linked_list.h>
-
-struct XAUDIO2_BUFFER;
+#include "audio_backend.h"
 
 namespace xray {
 namespace sound {
@@ -45,10 +44,9 @@ private:
 							sound_buffer			( );
 public:
 			u32				get_length_in_pcm		( ) const;
-	inline	XAUDIO2_BUFFER*	get_xaudio_buffer		( )
+	inline	audio_buffer_desc*	get_audio_buffer	( )
 			{
-				return &m_xaudio_buffer;
-
+				return &m_audio_buffer;
 			}
 			sound_buffer*	m_next;
 			sound_buffer*	m_prev;
@@ -64,7 +62,7 @@ private:
 			void			increment				( ) { ++m_reference_count; }
 			void			decrement				( ) { --m_reference_count; }
 private:
-	XAUDIO2_BUFFER			m_xaudio_buffer;
+	audio_buffer_desc		m_audio_buffer;
 	u32						m_users;
 	u32						m_reference_count;
 	u32						m_length_in_pcm;

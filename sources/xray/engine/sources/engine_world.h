@@ -15,15 +15,9 @@
 #include <xray/intrusive_spsc_queue.h>
 #include <xray/one_way_threads_channel.h>
 #include <xray/fs/asynchronous_device_interface.h>
-#include <xray/fs/windows_hdd_file_system.h>
+#include <xray/fs/native_hdd_file_system.h>
+#include <xray/platform_surface.h>
 #include "apc.h"
-
-#if !defined(_MSC_VER)
-#ifndef _WINDEF_
-struct HWND__;
-typedef HWND__* HWND;
-#endif
-#endif // #if !defined(_MSC_VER)
 
 namespace xray {
 
@@ -65,8 +59,8 @@ public:
 
 	virtual	pcstr			get_mounts_path			( ) const;
 	virtual	void			create_physical_path	( string_path& result, pcstr resources_path, pcstr inside_resources_path ) const { strings::join( result, resources_path,inside_resources_path); }
-	virtual	HWND			get_main_window_handle	( ) const { return m_main_window_handle; }
-	virtual	HWND			get_render_window_handle( ) const { return m_render_window_handle; }
+	virtual	platform::native_surface_handle	get_main_window_handle	( ) const { return m_main_window_handle; }
+	virtual	platform::native_surface_handle	get_render_window_handle( ) const { return m_render_window_handle; }
 	virtual	float2			get_render_window_size	( ) const;
 
 			bool			command_line_editor		( );
@@ -200,15 +194,15 @@ private:
 	xray::engine_user::world*		 m_engine_user_world;
 
 #if 1
-	fs_new::windows_hdd_file_system			m_hdd_device;
-	fs_new::windows_hdd_file_system			m_dvd_device;
+	fs_new::native_hdd_file_system			m_hdd_device;
+	fs_new::native_hdd_file_system			m_dvd_device;
 #endif
 
 	uninitialized_reference<fs_new::asynchronous_device_interface>	m_hdd_async_interface;
 	uninitialized_reference<fs_new::asynchronous_device_interface>	m_dvd_async_interface;
 
-	HWND							m_main_window_handle;
-	HWND							m_render_window_handle;
+	platform::native_surface_handle	m_main_window_handle;
+	platform::native_surface_handle	m_render_window_handle;
 	u32								m_logic_frame_id;
 	u32								m_editor_frame_id;
 	int								m_exit_code;

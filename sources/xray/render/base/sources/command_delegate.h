@@ -8,7 +8,7 @@
 #define COMMAND_DELEGATE_H_INCLUDED
 
 #include <xray/render/base/engine_wrapper.h>
-#include <fastdelegate/fastdelegate.h>
+#include <fastdelegate/FastDelegate.h>
 
 namespace xray {
 namespace render {

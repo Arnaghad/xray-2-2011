@@ -9,6 +9,7 @@
 
 #include <memory>
 #include <atomic>
+#include <xray/platform_surface.h>
 #include <xray/render/engine/base_classes.h>
 #include <xray/render/core/memory.h>
 #include <xray/particle/world_resources.h>
@@ -108,8 +109,8 @@ public:
 							world						( );
 							~world						( );
 #if defined(USE_VULKAN_RENDERER)
-			bool initialize(HWND window_handle);
-			bool initialize_game(HWND window_handle);
+			bool initialize(platform::native_surface_handle surface);
+			bool initialize_game(platform::native_surface_handle surface);
 			bool finalize_game_resources();
 			bool initialize_geometry_smoke();
             bool initialize_material_smoke();
@@ -273,7 +274,7 @@ private:
 	bool                m_game_resources = false;
 	bool				m_enable_terrain_debug_mode;
 #if defined(USE_VULKAN_RENDERER)
-	HWND m_window_handle = nullptr;
+	platform::native_surface_handle m_window_handle;
     std::shared_ptr<vulkan::presentation_output> m_primary_output;
     bool m_output_close_requested=false;
 	std::unique_ptr<vulkan::smoke_geometry> m_smoke_geometry;

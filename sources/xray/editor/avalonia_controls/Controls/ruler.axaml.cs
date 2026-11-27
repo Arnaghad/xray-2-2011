@@ -3,6 +3,7 @@ using System.Globalization;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
+using xray.editor.avalonia_controls.Themes;
 
 namespace xray.editor.avalonia_controls;
 
@@ -24,8 +25,8 @@ public partial class ruler : Control
 
     private static readonly Typeface m_normal_typeface = new("Arial");
     private static readonly Typeface m_bold_typeface = new(new FontFamily("Arial"), FontStyle.Normal, FontWeight.Bold);
-    private static readonly Pen m_pen = new(Brushes.Black, 1);
-    private static readonly Pen m_bold_pen = new(Brushes.Black, 2);
+    private static readonly Pen m_pen = new(SdkWorkspaceTheme.Axis, 1);
+    private static readonly Pen m_bold_pen = new(SdkWorkspaceTheme.MutedText, 2);
 
     public Func<float> layout_scale;
     public Func<float> layout_offset;
@@ -88,13 +89,13 @@ public partial class ruler : Control
             {
                 pen = m_bold_pen;
                 line_height = 7;
-                text = new FormattedText(grid_helper.format(m_format_string, number), CultureInfo.CurrentCulture, FlowDirection.LeftToRight, m_bold_typeface, 12, Brushes.DarkRed);
+                text = new FormattedText(grid_helper.format(m_format_string, number), CultureInfo.CurrentCulture, FlowDirection.LeftToRight, m_bold_typeface, 12, SdkWorkspaceTheme.Accent);
             }
             else
             {
                 pen = m_pen;
                 text_offset = 5;
-                text = new FormattedText(grid_helper.format(m_format_string, number), CultureInfo.CurrentCulture, FlowDirection.LeftToRight, m_normal_typeface, 8, Brushes.Black);
+                text = new FormattedText(grid_helper.format(m_format_string, number), CultureInfo.CurrentCulture, FlowDirection.LeftToRight, m_normal_typeface, 8, SdkWorkspaceTheme.MutedText);
             }
 
             drawing_context.DrawText(text, new Point(offsetted_i_step - text.Width / 2, top_to_down ? actualHeight - text_offset - text.Height : text_offset));
@@ -103,9 +104,9 @@ public partial class ruler : Control
 
         if (name != null)
         {
-            var name_text = new FormattedText(name, CultureInfo.CurrentCulture, FlowDirection.LeftToRight, m_bold_typeface, 12, Brushes.Black);
+            var name_text = new FormattedText(name, CultureInfo.CurrentCulture, FlowDirection.LeftToRight, m_bold_typeface, 12, SdkWorkspaceTheme.Text);
             double y = top_to_down ? actualHeight - name_text.Height : 0;
-            drawing_context.DrawRectangle(Brushes.Gray, null, new Rect(0, y, name_text.Width, name_text.Height));
+            drawing_context.DrawRectangle(SdkWorkspaceTheme.Chrome, null, new Rect(0, y, name_text.Width, name_text.Height));
             drawing_context.DrawText(name_text, new Point(0, y));
         }
     }

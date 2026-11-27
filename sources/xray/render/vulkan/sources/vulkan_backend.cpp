@@ -3,8 +3,6 @@
 //	Checkpoint 3: Render Pass, Framebuffers, Synchronization, Depth
 ////////////////////////////////////////////////////////////////////////////
 
-#define VK_USE_PLATFORM_WIN32_KHR 1
-
 #include <vector>
 #include <list>
 #include <map>
@@ -22,9 +20,10 @@
 #include "vulkan_performance.h"
 #include "vulkan_api_version.h"
 #include "vertex_layout.h"
+#include <xray/render/vulkan/platform_surface.h>
+#include <xray/threading_functions.h>
 #include <cstring>
 #include <cstdlib>
-#include <xray/os_include.h>
 
 namespace xray {
 namespace render {
@@ -74,7 +73,7 @@ vulkan_backend::vulkan_backend() {}
 vulkan_backend::~vulkan_backend() { shutdown(); }
 
 void vulkan_backend::require_output_owner() const {
-    if (GetCurrentThreadId()!=m_owner_thread)
+    if (xray::threading::current_thread_id()!=m_owner_thread)
         throw std::runtime_error("Vulkan output operation requires the renderer owner thread");
 }
 
@@ -87,7 +86,7 @@ void vulkan_backend::select_output(std::shared_ptr<presentation_output> const& o
     m_output=entry->presentation; m_frames=entry->frames.get();
 }
 
-std::shared_ptr<presentation_output> vulkan_backend::create_output(HWND window) {
+std::shared_ptr<presentation_output> vulkan_backend::create_output(platform::native_surface_handle window) {
     return create_output_for(window,std::make_shared<presentation_output>());
 }
 std::vector<std::shared_ptr<presentation_output>> vulkan_backend::outputs() const {
@@ -101,24 +100,26 @@ void vulkan_backend::adopt_output(std::shared_ptr<presentation_output> const& ou
     if (!output || output->closed || output->close_requested) throw std::runtime_error("Cannot adopt a closed output lease");
     for (auto const& entry:m_outputs) if (entry.presentation==output) return;
     if (output->surface || output->swapchain) throw std::runtime_error("Output lease already has foreign GPU objects");
-    create_output_for(output->hwnd,output);
+    create_output_for(output->surface_handle,output);
 }
-std::shared_ptr<presentation_output> vulkan_backend::create_output_for(HWND window,std::shared_ptr<presentation_output> next) {
+std::shared_ptr<presentation_output> vulkan_backend::create_output_for(platform::native_surface_handle window,std::shared_ptr<presentation_output> next) {
     require_output_owner();
-    if (!m_initialized || m_recording || m_frame_submitted || !IsWindow(window))
-        throw std::runtime_error("Output creation requires a live HWND between frames");
-    for (auto const& entry:m_outputs) if (entry.presentation->hwnd==window)
-        throw std::runtime_error("HWND already has a Vulkan output");
+    if (!m_initialized || m_recording || m_frame_submitted || !surface_adapter::is_surface_alive(window))
+        throw std::runtime_error("Output creation requires a live surface between frames");
+    for (auto const& entry:m_outputs) if (entry.presentation->surface_handle==window)
+        throw std::runtime_error("Surface already has a Vulkan output");
     auto previous=m_output;
-    next->hwnd=window;
+    next->surface_handle=window;
     m_outputs.push_back({next,std::make_unique<output_frames>()});
     m_output=next; m_frames=m_outputs.back().frames.get();
     try {
-        m_frames->capture_enabled=GetPropA(window,"XRAY_VULKAN_TEST_CAPTURE")!=nullptr;
+        m_frames->capture_enabled=surface_adapter::get_surface_property(window,"XRAY_VULKAN_TEST_CAPTURE")!=0;
         create_window_surface();
-        VkBool32 supported=VK_FALSE;
-        vk_check(vkGetPhysicalDeviceSurfaceSupportKHR(m_physical_device,m_present_queue_family_index,next->surface,&supported),"Query additional output present support");
-        if (!supported) throw std::runtime_error("Shared device cannot present to the additional surface");
+        if (!next->is_offscreen) {
+            VkBool32 supported=VK_FALSE;
+            vk_check(vkGetPhysicalDeviceSurfaceSupportKHR(m_physical_device,m_present_queue_family_index,next->surface,&supported),"Query additional output present support");
+            if (!supported) throw std::runtime_error("Shared device cannot present to the additional surface");
+        }
         create_command_objects(); create_sync_objects();
         next->swapchain_dirty=true; refresh_swapchain();
     } catch (...) {
@@ -169,7 +170,8 @@ void vulkan_backend::destroy_output_objects() noexcept {
     }
     *m_frames=output_frames{};
     if (m_output->surface) vkDestroySurfaceKHR(m_instance,m_output->surface,allocation_callbacks());
-    m_output->surface=VK_NULL_HANDLE; m_output->hwnd=nullptr;
+    m_output->surface=VK_NULL_HANDLE; m_output->surface_handle={};
+    m_output->is_offscreen=false;
     m_output->closed=true;
     m_output->swapchain_dirty=false;
 }
@@ -178,21 +180,21 @@ void vulkan_backend::destroy_output_objects() noexcept {
 // Initialization
 // -----------------------------------------------------------------------
 
-bool vulkan_backend::initialize(HWND hwnd) {
-	if (!g_allocator || m_instance != VK_NULL_HANDLE || !hwnd || !IsWindow(hwnd)) return false;
+bool vulkan_backend::initialize(platform::native_surface_handle surface) {
+	if (!g_allocator || m_instance != VK_NULL_HANDLE || !surface.valid() || !surface_adapter::is_surface_alive(surface)) return false;
 	reset_diagnostics();
     m_memory_statistics={};
     m_performance_enabled=false; m_timestamp_valid_bits=0; m_timestamp_period=0;
     m_frame_started_ns=m_pipeline_creations=m_pipeline_creation_ns=m_device_idle_calls=m_pass_pair_creations=0;
-    m_owner_thread=GetCurrentThreadId();
+    m_owner_thread=xray::threading::current_thread_id();
     try {
     // A previous session's retained lease must stay closed after reinitialization.
     m_output=std::make_shared<presentation_output>();
     m_outputs.push_back({m_output,std::make_unique<output_frames>()});
     m_frames=m_outputs.back().frames.get();
-	m_output->hwnd = hwnd;
+	m_output->surface_handle = surface;
     m_output->presented_frames=0;
-    m_frames->capture_enabled=GetPropA(hwnd,"XRAY_VULKAN_TEST_CAPTURE")!=nullptr;
+    m_frames->capture_enabled=surface_adapter::get_surface_property(surface,"XRAY_VULKAN_TEST_CAPTURE")!=0;
 		create_instance();
 		create_window_surface();
 		pick_physical_device();
@@ -276,7 +278,7 @@ void vulkan_backend::shutdown() noexcept {
     for (auto const& entry:m_outputs) {
         auto& output=*entry.presentation;
         if (output.surface) vkDestroySurfaceKHR(m_instance,output.surface,allocation_callbacks());
-        output.surface=VK_NULL_HANDLE; output.hwnd=nullptr;
+        output.surface=VK_NULL_HANDLE; output.surface_handle={};
         output.closed=true; output.swapchain_dirty=false;
     }
     m_outputs.clear(); m_frames=&m_idle_frames;
@@ -291,7 +293,7 @@ void vulkan_backend::shutdown() noexcept {
 		vkDestroyInstance(m_instance, allocation_callbacks());
 		m_instance = VK_NULL_HANDLE;
 	}
-	m_output->hwnd = nullptr;
+	m_output->surface_handle = {};
 	m_graphics_queue = VK_NULL_HANDLE;
 	m_present_queue = VK_NULL_HANDLE;
 	m_graphics_queue_family_index = UINT32_MAX;
@@ -365,7 +367,8 @@ void vulkan_backend::create_instance() {
 	vk_check(vkEnumerateInstanceExtensionProperties(nullptr, &count, nullptr), "Enumerate instance extensions");
 	::std::vector<VkExtensionProperties> extensions(count);
 	vk_check(vkEnumerateInstanceExtensionProperties(nullptr, &count, extensions.data()), "Read instance extensions");
-	::std::vector<char const*> enabled_extensions = {VK_KHR_SURFACE_EXTENSION_NAME, VK_KHR_WIN32_SURFACE_EXTENSION_NAME};
+	::std::vector<char const*> enabled_extensions = surface_adapter::required_instance_extensions();
+	if (enabled_extensions.empty()) enabled_extensions.push_back(VK_KHR_SURFACE_EXTENSION_NAME);
 	for (auto name : enabled_extensions)
 		if (!has_extension(extensions, name)) throw ::std::runtime_error(::std::string("Missing instance extension: ") + name);
 	m_surface_maintenance_enabled = has_extension(extensions, VK_EXT_SURFACE_MAINTENANCE_1_EXTENSION_NAME)
@@ -452,23 +455,25 @@ void vulkan_backend::create_instance() {
 }
 
 // -----------------------------------------------------------------------
-// Win32 Surface
+// Window Surface (SDL3 + Native WSI via surface_adapter)
 // -----------------------------------------------------------------------
 
 void vulkan_backend::create_window_surface() {
-	if (!m_output->hwnd) {
-		diagnostic("warning", "No HWND provided — headless mode, skipping surface creation");
+	if (!m_output->surface_handle.valid()) {
+		diagnostic("warning", "No surface handle provided — headless mode, skipping surface creation");
+		return;
+	}
+	if (m_output->surface_handle.kind == platform::native_surface_kind::offscreen) {
+		m_output->is_offscreen = true;
+		m_output->surface = VK_NULL_HANDLE;
+		diagnostic("info", "Vulkan surface created (offscreen mailbox)");
 		return;
 	}
 
-	VkWin32SurfaceCreateInfoKHR surface_info = {};
-	surface_info.sType     = VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR;
-	surface_info.hinstance = GetModuleHandle(nullptr);
-	surface_info.hwnd      = m_output->hwnd;
-
-    vk_check(create_handle(m_output->surface, vkCreateWin32SurfaceKHR,
-        m_instance, &surface_info, allocation_callbacks()), "Create Win32 Vulkan surface");
-	diagnostic("info", "Win32 Vulkan surface created");
+	bool used_sdl = false;
+	if (!surface_adapter::create_surface(m_instance, m_output->surface_handle, allocation_callbacks(), &m_output->surface, &used_sdl))
+		throw ::std::runtime_error("Failed to create Vulkan surface");
+	diagnostic("info", "Vulkan surface created (%s)", used_sdl ? "SDL3" : "native WSI");
 }
 
 // -----------------------------------------------------------------------
@@ -489,36 +494,44 @@ void vulkan_backend::pick_physical_device() {
   vk_check(vkEnumerateDeviceExtensionProperties(device, nullptr, &count, nullptr), "Enumerate device extensions");
   ::std::vector<VkExtensionProperties> extensions(count);
   vk_check(vkEnumerateDeviceExtensionProperties(device, nullptr, &count, extensions.data()), "Read device extensions");
-  if (!has_extension(extensions, VK_KHR_SWAPCHAIN_EXTENSION_NAME)) continue;
-  if (!m_surface_maintenance_enabled || !has_extension(extensions, VK_EXT_SWAPCHAIN_MAINTENANCE_1_EXTENSION_NAME)) continue;
-  VkPhysicalDeviceSwapchainMaintenance1FeaturesEXT maintenance = {};
-  maintenance.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SWAPCHAIN_MAINTENANCE_1_FEATURES_EXT;
-  VkPhysicalDeviceFeatures2 features = {};
-  features.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FEATURES_2;
-  features.pNext = &maintenance;
-  vkGetPhysicalDeviceFeatures2(device, &features);
-  if (!maintenance.swapchainMaintenance1) continue;
+  if (!m_output->is_offscreen) {
+   if (!has_extension(extensions, VK_KHR_SWAPCHAIN_EXTENSION_NAME)) continue;
+   if (!m_surface_maintenance_enabled || !has_extension(extensions, VK_EXT_SWAPCHAIN_MAINTENANCE_1_EXTENSION_NAME)) continue;
+   VkPhysicalDeviceSwapchainMaintenance1FeaturesEXT maintenance = {};
+   maintenance.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SWAPCHAIN_MAINTENANCE_1_FEATURES_EXT;
+   VkPhysicalDeviceFeatures2 features = {};
+   features.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FEATURES_2;
+   features.pNext = &maintenance;
+   vkGetPhysicalDeviceFeatures2(device, &features);
+   if (!maintenance.swapchainMaintenance1) continue;
+  }
   vkGetPhysicalDeviceQueueFamilyProperties(device, &count, nullptr);
   ::std::vector<VkQueueFamilyProperties> families(count);
   vkGetPhysicalDeviceQueueFamilyProperties(device, &count, families.data());
   uint32_t graphics = UINT32_MAX, present = UINT32_MAX;
   for (uint32_t i = 0; i < count; ++i) {
    if (!families[i].queueCount) continue;
+   bool const renders = (families[i].queueFlags & VK_QUEUE_GRAPHICS_BIT) != 0;
+   if (m_output->is_offscreen) {
+    if (renders) { graphics = present = i; break; }
+    continue;
+   }
    VkBool32 supported = VK_FALSE;
    vk_check(vkGetPhysicalDeviceSurfaceSupportKHR(device, i, m_output->surface, &supported), "Query present support");
-   bool const renders = (families[i].queueFlags & VK_QUEUE_GRAPHICS_BIT) != 0;
    if (renders && graphics == UINT32_MAX) graphics = i;
    if (supported && present == UINT32_MAX) present = i;
    if (renders && supported) { graphics = present = i; break; }
   }
   if (graphics == UINT32_MAX || present == UINT32_MAX) continue;
-  uint32_t formats = 0, modes = 0;
-  vk_check(vkGetPhysicalDeviceSurfaceFormatsKHR(device, m_output->surface, &formats, nullptr), "Query surface formats");
-  vk_check(vkGetPhysicalDeviceSurfacePresentModesKHR(device, m_output->surface, &modes, nullptr), "Query present modes");
-  if (!formats || !modes) continue;
-  VkSurfaceCapabilitiesKHR caps;
-  vk_check(vkGetPhysicalDeviceSurfaceCapabilitiesKHR(device, m_output->surface, &caps), "Query surface capabilities");
-  if (!(caps.supportedUsageFlags & VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT)) continue;
+  if (!m_output->is_offscreen) {
+   uint32_t formats = 0, modes = 0;
+   vk_check(vkGetPhysicalDeviceSurfaceFormatsKHR(device, m_output->surface, &formats, nullptr), "Query surface formats");
+   vk_check(vkGetPhysicalDeviceSurfacePresentModesKHR(device, m_output->surface, &modes, nullptr), "Query present modes");
+   if (!formats || !modes) continue;
+   VkSurfaceCapabilitiesKHR caps;
+   vk_check(vkGetPhysicalDeviceSurfaceCapabilitiesKHR(device, m_output->surface, &caps), "Query surface capabilities");
+   if (!(caps.supportedUsageFlags & VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT)) continue;
+  }
   int score = props.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU ? 1000 :
    props.deviceType == VK_PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU ? 100 : 1;
   if (score <= best_score) continue;
@@ -571,11 +584,13 @@ void vulkan_backend::create_logical_device() {
 		queue_create_infos.push_back(present_queue_info);
 	}
 
-	::std::vector<char const*> device_extensions = { VK_KHR_SWAPCHAIN_EXTENSION_NAME };
+	::std::vector<char const*> device_extensions;
 	uint32_t extension_count = 0;
 	vk_check(vkEnumerateDeviceExtensionProperties(m_physical_device, nullptr, &extension_count, nullptr), "Enumerate selected device extensions");
 	::std::vector<VkExtensionProperties> extensions(extension_count);
 	vk_check(vkEnumerateDeviceExtensionProperties(m_physical_device, nullptr, &extension_count, extensions.data()), "Read selected device extensions");
+	if (has_extension(extensions, VK_KHR_SWAPCHAIN_EXTENSION_NAME))
+		device_extensions.push_back(VK_KHR_SWAPCHAIN_EXTENSION_NAME);
 	VkPhysicalDeviceSwapchainMaintenance1FeaturesEXT maintenance = {};
 	maintenance.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SWAPCHAIN_MAINTENANCE_1_FEATURES_EXT;
 	if (m_surface_maintenance_enabled && has_extension(extensions, VK_EXT_SWAPCHAIN_MAINTENANCE_1_EXTENSION_NAME)) {
@@ -586,7 +601,7 @@ void vulkan_backend::create_logical_device() {
 		m_present_fences_enabled = maintenance.swapchainMaintenance1 == VK_TRUE;
 		if (m_present_fences_enabled) device_extensions.push_back(VK_EXT_SWAPCHAIN_MAINTENANCE_1_EXTENSION_NAME);
 	}
-	if (!m_present_fences_enabled)
+	if (!m_output->is_offscreen && !m_present_fences_enabled)
 		throw ::std::runtime_error("Present fences required for safe swapchain teardown in the Stage 1 bootstrap");
 
 	VkPhysicalDeviceProperties props;
@@ -707,6 +722,14 @@ VkSurfaceFormatKHR vulkan_backend::choose_surface_format(const ::std::vector<VkS
 }
 
 VkPresentModeKHR vulkan_backend::choose_present_mode(const ::std::vector<VkPresentModeKHR>& modes) {
+	if (char const* const disable_vsync = ::std::getenv("XRAY_VULKAN_DISABLE_VSYNC");
+		disable_vsync && ::std::strcmp(disable_vsync, "1") == 0) {
+		for (const auto& mode : modes) {
+			if (mode == VK_PRESENT_MODE_IMMEDIATE_KHR) {
+				return mode;
+			}
+		}
+	}
 	for (const auto& mode : modes) {
 		if (mode == VK_PRESENT_MODE_MAILBOX_KHR) {
 			return mode;
@@ -719,12 +742,11 @@ VkExtent2D vulkan_backend::choose_swap_extent(const VkSurfaceCapabilitiesKHR& ca
 	if (caps.currentExtent.width != ::std::numeric_limits<uint32_t>::max()) {
 		return caps.currentExtent;
 	}
-	RECT rect;
-	GetClientRect(m_output->hwnd, &rect);
-	VkExtent2D extent = {
-		static_cast<uint32_t>(rect.right  - rect.left),
-		static_cast<uint32_t>(rect.bottom - rect.top)
-	};
+	u32 width = 0, height = 0;
+	if (!surface_adapter::query_surface_extent(m_output->surface_handle, width, height) || !width || !height) {
+		return caps.minImageExtent;
+	}
+	VkExtent2D extent = { width, height };
 	extent.width  = ::std::clamp(extent.width,  caps.minImageExtent.width,  caps.maxImageExtent.width);
 	extent.height = ::std::clamp(extent.height, caps.minImageExtent.height, caps.maxImageExtent.height);
 	return extent;
@@ -735,6 +757,64 @@ VkExtent2D vulkan_backend::choose_swap_extent(const VkSurfaceCapabilitiesKHR& ca
 // -----------------------------------------------------------------------
 
 void vulkan_backend::create_swapchain() {
+	if (m_output->is_offscreen) {
+		u32 width = 960, height = 640;
+		(void)surface_adapter::query_surface_extent(m_output->surface_handle, width, height);
+		width = std::max(1u, width);
+		height = std::max(1u, height);
+
+		m_output->swapchain = VK_NULL_HANDLE;
+		m_output->swapchain_format = VK_FORMAT_B8G8R8A8_SRGB;
+		m_output->swapchain_extent = { width, height };
+
+		uint32_t const image_count = MAX_FRAMES_IN_FLIGHT;
+		m_output->swapchain_images.resize(image_count, VK_NULL_HANDLE);
+		m_output->swapchain_image_views.resize(image_count, VK_NULL_HANDLE);
+		m_output->offscreen_color_memory.resize(image_count, VK_NULL_HANDLE);
+
+		for (uint32_t i = 0; i < image_count; ++i) {
+			VkImageCreateInfo image_info = {};
+			image_info.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
+			image_info.imageType = VK_IMAGE_TYPE_2D;
+			image_info.extent = { width, height, 1 };
+			image_info.mipLevels = 1;
+			image_info.arrayLayers = 1;
+			image_info.format = m_output->swapchain_format;
+			image_info.tiling = VK_IMAGE_TILING_OPTIMAL;
+			image_info.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+			image_info.usage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT | VK_IMAGE_USAGE_TRANSFER_SRC_BIT;
+			image_info.samples = VK_SAMPLE_COUNT_1_BIT;
+			image_info.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
+			vk_check(create_handle(m_output->swapchain_images[i], vkCreateImage,
+				m_device, &image_info, allocation_callbacks()), "Create offscreen color image");
+
+			VkMemoryRequirements mem_req;
+			vkGetImageMemoryRequirements(m_device, m_output->swapchain_images[i], &mem_req);
+			VkMemoryAllocateInfo alloc_info = {};
+			alloc_info.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
+			alloc_info.allocationSize = mem_req.size;
+			alloc_info.memoryTypeIndex = find_memory_type(mem_req.memoryTypeBits, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
+			vk_check(allocate_memory(alloc_info, m_output->offscreen_color_memory[i]), "Allocate offscreen color memory");
+			vk_check(vkBindImageMemory(m_device, m_output->swapchain_images[i], m_output->offscreen_color_memory[i], 0), "Bind offscreen color memory");
+
+			VkImageViewCreateInfo view_info = {};
+			view_info.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
+			view_info.image = m_output->swapchain_images[i];
+			view_info.viewType = VK_IMAGE_VIEW_TYPE_2D;
+			view_info.format = m_output->swapchain_format;
+			view_info.subresourceRange = { VK_IMAGE_ASPECT_COLOR_BIT, 0, 1, 0, 1 };
+			vk_check(create_handle(m_output->swapchain_image_views[i], vkCreateImageView,
+				m_device, &view_info, allocation_callbacks()), "Create offscreen image view");
+		}
+		m_output->images_in_flight.assign(image_count, VK_NULL_HANDLE);
+		m_output->render_finished_semaphores.clear();
+		m_output->present_fences.clear();
+		m_output->present_pending.clear();
+		diagnostic("info", "Vulkan offscreen target created: %ux%u, %u images, format=%d",
+			width, height, image_count, (int)m_output->swapchain_format);
+		return;
+	}
+
 	if (m_output->surface == VK_NULL_HANDLE) {
 		diagnostic("info", "No surface — skipping swapchain creation (headless mode)");
 		return;
@@ -991,6 +1071,15 @@ void vulkan_backend::cleanup_swapchain() {
 			vkDestroyImageView(m_device, view, allocation_callbacks());
 	}
 	m_output->swapchain_image_views.clear();
+	if (!m_output->offscreen_color_memory.empty()) {
+		for (auto image : m_output->swapchain_images) {
+			if (image != VK_NULL_HANDLE)
+				vkDestroyImage(m_device, image, allocation_callbacks());
+		}
+		for (auto memory : m_output->offscreen_color_memory)
+			free_memory(memory);
+		m_output->offscreen_color_memory.clear();
+	}
 	m_output->swapchain_images.clear();
 
 	if (m_output->swapchain != VK_NULL_HANDLE) {
@@ -1020,9 +1109,25 @@ void vulkan_backend::wait_for_presentations() {
 }
 
 bool vulkan_backend::refresh_swapchain() {
-	RECT rect = {};
-	if (!GetClientRect(m_output->hwnd, &rect)) throw ::std::runtime_error("Cannot query render window extent");
-	if (IsIconic(GetAncestor(m_output->hwnd,GA_ROOT)) || rect.right <= rect.left || rect.bottom <= rect.top) return false;
+	u32 surface_w = 0, surface_h = 0;
+	if (!surface_adapter::is_surface_alive(m_output->surface_handle)) throw ::std::runtime_error("Cannot query render window extent");
+	if (surface_adapter::is_surface_minimized(m_output->surface_handle)) return false;
+	if (surface_adapter::query_surface_extent(m_output->surface_handle, surface_w, surface_h) && (!surface_w || !surface_h)) return false;
+	if (m_output->is_offscreen) {
+		if (!surface_w || !surface_h) return false;
+		if (!m_output->swapchain_dirty && !m_output->swapchain_images.empty() && surface_w == m_output->swapchain_extent.width && surface_h == m_output->swapchain_extent.height) return true;
+		if (m_recording || m_frame_submitted) throw ::std::runtime_error("Swapchain recreation requested during an active frame");
+		++m_device_idle_calls;
+		vk_check(vkDeviceWaitIdle(m_device), "Wait for offscreen target rendering");
+		m_completed_serial = m_submitted_serial;
+		collect_retired();
+		cleanup_swapchain();
+		create_swapchain();
+		create_depth_resource();
+		m_output->swapchain_dirty = false;
+		record_swapchain_recreation();
+		return true;
+	}
 	VkSurfaceCapabilitiesKHR caps = {};
 	vk_check(vkGetPhysicalDeviceSurfaceCapabilitiesKHR(m_physical_device, m_output->surface, &caps), "Query current surface extent");
 	VkExtent2D const extent = choose_swap_extent(caps);
@@ -1055,7 +1160,7 @@ bool vulkan_backend::refresh_swapchain() {
 // -----------------------------------------------------------------------
 
 bool vulkan_backend::begin_frame() {
-	if (!m_initialized || !m_output->hwnd || m_recording || m_frame_submitted) return false;
+	if (!m_initialized || !m_output->surface_handle.valid() || m_recording || m_frame_submitted) return false;
     require_output_owner();
     if (m_performance_enabled) m_frame_started_ns=performance_clock_ns();
 	if (!refresh_swapchain()) return false;
@@ -1077,24 +1182,28 @@ bool vulkan_backend::begin_frame() {
 
     reset_material_frame();
 
-	// Acquire the next swapchain image
-    VkResult result = vkAcquireNextImageKHR(
-		m_device, m_output->swapchain, 1000000000ull,
-		m_frames->image_available[m_frames->current_frame],
-		VK_NULL_HANDLE,
-		&m_output->current_image_index
-	);
+	if (m_output->is_offscreen) {
+		m_output->current_image_index = m_frames->current_frame % static_cast<uint32_t>(m_output->swapchain_images.size());
+	} else {
+		// Acquire the next swapchain image
+		VkResult result = vkAcquireNextImageKHR(
+			m_device, m_output->swapchain, 1000000000ull,
+			m_frames->image_available[m_frames->current_frame],
+			VK_NULL_HANDLE,
+			&m_output->current_image_index
+		);
 
-	if (result == VK_ERROR_OUT_OF_DATE_KHR) {
-		m_output->swapchain_dirty = true;
-		return false;
+		if (result == VK_ERROR_OUT_OF_DATE_KHR) {
+			m_output->swapchain_dirty = true;
+			return false;
+		}
+		if (result == VK_TIMEOUT || result == VK_NOT_READY) return false;
+		if (result != VK_SUCCESS && result != VK_SUBOPTIMAL_KHR) {
+			m_initialized = false;
+			vk_check(result, "Acquire swapchain image");
+		}
+		if (result == VK_SUBOPTIMAL_KHR) m_output->swapchain_dirty = true;
 	}
-	if (result == VK_TIMEOUT || result == VK_NOT_READY) return false;
-	if (result != VK_SUCCESS && result != VK_SUBOPTIMAL_KHR) {
-        m_initialized = false;
-        vk_check(result, "Acquire swapchain image");
-	}
-	if (result == VK_SUBOPTIMAL_KHR) m_output->swapchain_dirty = true;
 	if (m_output->images_in_flight[m_output->current_image_index])
 		vk_check(vkWaitForFences(m_device, 1, &m_output->images_in_flight[m_output->current_image_index], VK_TRUE, UINT64_MAX), "Wait for acquired image rendering");
 
@@ -1125,7 +1234,7 @@ bool vulkan_backend::end_frame() {
 	VkCommandBuffer cmd = m_frames->command_buffers[m_frames->current_frame];
 
     end_render_pass();
-	if (m_frames->capture_enabled) {
+	if (m_frames->capture_enabled || m_output->is_offscreen) {
         record_capture(cmd);
     } else {
         VkImageMemoryBarrier2 to_present = {};
@@ -1166,18 +1275,19 @@ bool vulkan_backend::end_frame() {
 	cmd_info.commandBuffer = cmd;
 
 	VkSemaphoreSubmitInfo signal_info = {};
-	signal_info.sType = VK_STRUCTURE_TYPE_SEMAPHORE_SUBMIT_INFO;
-	signal_info.semaphore = m_output->render_finished_semaphores[m_output->current_image_index];
-	signal_info.stageMask = VK_PIPELINE_STAGE_2_ALL_COMMANDS_BIT;
-
 	VkSubmitInfo2 submit_info = {};
 	submit_info.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO_2;
-	submit_info.waitSemaphoreInfoCount = 1;
-	submit_info.pWaitSemaphoreInfos = &wait_info;
 	submit_info.commandBufferInfoCount = 1;
 	submit_info.pCommandBufferInfos = &cmd_info;
-	submit_info.signalSemaphoreInfoCount = 1;
-	submit_info.pSignalSemaphoreInfos = &signal_info;
+	if (!m_output->is_offscreen) {
+		signal_info.sType = VK_STRUCTURE_TYPE_SEMAPHORE_SUBMIT_INFO;
+		signal_info.semaphore = m_output->render_finished_semaphores[m_output->current_image_index];
+		signal_info.stageMask = VK_PIPELINE_STAGE_2_ALL_COMMANDS_BIT;
+		submit_info.waitSemaphoreInfoCount = 1;
+		submit_info.pWaitSemaphoreInfos = &wait_info;
+		submit_info.signalSemaphoreInfoCount = 1;
+		submit_info.pSignalSemaphoreInfos = &signal_info;
+	}
 
 	// Reset only after successful command recording, immediately before submit.
 	vk_check(vkResetFences(m_device, 1, &m_frames->in_flight[m_frames->current_frame]), "Reset submit fence");
@@ -1191,12 +1301,36 @@ bool vulkan_backend::end_frame() {
 	m_frames->serials[m_frames->current_frame] = ++m_submitted_serial;
     if (m_performance_enabled) m_frames->timestamp_pending[m_frames->current_frame]=true;
 	m_frame_submitted = true;
-    if (m_frames->capture_enabled) { m_frames->capture_frame=m_frames->current_frame; m_frames->capture_valid=true; }
+    if (m_frames->capture_enabled || m_output->is_offscreen) { m_frames->capture_frame=m_frames->current_frame; m_frames->capture_valid=true; }
 	return true;
 }
 
 bool vulkan_backend::present() {
 	if (!m_initialized || !m_frame_submitted) return false;
+	if (m_output->is_offscreen) {
+		VkFence frame_fence = m_frames->in_flight[m_frames->current_frame];
+		vk_check(vkWaitForFences(m_device, 1, &frame_fence, VK_TRUE, UINT64_MAX), "Wait for offscreen frame fence");
+		auto const& slot = m_frames->captures[m_frames->current_frame];
+		if (slot.buffer.mapped && slot.width > 0 && slot.height > 0) {
+			if (!slot.coherent) {
+				VkMappedMemoryRange range = {};
+				range.sType = VK_STRUCTURE_TYPE_MAPPED_MEMORY_RANGE;
+				range.memory = slot.buffer.memory;
+				range.size = VK_WHOLE_SIZE;
+				vk_check(vkInvalidateMappedMemoryRanges(m_device, 1, &range), "Invalidate offscreen readback memory");
+			}
+			surface_adapter::publish_offscreen_frame(m_output->surface_handle, slot.buffer.mapped, slot.width, slot.height);
+		}
+		m_frame_submitted = false;
+		++m_output->presented_frames;
+		if (m_performance_enabled) {
+			++m_frames->performance.cpu_samples;
+			m_frames->performance.cpu_serial = m_submitted_serial;
+			m_frames->performance.cpu_frame_ns = performance_clock_ns() - m_frame_started_ns;
+		}
+		m_frames->current_frame = (m_frames->current_frame + 1) % MAX_FRAMES_IN_FLIGHT;
+		return true;
+	}
 	VkSemaphore signal_semaphores[] = { m_output->render_finished_semaphores[m_output->current_image_index] };
 	VkPresentInfoKHR present_info = {};
 	present_info.sType              = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;

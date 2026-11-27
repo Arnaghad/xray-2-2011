@@ -7,8 +7,7 @@
 #ifndef DEBUG_INTERNAL_H_INCLUDED
 #define DEBUG_INTERNAL_H_INCLUDED
 
-struct _SYSTEMTIME;
-
+#include <string.h>
 #include <xray/debug/engine.h>
 
 namespace xray {
@@ -30,7 +29,9 @@ namespace bugtrap {
 	void setup_unhandled_exception_handler	( );
 } // namespace bugtrap
 
+#if XRAY_PLATFORM_WINDOWS
 #	define OUTPUT_DEBUG_STRING				OutputDebugStringA
+#endif
 
 inline pstr strings_copy			( pstr destination, u32 destination_size, pcstr source )
 {
@@ -38,7 +39,14 @@ inline pstr strings_copy			( pstr destination, u32 destination_size, pcstr sourc
 	errno_t const error	= strcpy_s( destination, destination_size, source );
 	XRAY_UNREFERENCED_PARAMETER	( error );
 #elif defined(__GNUC__)
-	strncpy			( destination, source, destination_size );
+	if ( destination_size > 0 ) {
+		if ( source ) {
+			strncpy			( destination, source, destination_size - 1 );
+			destination[destination_size - 1] = '\0';
+		} else {
+			destination[0] = '\0';
+		}
+	}
 #else
 #	error define strings::copy for your platform here
 #endif
@@ -51,7 +59,11 @@ inline pstr strings_concat			( pstr destination, u32 destination_size, pcstr sou
 	errno_t const error	= strcat_s( destination, destination_size, source );
 	XRAY_UNREFERENCED_PARAMETER	( error );
 #elif defined(__GNUC__) // #ifdef _MSC_VER
-	strncat			( destination, source, destination_size );
+	if ( destination_size > 0 && source ) {
+		size_t const cur = strnlen( destination, destination_size );
+		if ( cur + 1 < destination_size )
+			strncat		( destination, source, destination_size - cur - 1 );
+	}
 #elif defined(__SNC__) // #ifdef _MSC_VER
 	XRAY_UNREFERENCED_PARAMETER	( destination_size );
 	strcat			( destination, source );
@@ -74,10 +86,11 @@ inline pstr strings_concat	( char (&destination)[count], pcstr source )
 }
 
 #ifdef _MSC_VER
-typedef	long	atomic32;
+typedef	s32		atomic32;
 #else // #ifdef _MSC_VER
 typedef	u32		atomic32;
 #endif // #ifdef _MSC_VER
+static_assert(sizeof(atomic32) == 4, "atomic32 must be 32-bit");
 
 atomic32 interlocked_increment			( atomic32 & target );
 atomic32 interlocked_decrement			( atomic32 & target );

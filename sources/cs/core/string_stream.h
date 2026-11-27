@@ -18,7 +18,7 @@ private:
 public:
 							string_stream	();
 							~string_stream	();
-			void __cdecl	msg				(pcstr format, ...);
+			void CS_CDECL	msg				(pcstr format, ...);
 	inline	pcvoid			buffer			() const;
 	inline	u32 			buffer_size		() const;
 	inline	void			clear			();

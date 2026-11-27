@@ -7,12 +7,14 @@
 #ifndef XRAY_TIMING_FUNCTIONS_H_INCLUDED
 #define XRAY_TIMING_FUNCTIONS_H_INCLUDED
 
+#if defined(__x86_64__) || defined(_M_X64)
 #	if defined(_MSC_VER)
 #		include <intrin.h>
 #		pragma intrinsic(__rdtsc)
-#	elif defined(__GNUC__)
+#	elif defined(__GNUC__) || defined(__clang__)
 #		include <x86intrin.h>
 #	endif
+#endif
 
 namespace xray {
 namespace timing {
@@ -24,7 +26,11 @@ XRAY_CORE_API	extern bool	g_cpu_supports_time_stamp;
 
 inline			u64			get_clocks					( )
 {
+#if defined(__x86_64__) || defined(_M_X64)
 	return		( __rdtsc( ) );
+#else
+	return		( query_performance_counter( ) );
+#endif
 }
 
 inline u64					get_QPC						( )

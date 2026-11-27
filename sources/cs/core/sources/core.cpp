@@ -9,12 +9,16 @@
 #include "pch_script.h"
 #include <cs/core/os_include.h>
 
-#ifndef CS_STATIC_LIBRARIES
-#	include "delayimp.h"
-#else // #ifndef CS_STATIC_LIBRARIES
+#if CS_PLATFORM_WINDOWS
+#	ifndef CS_STATIC_LIBRARIES
+#		include "delayimp.h"
+#	else // #ifndef CS_STATIC_LIBRARIES
 #		pragma comment(lib, "advapi32.lib")
 #		pragma comment(lib, "user32.lib")
-#endif // #ifndef CS_STATIC_LIBRARIES
+#	endif // #ifndef CS_STATIC_LIBRARIES
+#else
+#	include <cstdlib>
+#endif
 
 namespace cs {
 	namespace core {
@@ -110,8 +114,15 @@ void cs_core::initialize_impl		(pcstr const library_user, bool const use_debug_e
 	m_application_name		= sz_dup(library_user);
 
 	string256				user_name;
+#if CS_PLATFORM_WINDOWS
 	DWORD					size = sizeof(user_name);
 	GetUserName				(user_name,&size);
+#else
+	pcstr env_user = std::getenv("USER");
+	if ( !env_user || !*env_user )
+		env_user = std::getenv("LOGNAME");
+	sz_cpy					(user_name, (env_user && *env_user) ? env_user : "linux");
+#endif
 //	__FUnloadDelayLoadedDLL2("advapi32.dll");
 	m_user_name				= sz_dup(user_name);
 

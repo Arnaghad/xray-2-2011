@@ -9,7 +9,7 @@
 
 #include <xray/render/facade/base_command.h>
 #include <xray/render/facade/editor_renderer.h>
-#include <fastdelegate/fastdelegate.h>
+#include <fastdelegate/FastDelegate.h>
 #include <xray/render/base/common_types.h>
 
 namespace xray {

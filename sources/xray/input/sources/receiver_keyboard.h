@@ -9,6 +9,7 @@
 
 #include <xray/input/world.h>
 #include <xray/input/keyboard.h>
+#include <xray/platform_surface.h>
 #include <SDL3/SDL_scancode.h>
 #include <SDL3/SDL_events.h>
 
@@ -25,7 +26,7 @@ class keyboard :
 {
 typedef vector< handler* >		handlers_type;
 public:
-							keyboard		( HWND window_handle, xray::input::world& input_world );
+							keyboard		( platform::native_surface_handle window_handle, xray::input::world& input_world );
 	virtual					~keyboard		( );
 	virtual	bool			is_key_down		( enum_keyboard key ) const;
 			void			on_activate		( );
@@ -44,7 +45,7 @@ private:
 	string256				m_live_key_buffer;
 	string256				m_current_key_buffer;
 	string256				m_previous_key_buffer;
-	HWND					m_window_handle;
+	platform::native_surface_handle	m_window_handle;
 	xray::input::world&		m_world;
 	bool					m_active;
 }; // class world

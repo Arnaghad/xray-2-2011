@@ -11,17 +11,19 @@
 #include "fs_readers_file.h"
 #include "fs_writers_file.h"
 
-#ifdef _MSC_VER
+#if defined(_WIN32)
 #	include <io.h>
 #	include <share.h>
-#endif // #ifdef _MSC_VER
+#else
+#	include <unistd.h>
+#endif
 
 #include <fcntl.h>
 #include <sys/stat.h>
 
 fs::reader fs::file_reader	(pcstr path)
 {
-#ifdef _MSC_VER
+#if defined(_WIN32)
 	int	file_handle;
 	errno_t	error_code	= 
 		_sopen_s(
@@ -48,11 +50,12 @@ fs::reader fs::file_reader	(pcstr path)
 		return			0;
 
 	return				cs_new<readers::file>(file_handle,path);
-#else // #ifdef _MSC_VER
-	FILE* const file	= fopen( path, "rb" );
-	R_ASSERT			( file );
-	return				cs_new<readers::file>(fileno(file),path);
-#endif // #ifdef _MSC_VER
+#else
+	int const fd		= ::open( path, O_RDONLY );
+	if ( fd < 0 )
+		return			0;
+	return				cs_new<readers::file>(fd, path);
+#endif
 }
 
 fs::writer fs::file_writer	(pcstr path)

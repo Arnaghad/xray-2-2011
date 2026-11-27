@@ -7,7 +7,9 @@
 #ifndef PCH_H_INCLUDED
 #define PCH_H_INCLUDED
 
-#define XRAY_EDITOR_BASE_BUILDING
+#ifndef XRAY_EDITOR_BASE_BUILDING
+#	define XRAY_EDITOR_BASE_BUILDING
+#endif
 
 #define XRAY_LOG_MODULE_INITIATOR	"editor_base"
 #include <xray/editor/base/editor_extensions.h>

@@ -234,18 +234,49 @@ static void splash_screen_main		( )
 }
 #pragma warning(pop)
 
+namespace stalker2 {
+void decode_finger_print				( xray::fixed_string512* );
+} // namespace stalker2
+
+namespace {
+
+class win32_splash_screen final : public stalker2::i_splash_screen {
+public:
+	void show( pcstr ) override
+	{
+		stalker2::decode_finger_print	( &s_finger_print );
+		xray::threading::spawn			( &splash_screen_main, "splash screen", "splash", 0, 0, xray::threading::tasks_unaware );
+	}
+
+	void close( ) override
+	{
+		if ( s_splash_screen ) {
+			PostMessage					( s_splash_screen, WM_DESTROY, 0, 0 );
+			s_splash_screen				= nullptr;
+		}
+	}
+
+	~win32_splash_screen( ) override
+	{
+		close							( );
+	}
+};
+
+} // namespace
+
 void application::preinitialize					( )
 {
-	xray::engine::preinitialize		( m_game_proxy, GetCommandLine( ), "stalker2", __DATE__ );
+	pcstr const cmd_line			= !m_command_line.empty() ? m_command_line.c_str() : GetCommandLineA();
+	xray::engine::preinitialize		( m_game_proxy, cmd_line, "stalker2", __DATE__ );
 
-	void   decode_finger_print		(xray::fixed_string512 * );
-	decode_finger_print				( & s_finger_print );
-
-	if ( !xray::engine::command_line_no_splash_screen() )
-		xray::threading::spawn		( &splash_screen_main, "splash screen", "splash", 0, 0, xray::threading::tasks_unaware );
+	if ( !xray::engine::command_line_no_splash_screen() ) {
+		m_splash_screen				= std::make_unique<win32_splash_screen>();
+		m_splash_screen->show		( cmd_line );
+	}
 }
 
 void application::postinitialize				( )
 {
-	PostMessage						( s_splash_screen, WM_DESTROY, 0, 0 );
+	if ( m_splash_screen )
+		m_splash_screen->close		( );
 }

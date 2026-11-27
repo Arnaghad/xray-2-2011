@@ -17,7 +17,7 @@ using xray::input::keyboard;
 using xray::input::mouse;
 using xray::input::gamepad;
 
-input_world::input_world	( xray::input::engine& engine, HWND const window_handle ) :
+input_world::input_world	( xray::input::engine& engine, xray::platform::native_surface_handle const window_handle ) :
 	m_engine				( engine ),
 	m_target_window			( window_handle ),
 	m_gamepad				( 0 ),

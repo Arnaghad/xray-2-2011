@@ -6,6 +6,7 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using xray.editor.avalonia_controls.property_editors.attributes;
+using xray.editor.avalonia_controls.Themes;
 
 namespace xray.editor.avalonia_controls.property_editors.value;
 
@@ -56,7 +57,7 @@ public partial class external_editor : value_editor_base
             if (m_attribute?.m_can_directly_set == true)
             {
                 externalEditorTextBox.IsReadOnly = false;
-                externalEditorTextBox.Foreground = Brushes.Black;
+                externalEditorTextBox.Foreground = SdkWorkspaceTheme.Text;
             }
 
             if (m_property.is_multiple_values)

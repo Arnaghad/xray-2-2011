@@ -14,7 +14,7 @@
 
 using xray::input::input_world;
 
-void input_world::create_devices	( HWND const window_handle )
+void input_world::create_devices	( xray::platform::native_surface_handle const window_handle )
 {
 	m_target_window			= window_handle;
 	m_gamepad				= NEW ( receiver::gamepad ) ( 0, *this );

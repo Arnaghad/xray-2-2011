@@ -16,6 +16,17 @@
           "Avalonia.X11": "12.2.0"
         }
       },
+      "Avalonia.Wayland": {
+        "type": "Direct",
+        "requested": "[12.2.0, )",
+        "resolved": "12.2.0",
+        "contentHash": "4tclDHdSoJrjaWlxZSNcP1Lf7zm3xC7zFdhlVRTC9v2o39hca/YfhbPjy2ghrGxeSAfQPb/yrDjarGe+OZGgKg==",
+        "dependencies": {
+          "Avalonia": "12.2.0",
+          "Avalonia.FreeDesktop": "12.2.0",
+          "NWayland": "0.11.0"
+        }
+      },
       "Avalonia": {
         "type": "Transitive",
         "resolved": "12.2.0",
@@ -249,6 +260,11 @@
         "type": "Transitive",
         "resolved": "0.11.7",
         "contentHash": "zCwrbHqXE77aR5+fMh+WVDBfnAFSqwsC69pM9iutyuuxGWXAB0KeAhhX7akWsqRcXSbgRNvRsVweXP2zVeVaEg=="
+      },
+      "NWayland": {
+        "type": "Transitive",
+        "resolved": "0.11.0",
+        "contentHash": "sTqw0WWcFd/UsF9JoWDn76+2CrCMrNZgR9jgTCqx2WTaSc/UmQ0pgo9Cbn/CRoEyXv+lIHhMygzFexv5p9ve8g=="
       },
       "SkiaSharp": {
         "type": "Transitive",

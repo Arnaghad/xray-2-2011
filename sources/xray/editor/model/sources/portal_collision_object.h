@@ -7,8 +7,8 @@
 #ifndef PORTAL_COLLISION_OBJECT_H_INCLUDED
 #define PORTAL_COLLISION_OBJECT_H_INCLUDED
 
-#include <xray\collision\collision_object.h>
-#include <xray\collision\geometry.h>
+#include <xray/collision/collision_object.h>
+#include <xray/collision/geometry.h>
 
 namespace xray {
 namespace model_editor {

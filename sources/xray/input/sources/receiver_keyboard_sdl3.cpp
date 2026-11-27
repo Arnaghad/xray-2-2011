@@ -13,7 +13,7 @@ using xray::input::handler;
 using xray::input::enum_keyboard;
 using xray::input::world;
 
-keyboard::keyboard			( HWND const window_handle, world& input_world ) :
+keyboard::keyboard			( xray::platform::native_surface_handle const window_handle, world& input_world ) :
 	m_window_handle		( window_handle ),
 	m_world				( input_world ),
 	m_active			( true )
@@ -203,4 +203,3 @@ void keyboard::execute		( )
 	memory::copy		( &m_previous_key_buffer, sizeof(m_previous_key_buffer), &m_current_key_buffer, sizeof( m_current_key_buffer ) );
 	memory::copy		( &m_current_key_buffer,  sizeof(m_current_key_buffer),  &m_live_key_buffer,    sizeof( m_live_key_buffer ) );
 }
-

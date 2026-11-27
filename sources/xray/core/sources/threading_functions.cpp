@@ -5,19 +5,11 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "pch.h"
-#include <xray/os_include.h>
 #include <xray/fixed_string.h>
 #include "member_to_functor.h"
 #include <functional>
 #include "threading_functions.h"
 #include <xray/construction.h>
-
-#ifndef NDEBUG
-#	define	XRAY_THREADING_INLINE
-#		include <xray/threading_functions_win_inline.h>
-#else // #ifndef NDEBUG
-#	undef	XRAY_THREADING_INLINE
-#endif // #ifndef NDEBUG
 
 namespace xray {
 

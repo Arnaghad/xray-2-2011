@@ -11,10 +11,18 @@
 
 #include <cs/library_names.h>
 
-#define CS_LUA_STUDIO_BACKEND_CALL		__stdcall
+#if CS_PLATFORM_WINDOWS
+#	define CS_LUA_STUDIO_BACKEND_CALL		__stdcall
+#else
+#	define CS_LUA_STUDIO_BACKEND_CALL
+#endif
 
 #ifndef CS_LUA_STUDIO_BACKEND_API
-#	define CS_LUA_STUDIO_BACKEND_API	__declspec(dllimport)
+#	if CS_PLATFORM_WINDOWS
+#		define CS_LUA_STUDIO_BACKEND_API	__declspec(dllimport)
+#	else
+#		define CS_LUA_STUDIO_BACKEND_API
+#	endif
 #endif // #ifndef CS_LUA_STUDIO_BACKEND_API
 
 #define CS_LUA_STUDIO_BACKEND_FILE_NAME	CS_LIBRARY_NAME( lua_studio_backend, dll )

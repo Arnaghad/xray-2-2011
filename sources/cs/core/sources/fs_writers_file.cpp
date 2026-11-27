@@ -9,11 +9,13 @@
 #include "pch.h"
 #include "fs_writers_file.h"
 
-#ifdef _MSC_VER
+#if defined(_WIN32)
 #	include <io.h>
 #	include <share.h>
 #	include <direct.h>
-#endif // #ifdef _MSC_VER
+#else
+#	include <unistd.h>
+#endif
 
 #include <fcntl.h>
 #include <sys/stat.h>
@@ -36,13 +38,18 @@ fs::writers::file::file		(pcstr path)
 			continue;
 
 		*j				= 0;
-		mkdir(temp);
+#if defined(_WIN32)
+		_mkdir(temp);
 		*j				= '\\';
+#else
+		::mkdir(temp, 0755);
+		*j				= '/';
+#endif
 	}
 
-		_unlink			(path);
+#if defined(_WIN32)
+	_unlink				(path);
 
-#if defined(_MSC_VER)
 	errno_t	error_code = 
 		_sopen_s(
 			&m_file_handle,
@@ -65,20 +72,27 @@ fs::writers::file::file		(pcstr path)
 	}
 
 	R_ASSERT	(!error_code,"Cannot open file \"%s\" for writing",path);
-#elif defined(__GNUC__) // #if defined(_MSC_VER)
-	m_file_handle	= fileno( fopen( path, "rb" ) );
-	R_ASSERT		( m_file_handle );
-#else // #elif defined(__GNUC__)
-#	error implement file open for your platform here
-#endif // #if defined(_MSC_VER)
+#else
+	::unlink			(path);
+	m_file_handle		= ::open( path, O_CREAT | O_WRONLY | O_TRUNC, 0664 );
+	R_ASSERT			( m_file_handle >= 0, "Cannot open file \"%s\" for writing", path );
+#endif
 }
 
 fs::writers::file::~file	()
 {
+#if defined(_WIN32)
 	R_ASSERT	(!_close(m_file_handle),"Cannot close file \"%s\" after writing",*m_path);
+#else
+	R_ASSERT	(!::close(m_file_handle),"Cannot close file \"%s\" after writing",*m_path);
+#endif
 }
 
 void fs::writers::file::w	(pcvoid buffer, u32 const buffer_size)
 {
+#if defined(_WIN32)
 	R_ASSERT	(_write(m_file_handle,buffer,buffer_size) == (int)buffer_size,"Cannot write to file \"%s\"",*m_path);
+#else
+	R_ASSERT	(::write(m_file_handle,buffer,buffer_size) == (ssize_t)buffer_size,"Cannot write to file \"%s\"",*m_path);
+#endif
 }

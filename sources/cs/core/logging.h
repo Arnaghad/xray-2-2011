@@ -9,7 +9,7 @@
 #ifndef CS_CORE_LOGGING_H_INCLUDED
 #define CS_CORE_LOGGING_H_INCLUDED
 
-#include <fastdelegate/fastdelegate.h>
+#include <fastdelegate/FastDelegate.h>
 
 #ifndef CS_CORE_API
 #	define CS_CORE_API							CS_API

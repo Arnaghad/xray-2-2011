@@ -44,7 +44,7 @@
              Clip="M 0,0 L 180,0 L 90,156 Z"
              Opacity="{Binding #this_control.selected_color, Converter={StaticResource opacity_extractor}, ConverterParameter=3, Mode=OneWay}">
         <Border x:Name="m_triangle_hue_border" />
-        <Image Source="avares://xray.editor.avalonia_controls/controls/color_picker/Saturation.png" Stretch="Fill" />
+        <Image Source="avares://xray.editor.avalonia_controls/Controls/color_picker/Saturation.png" Stretch="Fill" />
         <Border>
           <Border.Background>
             <LinearGradientBrush StartPoint="50%,100%" EndPoint="50%,0%">

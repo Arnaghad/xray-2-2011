@@ -6,6 +6,8 @@
 #include "pch.h"
 #include <xray/editor/animation/api.h>
 
+#ifdef _MSC_VER
 #pragma unmanaged
+#endif
 
 xray::animation_editor::allocator_type* xray::animation_editor::g_allocator = nullptr;

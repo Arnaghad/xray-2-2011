@@ -22,6 +22,7 @@
     <!-- Runtime patch changes must invalidate an existing hosted-library config. -->
     <GenerateRuntimeConfigurationFilesInputs Include="$(MSBuildProjectFullPath)" />
     <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/Bridge.cs" />
+    <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/PlatformWindowService.cs" />
     <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/EditorWorld.cs" />
     <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/EditorWorld.Sdk.cs" />
     <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/SdkSound.cs" />
@@ -99,6 +100,7 @@
     <Compile Include="@CMAKE_CURRENT_SOURCE_DIR@/WindowIde.Editing.cs" />
     <EmbeddedResource Include="@CMAKE_CURRENT_SOURCE_DIR@/images/images16x16.png" LogicalName="xray.editor_base.images16x16.png" />
     <PackageReference Include="Avalonia.Desktop" Version="12.2.0" />
+    <PackageReference Include="Avalonia.Wayland" Version="12.2.0" />
     <ProjectReference Include="@CMAKE_SOURCE_DIR@/xray/editor/core/xray.editor.core.csproj" />
     <ProjectReference Include="@CMAKE_SOURCE_DIR@/xray/editor/avalonia_controls/xray.editor.avalonia_controls.csproj" />
   </ItemGroup>

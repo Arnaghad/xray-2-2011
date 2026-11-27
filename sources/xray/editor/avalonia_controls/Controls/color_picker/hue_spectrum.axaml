@@ -4,7 +4,7 @@
              Width="265"
              Height="265">
   <Grid x:Name="m_hue_spectrum" Cursor="Cross" Background="Transparent">
-    <Image Source="avares://xray.editor.avalonia_controls/controls/color_picker/HueCircle.png" />
+    <Image Source="avares://xray.editor.avalonia_controls/Controls/color_picker/HueCircle.png" />
     <Path x:Name="m_hue_marker"
           Margin="50,50,0,0"
           Stroke="Black"

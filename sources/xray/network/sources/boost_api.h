@@ -15,7 +15,11 @@ namespace boost
 	void throw_exception(std::bad_alloc const & e);
 } // namespace boost
 
-#include <xray/os_include.h>
+#include <xray/os_platform.h>
+#if XRAY_PLATFORM_WINDOWS
+#	include <xray/os_include.h>
+#	define BOOST_ASIO_ENABLE_CANCELIO 1
+#endif
 
 //configuring boost asio
 
@@ -23,7 +27,6 @@ namespace boost
 #define BOOST_ALL_NO_LIB
 #define BOOST_ASIO_NO_DEFAULT_LINKED_LIBS
 #define BOOST_ASIO_DISABLE_SERIAL_PORT 1
-#define BOOST_ASIO_ENABLE_CANCELIO 1
 
 
 #include <asio.hpp>		// warning: includes window.h

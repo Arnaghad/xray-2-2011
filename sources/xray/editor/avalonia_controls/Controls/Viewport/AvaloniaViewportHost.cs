@@ -1,10 +1,12 @@
 using System;
+using System.Collections.Concurrent;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Media;
+using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using Avalonia.Rendering;
 using xray.editor_base;
@@ -18,6 +20,8 @@ namespace xray.editor.avalonia_controls.Controls;
 // so dock/undock/float/DPI changes never destroy a swapchain surface with GPU frames in flight.
 public class AvaloniaViewportHost : NativeControlHost, IViewportSurfaceHost, ICustomHitTest
 {
+    private static readonly ConcurrentDictionary<nint, AvaloniaViewportHost> s_liveHosts = new();
+
     private readonly INativeSurfaceHostBackend m_backend;
     private readonly int m_ownerThreadId = Environment.CurrentManagedThreadId;
 
@@ -30,17 +34,57 @@ public class AvaloniaViewportHost : NativeControlHost, IViewportSurfaceHost, ICu
     private int m_lastPixelWidth;
     private int m_lastPixelHeight;
     private TopLevel? m_topLevel;
+    private WriteableBitmap? m_offscreenBitmap;
+    private ulong m_offscreenSerial;
+
+    public static bool PreferOffscreenBackend { get; set; }
+
+    private static INativeSurfaceHostBackend CreatePlatformBackend()
+    {
+        if (OperatingSystem.IsWindows())
+            return new Win32NativeSurfaceHostBackend();
+
+        if (OperatingSystem.IsLinux())
+        {
+            string? overrideBackend = Environment.GetEnvironmentVariable("XRAY_EDITOR_SURFACE_BACKEND");
+            if (string.Equals(overrideBackend, "offscreen", StringComparison.OrdinalIgnoreCase))
+                return new LinuxOffscreenNativeSurfaceHostBackend();
+            if (string.Equals(overrideBackend, "wayland", StringComparison.OrdinalIgnoreCase))
+                return new LinuxWaylandNativeSurfaceHostBackend();
+            if (string.Equals(overrideBackend, "x11", StringComparison.OrdinalIgnoreCase))
+                return new LinuxX11NativeSurfaceHostBackend();
+
+            if (PreferOffscreenBackend)
+                return new LinuxOffscreenNativeSurfaceHostBackend();
+            if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("DISPLAY")))
+                return new LinuxX11NativeSurfaceHostBackend();
+            if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("WAYLAND_DISPLAY")))
+                return new LinuxOffscreenNativeSurfaceHostBackend();
+        }
+
+        throw new PlatformNotSupportedException("AvaloniaViewportHost requires a platform INativeSurfaceHostBackend.");
+    }
 
     public AvaloniaViewportHost(INativeSurfaceHostBackend? backend = null, int initialPixelWidth = 640, int initialPixelHeight = 480)
     {
-        m_backend = backend ?? (OperatingSystem.IsWindows()
-            ? new Win32NativeSurfaceHostBackend()
-            : throw new PlatformNotSupportedException("AvaloniaViewportHost requires a platform INativeSurfaceHostBackend."));
+        m_backend = backend ?? CreatePlatformBackend();
         m_lastPixelWidth = Math.Max(1, initialPixelWidth);
         m_lastPixelHeight = Math.Max(1, initialPixelHeight);
         Focusable = true;
         IsHitTestVisible = true;
         ClipToBounds = true;
+    }
+
+    public static bool TryResolveSurface(nint surfaceHandle, out NativeSurfaceDescriptor descriptor)
+    {
+        if (surfaceHandle != 0 && s_liveHosts.TryGetValue(surfaceHandle, out var host) && host.m_surface == surfaceHandle && !host.m_disposed)
+        {
+            descriptor = new NativeSurfaceDescriptor(host.m_backend.SurfaceKind, surfaceHandle, host.m_backend.DisplayHandle);
+            return descriptor.IsValid;
+        }
+
+        descriptor = default;
+        return false;
     }
 
     public nint SurfaceHandle
@@ -55,6 +99,9 @@ public class AvaloniaViewportHost : NativeControlHost, IViewportSurfaceHost, ICu
             return m_surface;
         }
     }
+
+    public NativeSurfaceDescriptor SurfaceDescriptor =>
+        new(m_backend.SurfaceKind, SurfaceHandle, m_backend.DisplayHandle);
 
     public bool HasSurface => m_surface != 0;
     public bool SurfaceLeased => m_leased;
@@ -82,6 +129,8 @@ public class AvaloniaViewportHost : NativeControlHost, IViewportSurfaceHost, ICu
             nint initialParent = preferredParent != 0 ? preferredParent : m_parking;
             m_surface = m_backend.CreateSurfaceWindow(initialParent, m_lastPixelWidth, m_lastPixelHeight);
             m_attachedParent = preferredParent != 0 ? preferredParent : 0;
+            if (m_surface != 0)
+                s_liveHosts[m_surface] = this;
         }
         catch
         {
@@ -122,6 +171,8 @@ public class AvaloniaViewportHost : NativeControlHost, IViewportSurfaceHost, ICu
         m_parking = 0;
         m_attachedParent = 0;
         m_disposed = true;
+        if (surface != 0)
+            s_liveHosts.TryRemove(surface, out _);
 
         try
         {
@@ -130,9 +181,27 @@ public class AvaloniaViewportHost : NativeControlHost, IViewportSurfaceHost, ICu
         }
         finally
         {
+            m_offscreenBitmap?.Dispose();
+            m_offscreenBitmap = null;
+            m_offscreenSerial = 0;
             if (parking != 0)
                 m_backend.DestroyParkingWindow(parking);
         }
+    }
+
+    private void PollOffscreenFrame()
+    {
+        if (m_disposed || m_disposeRequested || m_surface == 0 || m_backend is not LinuxOffscreenNativeSurfaceHostBackend offscreen)
+            return;
+
+        if (offscreen.PollFrame(m_surface, ref m_offscreenSerial, ref m_offscreenBitmap))
+            InvalidateVisual();
+    }
+
+    public static void PollAllOffscreenFrames()
+    {
+        foreach (var host in s_liveHosts.Values)
+            host.PollOffscreenFrame();
     }
 
     public PixelSize DipToPhysicalSize(Size dipSize, double? scalingOverride = null)
@@ -275,7 +344,18 @@ public class AvaloniaViewportHost : NativeControlHost, IViewportSurfaceHost, ICu
 
     public override void Render(DrawingContext context)
     {
-        context.FillRectangle(Brushes.Transparent, new Rect(Bounds.Size));
+        var rect = new Rect(Bounds.Size);
+        if (m_backend is LinuxOffscreenNativeSurfaceHostBackend)
+        {
+            if (m_offscreenBitmap != null && rect.Width > 0 && rect.Height > 0)
+                context.DrawImage(m_offscreenBitmap, rect);
+            else
+                context.FillRectangle(Brushes.Black, rect);
+        }
+        else
+        {
+            context.FillRectangle(Brushes.Transparent, rect);
+        }
         base.Render(context);
     }
 

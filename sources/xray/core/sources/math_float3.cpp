@@ -5,8 +5,13 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "pch.h"
+#include <cmath>
 
+#if XRAY_PLATFORM_WINDOWS
 #	define XRAY_COPY_SIGN	_copysign
+#else
+#	define XRAY_COPY_SIGN	std::copysign
+#endif
 
 using xray::math::float3;
 

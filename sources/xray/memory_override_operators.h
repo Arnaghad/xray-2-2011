@@ -7,6 +7,18 @@
 #ifndef XRAY_MEMORY_OVERRIDE_OPERATORS_H_INCLUDED
 #define XRAY_MEMORY_OVERRIDE_OPERATORS_H_INCLUDED
 
+#include <xray/macro_compiler.h>
+#include <stdlib.h>
+#if (defined(__x86_64__) || defined(__i386__)) && !defined(_MSC_VER)
+#	include <xmmintrin.h>
+#endif
+#if XRAY_PLATFORM_LINUX
+#	include <malloc.h>
+#	define XRAY_CRT_NOEXCEPT noexcept
+#else
+#	define XRAY_CRT_NOEXCEPT
+#endif
+
 #define XRAY_USE_CRT_MEMORY_ALLOCATOR	0
 
 #ifdef _MSC_VER
@@ -23,10 +35,10 @@
 #endif // #if defined(_MSC_VER) && defined(_DLL)
 
 extern "C" {
-	XRAY_RESTRICT	XRAY_NOALIAS	pvoid	malloc					( size_t size );
-	XRAY_RESTRICT	XRAY_NOALIAS	pvoid	calloc					( size_t count, size_t element_size );
-	XRAY_RESTRICT	XRAY_NOALIAS	pvoid	realloc					( pvoid pointer, size_t size );
-					XRAY_NOALIAS	void	free					( pvoid pointer );
+	XRAY_RESTRICT	XRAY_NOALIAS	pvoid	malloc					( size_t size ) XRAY_CRT_NOEXCEPT;
+	XRAY_RESTRICT	XRAY_NOALIAS	pvoid	calloc					( size_t count, size_t element_size ) XRAY_CRT_NOEXCEPT;
+	XRAY_RESTRICT	XRAY_NOALIAS	pvoid	realloc					( pvoid pointer, size_t size ) XRAY_CRT_NOEXCEPT;
+					XRAY_NOALIAS	void	free					( pvoid pointer ) XRAY_CRT_NOEXCEPT;
 	XRAY_RESTRICT	XRAY_NOALIAS	pvoid	_malloc_crt				( size_t size );
 	XRAY_RESTRICT	XRAY_NOALIAS	pvoid	_calloc_crt				( size_t count, size_t size );
 	XRAY_RESTRICT	XRAY_NOALIAS	pvoid	_realloc_crt			( pvoid ptr, size_t size );
@@ -49,7 +61,11 @@ extern "C" {
 #	include <malloc.h>
 #endif // #if defined(_MSC_VER)
 
-#include <new.h>
+#if XRAY_PLATFORM_WINDOWS
+#	include <new.h>
+#else
+#	include <new>
+#endif
 
 #ifdef _MSC_VER
 #	include <memory.h>
@@ -83,9 +99,9 @@ extern "C" {
 #	pragma deprecated(malloc,calloc,realloc,free,_malloc_crt,_calloc_crt,_realloc_crt,_recalloc_crt,strdup,_strdup)
 #endif // #if defined(_MSC_VER)
 
-pvoid	__cdecl	operator new			( size_t buffer_size );
-pvoid	__cdecl operator new [ ]		( size_t buffer_size );
-void	__cdecl operator delete			( pvoid pointer ) noexcept;
-void	__cdecl operator delete [ ]		( pvoid pointer ) noexcept;
+pvoid	XRAY_CDECL	operator new			( size_t buffer_size );
+pvoid	XRAY_CDECL operator new [ ]		( size_t buffer_size );
+void	XRAY_CDECL operator delete			( pvoid pointer ) noexcept;
+void	XRAY_CDECL operator delete [ ]		( pvoid pointer ) noexcept;
 
 #endif // #ifndef XRAY_MEMORY_OVERRIDE_OPERATORS_H_INCLUDED

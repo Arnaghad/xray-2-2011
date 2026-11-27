@@ -7,14 +7,8 @@
 #ifndef SOUND_OBJECT_H_INCLUDED
 #define SOUND_OBJECT_H_INCLUDED
 
-#ifdef _WIN32
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
-#include <mmsystem.h>
-#include <xaudio2.h>
-#endif
-
 #include <xray/sound/sound.h>
+#include "audio_backend.h"
 #include "sound_stream.h"
 
 namespace xray {
@@ -34,7 +28,7 @@ class sound_world;
 #define max_queued_buffers	( 3 )
 
 class sound_object_impl:	public resources::unmanaged_resource,
-							public IXAudio2VoiceCallback
+							public i_audio_voice_callback
 {
 public:
 								sound_object_impl			( sound_stream_ptr stream );
@@ -46,7 +40,7 @@ public:
 	virtual float3 const&		get_position				( ) const				{return m_position;}
 
 	virtual bool				is_playing					( ) const {return m_playing;}
-	WAVEFORMATEX const&			wave_format					( )	const	{return m_stream->wave_format();}
+	pcm_wave_format const&		wave_format					( )	const	{return m_stream->wave_format();}
 
 	//virtual	void				recalculate_memory_usage_impl ( ) { m_memory_usage_self.unmanaged = get_size(); }
 
@@ -57,7 +51,7 @@ public:
 			void				set_thread_allocator		( base_allocator_type* a ) {m_thread_allocator=a;}
 			void				set_position_impl			( float3 const& p );
 
-	IXAudio2SourceVoice*		m_source_voice;
+	i_audio_source_voice*		m_source_voice;
 		sound_stream_ptr		m_stream;
 			u32					m_stream_cursor_pcm;
 		base_allocator_type*	m_thread_allocator;
@@ -66,17 +60,17 @@ public:
 private:
 			void				refill_buffers				( );
 public: // callback impl
-    void __stdcall 				OnVoiceProcessingPassStart	( UINT32 BytesRequired );
-    void __stdcall 				OnVoiceProcessingPassEnd	( );
-    void __stdcall 				OnStreamEnd					( );
-    void __stdcall 				OnBufferStart				( void* pBufferContext );
-    void __stdcall 				OnBufferEnd					( void* pBufferContext );
-    void __stdcall 				OnLoopEnd					( void* pBufferContext );
-    void __stdcall 				OnVoiceError				( void* pBufferContext, HRESULT Error );
+	void						on_voice_processing_pass_start	( u32 bytes_required ) override;
+	void						on_voice_processing_pass_end	( ) override;
+	void						on_stream_end					( ) override;
+	void						on_buffer_start					( void* buffer_context ) override;
+	void						on_buffer_end					( void* buffer_context ) override;
+	void						on_loop_end						( void* buffer_context ) override;
+	void						on_voice_error					( void* buffer_context, s32 error ) override;
 
 	// in sound thread:
 			void				on_end_stream				( );
-			void				on_buffer_end				( void* pcontext );
+			void				on_buffer_end_impl			( void* pcontext );
 			void				on_buffer_error				( void* pcontext );
 
 }; // class sound_object_impl

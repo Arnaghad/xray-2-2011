@@ -27,6 +27,8 @@ public sealed class Win32NativeSurfaceHostBackend : INativeSurfaceHostBackend
     }
 
     public string HandleDescriptor => "HWND";
+    public NativeSurfaceKind SurfaceKind => NativeSurfaceKind.Win32Hwnd;
+    public nint DisplayHandle => 0;
 
     [DllImport("user32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
     private static extern nint CreateWindowExW(

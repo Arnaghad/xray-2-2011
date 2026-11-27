@@ -7,9 +7,11 @@
 #include "pch.h"
 #include <xray/core_entry_point.h>
 #include <xray/os_include.h>
+#include <xray/os_platform.h>
 #include <xray/platform_extensions_win.h>
 #include <xray/fs/path_string_utils.h>
 #include <filesystem>
+#include <string>
 
 namespace xray {
 namespace core {
@@ -30,14 +32,12 @@ pcstr   application_name ( )
 {
 	if ( ! * s_application )
 	{
-		string512	path;
-		if ( GetModuleFileName( 0, path, sizeof(path) ) )
+		auto const exe = os::executable_path();
+		if ( !exe.empty() )
 		{
-			pstr const last_back_slash	=	strrchr ( path, '\\' );
-			if ( last_back_slash )
-				strings::copy				(s_application, last_back_slash + 1);
-			else
-				strings::copy				(s_application, path);
+			auto const utf8 = exe.filename().u8string();
+			std::string const name( reinterpret_cast<char const*>( utf8.data() ), utf8.size() );
+			strings::copy( s_application, name.c_str() );
 		}
 	}
 
@@ -74,13 +74,12 @@ pcstr user_data_directory	( )
 			s_initialized=true;
 			return s_user_data_directory.c_str();
 		}
-		wchar_t executable[32768]{};
-		DWORD length = GetModuleFileNameW(nullptr, executable, 32768);
-		if (length > 0 && length < 32768) {
+		auto const exe_dir = os::executable_directory();
+		if ( !exe_dir.empty() ) {
 			std::error_code ec;
-			auto pkg_root = std::filesystem::path(executable).parent_path().parent_path();
-			if (std::filesystem::is_regular_file(pkg_root / L"settings" / L"sdk-runtime.json", ec)) {
-				auto pkg_user = (pkg_root / L"user-data").lexically_normal();
+			auto pkg_root = exe_dir.parent_path();
+			if (std::filesystem::is_regular_file(pkg_root / "settings" / "sdk-runtime.json", ec)) {
+				auto pkg_user = (pkg_root / "user-data").lexically_normal();
 				std::filesystem::create_directories(pkg_user, ec);
 				auto utf8 = pkg_user.generic_u8string();
 				std::string resolved(reinterpret_cast<char const*>(utf8.data()), utf8.size());

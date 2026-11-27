@@ -7,8 +7,9 @@
 #ifndef CORE_DEBUG_PLATFORM_H_INCLUDED
 #define CORE_DEBUG_PLATFORM_H_INCLUDED
 
+#include <xray/debug/engine.h>
+
 struct _EXCEPTION_POINTERS;
-struct _SYSTEMTIME;
 
 namespace xray {
 namespace core {
@@ -56,7 +57,7 @@ inline void on_error_message_box		( bool* do_debug_break, char (&message)[count]
 void terminate							( pcstr message, int error_code );
 void format_message						( );
 void prologue_dump_call_stack			( _EXCEPTION_POINTERS* exception_information );
-void save_minidump						( _SYSTEMTIME const& date_time, _EXCEPTION_POINTERS* exception_information );
+void save_minidump						( xray::debug::date_time const& date_time, _EXCEPTION_POINTERS* exception_information );
 
 } // namespace platform
 

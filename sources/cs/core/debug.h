@@ -29,10 +29,14 @@ namespace debug {
 	CS_CORE_API void			show_error				( int const error_code, pcstr expression, pcstr file, pcstr function, u32 const line );
 	CS_CORE_API void			throw_error				( pcstr reason, pcstr expression, pcstr file, pcstr function, u32 const line );
 	CS_CORE_API int				sprintf_s				( pstr buffer, size_t const& buffer_size );
-	CS_CORE_API int	 __cdecl	sprintf_s				( pstr buffer, size_t const& buffer_size, pcstr format, ... );
+	CS_CORE_API int	 CS_CDECL	sprintf_s				( pstr buffer, size_t const& buffer_size, pcstr format, ... );
 }
 
+#if defined(__GNUC__) || defined(__clang__)
+#	define DEBUG_BREAK			__builtin_trap
+#else
 #	define DEBUG_BREAK			__debugbreak
+#endif
 
 
 #ifndef _MANAGED

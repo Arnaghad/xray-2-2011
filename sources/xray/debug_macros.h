@@ -34,7 +34,11 @@
 
 
 
+#if defined(__GNUC__) || defined(__clang__)
+#	define DEBUG_BREAK						__builtin_trap
+#else
 #	define DEBUG_BREAK						__debugbreak
+#endif
 
 #ifdef MASTER_GOLD
 #	define FATAL(...)

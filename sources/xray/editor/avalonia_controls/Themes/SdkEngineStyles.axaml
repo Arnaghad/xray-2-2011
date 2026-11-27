@@ -1,0 +1,209 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <Style Selector="Window">
+    <Setter Property="Background" Value="{DynamicResource SdkCanvasBrush}" />
+    <Setter Property="Foreground" Value="{DynamicResource SdkTextBrush}" />
+    <Setter Property="FontFamily" Value="{DynamicResource SdkFontFamily}" />
+    <Setter Property="FontSize" Value="{DynamicResource SdkFontSize}" />
+  </Style>
+
+  <Style Selector="Menu">
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="MinHeight" Value="26" />
+  </Style>
+  <Style Selector="Menu &gt; MenuItem">
+    <Setter Property="Padding" Value="8,4" />
+    <Setter Property="CornerRadius" Value="4" />
+    <Setter Property="FontSize" Value="12" />
+    <Setter Property="Foreground" Value="#D8E0EB" />
+  </Style>
+  <Style Selector="Menu &gt; MenuItem:pointerover /template/ ContentPresenter#PART_HeaderPresenter">
+    <Setter Property="Background" Value="#2A3240" />
+    <Setter Property="Foreground" Value="#FFFFFF" />
+  </Style>
+
+  <Style Selector="Button">
+    <Setter Property="CornerRadius" Value="4" />
+    <Setter Property="Background" Value="#272E3A" />
+    <Setter Property="BorderBrush" Value="#353F50" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="Foreground" Value="{DynamicResource SdkTextBrush}" />
+    <Setter Property="FontSize" Value="12" />
+  </Style>
+  <Style Selector="Button:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="#313B4B" />
+    <Setter Property="BorderBrush" Value="#46546B" />
+    <Setter Property="Foreground" Value="#FFFFFF" />
+  </Style>
+  <Style Selector="Button:pressed /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="#1D232C" />
+    <Setter Property="BorderBrush" Value="#2D8CFF" />
+  </Style>
+  <Style Selector="Button:disabled">
+    <Setter Property="Opacity" Value="0.45" />
+  </Style>
+
+  <Style Selector="ToggleButton">
+    <Setter Property="CornerRadius" Value="4" />
+    <Setter Property="Background" Value="#272E3A" />
+    <Setter Property="BorderBrush" Value="#353F50" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="Foreground" Value="{DynamicResource SdkTextBrush}" />
+    <Setter Property="FontSize" Value="12" />
+  </Style>
+  <Style Selector="ToggleButton:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="#313B4B" />
+    <Setter Property="BorderBrush" Value="#46546B" />
+    <Setter Property="Foreground" Value="#FFFFFF" />
+  </Style>
+  <Style Selector="ToggleButton:checked /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="#1F3B5C" />
+    <Setter Property="BorderBrush" Value="#2D8CFF" />
+    <Setter Property="Foreground" Value="#F2F7FF" />
+  </Style>
+  <Style Selector="ToggleButton:disabled">
+    <Setter Property="Opacity" Value="0.45" />
+  </Style>
+
+  <Style Selector="Button.sdkTool">
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="BorderBrush" Value="Transparent" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="CornerRadius" Value="4" />
+    <Setter Property="Padding" Value="7,4" />
+    <Setter Property="MinHeight" Value="26" />
+    <Setter Property="Foreground" Value="#D6DFEC" />
+  </Style>
+  <Style Selector="Button.sdkTool:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="#2A3240" />
+    <Setter Property="BorderBrush" Value="#394456" />
+    <Setter Property="Foreground" Value="#FFFFFF" />
+  </Style>
+  <Style Selector="Button.sdkTool:pressed /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="#1E242E" />
+    <Setter Property="BorderBrush" Value="#2D8CFF" />
+  </Style>
+
+  <Style Selector="ToggleButton.sdkTool">
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="BorderBrush" Value="Transparent" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="CornerRadius" Value="4" />
+    <Setter Property="Padding" Value="7,4" />
+    <Setter Property="MinHeight" Value="26" />
+    <Setter Property="Foreground" Value="#D6DFEC" />
+  </Style>
+  <Style Selector="ToggleButton.sdkTool:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="#2A3240" />
+    <Setter Property="BorderBrush" Value="#394456" />
+    <Setter Property="Foreground" Value="#FFFFFF" />
+  </Style>
+  <Style Selector="ToggleButton.sdkTool:checked /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="#1E3A5F" />
+    <Setter Property="BorderBrush" Value="#2D8CFF" />
+    <Setter Property="Foreground" Value="#F2F7FF" />
+  </Style>
+
+  <Style Selector="Button.sdkIconTool">
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="BorderBrush" Value="Transparent" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="CornerRadius" Value="4" />
+    <Setter Property="Padding" Value="5,4" />
+    <Setter Property="MinWidth" Value="26" />
+    <Setter Property="MinHeight" Value="26" />
+  </Style>
+  <Style Selector="Button.sdkIconTool:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="#2A3240" />
+    <Setter Property="BorderBrush" Value="#394456" />
+  </Style>
+
+  <Style Selector="ToggleButton.sdkIconTool">
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="BorderBrush" Value="Transparent" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="CornerRadius" Value="4" />
+    <Setter Property="Padding" Value="5,4" />
+    <Setter Property="MinWidth" Value="26" />
+    <Setter Property="MinHeight" Value="26" />
+  </Style>
+  <Style Selector="ToggleButton.sdkIconTool:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="#2A3240" />
+    <Setter Property="BorderBrush" Value="#394456" />
+  </Style>
+  <Style Selector="ToggleButton.sdkIconTool:checked /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="#1E3A5F" />
+    <Setter Property="BorderBrush" Value="#2D8CFF" />
+  </Style>
+
+  <Style Selector="TextBox">
+    <Setter Property="Background" Value="#14181F" />
+    <Setter Property="BorderBrush" Value="#303846" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="CornerRadius" Value="4" />
+    <Setter Property="Foreground" Value="{DynamicResource SdkTextBrush}" />
+    <Setter Property="MinHeight" Value="24" />
+    <Setter Property="Padding" Value="6,3" />
+    <Setter Property="FontSize" Value="12" />
+  </Style>
+  <Style Selector="TextBox:focus /template/ Border#PART_BorderElement">
+    <Setter Property="Background" Value="#14181F" />
+    <Setter Property="BorderBrush" Value="#2D8CFF" />
+  </Style>
+
+  <Style Selector="ComboBox">
+    <Setter Property="Background" Value="#14181F" />
+    <Setter Property="BorderBrush" Value="#303846" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="CornerRadius" Value="4" />
+    <Setter Property="Foreground" Value="{DynamicResource SdkTextBrush}" />
+    <Setter Property="MinHeight" Value="24" />
+    <Setter Property="Padding" Value="6,3" />
+    <Setter Property="FontSize" Value="12" />
+  </Style>
+
+  <Style Selector="NumericUpDown">
+    <Setter Property="Background" Value="#14181F" />
+    <Setter Property="BorderBrush" Value="#303846" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="CornerRadius" Value="4" />
+    <Setter Property="Foreground" Value="{DynamicResource SdkTextBrush}" />
+    <Setter Property="MinHeight" Value="24" />
+    <Setter Property="FontSize" Value="12" />
+  </Style>
+
+  <Style Selector="TreeViewItem">
+    <Setter Property="MinHeight" Value="22" />
+    <Setter Property="CornerRadius" Value="3" />
+    <Setter Property="Foreground" Value="{DynamicResource SdkTextBrush}" />
+  </Style>
+  <Style Selector="TreeViewItem:pointerover /template/ Border#PART_LayoutRoot">
+    <Setter Property="Background" Value="#252C38" />
+  </Style>
+  <Style Selector="TreeViewItem:selected /template/ Border#PART_LayoutRoot">
+    <Setter Property="Background" Value="#1F3B5C" />
+  </Style>
+
+  <Style Selector="TabItem">
+    <Setter Property="FontSize" Value="11.5" />
+    <Setter Property="MinHeight" Value="26" />
+    <Setter Property="Padding" Value="9,4" />
+    <Setter Property="Foreground" Value="#93A1B5" />
+  </Style>
+  <Style Selector="TabItem:pointerover">
+    <Setter Property="Foreground" Value="#E6ECF5" />
+  </Style>
+  <Style Selector="TabItem:selected">
+    <Setter Property="Foreground" Value="#F2F7FF" />
+  </Style>
+
+  <Style Selector="ToolTip">
+    <Setter Property="Background" Value="#181D25" />
+    <Setter Property="BorderBrush" Value="#3B4659" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="CornerRadius" Value="4" />
+    <Setter Property="Padding" Value="8,5" />
+    <Setter Property="Foreground" Value="#E6ECF5" />
+    <Setter Property="FontSize" Value="11.5" />
+  </Style>
+</Styles>

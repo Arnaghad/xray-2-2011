@@ -42,12 +42,12 @@ public:
 						pcstr 		major_initiator,
 						verbosity	verbosity
 					);
-	void __cdecl	operator( )	( log_flags_enum const log_flags, pcstr format, ... );
-	void __cdecl	operator( )	( format_specifier const & log_format, pcstr format, ... );
-	void __cdecl	operator( )	( format_specifier const & log_format, int const log_flags, pcstr format, ... );
-	void __cdecl	operator( )	( log_format *  format_list, int const log_flags, pcstr format, ... );
-	void __cdecl	operator( )	( pcstr format, ... );
-	void __cdecl	operator( )	( settings const & log_settings, pcstr format, ... );
+	void XRAY_CDECL	operator( )	( log_flags_enum const log_flags, pcstr format, ... );
+	void XRAY_CDECL	operator( )	( format_specifier const & log_format, pcstr format, ... );
+	void XRAY_CDECL	operator( )	( format_specifier const & log_format, int const log_flags, pcstr format, ... );
+	void XRAY_CDECL	operator( )	( log_format *  format_list, int const log_flags, pcstr format, ... );
+	void XRAY_CDECL	operator( )	( pcstr format, ... );
+	void XRAY_CDECL	operator( )	( settings const & log_settings, pcstr format, ... );
 }; // class helper
 
 } // namespace logging

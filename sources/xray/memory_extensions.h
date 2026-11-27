@@ -41,7 +41,7 @@ extern XRAY_CORE_API pthreads_allocator_type*	g_mt_allocator;
 #include <xray/memory_allocator_helper.h>
 #include <xray/memory_macros.h>
 #include <xray/memory_buffer.h>
-#include <fastdelegate/fastdelegate.h>
+#include <fastdelegate/FastDelegate.h>
 
 namespace xray {
 

@@ -1,4 +1,5 @@
 #pragma once
+#include <xray/engine/capture_control_bus.h>
 #include <xray/editor/world/sdk_scene_bridge.h>
 #include <xray/render/vulkan/material_resources.h>
 #include <xray/render/vulkan/decal_resources.h>
@@ -9,6 +10,8 @@
 #include <xray/physics/editor_physics_scene.h>
 #include <chrono>
 #include <cmath>
+#include <cstdlib>
+#include <functional>
 #include <map>
 #include <memory>
 
@@ -47,10 +50,13 @@ class sdk_outputs {
             catch(...){--o->pending;o->failed=true;return;}
         }
     }
-    static void validate(sdk_output_settings const& s,bool create) {
+    static xray::platform::native_surface_handle validate(
+        sdk_output_settings const& s,
+        bool create,
+        std::function<xray::platform::native_surface_handle(std::uint64_t)> const& resolve_surface) {
         if(s.version!=1 || s.size!=sizeof(s) || s.kind>3 || (s.flags&~7u) || ((s.flags&6u) && s.kind!=1) || s.reserved || (create?s.id!=0:s.id==0))throw std::runtime_error("Invalid SDK output settings");
-        auto hwnd=reinterpret_cast<HWND>(s.window);
-        if(!IsWindow(hwnd) || GetWindowThreadProcessId(hwnd,nullptr)!=GetCurrentThreadId())throw std::runtime_error("Foreign SDK output HWND");
+        xray::platform::native_surface_handle resolved = resolve_surface ? resolve_surface(s.window) : xray::platform::native_surface_handle{};
+        if(!resolved.valid())throw std::runtime_error("Foreign SDK output surface");
         math::float4x4 camera;std::memcpy(&camera,s.camera,sizeof(camera));
         for(auto const& row:camera.elements)for(float f:row)if(!std::isfinite(f))throw std::runtime_error("Nonfinite preview camera");
         if(camera.e03 || camera.e13 || camera.e23 || camera.e33!=1 || std::abs(camera.i.xyz().length()-1)>1e-3f || std::abs(camera.j.xyz().length()-1)>1e-3f || std::abs(camera.k.xyz().length()-1)>1e-3f
@@ -58,6 +64,7 @@ class sdk_outputs {
             throw std::runtime_error("Preview camera must be orthonormal");
         if(!std::isfinite(s.fov) || s.fov<1 || s.fov>175 || !std::isfinite(s.near_plane) || s.near_plane<.001f || !std::isfinite(s.far_plane) || s.far_plane<=s.near_plane || s.far_plane>1e6f)
             throw std::runtime_error("Invalid preview projection");
+        return resolved;
     }
     static sdk_output_status status(u64 id,output const& o) {
         auto* target=static_cast<render::vulkan::output_resource*>(o.target.c_ptr());
@@ -72,7 +79,7 @@ class sdk_outputs {
         if(o.target && !o.close_queued){if(!static_cast<render::vulkan::output_resource*>(o.target.c_ptr())->closed())renderer.close_output(o.target);o.close_queued=true;}
     }
 public:
-    int request(sdk_scene_request& r,render::control_level::control_world& level,memory::base_allocator& allocator,std::shared_ptr<render::vulkan::static_model_data const> prepared={}) {
+    int request(sdk_scene_request& r,render::control_level::control_world& level,memory::base_allocator& allocator,std::shared_ptr<render::vulkan::static_model_data const> prepared={},std::function<xray::platform::native_surface_handle(std::uint64_t)> const& resolve_surface={}) {
         face_allocator=&allocator;
         if(r.operation==26){
             if(stopping || !r.data || !r.result || r.count || r.query)return -1;
@@ -92,7 +99,8 @@ public:
         if(!r.data || r.count || (r.query && r.operation!=25) || !r.result)return -1;
         auto const input=*static_cast<sdk_output_settings const*>(r.data);
         if(r.operation==20 || r.operation==25) {
-            if(stopping || outputs.size()>=8)return -1;validate(input,true);
+            if(stopping || outputs.size()>=8)return -1;
+            auto const target_surface = validate(input,true,resolve_surface);
             if((r.operation==25 && (!prepared || input.kind!=1)) || (r.operation==20 && prepared))return -1;
             for(auto const& [id,o]:outputs)if(o->settings.window==input.window)return -1;
             auto o=std::make_shared<output>();o->settings=input;o->settings.asset=nullptr;
@@ -102,8 +110,8 @@ public:
             }
             auto id=++sequence;outputs.emplace(id,o);
             if(auto* test=std::getenv("XRAY_SDK_PROPERTY_TEST");test && std::strcmp(test,"1")==0)
-                if(!SetPropA(reinterpret_cast<HWND>(input.window),"XRAY_VULKAN_TEST_CAPTURE",HANDLE(1)))throw std::runtime_error("Cannot opt SDK output into fenced capture");
-            resources::user_data_variant window;window.set(reinterpret_cast<HWND>(input.window));
+                if(!xray::engine::capture_control_bus::set_flag(target_surface,"XRAY_VULKAN_TEST_CAPTURE"))throw std::runtime_error("Cannot opt SDK output into fenced capture");
+            resources::user_data_variant window;window.set(target_surface);
             resources::user_data_variant const* users[]={nullptr,nullptr,&window};
             resources::creation_request requests[]={{"sdk_preview_scene",const_buffer("",1),resources::scene_class},
                 {"sdk_preview_view",const_buffer("",1),resources::scene_view_class},{"sdk_preview_output",const_buffer("",1),resources::render_output_window_class}};
@@ -147,7 +155,7 @@ public:
         auto found=outputs.find(input.id);if(found==outputs.end() || input.version!=1 || input.size!=sizeof(input))return -1;
         auto& o=*found->second;
         if(r.operation==21) {
-            if(stopping || o.closing)return -1;validate(input,false);
+            if(stopping || o.closing)return -1;validate(input,false,resolve_surface);
             if(input.window!=o.settings.window || input.kind!=o.settings.kind || input.asset)return -1;
             o.settings=input;
         } else if(r.operation==23) {o.closing=true;queue_close(o,level.editor_scene_renderer());}

@@ -10,7 +10,16 @@
 #include <cs/core/threading_functions.h>
 #include <cs/core/os_include.h>				// Sleep, SwitchToThread
 
+#if defined(_WIN32)
 #	include <process.h>						// _beginthread
+#else
+#	include <algorithm>
+#	include <cstring>
+#	include <errno.h>
+#	include <pthread.h>
+#	include <sched.h>
+#	include <time.h>
+#endif
 
 namespace debug {
 	void	on_thread_spawn	();
@@ -51,11 +60,27 @@ void threading::spawn			(
 	argument->arguments			= arguments;
 	argument->function_to_call	= function_to_call;
 
+#if defined(_WIN32)
 	_beginthread				(&thread_entry,stack_size,argument);
+#else
+	pthread_attr_t attr;
+	pthread_attr_init(&attr);
+	if (stack_size > 0)
+		pthread_attr_setstacksize(&attr, stack_size);
+	pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
+	pthread_t tid = {};
+	auto start_routine = [](void* arg) -> void* {
+		thread_entry(arg);
+		return nullptr;
+	};
+	pthread_create(&tid, &attr, +start_routine, argument);
+	pthread_attr_destroy(&attr);
+#endif
 }
 
 void threading::yield			(u32 const milliseconds)
 {
+#if defined(_WIN32)
 	if (milliseconds) {
 		Sleep	(milliseconds);
 		return;
@@ -65,11 +90,21 @@ void threading::yield			(u32 const milliseconds)
 		return;
 
 	Sleep		(0);
+#else
+	if (milliseconds) {
+		struct timespec req = {};
+		req.tv_sec = static_cast<time_t>(milliseconds / 1000u);
+		req.tv_nsec = static_cast<long>((milliseconds % 1000u) * 1000000UL);
+		while (::nanosleep(&req, &req) == -1 && errno == EINTR) {}
+		return;
+	}
+	::sched_yield();
+#endif
 }
 
 void threading::debugger_name	(pcstr debugger_name)
 {
-#if CS_DEBUG_LIBRARIES
+#if CS_DEBUG_LIBRARIES && defined(_WIN32)
 #	pragma pack(push,8)
 	struct thread_profile {
 		u32		type;
@@ -91,6 +126,14 @@ void threading::debugger_name	(pcstr debugger_name)
 	__except(EXCEPTION_CONTINUE_EXECUTION) {
 	}
 #endif
+#elif CS_DEBUG_LIBRARIES && !defined(_WIN32)
+	if (debugger_name && *debugger_name) {
+		char truncated[16] = {};
+		std::size_t const len = std::min<std::size_t>(std::strlen(debugger_name), 15);
+		std::memcpy(truncated, debugger_name, len);
+		truncated[len] = '\0';
+		pthread_setname_np(pthread_self(), truncated);
+	}
 #else // #if CS_DEBUG_LIBRARIES
 	CS_UNREFERENCED_PARAMETER	( debugger_name );
 #endif // #if CS_DEBUG_LIBRARIES

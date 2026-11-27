@@ -12,7 +12,6 @@
 #include <xray/managed_allocator.h>
 #include "resources_thread_local_data.h"
 #include <xray/resources_queries_result.h>
-#include <xray/os_include.h>	// for MemoryBarrier
 
 namespace xray {
 namespace resources {

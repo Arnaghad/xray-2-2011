@@ -4,9 +4,12 @@
 #include <xray/editor/world/world.h>
 #include <xray/editor/world/host_bridge.h>
 #include <xray/engine/engine_user.h>
+#include <xray/engine/capture_control_bus.h>
 #include <xray/render/facade/control_level.h>
+#include <xray/render/vulkan/platform_surface.h>
 #include <xray/engine/m8_output_protocol.h>
 #include <xray/animation/api.h>
+#include <xray/os_platform.h>
 #include "managed_host.h"
 #include "sdk_resources.h"
 #include "sdk_scene.h"
@@ -16,22 +19,52 @@
 #include <cstring>
 #include <cmath>
 #include <limits>
+#include <string>
 
 namespace xray::editor {
 allocator_type* g_allocator=nullptr;
 namespace {
 static bool animation_initialized=false;
+
+bool read_env_flag(char const* name) {
+    std::string value;
+    return xray::os::get_environment_variable(name,value) && value=="1";
+}
+
+xray::platform::native_surface_handle to_native_surface(hosting::surface_descriptor const& d) {
+    xray::platform::native_surface_handle result{};
+    result.kind=static_cast<xray::platform::native_surface_kind>(d.kind);
+    result.handle=d.handle;
+    result.display=d.display;
+    return result;
+}
+
+hosting::surface_descriptor from_native_surface(xray::platform::native_surface_handle const& s) {
+    hosting::surface_descriptor d{};
+    d.kind=static_cast<std::uint32_t>(s.kind);
+    d.reserved=0;
+    d.handle=s.handle;
+    d.display=s.display;
+    return d;
+}
+
 class level_engine final : public engine_user::engine {
-    xray::editor::engine& owner;HWND main,view;
+    xray::editor::engine& owner;
+    xray::platform::native_surface_handle main, view;
 public:
-    level_engine(xray::editor::engine& e,HWND m,HWND v):owner(e),main(m),view(v) {}
+    level_engine(xray::editor::engine& e, xray::platform::native_surface_handle m, xray::platform::native_surface_handle v)
+        : owner(e), main(m), view(v) {}
     void exit(int code) override {if(owner.closing()){if(code)owner.set_exit_code(code);}else owner.request_exit(code);}
     void enter_editor_mode() override {owner.enter_editor_mode();}
     bool command_line_editor() override {return true;}
     pcstr get_resources_path() const override {return owner.get_resources_path();}
-    HWND get_main_window_handle() const override {return main;}
-    HWND get_render_window_handle() const override {return view;}
-    float2 get_render_window_size() const override {RECT r{};GetClientRect(view,&r);return {float(r.right),float(r.bottom)};}
+    xray::platform::native_surface_handle get_main_window_handle() const override {return main;}
+    xray::platform::native_surface_handle get_render_window_handle() const override {return view;}
+    float2 get_render_window_size() const override {
+        u32 w=0,h=0;
+        xray::render::vulkan::surface_adapter::query_surface_extent(view,w,h);
+        return {float(w),float(h)};
+    }
     xray::engine::console* create_game_console(ui::world&,input::world&) override {throw std::runtime_error("Legacy game console is unsupported in the editor");}
 };
 class editor_world_proxy final : public world {
@@ -43,25 +76,25 @@ class editor_world_proxy final : public world {
     unsigned frame=0;
     bool startup_transaction=false;
     bool preview_opened=false;
-    bool const outputs_mode=[] {char value[2]{};return GetEnvironmentVariableA("XRAY_M8_EDITOR_OUTPUT_WORKFLOW",value,2)==1 && value[0]=='1';}();
-    bool const auto_preview=[] {char value[2]{};return GetEnvironmentVariableA("XRAY_M8_EDITOR_OPEN_PREVIEW",value,2)==1 && value[0]=='1';}();
-    bool const cancel_startup=[] {char value[2]{};return GetEnvironmentVariableA("XRAY_M8_EDITOR_CANCEL_STARTUP",value,2)==1 && value[0]=='1';}();
+    bool const outputs_mode=read_env_flag("XRAY_M8_EDITOR_OUTPUT_WORKFLOW");
+    bool const auto_preview=read_env_flag("XRAY_M8_EDITOR_OPEN_PREVIEW");
+    bool const cancel_startup=read_env_flag("XRAY_M8_EDITOR_CANCEL_STARTUP");
     bool const sdk_mode=[this] {
-        char value[8]{};
-        DWORD n=GetEnvironmentVariableA("XRAY_SDK_PROPERTY_EDITOR",value,sizeof(value));
-        if(n==1 && value[0]=='0')return false;
-        if(n==1 && value[0]=='1')return true;
+        std::string value;
+        if(xray::os::get_environment_variable("XRAY_SDK_PROPERTY_EDITOR",value)) {
+            if(value=="0")return false;
+            if(value=="1")return true;
+        }
         if(outputs_mode || auto_preview || cancel_startup || engine_api.editor_workflow())return false;
         return true;
     }();
-    bool const sdk_test=[] {char value[2]{};return GetEnvironmentVariableA("XRAY_SDK_PROPERTY_TEST",value,2)==1 && value[0]=='1';}();
-    bool const sdk_close_pending=[] {char value[2]{};return GetEnvironmentVariableA("XRAY_SDK_CLOSE_PENDING",value,2)==1 && value[0]=='1';}();
-    bool const sdk_modes_test=[] {char value[2]{};return GetEnvironmentVariableA("XRAY_SDK_MODES_TEST",value,2)==1 && value[0]=='1';}();
+    bool const sdk_test=read_env_flag("XRAY_SDK_PROPERTY_TEST");
+    bool const sdk_close_pending=read_env_flag("XRAY_SDK_CLOSE_PENDING");
+    bool const sdk_modes_test=read_env_flag("XRAY_SDK_MODES_TEST");
     bool const sdk_blank_scene=[this] {
         if(!sdk_mode || sdk_test || outputs_mode || auto_preview || cancel_startup || engine_api.editor_workflow())return false;
-        char value[8]{};
-        DWORD n=GetEnvironmentVariableA("XRAY_SDK_FULL_IDE",value,sizeof(value));
-        if(n==1 && value[0]=='0')return false;
+        std::string value;
+        if(xray::os::get_environment_variable("XRAY_SDK_FULL_IDE",value) && value=="0")return false;
         return true;
     }();
     unsigned const sdk_test_steps=sdk_modes_test?21:9;
@@ -73,7 +106,7 @@ class editor_world_proxy final : public world {
     uintptr_t output_waiting=0;
     unsigned output_next=1,output_shutdown_frames=0;
     bool output_action=false,output_close_sent=false,output_transaction=false;
-    HWND output_pending_window=nullptr;
+    xray::platform::native_surface_handle output_pending_window{};
     std::shared_ptr<render::vulkan::scene_registry> output_shutdown_registry;
     static editor_world_proxy& self(void* context) {return *static_cast<editor_world_proxy*>(context);}
     void check_owner() const {if(threading::current_thread_id()!=owner)throw std::runtime_error("Editor callback changed owner");}
@@ -118,8 +151,10 @@ class editor_world_proxy final : public world {
         } catch(std::exception const& error){std::cerr<<"SDK resource rejected: "<<error.what()<<'\n';return -1;}
     }
     static int sdk_scene_request(void* context,hosting::sdk_scene_request* request) {
-        try {auto& me=self(context);me.check_owner();if(!me.sdk_mode || !me.level || !request)return -1;
-            return me.sdk_scene.execute(*request,*me.level,*g_allocator,me.engine_api,me.sdk_resources);
+        try {
+            auto& me=self(context);me.check_owner();if(!me.sdk_mode || !me.level || !request)return -1;
+            auto resolver=[&me](std::uint64_t handle) {return me.resolve_surface_by_handle(handle);};
+            return me.sdk_scene.execute(*request,*me.level,*g_allocator,me.engine_api,me.sdk_resources,resolver);
         } catch(std::exception const& error){std::cerr<<"SDK scene rejected: "<<error.what()<<'\n';return -1;}
     }
     void verify_sdk_rejections() {
@@ -141,11 +176,13 @@ class editor_world_proxy final : public world {
         if(std::memcmp(&original,&after,sizeof(original)))throw std::runtime_error("Rejected SDK writes changed the scene");
         std::cerr<<"SDK native rejection checks: passed=6 scene_unchanged=1\n";
     }
-    static int preview_callback(void* context,std::uintptr_t handle,std::uint32_t operation) {
+    static int preview_callback(void* context,hosting::surface_descriptor const* descriptor,std::uint32_t operation) {
         try {auto& me=self(context);me.check_owner();if(!me.level)throw std::runtime_error("Preview without editor level");
-            auto window=reinterpret_cast<HWND>(handle);
-            if(me.engine_api.background_capture() && operation==0)me.protect_window(window);
-            if(operation==0)me.level->open_preview(window);else if(operation==1)me.level->close_preview(window);else throw std::runtime_error("Unknown preview operation");return 0;}
+            if(!descriptor)throw std::runtime_error("Missing preview surface descriptor");
+            auto surface=to_native_surface(*descriptor);
+            if(!surface.valid())throw std::runtime_error("Invalid preview surface descriptor");
+            if(me.engine_api.background_capture() && operation==0)me.protect_surface(1,surface);
+            if(operation==0)me.level->open_preview(surface);else if(operation==1)me.level->close_preview(surface);else throw std::runtime_error("Unknown preview operation");return 0;}
         catch(std::exception const& error){std::cerr<<"M8 editor preview rejected: "<<error.what()<<'\n';return -1;}
     }
     template<class F> int protect(F operation) {
@@ -155,71 +192,90 @@ class editor_world_proxy final : public world {
         }
     }
     void require(int status) {if(status<0)throw std::runtime_error("Managed editor callback failed");}
-    void protect_window(HWND window) {
+    int invoke_window_control(hosting::window_control_op op,std::uint32_t target,std::int32_t width=0,std::int32_t height=0,std::uint32_t arg0=0,xray::platform::native_surface_handle const& surface={},hosting::surface_descriptor* out_surface=nullptr) const {
+        hosting::window_control_request req{1,sizeof(hosting::window_control_request),static_cast<std::uint32_t>(op),target,width,height,arg0,0,from_native_surface(surface)};
+        return bridge.window_control(bridge.context,&req,out_surface);
+    }
+    xray::platform::native_surface_handle resolve_surface_by_handle(std::uint64_t handle) const {
+        if(!handle)return {};
+        xray::platform::native_surface_handle query{};
+        query.handle=handle;
+        hosting::surface_descriptor resolved{};
+        if(invoke_window_control(hosting::window_control_op::resolve_surface,2,0,0,0,query,&resolved)<0)return {};
+        return to_native_surface(resolved);
+    }
+    xray::platform::native_surface_handle preview_handle() {
         check_owner();
-        if(!IsWindow(window) || GetWindowThreadProcessId(window,nullptr)!=GetCurrentThreadId())throw std::runtime_error("Foreign output workflow HWND");
-        auto flags=GetWindowLongPtr(window,GWL_EXSTYLE);
-        SetWindowLongPtr(window,GWL_EXSTYLE,flags|WS_EX_LAYERED|WS_EX_NOACTIVATE|WS_EX_TRANSPARENT|WS_EX_TOOLWINDOW);
-        if(!SetLayeredWindowAttributes(window,0,0,LWA_ALPHA) || !SetPropA(window,"XRAY_VULKAN_TEST_CAPTURE",HANDLE(1)))
+        hosting::surface_descriptor desc{};
+        if(bridge.preview_surface(bridge.context,&desc)<0)return {};
+        return to_native_surface(desc);
+    }
+    bool is_surface_alive(std::uint32_t target,xray::platform::native_surface_handle const& surface) const {
+        if(!surface.valid())return false;
+        return invoke_window_control(hosting::window_control_op::is_alive,target,0,0,0,surface,nullptr)>=0
+            && xray::render::vulkan::surface_adapter::is_surface_alive(surface);
+    }
+    void protect_surface(std::uint32_t target,xray::platform::native_surface_handle const& surface) {
+        check_owner();
+        if(invoke_window_control(hosting::window_control_op::protect_background,target,0,0,0,surface,nullptr)<0
+            || !xray::engine::capture_control_bus::set_flag(surface,"XRAY_VULKAN_TEST_CAPTURE"))
             throw std::runtime_error("Cannot protect output workflow window");
     }
-    void resize_window(HWND window,int width,int height) {
-        RECT client{},outer{};if(!GetClientRect(window,&client) || !GetWindowRect(window,&outer))throw std::runtime_error("Output resize HWND missing");
-        if(!SetWindowPos(window,nullptr,0,0,outer.right-outer.left+width-client.right,outer.bottom-outer.top+height-client.bottom,
-            SWP_NOMOVE|SWP_NOZORDER|SWP_NOACTIVATE))throw std::runtime_error("Output resize failed");
-        GetClientRect(window,&client);if(client.right!=width || client.bottom!=height)throw std::runtime_error("Output client resize differs");
+    void resize_surface(std::uint32_t target,xray::platform::native_surface_handle const& surface,int width,int height) {
+        if(invoke_window_control(hosting::window_control_op::resize,target,width,height,0,surface,nullptr)<0)
+            throw std::runtime_error("Output resize failed");
+        xray::render::vulkan::surface_adapter::set_surface_extent(surface,static_cast<u32>(width),static_cast<u32>(height));
     }
-    void resize_main(int width,int height) {
-        RECT root{},child{};GetClientRect(main_handle(),&root);GetClientRect(view_handle(),&child);
-        resize_window(main_handle(),width+root.right-child.right,height+root.bottom-child.bottom);
-        GetClientRect(view_handle(),&child);if(child.right!=width || child.bottom!=height)throw std::runtime_error("Managed main panel did not resize");
+    void minimize_surface(std::uint32_t target,xray::platform::native_surface_handle const& surface,bool minimize) {
+        protect_surface(target,surface);
+        if(invoke_window_control(hosting::window_control_op::minimize,target,0,0,minimize?1u:0u,surface,nullptr)<0)
+            throw std::runtime_error("Output minimize failed");
+        xray::engine::capture_control_bus::set_token(surface,"XRAY_SURFACE_MINIMIZED",minimize?1ull:0ull);
     }
-    void minimize_window(HWND window,bool minimize) {
-        protect_window(window);
-        ShowWindow(window,minimize?SW_SHOWMINNOACTIVE:SW_SHOWNOACTIVATE);
-        if(!minimize)ShowWindow(window,SW_HIDE);
-        if(bool(IsIconic(window))!=minimize || GetForegroundWindow()==window || GetActiveWindow()==window || GetFocus()==window || GetCapture()==window)
-            throw std::runtime_error("Output minimize acquired input or did not change state");
+    void close_surface(std::uint32_t target,xray::platform::native_surface_handle const& surface) {
+        if(invoke_window_control(hosting::window_control_op::close,target,0,0,0,surface,nullptr)<0)
+            throw std::runtime_error("Managed window close failed");
     }
     void advance_outputs() {
         namespace op=xray::engine::m8_outputs;using s=op::shot;
-        auto phase=s(output_next);auto preview=reinterpret_cast<HWND>(bridge.preview_handle(bridge.context));
+        auto main_surface=main_handle();
+        auto phase=s(output_next);auto preview=preview_handle();
         if(output_next==17) {
             if(!output_transaction) {
-                if(!level->outputs_warm() || preview)return;
+                if(!level->outputs_warm() || preview.valid())return;
                 output_shutdown_registry=level->registry();resources::start_query_transaction();output_transaction=true;
-                require(bridge.command(bridge.context,9));output_pending_window=reinterpret_cast<HWND>(bridge.preview_handle(bridge.context));
-                if(level->pending_queries()!=1 || !IsWindow(output_pending_window))throw std::runtime_error("Preview shutdown query was not held");
+                require(bridge.command(bridge.context,9));output_pending_window=preview_handle();
+                if(level->pending_queries()!=1 || !is_surface_alive(1,output_pending_window))throw std::runtime_error("Preview shutdown query was not held");
                 std::cerr<<"M8 outputs pending preview held: queries=1 editor_thread="<<owner<<'\n';
             }
             if(++output_shutdown_frames<3)return;
             std::cerr<<"M8 outputs host close: pending_preview=1 editor_thread="<<owner<<'\n';
-            SendMessage(main_handle(),WM_CLOSE,0,0);return;
+            close_surface(0,main_surface);return;
         }
         if(phase==s::preview_closed || phase==s::shutdown_ready) {
-            // Submit an uncaptured scene frame before WM_CLOSE. Its channel/GPU
+            // Submit an uncaptured scene frame before closing. Its channel/GPU
             // work must retire before managed disposal acknowledges the close.
             if(!output_action){output_action=true;return;}
-            if(preview) {
-                if(!output_close_sent){SendMessage(preview,WM_CLOSE,0,0);output_close_sent=true;}
+            if(preview.valid()) {
+                if(!output_close_sent){close_surface(1,preview);output_close_sent=true;}
                 return;
             }
             if(!level->outputs_warm())return;
         } else {
             if(phase==s::baseline || phase==s::preview_reopened) {
-                if(!preview) {if(level->editor_ready())require(bridge.command(bridge.context,9));return;}
+                if(!preview.valid()) {if(level->editor_ready())require(bridge.command(bridge.context,9));return;}
             }
             if(!level->outputs_ready())return;
-            protect_window(preview);
+            protect_surface(1,preview);
             switch(phase) {
-            case s::preview_resized:resize_window(preview,1102,673);break;
-            case s::preview_restored:resize_window(preview,640,480);break;
-            case s::main_resized:resize_main(1102,673);break;
-            case s::main_restored:resize_main(960,640);break;
-            case s::preview_minimized:minimize_window(preview,true);break;
-            case s::preview_resumed:minimize_window(preview,false);break;
-            case s::main_minimized:minimize_window(main_handle(),true);break;
-            case s::main_resumed:minimize_window(main_handle(),false);break;
+            case s::preview_resized:resize_surface(1,preview,1102,673);break;
+            case s::preview_restored:resize_surface(1,preview,640,480);break;
+            case s::main_resized:resize_surface(0,view_handle(),1102,673);break;
+            case s::main_restored:resize_surface(0,view_handle(),960,640);break;
+            case s::preview_minimized:minimize_surface(1,preview,true);break;
+            case s::preview_resumed:minimize_surface(1,preview,false);break;
+            case s::main_minimized:minimize_surface(0,main_surface,true);break;
+            case s::main_resumed:minimize_surface(0,main_surface,false);break;
             case s::preview_hidden:level->preview_visible(false);break;
             case s::preview_visible:level->preview_visible(true);break;
             case s::main_props_hidden:case s::main_props_restored:require(bridge.command(bridge.context,1));break;
@@ -227,29 +283,30 @@ class editor_world_proxy final : public world {
             }
         }
         output_waiting=op::token(frame+1,phase);
-        if(!SetPropA(view_handle(),op::request_property,reinterpret_cast<HANDLE>(output_waiting)))throw std::runtime_error("Cannot publish paired capture");
+        if(!xray::engine::capture_control_bus::set_token(view_handle(),op::request_property,output_waiting))throw std::runtime_error("Cannot publish paired capture");
         std::cerr<<"M8 outputs submit: step="<<op::name(phase)<<" editor_thread="<<owner<<'\n';
     }
     void step() {
         if(engine_api.closing())return;
+        auto main_surface=main_handle();
         if(sdk_test && sdk_waiting) {
-            if(reinterpret_cast<uintptr_t>(GetPropA(view_handle(),xray::engine::m8_control::ack_property))!=sdk_waiting)return;
+            if(xray::engine::capture_control_bus::get_token(view_handle(),xray::engine::m8_control::ack_property)!=sdk_waiting)return;
             sdk_waiting=0;sdk_settle=0;
             if(++sdk_step==sdk_test_steps) {
                 if(!sdk_close_pending) {engine_api.request_exit(0);return;}
                 output_shutdown_registry=level->registry();resources::start_query_transaction();output_transaction=true;
                 require(sdk.diagnostic_step(bridge.context,sdk_test_steps));
-                output_pending_window=reinterpret_cast<HWND>(bridge.preview_handle(bridge.context));
-                if(level->pending_queries()!=1 || !IsWindow(output_pending_window))throw std::runtime_error("SDK pending-close query was not held");
+                output_pending_window=preview_handle();
+                if(level->pending_queries()!=1 || !is_surface_alive(1,output_pending_window))throw std::runtime_error("SDK pending-close query was not held");
                 std::cerr<<"SDK pending close held: queries=1 selection_live=1 editor_thread="<<owner<<'\n';
             }
         }
         if(sdk_close_pending && sdk_step==sdk_test_steps && ++output_shutdown_frames>=3) {
             std::cerr<<"SDK pending host close: query_held=1 rendered_frames="<<output_shutdown_frames-1<<" editor_thread="<<owner<<'\n';
-            SendMessage(main_handle(),WM_CLOSE,0,0);return;
+            close_surface(0,main_surface);return;
         }
         if(outputs_mode && output_waiting) {
-            if(reinterpret_cast<uintptr_t>(GetPropA(view_handle(),xray::engine::m8_outputs::ack_property))!=output_waiting)return;
+            if(xray::engine::capture_control_bus::get_token(view_handle(),xray::engine::m8_outputs::ack_property)!=output_waiting)return;
             output_waiting=0;++output_next;output_action=output_close_sent=false;
         }
         if(!engine_api.on_before_editor_tick())return;
@@ -259,7 +316,7 @@ class editor_world_proxy final : public world {
             adapter=std::make_unique<level_engine>(engine_api,main_handle(),view_handle());
             if(cancel_startup){resources::start_query_transaction();startup_transaction=true;}
             level=std::make_unique<render::control_level::control_world>(*adapter,engine_api.get_renderer_world(),*g_allocator,true,engine_api.editor_workflow(),outputs_mode,sdk_test,sdk_blank_scene);
-            std::cerr<<"M8 editor producer ready: editor_thread="<<owner<<" main="<<reinterpret_cast<uintptr_t>(main_handle())<<" view="<<reinterpret_cast<uintptr_t>(view_handle())<<'\n';
+            std::cerr<<"M8 editor producer ready: editor_thread="<<owner<<" main="<<main_handle().handle<<" view="<<view_handle().handle<<'\n';
             if(cancel_startup) {
                 std::cerr<<"M8 editor startup cancel: query_held=1 editor_thread="<<owner<<'\n';
                 level->tick(frame++);engine_api.on_after_editor_tick();engine_api.request_exit(0);return;
@@ -278,7 +335,7 @@ class editor_world_proxy final : public world {
             else if(++sdk_settle==32) {
                 namespace p=xray::engine::m8_control;
                 sdk_waiting=p::token(frame+1,p::shot(unsigned(sdk_modes_test?p::shot::sdk_mode_0:p::shot::sdk_property_baseline)+sdk_step));
-                if(!SetPropA(view_handle(),p::request_property,reinterpret_cast<HANDLE>(sdk_waiting)))throw std::runtime_error("Cannot request SDK capture");
+                if(!xray::engine::capture_control_bus::set_token(view_handle(),p::request_property,sdk_waiting))throw std::runtime_error("Cannot request SDK capture");
             }
         }
         if(outputs_mode)advance_outputs();
@@ -301,8 +358,8 @@ public:
         auto status=hosting::factory()(&native,&bridge);
         if(status<0)throw std::runtime_error("Managed editor world creation failed");
         if(bridge.version!=hosting::abi_version || bridge.size!=sizeof(bridge) || !bridge.context
-            || !bridge.load || !bridge.run || !bridge.clear || !bridge.destroy || !bridge.main_handle || !bridge.view_handle
-            || !bridge.editor_mode || !bridge.render || !bridge.message_out || !bridge.command || !bridge.preview_handle || !bridge.preview_closed) {
+            || !bridge.load || !bridge.run || !bridge.clear || !bridge.destroy || !bridge.main_surface || !bridge.view_surface
+            || !bridge.editor_mode || !bridge.render || !bridge.message_out || !bridge.command || !bridge.preview_surface || !bridge.preview_closed || !bridge.window_control) {
             if(bridge.destroy && bridge.context)bridge.destroy(bridge.context);
             throw std::runtime_error("Invalid managed editor bridge");
         }
@@ -322,8 +379,8 @@ public:
         }
         if(e.background_capture()) {
             try {
-                protect_window(main_handle());
-                if(outputs_mode && !SetPropA(view_handle(),xray::engine::m8_outputs::mode_property,HANDLE(1)))throw std::runtime_error("Cannot enable output workflow");
+                protect_surface(0,main_handle());
+                if(outputs_mode && !xray::engine::capture_control_bus::set_flag(view_handle(),xray::engine::m8_outputs::mode_property))throw std::runtime_error("Cannot enable output workflow");
             } catch(...) {bridge.destroy(bridge.context);bridge={};throw;}
         }
     }
@@ -340,9 +397,9 @@ public:
         if(startup_transaction){resources::end_query_might_destroy_this_transaction();startup_transaction=false;}
         if(output_transaction){resources::end_query_might_destroy_this_transaction();output_transaction=false;}
         if(level){level->on_render_session_closed();resources::wait_and_dispatch_callbacks(false);
-            if((outputs_mode || sdk_close_pending) && output_pending_window) {
+            if((outputs_mode || sdk_close_pending) && output_pending_window.valid()) {
                 if(!output_shutdown_registry || output_shutdown_registry->accepting() || level->pending_queries() || level->rejected_previews()!=1
-                    || !IsWindow(output_pending_window) || !IsWindow(main_handle()))throw std::runtime_error("Pending preview shutdown did not drain before HWND disposal");
+                    || !is_surface_alive(1,output_pending_window) || !is_surface_alive(0,main_handle()))throw std::runtime_error("Pending preview shutdown did not drain before surface disposal");
                 std::cerr<<"M8 outputs pending preview drained: queries=0 rejected=1 hwnds_alive=1 editor_thread="<<owner<<'\n';
                 if(sdk_close_pending)std::cerr<<"SDK pending close drained: queries=0 rejected=1 hwnds_alive=1 accepting=0 editor_thread="<<owner<<'\n';
                 output_shutdown_registry.reset();
@@ -351,8 +408,18 @@ public:
         if(cancel_startup)std::cerr<<"M8 editor startup cancel drained: pending=0 editor_thread="<<owner<<'\n';
         std::cerr<<"M8 editor native resources drained: editor_thread="<<owner<<'\n';
     }
-    HWND main_handle() override {check_owner();return reinterpret_cast<HWND>(bridge.main_handle(bridge.context));}
-    HWND view_handle() override {check_owner();return reinterpret_cast<HWND>(bridge.view_handle(bridge.context));}
+    xray::platform::native_surface_handle main_handle() override {
+        check_owner();
+        hosting::surface_descriptor desc{};
+        require(bridge.main_surface(bridge.context,&desc));
+        return to_native_surface(desc);
+    }
+    xray::platform::native_surface_handle view_handle() override {
+        check_owner();
+        hosting::surface_descriptor desc{};
+        require(bridge.view_surface(bridge.context,&desc));
+        return to_native_surface(desc);
+    }
     void editor_mode(bool enabled) override {check_owner();require(bridge.editor_mode(bridge.context,enabled?1:0));}
     void render(u32 id,math::float4x4 matrix) override {
         check_owner();require(bridge.render(bridge.context,id,reinterpret_cast<float const*>(&matrix)));

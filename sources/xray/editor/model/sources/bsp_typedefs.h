@@ -6,7 +6,7 @@
 
 #ifndef BSP_TYPEDEFS_H_INCLUDED
 #define BSP_TYPEDEFS_H_INCLUDED
-#include <xray\ai_navigation\sources\constrained_delaunay_triangulator.h>
+#include <xray/ai_navigation/sources/constrained_delaunay_triangulator.h>
 
 namespace xray {
 namespace model_editor {

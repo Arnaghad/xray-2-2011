@@ -7,13 +7,7 @@
 #ifndef SOUND_STREAM_H_INCLUDED
 #define SOUND_STREAM_H_INCLUDED
 
-#ifdef _WIN32
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
-#include <mmsystem.h>
-#include <xaudio2.h>
-#endif
-
+#include "audio_backend.h"
 #include "ogg_utils.h"
 #include <vorbis/vorbisfile.h>
 
@@ -36,14 +30,14 @@ public:
 	virtual					~sound_stream	( );
 
 	u32						pcm_total		( ) const	{return m_pcm_total;}
-	WAVEFORMATEX const&		wave_format		( )	const	{return m_wfx;}
+	pcm_wave_format const&	wave_format		( )	const	{return m_wfx;}
 	u32						decompress		( pbyte dest, u32& pcm_pointer, u32 bytes_needed );
 	void					recalc_rms		( );
 
 	//virtual	void			recalculate_memory_usage_impl ( ) { m_memory_usage_self.unmanaged = get_size(); }
 
 private:
-	WAVEFORMATEX			m_wfx;
+	pcm_wave_format			m_wfx;
 
 	ogg_file_source			m_raw_file;
 	resources::managed_resource_ptr	m_options;

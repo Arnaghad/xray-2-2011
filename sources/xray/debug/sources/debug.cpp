@@ -129,13 +129,13 @@ static void process						( bool* do_debug_break, xray::process_error_enum proces
 {
 	using namespace	xray::debug;
 
-	if ( s_process_lock_thread_id == (long)xray::debug::current_thread_id() )
+	if ( s_process_lock_thread_id == static_cast<atomic32>(xray::debug::current_thread_id()) )
 	{
 		++s_process_lock_count;
 	}
 	else 
 	{
-		while ( interlocked_compare_exchange(s_process_lock_thread_id, current_thread_id(), 0) != 0 )
+		while ( interlocked_compare_exchange(s_process_lock_thread_id, static_cast<atomic32>(current_thread_id()), 0) != 0 )
 			yield							(10);
 		s_process_lock_count			=	0;
 	}
@@ -164,7 +164,7 @@ static void process						( bool* do_debug_break, xray::process_error_enum proces
 	output									( message, max_message_length, "Line          : %d", line );
 	output									( message, max_message_length, "Function      : %s", function );
 
-	if ( debug_engine()->is_testing() ) 
+	if ( debug_engine() && debug_engine()->is_testing() ) 
 	{
 		debug_engine()->on_testing_exception	(assert_type, message, 0, true);
 	}
@@ -190,6 +190,7 @@ void xray::debug::on_error		( bool* do_debug_break, xray::process_error_enum pro
 
 	string4096				description;
 	vsnprintf				( description, sizeof(description), sizeof(description) - 1, format, mark );
+	va_end					( mark );
 
 	process					( do_debug_break, process_error, ignore_always, assert_type, reason, expression, description, file, function, line );
 }
@@ -206,6 +207,7 @@ void xray::debug::on_error		( bool* do_debug_break, xray::process_error_enum pro
 
 	string4096				description;
 	vsnprintf				( description, sizeof(description), sizeof(description) - 1, format, mark );
+	va_end					( mark );
 
 	pcstr const graphics	= debug::platform::get_graphics_api_error_description( error_code );
 	if ( graphics ) {
@@ -225,7 +227,9 @@ void xray::debug::on_error		( bool* do_debug_break, xray::process_error_enum pro
 	debug::platform::free_format_message	( reason );
 }
 
-#define EXCEPTION_EXECUTE_HANDLER       1
+#if defined(_MSC_VER) && (XRAY_PLATFORM_WINDOWS)
+#	define EXCEPTION_EXECUTE_HANDLER       1
+#endif
 
 static void terminate_impl	( u32 exit_code, pcstr message )
 {
@@ -235,7 +239,8 @@ static void terminate_impl	( u32 exit_code, pcstr message )
 	__try {
 #endif // #if defined(_MSC_VER) && (XRAY_PLATFORM_WINDOWS)
 	
-		debug::debug_engine()->on_terminate	( );
+		if ( debug::debug_engine() )
+			debug::debug_engine()->on_terminate	( );
 	
 #if defined(_MSC_VER) && (XRAY_PLATFORM_WINDOWS)
 	} __except (EXCEPTION_EXECUTE_HANDLER) {}
@@ -250,6 +255,7 @@ void xray::debug::terminate	( pcstr format, ... )
 	va_start							( args, format );
 	string4096							message;
 	vsprintf							( message, sizeof(message), format, args );
+	va_end								( args );
 
 	u32 const exit_code				=	debug_engine() ? debug_engine()->get_exit_code() : 1;
 	terminate_impl						( exit_code + exit_code_called_by_terminate, message );
@@ -261,6 +267,7 @@ void xray::debug::terminate	( u32 exit_code, pcstr format, ... )
 	va_start					( args, format );
 	string4096					message;
 	vsprintf					( message, sizeof(message), format, args );
+	va_end						( args );
 	terminate_impl				( exit_code + exit_code_called_by_terminate, message );
 }
 

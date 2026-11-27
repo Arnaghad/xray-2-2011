@@ -3,6 +3,7 @@
 #include "pch.h"
 #include <xray/render/engine/world_dx11.h>
 #include <xray/render/core/sources/rhi/rhi_device.h>
+#include <xray/render/vulkan/platform_surface.h>
 #include "vulkan_backend.h"
 #include "vulkan_diagnostics.h"
 #include "vulkan_smoke_geometry.h"
@@ -50,7 +51,7 @@ world::world()
 
 world::~world() { clear_resources(); }
 
-bool world::initialize_game(HWND window_handle) {
+bool world::initialize_game(platform::native_surface_handle window_handle) {
     if (m_game_resources || !resources::is_initialized() || !initialize(window_handle)) return false;
     try {
         particle::initialize();
@@ -72,8 +73,8 @@ bool world::finalize_game_resources() {
     return true;
 }
 
-bool world::initialize(HWND window_handle) {
-    if (m_initialized || !window_handle || !IsWindow(window_handle)) return false;
+bool world::initialize(platform::native_surface_handle window_handle) {
+    if (m_initialized || !window_handle.valid() || !vulkan::surface_adapter::is_surface_alive(window_handle)) return false;
     auto& device = rhi::rhi_device::ref();
     if (!device.initialize(std::make_unique<vulkan::vulkan_backend>(), window_handle)) return false;
     try {
@@ -101,7 +102,7 @@ void world::clear_resources() {
     // (including the destructor) unregisters cooks once their users have drained.
     vulkan::finalize_scene_resources();
     m_initialized = false;
-    m_window_handle = nullptr;
+    m_window_handle = {};
     m_primary_output.reset();
     m_output_close_requested=false;
     finalize_game_resources();
@@ -196,9 +197,10 @@ math::uint2 world::window_client_size(render_output_window_ptr const& output) {
         if (!m_scene_runtime) throw std::runtime_error("Vulkan scene lifecycle is unavailable");
         return m_scene_runtime->output(output).client_size();
     }
-    RECT rect = {};
-    if (!m_window_handle || !GetClientRect(m_window_handle, &rect)) return math::uint2(0, 0);
-    return math::uint2(static_cast<u32>(rect.right - rect.left), static_cast<u32>(rect.bottom - rect.top));
+    u32 width = 0, height = 0;
+    if (!m_window_handle.valid() || !vulkan::surface_adapter::query_surface_extent(m_window_handle, width, height))
+        return math::uint2(0, 0);
+    return math::uint2(width, height);
 }
 
 void world::draw_scene(scene_ptr const& scene, scene_view_ptr const& view, render_output_window_ptr const& output,

@@ -2,10 +2,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:dockThemes="using:Dock.Avalonia.Themes.Fluent"
              x:Class="xray.editor.avalonia_controls.SdkAvaloniaApp"
-             RequestedThemeVariant="Light">
+             RequestedThemeVariant="Dark">
   <Application.Styles>
     <FluentTheme />
     <dockThemes:DockFluentTheme />
+    <StyleInclude Source="avares://xray.editor.avalonia_controls/Themes/SdkEngineStyles.axaml" />
   </Application.Styles>
   <Application.Resources>
     <ResourceDictionary>

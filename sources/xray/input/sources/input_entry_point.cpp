@@ -16,7 +16,7 @@ XRAY_DECLARE_LINKAGE_ID(input_entry_point)
 static xray::uninitialized_reference<input_world>	s_world;
 xray::input::allocator_type*	xray::input::g_allocator = 0;
 
-xray::input::world* xray::input::create_world	( engine& engine, HWND const window_handle )
+xray::input::world* xray::input::create_world	( engine& engine, xray::platform::native_surface_handle const window_handle )
 {
 	XRAY_CONSTRUCT_REFERENCE	( s_world, input_world )	( engine, window_handle );
 	return						( &*s_world );

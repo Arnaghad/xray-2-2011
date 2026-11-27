@@ -32,8 +32,10 @@ inline pstr sz_cpy							(pstr destination, u32 const destination_size, pcstr so
 #ifdef _MSC_VER
 	errno_t const error	= strcpy_s( destination, destination_size, source );
 	CS_UNREFERENCED_PARAMETER	( error );
-#elif defined(__GCC__) // #ifdef _MSC_VER
-	strlcpy			( destination, source, destination_size );
+#elif defined(__GNUC__) // #ifdef _MSC_VER
+	strncpy			( destination, source, destination_size );
+	if ( destination_size )
+		destination[destination_size - 1] = 0;
 #elif defined(__SNC__) // #ifdef _MSC_VER
 	CS_UNREFERENCED_PARAMETER	( destination_size );
 	strcpy			( destination, source );
@@ -55,8 +57,12 @@ inline pstr sz_ncpy							(pstr destination, u32 const destination_size, pcstr s
 #ifdef _MSC_VER
 	errno_t const error	= strncpy_s( destination, destination_size, source, count );
 	CS_UNREFERENCED_PARAMETER	( error );
-#elif defined(__GCC__) // #ifdef _MSC_VER
-	strlcpy			( destination, source, destination_size );
+#elif defined(__GNUC__) // #ifdef _MSC_VER
+	size_t const to_copy = (count < destination_size) ? count : (destination_size ? destination_size - 1 : 0);
+	if ( to_copy )
+		memcpy		( destination, source, to_copy );
+	if ( destination_size )
+		destination[to_copy] = 0;
 #elif defined(__SNC__) // #ifdef _MSC_VER
 	strncpy			( destination, source, count );
 #else // #elif defined(__SNC__)
@@ -113,7 +119,7 @@ inline int sz_icmp							(pcstr const left, pcstr const right)
 {
 #if defined(_MSC_VER)
 	return			_stricmp( left, right );
-#elif defined(__SNC__) || defined(__GCC__)
+#elif defined(__SNC__) || defined(__GNUC__)
 	pcstr i = left, j = right;
 	for ( ; *i && *j; ++i, ++j ) {
 		int const lower_i	= tolower(*i);

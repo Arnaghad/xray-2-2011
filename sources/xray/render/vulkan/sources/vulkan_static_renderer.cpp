@@ -115,6 +115,9 @@ void static_renderer::release() {
     m_forward_vs=m_forward_object=0; m_forward_ps.clear();
 }
 void static_renderer::prepare_forward_shader(unsigned variant, u32 samples) {
+    u32 effective_samples=(variant & 8) ? std::max(1u,samples) : 1u;
+    u32 key=(variant & 0xfffu) | ((effective_samples & 0xfu) << 12);
+    if (m_forward_ps.contains(key)) return;
     rhi::shader_compiler compiler; rhi::shader_compile_options options;
     if (!m_forward_vs) {
         options.entry="forward_vs"; options.flags={"-fvk-invert-y"};
@@ -127,9 +130,6 @@ void static_renderer::prepare_forward_shader(unsigned variant, u32 samples) {
         m_forward_object=m_backend->create_buffer(rhi::buffer_type::constant,sizeof(extended_forward_object_constants),nullptr);
         if (!m_forward_object) throw std::runtime_error("Forward object constants creation failed");
     }
-    u32 effective_samples=(variant & 8) ? std::max(1u,samples) : 1u;
-    u32 key=(variant & 0xfffu) | ((effective_samples & 0xfu) << 12);
-    if (m_forward_ps.contains(key) && m_forward_ps[key]) return;
     options.entry="forward_ps"; options.flags={};
     options.defines={
         std::string("USE_DIFFUSE_TEXTURE=")+(variant&1 ? "1" : "0"),
@@ -147,8 +147,9 @@ void static_renderer::prepare_forward_shader(unsigned variant, u32 samples) {
         std::string("SAMPLE_COUNT=")+std::to_string(effective_samples)};
     auto code=compiler.compile_file(XRAY_VULKAN_ASSET_SHADER_DIR "/static_forward.hlsl",rhi::shader_stage::pixel,options);
     if (!code.success) throw std::runtime_error(code.error_log);
-    m_forward_ps[key]=m_backend->create_shader(rhi::shader_stage::pixel,code.bytecode.data(),code.bytecode.size()*4,options.entry.c_str());
-    if (!m_forward_ps[key]) throw std::runtime_error("Forward material shader unavailable");
+    auto handle=m_backend->create_shader(rhi::shader_stage::pixel,code.bytecode.data(),code.bytecode.size()*4,options.entry.c_str());
+    if (!handle) throw std::runtime_error("Forward material shader unavailable");
+    m_forward_ps[key]=handle;
 }
 void static_renderer::prepare_shadow_shader(unsigned variant) {
     if (m_shadow_ps[variant]) return;
@@ -160,6 +161,7 @@ void static_renderer::prepare_shadow_shader(unsigned variant) {
     if (!m_shadow_ps[variant]) throw std::runtime_error("Shadow caster shader unavailable");
 }
 void static_renderer::prepare_material_shader(unsigned variant) {
+    if (m_material_ps.contains(variant)) return;
     rhi::shader_compiler compiler; rhi::shader_compile_options options;
     if (!m_material_vs) {
         options.entry="material_vs"; options.flags={"-fvk-invert-y"};
@@ -172,7 +174,6 @@ void static_renderer::prepare_material_shader(unsigned variant) {
         m_material_object=m_backend->create_buffer(rhi::buffer_type::constant,sizeof(extended_material_object_constants),nullptr);
         if (!m_material_object) throw std::runtime_error("Material object constants creation failed");
     }
-    if (m_material_ps.contains(variant) && m_material_ps[variant]) return;
     options.entry="material_ps"; options.flags={};
     options.defines={std::string("USE_DIFFUSE_TEXTURE=")+(variant&1 ? "1" : "0"),
         std::string("USE_ALPHA_TEST=")+(variant&2 ? "1" : "0"),
@@ -188,8 +189,9 @@ void static_renderer::prepare_material_shader(unsigned variant) {
         std::string("USE_BINDLESS=")+(m_backend->supports_bindless() ? "1" : "0")};
     auto code=compiler.compile_file(XRAY_VULKAN_ASSET_SHADER_DIR "/static_material.hlsl",rhi::shader_stage::pixel,options);
     if (!code.success) throw std::runtime_error(code.error_log);
-    m_material_ps[variant]=m_backend->create_shader(rhi::shader_stage::pixel,code.bytecode.data(),code.bytecode.size()*4,options.entry.c_str());
-    if (!m_material_ps[variant]) throw std::runtime_error("Material pixel shader creation failed");
+    auto handle=m_backend->create_shader(rhi::shader_stage::pixel,code.bytecode.data(),code.bytecode.size()*4,options.entry.c_str());
+    if (!handle) throw std::runtime_error("Material pixel shader creation failed");
+    m_material_ps[variant]=handle;
 }
 void static_renderer::collect() {
     for (auto it=m_geometry.begin(); it!=m_geometry.end();) {

@@ -6,12 +6,12 @@
 
 #include "pch.h"
 #include <xray/os_include.h>
-#include <xray/fs/windows_hdd_file_system.h>
+#include <xray/fs/native_hdd_file_system.h>
 
 namespace xray {
 namespace core {
 
-static fs_new::windows_hdd_file_system		s_hdd;
+static fs_new::native_hdd_file_system		s_hdd;
 
 fs_new::device_file_system_interface *	get_core_device_file_system	()
 {

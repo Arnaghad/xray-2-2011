@@ -19,7 +19,11 @@ XRAY_DECLARE_LINKAGE_ID(core_os_functions_win)
 
 using namespace xray;
 
-bool xray::os::is_clipboard_empty				( )
+namespace xray {
+namespace os {
+namespace detail {
+
+bool platform_clipboard_is_empty				( )
 {
 	if ( !OpenClipboard(0) )
 		return					false;
@@ -37,7 +41,7 @@ bool xray::os::is_clipboard_empty				( )
 	return						( !string_length );
 }
 
-void xray::os::copy_to_clipboard				( pcstr buffer )
+void platform_clipboard_copy					( pcstr buffer )
 {
 	if ( !OpenClipboard(0) )
 		return;
@@ -57,14 +61,16 @@ void xray::os::copy_to_clipboard				( pcstr buffer )
 	CloseClipboard				( );
 }
 
-pstr xray::os::paste_from_clipboard				( xray::memory::base_allocator& allocator )
+pstr platform_clipboard_paste					( xray::memory::base_allocator& allocator )
 {
 	if ( !OpenClipboard(0) )
 		return					0;
 
 	HGLOBAL const handle		= GetClipboardData( CF_TEXT );
-	if ( !handle )
+	if ( !handle ) {
+		CloseClipboard			( );
 		return					0;
+	}
 
 	pcstr const data			= static_cast<pcstr>( GlobalLock(handle) );
 	u32 const string_length		= strings::length(data);
@@ -82,7 +88,7 @@ pstr xray::os::paste_from_clipboard				( xray::memory::base_allocator& allocator
 	return						result;
 }
 
-void xray::os::update_clipboard					( pcstr const string )
+void platform_clipboard_update					( pcstr const string )
 {
 	if ( !OpenClipboard(0) )
 		return;
@@ -90,7 +96,7 @@ void xray::os::update_clipboard					( pcstr const string )
 	HGLOBAL const handle		= GetClipboardData(CF_TEXT);
 	if (!handle) {
 		CloseClipboard			( );
-		copy_to_clipboard		( string );
+		platform_clipboard_copy	( string );
 		return;
 	}
 
@@ -104,5 +110,9 @@ void xray::os::update_clipboard					( pcstr const string )
 
 	strings::append				( buffer, buffer_size, string );
 	CloseClipboard				( );
-	copy_to_clipboard			( buffer );
+	platform_clipboard_copy		( buffer );
 }
+
+} // namespace detail
+} // namespace os
+} // namespace xray

@@ -17,6 +17,7 @@
 #include <chrono>
 #include <cstring>
 #include <algorithm>
+#include <functional>
 #include "sdk_outputs.h"
 #include "sdk_runtime.h"
 
@@ -129,7 +130,7 @@ class sdk_scene {
     }
 public:
     void set_interactive_default_sky(bool value){interactive_default_sky=value;}
-    int execute(sdk_scene_request& r,render::control_level::control_world& level,memory::mimalloc_allocator_type& allocator,editor::engine& engine,sdk_resources& material_resources) {
+    int execute(sdk_scene_request& r,render::control_level::control_world& level,memory::mimalloc_allocator_type& allocator,editor::engine& engine,sdk_resources& material_resources,std::function<xray::platform::native_surface_handle(std::uint64_t)> const& resolve_surface={}) {
         if(r.version!=1 || r.size!=sizeof(r))return -1;
         // A preview cook may be pending while the main view keeps presenting.
         // Projection updates and detaching the authored scene need no new cooks
@@ -138,8 +139,8 @@ public:
             || ((r.operation==50 || r.operation==51) && !r.session && !r.count)
             || ((r.operation==1 || r.operation==2) && staged && !staged->session);
         if(!level.editor_ready() && !drain)return -1;
-        if((r.operation>=20 && r.operation<=24) || r.operation==26)return outputs.request(r,level,allocator);
-        if(r.operation==25) {if(!r.query)return -1;return outputs.request(r,level,allocator,material_resources.model_result(r.query));}
+        if((r.operation>=20 && r.operation<=24) || r.operation==26)return outputs.request(r,level,allocator,{},resolve_surface);
+        if(r.operation==25) {if(!r.query)return -1;return outputs.request(r,level,allocator,material_resources.model_result(r.query),resolve_surface);}
         if(r.operation==44 || r.operation==45) {
             if(!r.data || !r.result || r.query || r.count || runtime.running())return -1;auto const& source=*static_cast<sdk_model_publish const*>(r.data);
             if(!source.uri || std::strlen(source.uri)>1024)return -1;std::string uri=source.uri;configs::checked::validate_path(uri);

@@ -39,7 +39,7 @@ struct XRAY_NOVTABLE platform {
 	virtual	void	create_scene_view				( scene_view_base** scene_view_ptr /*out*/ ) = 0;
 	virtual void	destroy							( scene_view_base* scene_view) = 0;
 
-	virtual void	create_render_output_window		( HWND window, render_output_window_base** output_window /*out*/) = 0;
+	virtual void	create_render_output_window		( platform::native_surface_handle surface, render_output_window_base** output_window /*out*/) = 0;
 	virtual void	destroy							( render_output_window_base* output_window) = 0;
 		
 	virtual	void	set_view_matrix					( float4x4 const& view ) = 0;

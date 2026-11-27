@@ -4,13 +4,13 @@ set(INPUT_SOURCES
     sources/input_entry_point.cpp
     sources/input_library_linkage.cpp
     sources/input_world.cpp
-    sources/input_world_win.cpp
+    sources/input_world_sdl3.cpp
     sources/pch.cpp
-    sources/receiver_gamepad_win.cpp
+    sources/receiver_gamepad_sdl3.cpp
     sources/receiver_keyboard.cpp
-    sources/receiver_keyboard_win.cpp
+    sources/receiver_keyboard_sdl3.cpp
     sources/receiver_mouse.cpp
-    sources/receiver_mouse_win.cpp
+    sources/receiver_mouse_sdl3.cpp
 )
 
 add_library(xray_input STATIC ${INPUT_SOURCES})

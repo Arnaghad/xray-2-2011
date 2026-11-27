@@ -8,8 +8,10 @@
 
 #include "resources_manager.h"
 #include <xray/resources_fs.h>
-#include <xray/os_preinclude.h>
-#include <xray/os_include.h>
+#if XRAY_PLATFORM_WINDOWS
+#	include <xray/os_preinclude.h>
+#	include <xray/os_include.h>
+#endif
 #include <xray/fs_utils.h>
 #include "fs_nodes.h"
 #include "fs_impl_finding.h"

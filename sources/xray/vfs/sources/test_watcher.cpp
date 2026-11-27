@@ -9,7 +9,7 @@
 #if XRAY_FS_NEW_WATCHER_ENABLED
 
 #include <xray/fs/asynchronous_device_interface.h>
-#include <xray/fs/windows_hdd_file_system.h>
+#include <xray/fs/native_hdd_file_system.h>
 #include "test.h"
 #include <xray/vfs/watcher.h>
 #include "mount_archive.h"

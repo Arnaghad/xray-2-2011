@@ -7,7 +7,7 @@
 #ifndef CORE_DEBUG_CALL_STACK_H_INCLUDED
 #define CORE_DEBUG_CALL_STACK_H_INCLUDED
 
-#include <fastdelegate/fastdelegate.h>
+#include <fastdelegate/FastDelegate.h>
 
 namespace xray {
 namespace core {

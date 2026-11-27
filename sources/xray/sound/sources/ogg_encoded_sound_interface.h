@@ -9,6 +9,7 @@
 
 #include <xray/sound/encoded_sound_interface.h>
 #include <xray/sound/channels_type.h>
+#include "audio_backend.h"
 #include "ogg_utils.h"
 
 namespace xray {
@@ -26,7 +27,7 @@ public:
 													u32 bytes_needed
 												);
 private:
-	WAVEFORMATEX			m_wfx;
+	pcm_wave_format			m_wfx;
 	OggVorbis_File			m_ovf;
 	ogg_raw_file			m_raw_file;
 }; // class ogg_encoded_sound_interface

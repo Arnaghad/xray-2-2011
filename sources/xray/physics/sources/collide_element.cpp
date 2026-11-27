@@ -6,9 +6,9 @@
 #include "pch.h"
 #include "collide_element.h"
 
-#include <xray\collision\geometry_instance.h>
-#include <xray\collision\geometry.h>
-#include <xray\collision\api.h>
+#include <xray/collision/geometry_instance.h>
+#include <xray/collision/geometry.h>
+#include <xray/collision/api.h>
 
 void	collide_element::generate_contacts( xray::collision::on_contact& c, const xray::collision::geometry_instance& gi  )const
 {

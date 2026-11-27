@@ -1,381 +1,840 @@
-#include <fstream>
-#include <sstream>
-#include <filesystem>
-#include <cstring>
-#include <cstdlib>
-#include <stdexcept>
-#include <atomic>
-#include <mutex>
-#include <windows.h>
-#include <unknwn.h>
-#include <wrl/client.h>
-#include <dxcapi.h>
 #include "shader_compiler.h"
 #include "content_hash.h"
+#include "dxc_abi.h"
+#include "shader_disk_cache.h"
 
-using Microsoft::WRL::ComPtr;
-namespace xray { namespace render { namespace rhi {
+#include <xray/os_platform.h>
+
+#include <atomic>
+#include <cstdlib>
+#include <cstring>
+#include <filesystem>
+#include <fstream>
+#include <memory>
+#include <mutex>
+#include <sstream>
+#include <stdexcept>
+#include <string>
+#include <unordered_set>
+#include <utility>
+#include <vector>
+
+#if !XRAY_PLATFORM_WINDOWS
+#	include <unistd.h>
+#endif
+
+namespace xray {
+namespace render {
+namespace rhi {
+
 namespace {
-std::wstring wide(std::string const& value) {
-    if (value.empty()) return {};
-    int count = MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS, value.data(), int(value.size()), nullptr, 0);
-    if (!count) throw std::runtime_error("Invalid UTF-8 compiler option");
-    std::wstring result(count, 0);
-    MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS, value.data(), int(value.size()), result.data(), count);
-    return result;
-}
-struct include_probe {
-    std::wstring path;
-    bool loaded = false;
-    std::vector<unsigned char> bytes;
-    bool operator==(include_probe const&) const = default;
+
+constexpr std::uint32_t k_spirv_magic = 0x07230203u;
+constexpr std::size_t   k_max_memory_cache_entries = 64u;
+
+#if XRAY_PLATFORM_WINDOWS
+constexpr char k_dxc_library_filename[] = "dxcompiler.dll";
+constexpr char k_dxc_cli_filename[] = "dxc.exe";
+#else
+constexpr char k_dxc_library_filename[] = "libdxcompiler.so";
+constexpr char k_dxc_cli_filename[] = "dxc";
+#endif
+
+struct backend_compile_output
+{
+	std::vector<u32>           bytecode;
+	std::vector<include_probe> includes;
+	std::string                error_log;
+	bool                       success = false;
 };
-include_probe probe(IDxcUtils* utils, wchar_t const* name, IDxcBlob** output = nullptr) {
-    include_probe p;
-    p.path = std::filesystem::absolute(name).lexically_normal().wstring();
-    ComPtr<IDxcBlobEncoding> blob;
-    p.loaded = SUCCEEDED(utils->LoadFile(p.path.c_str(), nullptr, blob.GetAddressOf()));
-    if (p.loaded) {
-        auto* begin = static_cast<unsigned char const*>(blob->GetBufferPointer());
-        p.bytes.assign(begin, begin + blob->GetBufferSize());
-        if (output) { *output = blob.Get(); (*output)->AddRef(); }
-    }
-    return p;
-}
-class tracking_includes final : public IDxcIncludeHandler {
-    std::atomic<ULONG> refs{1};
-    ComPtr<IDxcUtils> utils;
+
+class i_shader_compiler_backend
+{
 public:
-    std::vector<include_probe> probes;
-    explicit tracking_includes(IDxcUtils* value) : utils(value) {}
-    HRESULT STDMETHODCALLTYPE QueryInterface(REFIID iid, void** out) override {
-        if (!out) return E_POINTER;
-        *out = nullptr;
-        if (IsEqualIID(iid, __uuidof(IUnknown)) || IsEqualIID(iid, __uuidof(IDxcIncludeHandler))) {
-            *out = static_cast<IDxcIncludeHandler*>(this); AddRef(); return S_OK;
-        }
-        return E_NOINTERFACE;
-    }
-    ULONG STDMETHODCALLTYPE AddRef() override { return ++refs; }
-    ULONG STDMETHODCALLTYPE Release() override { auto n = --refs; if (!n) delete this; return n; }
-    HRESULT STDMETHODCALLTYPE LoadSource(LPCWSTR name, IDxcBlob** out) override {
-        if (!out) return E_POINTER; *out = nullptr;
-        try {
-            auto p = probe(utils.Get(), name, out);
-            bool loaded = p.loaded; probes.push_back(std::move(p));
-            if (!loaded) return HRESULT_FROM_WIN32(ERROR_FILE_NOT_FOUND);
-            return S_OK;
-        } catch (...) { if (*out) { (*out)->Release(); *out = nullptr; } return E_OUTOFMEMORY; }
-    }
-};
-struct cache_entry {
-    std::string source;
-    std::wstring cwd;
-    std::vector<std::wstring> args;
-    std::vector<include_probe> includes;
-    compilation_result result;
+	virtual ~i_shader_compiler_backend() = default;
+	virtual char const* name() const noexcept = 0;
+	virtual bool available() const noexcept = 0;
+	virtual std::string const& init_error() const noexcept = 0;
+	virtual backend_compile_output compile(
+		std::string const& source,
+		std::vector<std::string> const& args_utf8
+	) = 0;
 };
 
-std::string narrow_utf8(std::wstring const& value) {
-    if (value.empty()) return {};
-    int count = WideCharToMultiByte(CP_UTF8, 0, value.data(), int(value.size()), nullptr, 0, nullptr, nullptr);
-    if (count <= 0) return {};
-    std::string out(static_cast<std::size_t>(count), '\0');
-    WideCharToMultiByte(CP_UTF8, 0, value.data(), int(value.size()), out.data(), count, nullptr, nullptr);
-    return out;
-}
-
-std::array<unsigned char, 32> hash_bytes(std::vector<unsigned char> const& bytes) noexcept {
-    cache_util::sha256_hasher h;
-    if (!bytes.empty()) h.update(bytes.data(), bytes.size());
-    return h.finalize();
-}
-
-std::string compute_spirv_cache_key(std::string const& source, std::wstring const& cwd, std::vector<std::wstring> const& args) {
-    cache_util::sha256_hasher hasher;
-    static constexpr char tag[] = "xray_spv_v1";
-    hasher.update(tag, sizeof(tag) - 1);
-    hasher.update_string(source);
-    hasher.update_string(narrow_utf8(cwd));
-    std::uint32_t const arg_count = static_cast<std::uint32_t>(args.size());
-    hasher.update_pod(arg_count);
-    for (auto const& arg : args)
-        hasher.update_string(narrow_utf8(arg));
-    return cache_util::hex_string(hasher.finalize());
-}
-
-bool try_load_spirv_disk_cache(
-    std::filesystem::path const& file_path,
-    IDxcUtils* utils,
-    std::vector<include_probe>& out_includes,
-    compilation_result& out_result) {
-    if (file_path.empty() || !utils) return false;
-    std::error_code ec;
-    auto const file_size = std::filesystem::file_size(file_path, ec);
-    constexpr std::uint64_t kMaxDiskBytes = 32ull * 1024 * 1024;
-    if (ec || file_size < 16 || file_size > kMaxDiskBytes) return false;
-
-    std::ifstream in(file_path, std::ios::binary);
-    if (!in) return false;
-    std::vector<unsigned char> raw(static_cast<std::size_t>(file_size));
-    if (!in.read(reinterpret_cast<char*>(raw.data()), static_cast<std::streamsize>(raw.size()))
-        || static_cast<std::size_t>(in.gcount()) != raw.size())
-        return false;
-
-    std::size_t pos = 0;
-    auto read_pod = [&](auto& value) -> bool {
-        if (pos + sizeof(value) > raw.size()) return false;
-        std::memcpy(&value, raw.data() + pos, sizeof(value));
-        pos += sizeof(value);
-        return true;
-    };
-
-    std::uint32_t magic = 0, version = 0, include_count = 0;
-    if (!read_pod(magic) || !read_pod(version) || !read_pod(include_count)) return false;
-    if (magic != 0x56505358u || version != 1u || include_count > 64u) return false;
-
-    std::vector<include_probe> probed;
-    probed.reserve(include_count);
-    for (std::uint32_t i = 0; i < include_count; ++i) {
-        std::uint32_t path_len = 0;
-        if (!read_pod(path_len) || path_len == 0 || path_len > 16384u || path_len > raw.size() - pos)
-            return false;
-        std::string path_utf8(reinterpret_cast<char const*>(raw.data() + pos), path_len);
-        pos += path_len;
-        std::uint8_t stored_loaded = 0;
-        if (!read_pod(stored_loaded) || stored_loaded > 1u) return false;
-        std::array<unsigned char, 32> stored_hash = {};
-        if (!read_pod(stored_hash)) return false;
-
-        auto wide_path = wide(path_utf8);
-        auto current = probe(utils, wide_path.c_str());
-        if (current.loaded != (stored_loaded != 0)) return false;
-        if (current.loaded && hash_bytes(current.bytes) != stored_hash) return false;
-        probed.push_back(std::move(current));
-    }
-
-    std::uint32_t word_count = 0;
-    if (!read_pod(word_count) || word_count < 5u || word_count > 4u * 1024u * 1024u)
-        return false;
-    std::size_t const byte_count = static_cast<std::size_t>(word_count) * sizeof(std::uint32_t);
-    if (byte_count > raw.size() - pos) return false;
-
-    std::vector<u32> bytecode(word_count);
-    std::memcpy(bytecode.data(), raw.data() + pos, byte_count);
-    pos += byte_count;
-    if (bytecode[0] != 0x07230203u) return false;
-
-    std::uint32_t footer = 0;
-    if (!read_pod(footer) || footer != 0x444E4553u || pos != raw.size()) return false;
-
-    out_includes = std::move(probed);
-    out_result = {};
-    out_result.bytecode = std::move(bytecode);
-    out_result.success = true;
-    out_result.cache_hit = false;
-    return true;
-}
-
-void write_spirv_disk_cache(
-    std::filesystem::path const& file_path,
-    std::vector<include_probe> const& includes,
-    std::vector<u32> const& bytecode) {
-    if (file_path.empty() || bytecode.size() < 5) return;
-    std::error_code ec;
-    if (std::filesystem::is_regular_file(file_path, ec)) return;
-
-    struct encoded_include {
-        std::string path_utf8;
-        std::uint8_t loaded;
-        std::array<unsigned char, 32> hash;
-    };
-    std::vector<encoded_include> items;
-    items.reserve(includes.size());
-    std::size_t total_bytes = 5 * sizeof(std::uint32_t) + bytecode.size() * sizeof(u32);
-    for (auto const& inc : includes) {
-        std::string u8 = narrow_utf8(inc.path);
-        if (u8.empty() || u8.size() > 16384u) return;
-        total_bytes += sizeof(std::uint32_t) + u8.size() + 1 + 32;
-        items.push_back({std::move(u8), static_cast<std::uint8_t>(inc.loaded ? 1 : 0),
-            inc.loaded ? hash_bytes(inc.bytes) : std::array<unsigned char, 32>{}});
-    }
-
-    std::vector<unsigned char> blob(total_bytes);
-    std::size_t pos = 0;
-    auto push_pod = [&](auto const& v) {
-        std::memcpy(blob.data() + pos, &v, sizeof(v));
-        pos += sizeof(v);
-    };
-    std::uint32_t const magic = 0x56505358u, version = 1u, inc_count = static_cast<std::uint32_t>(items.size());
-    push_pod(magic);
-    push_pod(version);
-    push_pod(inc_count);
-    for (auto const& item : items) {
-        std::uint32_t const len = static_cast<std::uint32_t>(item.path_utf8.size());
-        push_pod(len);
-        std::memcpy(blob.data() + pos, item.path_utf8.data(), len);
-        pos += len;
-        push_pod(item.loaded);
-        push_pod(item.hash);
-    }
-    std::uint32_t const word_count = static_cast<std::uint32_t>(bytecode.size());
-    push_pod(word_count);
-    std::size_t const spv_bytes = bytecode.size() * sizeof(u32);
-    std::memcpy(blob.data() + pos, bytecode.data(), spv_bytes);
-    pos += spv_bytes;
-    std::uint32_t const footer = 0x444E4553u;
-    push_pod(footer);
-    cache_util::atomic_write_file(file_path, blob.data(), blob.size());
-}
-}
-struct shader_compiler_impl {
-    HMODULE library = nullptr;
-    ComPtr<IDxcUtils> utils;
-    ComPtr<IDxcCompiler3> compiler;
-    std::vector<cache_entry> cache;
-    std::mutex mutex;
-    std::string error;
-    shader_compiler_impl() {
-        char const* configured = std::getenv("XRAY_DXC_PATH");
-        if (configured && !std::filesystem::path(configured).is_absolute()) {
-            error = "XRAY_DXC_PATH must be an absolute path to dxcompiler.dll";
-            return;
-        }
-        auto path = configured ? wide(configured) : std::wstring(L"dxcompiler.dll");
-        library = LoadLibraryExW(path.c_str(), nullptr, LOAD_LIBRARY_SEARCH_DEFAULT_DIRS
-            | (configured ? LOAD_LIBRARY_SEARCH_DLL_LOAD_DIR : 0));
-        if (!library) {
-            error = "Cannot load DXC (Win32 error " + std::to_string(GetLastError())
-                + "). Deploy dxcompiler.dll beside the executable or set XRAY_DXC_PATH to its absolute path.";
-            return;
-        }
-        auto create = reinterpret_cast<DxcCreateInstanceProc>(GetProcAddress(library, "DxcCreateInstance"));
-        if (!create || FAILED(create(CLSID_DxcUtils, __uuidof(IDxcUtils), reinterpret_cast<void**>(utils.GetAddressOf())))
-            || FAILED(create(CLSID_DxcCompiler, __uuidof(IDxcCompiler3), reinterpret_cast<void**>(compiler.GetAddressOf()))))
-            error = "DXC COM initialization failed (DxcCreateInstance / include handler)";
-    }
-    ~shader_compiler_impl() {
-        cache.clear(); compiler.Reset(); utils.Reset();
-        if (library) FreeLibrary(library);
-    }
+struct cache_entry
+{
+	std::string                source;
+	std::string                cwd_utf8;
+	std::vector<std::string>   args_utf8;
+	std::vector<include_probe> includes;
+	compilation_result         result;
 };
-shader_compiler::shader_compiler() : m_impl(std::make_unique<shader_compiler_impl>()) {}
+
+bool env_flag_enabled( char const* name )
+{
+	std::string value;
+	if ( !xray::os::get_environment_variable( name, value ) )
+		return false;
+	return value == "1" || value == "true" || value == "TRUE" || value == "yes" || value == "YES";
+}
+
+bool is_cli_executable_name( std::filesystem::path const& path )
+{
+	std::string const name = path_to_utf8( path.filename() );
+	return name == "dxc" || name == "dxc.exe" || name == "dxc-3.7";
+}
+
+class tracking_includes final : public dxc::i_dxc_include_handler
+{
+public:
+	explicit tracking_includes( dxc::i_dxc_utils* utils ) noexcept : m_utils( utils ) {}
+
+	std::vector<include_probe> probes;
+
+	dxc::dxc_hresult XRAY_DXC_CALL QueryInterface( dxc::dxc_guid const& iid, void** out ) override
+	{
+		if ( !out )
+			return dxc::k_dxc_e_pointer;
+		*out = nullptr;
+		if ( iid == dxc::k_iid_iunknown || iid == dxc::k_iid_dxc_include_handler ) {
+			*out = static_cast<dxc::i_dxc_include_handler*>( this );
+			AddRef();
+			return dxc::k_dxc_s_ok;
+		}
+		return dxc::k_dxc_e_nointerface;
+	}
+
+	dxc::dxc_ulong XRAY_DXC_CALL AddRef() override
+	{
+		return ++m_refs;
+	}
+
+	dxc::dxc_ulong XRAY_DXC_CALL Release() override
+	{
+		dxc::dxc_ulong const n = --m_refs;
+		if ( n == 0 )
+			delete this;
+		return n;
+	}
+
+	dxc::dxc_hresult XRAY_DXC_CALL LoadSource( wchar_t const* filename, dxc::i_dxc_blob** out ) override
+	{
+		if ( !out )
+			return dxc::k_dxc_e_pointer;
+		*out = nullptr;
+		if ( !filename || !m_utils )
+			return dxc::k_dxc_e_fail;
+
+		try {
+			std::string const utf8_name = dxc::dxc_wide_to_utf8( filename, std::wcslen( filename ) );
+			include_probe probed = probe_include_file( utf8_name );
+			bool const loaded = probed.loaded;
+			if ( loaded ) {
+				dxc::dxc_com_ptr<dxc::i_dxc_blob_encoding> blob;
+				void const* ptr = probed.bytes.empty() ? static_cast<void const*>( "" ) : probed.bytes.data();
+				dxc::dxc_hresult const hr = m_utils->CreateBlob(
+					ptr,
+					static_cast<dxc::dxc_uint32>( probed.bytes.size() ),
+					dxc::k_dxc_cp_utf8,
+					blob.put()
+				);
+				if ( dxc::dxc_failed( hr ) || !blob ) {
+					probes.push_back( std::move( probed ) );
+					return dxc::k_dxc_e_outofmemory;
+				}
+				*out = blob.detach();
+			}
+			probes.push_back( std::move( probed ) );
+			return loaded ? dxc::k_dxc_s_ok : dxc::k_dxc_e_file_not_found;
+		} catch ( ... ) {
+			if ( *out ) {
+				( *out )->Release();
+				*out = nullptr;
+			}
+			return dxc::k_dxc_e_outofmemory;
+		}
+	}
+
+private:
+	std::atomic<dxc::dxc_ulong>             m_refs{ 1 };
+	dxc::dxc_com_ptr<dxc::i_dxc_utils>      m_utils;
+};
+
+class dxc_library_backend final : public i_shader_compiler_backend
+{
+public:
+	dxc_library_backend()
+	{
+		std::string configured;
+		if ( xray::os::get_environment_variable( "XRAY_DXC_PATH", configured ) && !configured.empty() ) {
+			std::filesystem::path const configured_path = path_from_utf8( configured );
+			if ( !configured_path.is_absolute() ) {
+				m_error = std::string( "XRAY_DXC_PATH must be an absolute path to " ) + k_dxc_library_filename;
+				return;
+			}
+			if ( is_cli_executable_name( configured_path ) ) {
+				m_error = "XRAY_DXC_PATH points to DXC CLI executable rather than shared library";
+				return;
+			}
+			if ( !m_library.open( configured_path, true ) ) {
+				m_error = "Cannot load DXC from XRAY_DXC_PATH (" + configured + "): " + m_library.last_error();
+				return;
+			}
+		} else {
+			bool opened = false;
+			std::filesystem::path const exe_dir = xray::os::executable_directory();
+			if ( !exe_dir.empty() ) {
+				std::filesystem::path const adjacent = exe_dir / k_dxc_library_filename;
+				std::error_code ec;
+				if ( std::filesystem::is_regular_file( adjacent, ec ) )
+					opened = m_library.open( adjacent, true );
+#if !XRAY_PLATFORM_WINDOWS
+				if ( !opened ) {
+					std::filesystem::path const sibling_lib = ( exe_dir / ".." / "lib" / k_dxc_library_filename ).lexically_normal();
+					if ( std::filesystem::is_regular_file( sibling_lib, ec ) )
+						opened = m_library.open( sibling_lib, true );
+				}
+#endif
+			}
+			if ( !opened )
+				opened = m_library.open( std::filesystem::path( k_dxc_library_filename ), false );
+
+			if ( !opened ) {
+				m_error = std::string( "Cannot load DXC (" ) + m_library.last_error()
+					+ "). Deploy " + k_dxc_library_filename + " beside the executable, set XRAY_DXC_PATH, or use XRAY_SHADER_PRECOMPILED_DIR.";
+				return;
+			}
+		}
+
+		auto const create = m_library.symbol_as<dxc::dxc_create_instance_fn>( "DxcCreateInstance" );
+		if ( !create ) {
+			m_error = "DxcCreateInstance symbol not found in loaded DXC library";
+			m_library.close();
+			return;
+		}
+
+		dxc::dxc_hresult const hr_utils = create(
+			dxc::k_clsid_dxc_utils,
+			dxc::k_iid_dxc_utils,
+			reinterpret_cast<void**>( m_utils.put() )
+		);
+		dxc::dxc_hresult const hr_compiler = create(
+			dxc::k_clsid_dxc_compiler,
+			dxc::k_iid_dxc_compiler3,
+			reinterpret_cast<void**>( m_compiler.put() )
+		);
+		if ( dxc::dxc_failed( hr_utils ) || !m_utils || dxc::dxc_failed( hr_compiler ) || !m_compiler ) {
+			m_error = "DXC COM initialization failed (DxcCreateInstance)";
+			m_compiler.reset();
+			m_utils.reset();
+			m_library.close();
+		}
+	}
+
+	~dxc_library_backend() override
+	{
+		m_compiler.reset();
+		m_utils.reset();
+		m_library.close();
+	}
+
+	char const* name() const noexcept override { return "dxc_library"; }
+	bool available() const noexcept override { return m_error.empty() && m_utils && m_compiler; }
+	std::string const& init_error() const noexcept override { return m_error; }
+
+	backend_compile_output compile(
+		std::string const& source,
+		std::vector<std::string> const& args_utf8 ) override
+	{
+		backend_compile_output out;
+
+		std::vector<std::wstring> wide_args;
+		wide_args.reserve( args_utf8.size() );
+		for ( auto const& arg : args_utf8 )
+			wide_args.push_back( dxc::utf8_to_dxc_wide( arg ) );
+
+		std::vector<wchar_t const*> arg_ptrs;
+		arg_ptrs.reserve( wide_args.size() );
+		for ( auto const& warg : wide_args )
+			arg_ptrs.push_back( warg.c_str() );
+
+		dxc::dxc_com_ptr<tracking_includes> includes;
+		includes.attach( new tracking_includes( m_utils.get() ) );
+
+		dxc::dxc_buffer const buffer = {
+			source.data(),
+			source.size(),
+			dxc::k_dxc_cp_utf8
+		};
+
+		dxc::dxc_com_ptr<dxc::i_dxc_result> compiled;
+		dxc::dxc_hresult hr = m_compiler->Compile(
+			&buffer,
+			arg_ptrs.data(),
+			static_cast<dxc::dxc_uint32>( arg_ptrs.size() ),
+			includes.get(),
+			dxc::k_iid_dxc_result,
+			reinterpret_cast<void**>( compiled.put() )
+		);
+		if ( dxc::dxc_failed( hr ) || !compiled )
+			throw std::runtime_error( "IDxcCompiler3::Compile failed (HRESULT=" + std::to_string( hr ) + ")" );
+
+		dxc::dxc_com_ptr<dxc::i_dxc_blob_utf8> errors;
+		compiled->GetOutput(
+			dxc::dxc_out_errors,
+			dxc::k_iid_dxc_blob_utf8,
+			reinterpret_cast<void**>( errors.put() ),
+			nullptr
+		);
+		if ( errors && errors->GetStringLength() > 0 && errors->GetStringPointer() )
+			out.error_log.assign( errors->GetStringPointer(), errors->GetStringLength() );
+
+		dxc::dxc_hresult status = dxc::k_dxc_e_fail;
+		if ( dxc::dxc_failed( compiled->GetStatus( &status ) ) || dxc::dxc_failed( status ) ) {
+			if ( out.error_log.empty() )
+				out.error_log = "DXC returned failed compilation status";
+			return out;
+		}
+
+		dxc::dxc_com_ptr<dxc::i_dxc_blob> object;
+		hr = compiled->GetOutput(
+			dxc::dxc_out_object,
+			dxc::k_iid_dxc_blob,
+			reinterpret_cast<void**>( object.put() ),
+			nullptr
+		);
+		if ( dxc::dxc_failed( hr ) || !object || object->GetBufferSize() < 20u || ( object->GetBufferSize() % sizeof( u32 ) ) != 0 )
+			throw std::runtime_error( "DXC returned invalid SPIR-V object size" );
+
+		out.bytecode.resize( object->GetBufferSize() / sizeof( u32 ) );
+		std::memcpy( out.bytecode.data(), object->GetBufferPointer(), object->GetBufferSize() );
+		if ( out.bytecode[0] != k_spirv_magic )
+			throw std::runtime_error( "DXC output is not SPIR-V" );
+
+		out.includes = std::move( includes->probes );
+		out.success = true;
+		return out;
+	}
+
+private:
+	xray::os::dynamic_library              m_library;
+	dxc::dxc_com_ptr<dxc::i_dxc_utils>     m_utils;
+	dxc::dxc_com_ptr<dxc::i_dxc_compiler3> m_compiler;
+	std::string                            m_error;
+};
+
+class dxc_process_backend final : public i_shader_compiler_backend
+{
+public:
+	dxc_process_backend()
+	{
+		std::error_code ec;
+		std::string cli_env;
+		if ( xray::os::get_environment_variable( "XRAY_DXC_CLI_PATH", cli_env ) && !cli_env.empty() ) {
+			std::filesystem::path const cli_path = path_from_utf8( cli_env );
+			if ( !cli_path.is_absolute() || !is_executable_file( cli_path ) ) {
+				m_error = "XRAY_DXC_CLI_PATH does not point to an executable DXC CLI binary: " + cli_env;
+				return;
+			}
+			m_executable = cli_path;
+			return;
+		}
+
+		std::string dxc_env;
+		if ( xray::os::get_environment_variable( "XRAY_DXC_PATH", dxc_env ) && !dxc_env.empty() ) {
+			std::filesystem::path const p = path_from_utf8( dxc_env );
+			if ( p.is_absolute() && is_cli_executable_name( p ) && is_executable_file( p ) ) {
+				m_executable = p;
+				return;
+			}
+			std::filesystem::path const parent = p.parent_path();
+			if ( !parent.empty() ) {
+				for ( auto const& candidate : {
+						parent / k_dxc_cli_filename,
+						( parent / ".." / "bin" / k_dxc_cli_filename ).lexically_normal() } ) {
+					if ( is_executable_file( candidate ) ) {
+						m_executable = candidate;
+						return;
+					}
+				}
+			}
+		}
+
+		std::filesystem::path const exe_dir = xray::os::executable_directory();
+		if ( !exe_dir.empty() ) {
+			for ( auto const& candidate : {
+					exe_dir / k_dxc_cli_filename,
+					( exe_dir / ".." / "bin" / k_dxc_cli_filename ).lexically_normal() } ) {
+				if ( is_executable_file( candidate ) ) {
+					m_executable = candidate;
+					return;
+				}
+			}
+		}
+
+		std::string path_env;
+		if ( xray::os::get_environment_variable( "PATH", path_env ) && !path_env.empty() ) {
+#if XRAY_PLATFORM_WINDOWS
+			constexpr char k_sep = ';';
+#else
+			constexpr char k_sep = ':';
+#endif
+			std::size_t start = 0;
+			while ( start <= path_env.size() ) {
+				std::size_t const end = path_env.find( k_sep, start );
+				std::string const entry = ( end == std::string::npos )
+					? path_env.substr( start )
+					: path_env.substr( start, end - start );
+				if ( !entry.empty() ) {
+					std::filesystem::path const candidate = path_from_utf8( entry ) / k_dxc_cli_filename;
+					if ( is_executable_file( candidate ) ) {
+						m_executable = candidate;
+						return;
+					}
+				}
+				if ( end == std::string::npos )
+					break;
+				start = end + 1;
+			}
+		}
+
+		m_error = std::string( "Cannot locate DXC CLI executable (" ) + k_dxc_cli_filename + ")";
+	}
+
+	char const* name() const noexcept override { return "dxc_process"; }
+	bool available() const noexcept override { return m_error.empty() && !m_executable.empty(); }
+	std::string const& init_error() const noexcept override { return m_error; }
+
+	backend_compile_output compile(
+		std::string const& source,
+		std::vector<std::string> const& args_utf8 ) override
+	{
+		backend_compile_output out;
+
+		struct temp_cleanup
+		{
+			std::filesystem::path hlsl;
+			std::filesystem::path spv;
+			~temp_cleanup() noexcept
+			{
+				std::error_code ec;
+				if ( !hlsl.empty() ) std::filesystem::remove( hlsl, ec );
+				if ( !spv.empty() ) std::filesystem::remove( spv, ec );
+			}
+		} guard;
+
+		static std::atomic<std::uint64_t> s_seq{ 0 };
+		std::uint64_t const seq = ++s_seq;
+		std::filesystem::path const tmp_dir = std::filesystem::temp_directory_path();
+		std::string const stamp = "xray_dxc_" + std::to_string( xray::os::current_process_id() )
+			+ "_" + std::to_string( seq );
+		guard.hlsl = tmp_dir / ( stamp + ".hlsl" );
+		guard.spv = tmp_dir / ( stamp + ".spv" );
+
+		{
+			std::ofstream src_out( guard.hlsl, std::ios::binary | std::ios::trunc );
+			if ( !src_out )
+				throw std::runtime_error( "Failed to create temporary HLSL file for dxc CLI" );
+			if ( !source.empty() )
+				src_out.write( source.data(), static_cast<std::streamsize>( source.size() ) );
+			src_out.flush();
+			if ( src_out.fail() )
+				throw std::runtime_error( "Failed to write temporary HLSL file for dxc CLI" );
+		}
+
+		std::vector<std::string> cli_args = args_utf8;
+		cli_args.push_back( "-Fo" );
+		cli_args.push_back( path_to_utf8( guard.spv ) );
+		cli_args.push_back( path_to_utf8( guard.hlsl ) );
+
+		xray::os::process_result const proc = xray::os::run_process( m_executable, cli_args );
+		if ( !proc.started )
+			throw std::runtime_error( "Failed to launch dxc CLI (" + path_to_utf8( m_executable ) + "): " + proc.launch_error );
+
+		if ( proc.exit_code != 0 ) {
+			out.error_log = proc.output.empty()
+				? ( "dxc CLI exited with code " + std::to_string( proc.exit_code ) )
+				: proc.output;
+			return out;
+		}
+		if ( !proc.output.empty() )
+			out.error_log = proc.output;
+
+		std::error_code ec;
+		auto const spv_size = std::filesystem::file_size( guard.spv, ec );
+		if ( ec || spv_size < 20u || ( spv_size % sizeof( u32 ) ) != 0 )
+			throw std::runtime_error( "dxc CLI returned invalid SPIR-V file size" );
+
+		std::ifstream spv_in( guard.spv, std::ios::binary );
+		if ( !spv_in )
+			throw std::runtime_error( "Failed to open SPIR-V output produced by dxc CLI" );
+
+		out.bytecode.resize( static_cast<std::size_t>( spv_size / sizeof( u32 ) ) );
+		if ( !spv_in.read( reinterpret_cast<char*>( out.bytecode.data() ), static_cast<std::streamsize>( spv_size ) )
+			|| static_cast<std::size_t>( spv_in.gcount() ) != spv_size )
+			throw std::runtime_error( "Failed to read SPIR-V output produced by dxc CLI" );
+
+		if ( out.bytecode[0] != k_spirv_magic )
+			throw std::runtime_error( "dxc CLI output is not SPIR-V" );
+
+		collect_source_includes( source, args_utf8, out.includes );
+		out.success = true;
+		return out;
+	}
+
+private:
+	static bool is_executable_file( std::filesystem::path const& path ) noexcept
+	{
+		std::error_code ec;
+		if ( !std::filesystem::is_regular_file( path, ec ) )
+			return false;
+#if XRAY_PLATFORM_WINDOWS
+		return true;
+#else
+		return ::access( path.c_str(), X_OK ) == 0;
+#endif
+	}
+
+	static void collect_source_includes(
+		std::string const& root_source,
+		std::vector<std::string> const& args_utf8,
+		std::vector<include_probe>& out_includes )
+	{
+		std::vector<std::filesystem::path> include_dirs;
+		for ( std::size_t i = 0; i + 1 < args_utf8.size(); ++i ) {
+			if ( args_utf8[i] == "-I" )
+				include_dirs.push_back( path_from_utf8( args_utf8[i + 1] ) );
+		}
+		include_dirs.push_back( std::filesystem::current_path() );
+
+		std::unordered_set<std::string> visited;
+		std::vector<std::pair<std::filesystem::path, std::string>> queue;
+		queue.emplace_back( std::filesystem::path{}, root_source );
+
+		while ( !queue.empty() ) {
+			auto [base_dir, text] = std::move( queue.back() );
+			queue.pop_back();
+
+			std::istringstream lines( text );
+			std::string line;
+			while ( std::getline( lines, line ) ) {
+				std::size_t const pos = line.find_first_not_of( " \t\r" );
+				if ( pos == std::string::npos || line[pos] != '#' )
+					continue;
+				std::size_t const inc = line.find( "include", pos + 1 );
+				if ( inc == std::string::npos )
+					continue;
+				std::size_t const q1 = line.find( '"', inc + 7 );
+				if ( q1 == std::string::npos )
+					continue;
+				std::size_t const q2 = line.find( '"', q1 + 1 );
+				if ( q2 == std::string::npos || q2 <= q1 + 1 )
+					continue;
+
+				std::string const rel = line.substr( q1 + 1, q2 - q1 - 1 );
+				std::filesystem::path const rel_path = path_from_utf8( rel );
+
+				auto try_dir = [&]( std::filesystem::path const& dir ) -> bool {
+					std::filesystem::path const candidate = dir.empty() ? rel_path : ( dir / rel_path );
+					include_probe probed = probe_include_file( path_to_utf8( candidate ) );
+					if ( !probed.loaded )
+						return false;
+					if ( visited.insert( probed.path_utf8 ).second ) {
+						std::string nested( reinterpret_cast<char const*>( probed.bytes.data() ), probed.bytes.size() );
+						queue.emplace_back( path_from_utf8( probed.path_utf8 ).parent_path(), std::move( nested ) );
+						out_includes.push_back( std::move( probed ) );
+					}
+					return true;
+				};
+
+				bool found = !base_dir.empty() && try_dir( base_dir );
+				for ( std::size_t d = 0; !found && d < include_dirs.size(); ++d )
+					found = try_dir( include_dirs[d] );
+			}
+		}
+	}
+
+	std::filesystem::path m_executable;
+	std::string           m_error;
+};
+
+void validate_reserved_flag( std::string const& flag )
+{
+	if ( flag == "-spirv" || flag.starts_with( "-fspv-target-env" ) || flag.starts_with( "-fspv-entrypoint-name" )
+		|| flag.starts_with( "-T" ) || flag.starts_with( "/T" ) || flag.starts_with( "-E" ) || flag.starts_with( "/E" )
+		|| flag.starts_with( "-Fo" ) || flag.starts_with( "/Fo" ) || flag == "-Vd" ) {
+		throw std::runtime_error( "Reserved DXC option: " + flag );
+	}
+}
+
+std::vector<std::string> build_compile_args_utf8(
+	std::string const& profile,
+	shader_compile_options const& options )
+{
+	if ( options.entry.empty() )
+		throw std::runtime_error( "Shader entry must not be empty" );
+
+	std::vector<std::string> args = {
+		"-spirv",
+		"-fspv-target-env=vulkan1.3",
+		"-HV",
+		"2021",
+		"-T",
+		profile,
+		"-E",
+		options.entry,
+		"-fspv-entrypoint-name=" + options.entry
+	};
+	for ( auto const& directory : options.include_directories ) {
+		args.push_back( "-I" );
+		args.push_back( directory );
+	}
+	for ( auto const& define : options.defines ) {
+		args.push_back( "-D" );
+		args.push_back( define );
+	}
+	for ( auto const& flag : options.flags ) {
+		validate_reserved_flag( flag );
+		args.push_back( flag );
+	}
+	return args;
+}
+
+} // namespace
+
+struct shader_compiler_impl
+{
+	std::unique_ptr<i_shader_compiler_backend> backend;
+	std::vector<cache_entry>                   cache;
+	std::mutex                                 mutex;
+	std::string                                error;
+
+	shader_compiler_impl()
+	{
+		std::string mode;
+		xray::os::get_environment_variable( "XRAY_DXC_BACKEND", mode );
+
+		if ( mode == "process" ) {
+			auto proc = std::make_unique<dxc_process_backend>();
+			if ( proc->available() )
+				backend = std::move( proc );
+			else
+				error = proc->init_error();
+			return;
+		}
+
+		auto lib = std::make_unique<dxc_library_backend>();
+		if ( lib->available() ) {
+			backend = std::move( lib );
+			return;
+		}
+
+		if ( mode == "library" ) {
+			error = lib->init_error();
+			return;
+		}
+
+		auto proc = std::make_unique<dxc_process_backend>();
+		if ( proc->available() ) {
+			backend = std::move( proc );
+			return;
+		}
+
+		error = lib->init_error() + " (CLI fallback: " + proc->init_error() + ")";
+	}
+};
+
+shader_compiler::shader_compiler()
+	: m_impl( std::make_unique<shader_compiler_impl>() )
+{
+}
+
 shader_compiler::~shader_compiler() = default;
 
-std::string shader_compiler::get_target_profile(shader_stage stage) {
-    switch (stage) {
-        case shader_stage::vertex: return "vs_6_0";
-        case shader_stage::pixel: return "ps_6_0";
-        case shader_stage::geometry: return "gs_6_0";
-        case shader_stage::hull: return "hs_6_0";
-        case shader_stage::domain: return "ds_6_0";
-        case shader_stage::compute: return "cs_6_0";
-        default: throw std::runtime_error("Unknown shader stage");
-    }
+std::string shader_compiler::get_target_profile( shader_stage stage )
+{
+	switch ( stage ) {
+		case shader_stage::vertex:   return "vs_6_0";
+		case shader_stage::pixel:    return "ps_6_0";
+		case shader_stage::geometry: return "gs_6_0";
+		case shader_stage::hull:     return "hs_6_0";
+		case shader_stage::domain:   return "ds_6_0";
+		case shader_stage::compute:  return "cs_6_0";
+		default:                     throw std::runtime_error( "Unknown shader stage" );
+	}
 }
-compilation_result shader_compiler::compile(std::string const& source, shader_stage stage, shader_compile_options const& options) {
-    std::lock_guard lock(m_impl->mutex);
-    compilation_result result;
-    if (!m_impl->error.empty()) { result.error_log = m_impl->error; return result; }
-    try {
-        if (options.entry.empty()) throw std::runtime_error("Shader entry must not be empty");
-        std::vector<std::wstring> args = {L"-spirv", L"-fspv-target-env=vulkan1.3", L"-HV", L"2021",
-            L"-T", wide(get_target_profile(stage)), L"-E", wide(options.entry), wide("-fspv-entrypoint-name=" + options.entry)};
-        for (auto const& directory : options.include_directories) { args.push_back(L"-I"); args.push_back(wide(directory)); }
-        for (auto const& define : options.defines) { args.push_back(L"-D"); args.push_back(wide(define)); }
-        for (auto const& flag : options.flags) {
-            if (flag == "-spirv" || flag.starts_with("-fspv-target-env") || flag.starts_with("-fspv-entrypoint-name")
-                || flag.starts_with("-T") || flag.starts_with("/T") || flag.starts_with("-E") || flag.starts_with("/E")
-                || flag.starts_with("-Fo") || flag.starts_with("/Fo") || flag == "-Vd")
-                throw std::runtime_error("Reserved DXC option: " + flag);
-            args.push_back(wide(flag));
-        }
-        auto cwd = std::filesystem::current_path().wstring();
-        for (auto it = m_impl->cache.begin(); it != m_impl->cache.end(); ++it) {
-            if (it->source != source || it->args != args || it->cwd != cwd) continue;
-            bool current = true;
-            for (auto const& dependency : it->includes)
-                if (!(probe(m_impl->utils.Get(), dependency.path.c_str()) == dependency)) { current = false; break; }
-            if (current) { result = it->result; result.cache_hit = true; return result; }
-            m_impl->cache.erase(it); break;
-        }
-        std::filesystem::path disk_cache_path;
-        auto const user_data = cache_util::resolve_sdk_user_data_dir();
-        if (!user_data.empty()) {
-            disk_cache_path = user_data / L"cache" / L"spirv" / ("spv_v1_" + compute_spirv_cache_key(source, cwd, args) + ".bin");
-            std::vector<include_probe> disk_includes;
-            if (try_load_spirv_disk_cache(disk_cache_path, m_impl->utils.Get(), disk_includes, result)) {
-                if (m_impl->cache.size() == 64) m_impl->cache.erase(m_impl->cache.begin());
-                m_impl->cache.push_back({source, cwd, args, std::move(disk_includes), result});
-                return result;
-            }
-        }
-        ComPtr<tracking_includes> includes;
-        includes.Attach(new tracking_includes(m_impl->utils.Get()));
-        std::vector<LPCWSTR> arguments;
-        for (auto const& arg : args) arguments.push_back(arg.c_str());
-        DxcBuffer buffer = {source.data(), source.size(), DXC_CP_UTF8};
-        ComPtr<IDxcResult> compiled;
-        HRESULT hr = m_impl->compiler->Compile(&buffer, arguments.data(), UINT32(arguments.size()),
-            includes.Get(), __uuidof(IDxcResult), reinterpret_cast<void**>(compiled.GetAddressOf()));
-        if (FAILED(hr) || !compiled) throw std::runtime_error("IDxcCompiler3::Compile failed (HRESULT=" + std::to_string(hr) + ")");
-        ComPtr<IDxcBlobUtf8> errors;
-        compiled->GetOutput(DXC_OUT_ERRORS, __uuidof(IDxcBlobUtf8), reinterpret_cast<void**>(errors.GetAddressOf()), nullptr);
-        if (errors && errors->GetStringLength()) result.error_log.assign(errors->GetStringPointer(), errors->GetStringLength());
-        HRESULT status = E_FAIL;
-        if (FAILED(compiled->GetStatus(&status)) || FAILED(status)) {
-            if (result.error_log.empty()) result.error_log = "DXC returned failed compilation status";
-            return result;
-        }
-        ComPtr<IDxcBlob> object;
-        hr = compiled->GetOutput(DXC_OUT_OBJECT, __uuidof(IDxcBlob), reinterpret_cast<void**>(object.GetAddressOf()), nullptr);
-        if (FAILED(hr) || !object || object->GetBufferSize() < 20 || object->GetBufferSize() % sizeof(u32))
-            throw std::runtime_error("DXC returned invalid SPIR-V object size");
-        result.bytecode.resize(object->GetBufferSize() / sizeof(u32));
-        std::memcpy(result.bytecode.data(), object->GetBufferPointer(), object->GetBufferSize());
-        if (result.bytecode[0] != 0x07230203u) throw std::runtime_error("DXC output is not SPIR-V");
-        result.success = true;
-        if (!disk_cache_path.empty())
-            write_spirv_disk_cache(disk_cache_path, includes->probes, result.bytecode);
-        if (m_impl->cache.size() == 64) m_impl->cache.erase(m_impl->cache.begin());
-        m_impl->cache.push_back({source, cwd, args, includes->probes, result});
-    } catch (std::exception const& error) {
-        result.error_log = error.what(); result.bytecode.clear(); result.success = result.cache_hit = false;
-    }
-    return result;
+
+namespace {
+
+compilation_result compile_internal(
+	shader_compiler_impl& impl,
+	std::string const& profile,
+	std::string const& source,
+	std::filesystem::path const& source_path,
+	shader_compile_options const& options )
+{
+	std::lock_guard lock( impl.mutex );
+	compilation_result result;
+	try {
+		std::vector<std::string> const args_utf8 = build_compile_args_utf8( profile, options );
+		std::string const cwd_utf8 = normalize_path_utf8( std::filesystem::current_path() );
+
+		// 1. In-memory LRU-like cache
+		for ( auto it = impl.cache.begin(); it != impl.cache.end(); ++it ) {
+			if ( it->source != source || it->args_utf8 != args_utf8 || it->cwd_utf8 != cwd_utf8 )
+				continue;
+			bool current = true;
+			for ( auto const& dependency : it->includes ) {
+				if ( !( probe_include_file( dependency.path_utf8 ) == dependency ) ) {
+					current = false;
+					break;
+				}
+			}
+			if ( current ) {
+				result = it->result;
+				result.cache_hit = true;
+				return result;
+			}
+			impl.cache.erase( it );
+			break;
+		}
+
+		// 2. OS-agnostic SPIR-V disk cache
+		std::string const cache_key = compute_spirv_cache_key( source, cwd_utf8, args_utf8 );
+		std::filesystem::path disk_cache_path;
+		std::filesystem::path const user_data = cache_util::resolve_sdk_user_data_dir();
+		if ( !user_data.empty() ) {
+			disk_cache_path = user_data / "cache" / "spirv" / ( "spv_v1_" + cache_key + ".bin" );
+			std::vector<include_probe> disk_includes;
+			if ( try_load_spirv_disk_cache( disk_cache_path, disk_includes, result ) ) {
+				if ( impl.cache.size() == k_max_memory_cache_entries )
+					impl.cache.erase( impl.cache.begin() );
+				impl.cache.push_back( { source, cwd_utf8, args_utf8, std::move( disk_includes ), result } );
+				return result;
+			}
+		}
+
+		// 3. Optional precompiled .spv directory
+		std::string precompiled_dir_env;
+		if ( xray::os::get_environment_variable( "XRAY_SHADER_PRECOMPILED_DIR", precompiled_dir_env ) && !precompiled_dir_env.empty() ) {
+			std::filesystem::path const spv_path = resolve_precompiled_spv_path(
+				path_from_utf8( precompiled_dir_env ),
+				cache_key,
+				source_path,
+				options
+			);
+			if ( !spv_path.empty() && try_load_precompiled_spv( spv_path, result ) ) {
+				if ( impl.cache.size() == k_max_memory_cache_entries )
+					impl.cache.erase( impl.cache.begin() );
+				impl.cache.push_back( { source, cwd_utf8, args_utf8, {}, result } );
+				return result;
+			}
+		}
+
+		if ( env_flag_enabled( "XRAY_SHADER_PRECOMPILED_ONLY" ) ) {
+			result.error_log = "Precompiled SPIR-V not found (XRAY_SHADER_PRECOMPILED_ONLY=1)";
+			return result;
+		}
+
+		// 4. Live DXC compilation via active backend
+		if ( !impl.backend || !impl.backend->available() ) {
+			result.error_log = impl.error;
+			return result;
+		}
+
+		backend_compile_output compiled = impl.backend->compile( source, args_utf8 );
+		result.error_log = std::move( compiled.error_log );
+		if ( !compiled.success )
+			return result;
+
+		result.bytecode = std::move( compiled.bytecode );
+		result.success = true;
+		result.cache_hit = false;
+
+		if ( !disk_cache_path.empty() )
+			write_spirv_disk_cache( disk_cache_path, compiled.includes, result.bytecode );
+
+		if ( impl.cache.size() == k_max_memory_cache_entries )
+			impl.cache.erase( impl.cache.begin() );
+		impl.cache.push_back( { source, cwd_utf8, args_utf8, std::move( compiled.includes ), result } );
+	} catch ( std::exception const& error ) {
+		result.error_log = error.what();
+		result.bytecode.clear();
+		result.success = false;
+		result.cache_hit = false;
+	}
+	return result;
 }
-compilation_result shader_compiler::compile_file(std::string const& path, shader_stage stage, shader_compile_options const& options) {
-    static std::filesystem::path const packaged_shaders = []() -> std::filesystem::path {
-        wchar_t executable[32768]{};
-        DWORD length = GetModuleFileNameW(nullptr, executable, 32768);
-        if (length == 0 || length >= 32768) return {};
-        std::error_code ec;
-        auto pkg_root = std::filesystem::path(executable).parent_path().parent_path();
-        auto marker = pkg_root / L"settings" / L"sdk-runtime.json";
-        auto shaders = pkg_root / L"shaders";
-        if (std::filesystem::is_regular_file(marker, ec) && std::filesystem::is_directory(shaders, ec))
-            return shaders.lexically_normal();
-        return {};
-    }();
-    std::filesystem::path effective_path = std::filesystem::u8path(path);
-    if (!packaged_shaders.empty()) {
-        std::string generic = effective_path.lexically_normal().generic_string();
-        std::error_code ec;
-        constexpr char marker[] = "/render/vulkan/assets/";
-        if (auto pos = generic.find(marker); pos != std::string::npos) {
-            std::filesystem::path candidate = packaged_shaders / std::filesystem::u8path(generic.substr(pos + sizeof(marker) - 1));
-            if (std::filesystem::is_regular_file(candidate, ec))
-                effective_path = candidate;
-        }
-    }
-    std::ifstream file(effective_path, std::ios::binary);
-    if (!file) return {{}, "Could not open shader file: " + path, false};
-    std::stringstream contents;
-    contents << file.rdbuf();
-    if (file.bad()) return {{}, "Could not read shader file: " + path, false};
-    auto resolved = options;
-    auto parent = effective_path.parent_path();
-    if (!parent.empty()) resolved.include_directories.insert(resolved.include_directories.begin(), parent.string());
-    return compile(contents.str(), stage, resolved);
+
+} // namespace
+
+compilation_result shader_compiler::compile(
+	std::string const& source,
+	shader_stage stage,
+	shader_compile_options const& options )
+{
+	std::string profile;
+	try {
+		profile = get_target_profile( stage );
+	} catch ( std::exception const& error ) {
+		return { {}, error.what(), false, false };
+	}
+	return compile_internal( *m_impl, profile, source, {}, options );
 }
-} } }
+
+compilation_result shader_compiler::compile_file(
+	std::string const& path,
+	shader_stage stage,
+	shader_compile_options const& options )
+{
+	std::string profile;
+	try {
+		profile = get_target_profile( stage );
+	} catch ( std::exception const& error ) {
+		return { {}, error.what(), false, false };
+	}
+
+	static std::filesystem::path const packaged_shaders = []() -> std::filesystem::path {
+		std::filesystem::path const exe_path = xray::os::executable_path();
+		if ( exe_path.empty() )
+			return {};
+		std::error_code ec;
+		auto const pkg_root = exe_path.parent_path().parent_path();
+		auto const marker = pkg_root / "settings" / "sdk-runtime.json";
+		auto const shaders = pkg_root / "shaders";
+		if ( std::filesystem::is_regular_file( marker, ec ) && std::filesystem::is_directory( shaders, ec ) )
+			return shaders.lexically_normal();
+		return {};
+	}();
+
+	std::filesystem::path effective_path = path_from_utf8( path );
+	if ( !packaged_shaders.empty() ) {
+		std::string const generic = effective_path.lexically_normal().generic_string();
+		std::error_code ec;
+		constexpr char marker[] = "/render/vulkan/assets/";
+		if ( std::size_t const pos = generic.find( marker ); pos != std::string::npos ) {
+			std::filesystem::path const candidate = packaged_shaders / path_from_utf8( generic.substr( pos + sizeof( marker ) - 1 ) );
+			if ( std::filesystem::is_regular_file( candidate, ec ) )
+				effective_path = candidate;
+		}
+	}
+
+	std::ifstream file( effective_path, std::ios::binary );
+	if ( !file )
+		return { {}, "Could not open shader file: " + path, false, false };
+	std::stringstream contents;
+	contents << file.rdbuf();
+	if ( file.bad() )
+		return { {}, "Could not read shader file: " + path, false, false };
+
+	auto resolved = options;
+	auto const parent = effective_path.parent_path();
+	if ( !parent.empty() )
+		resolved.include_directories.insert( resolved.include_directories.begin(), path_to_utf8( parent ) );
+
+	return compile_internal( *m_impl, profile, contents.str(), effective_path, resolved );
+}
+
+} // namespace rhi
+} // namespace render
+} // namespace xray

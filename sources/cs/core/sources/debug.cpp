@@ -10,7 +10,26 @@
 #include <cs/core/debug.h>
 #include <stdio.h>
 #include <stdarg.h>
+#include <cstring>
 #include <cs/core/os_include.h> // FormatMessage and the others
+
+namespace {
+#if !defined(_WIN32)
+inline pcstr cs_pick_strerror( char* const gnu_res, char* const buf, int const err )
+{
+	CS_UNREFERENCED_PARAMETER( buf );
+	CS_UNREFERENCED_PARAMETER( err );
+	return gnu_res;
+}
+inline pcstr cs_pick_strerror( int const xsi_rc, char* const buf, int const err )
+{
+	if ( xsi_rc == 0 )
+		return buf;
+	std::snprintf( buf, 64, "errno %d", err );
+	return buf;
+}
+#endif
+} // namespace
 
 namespace debug {
 	void	on_error	(pcstr message);
@@ -18,11 +37,17 @@ namespace debug {
 
 std::string api_error_code		(int const error_code)
 {
+#if defined(_WIN32)
 	pstr				message_buffer = 0;
 	FormatMessage		(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,0,error_code,0,(LPSTR)&message_buffer,0,0);
-	std::string			result = message_buffer;
+	std::string			result = message_buffer ? message_buffer : "";
 	LocalFree			(message_buffer);
 	return				result;
+#else
+	char				buf[512] = {};
+	pcstr const			resolved = cs_pick_strerror( ::strerror_r( error_code, buf, sizeof( buf ) ), buf, error_code );
+	return				std::string( resolved ? resolved : "Unknown error" );
+#endif
 }
 
 static void printf_all			(string4096& buffer, pcstr format, ...)

@@ -23,7 +23,11 @@
 #	define DLL_PROCESS_ATTACH		1
 
 #undef APIENTRY
-#define APIENTRY __stdcall
+#if XRAY_PLATFORM_WINDOWS
+#	define APIENTRY __stdcall
+#else
+#	define APIENTRY
+#endif
 
 #	define HMODULE					pvoid
 

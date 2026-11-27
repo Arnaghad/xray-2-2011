@@ -7,12 +7,14 @@
 #include <xray/resources_cook_classes.h>
 #include <xray/compressor_ppmd.h>
 
-#include <xray/os_preinclude.h>
-#if !defined(_WIN32_WINNT) || (_WIN32_WINNT < 0x0601)
-#	undef _WIN32_WINNT
-#	define _WIN32_WINNT 0x0601
+#if XRAY_PLATFORM_WINDOWS
+#	include <xray/os_preinclude.h>
+#	if !defined(_WIN32_WINNT) || (_WIN32_WINNT < 0x0601)
+#		undef _WIN32_WINNT
+#		define _WIN32_WINNT 0x0601
+#	endif
+#	include <xray/os_include.h>
 #endif
-#include <xray/os_include.h>
 
 #include "game_resman_test_resource.h"
 

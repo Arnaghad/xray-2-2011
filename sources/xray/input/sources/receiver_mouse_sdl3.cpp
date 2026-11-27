@@ -12,7 +12,7 @@ using xray::input::receiver::mouse;
 using xray::input::handler;
 using xray::input::world;
 
-mouse::mouse			( HWND const window_handle, world& input_world )
+mouse::mouse			( xray::platform::native_surface_handle const window_handle, world& input_world )
 :	m_window_handle		( window_handle ),
 	m_world				( input_world ),
 	m_pending_x			( 0 ),

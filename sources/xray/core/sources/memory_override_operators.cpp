@@ -15,7 +15,7 @@
 
 #if defined(XRAY_STATIC_LIBRARIES) && !defined(XRAY_DISABLE_CRT_OVERRIDES)
 
-pvoid __cdecl operator new		( size_t buffer_size )
+pvoid XRAY_CDECL operator new		( size_t buffer_size )
 {
 	if ( ::xray::memory::g_crt_allocator ) {
 #ifdef DEBUG
@@ -29,7 +29,7 @@ pvoid __cdecl operator new		( size_t buffer_size )
 	UNREACHABLE_CODE			( return 0 );
 }
 
-pvoid __cdecl operator new[]		( size_t buffer_size )
+pvoid XRAY_CDECL operator new[]		( size_t buffer_size )
 {
 	if ( ::xray::memory::g_crt_allocator ) {
 #ifdef DEBUG
@@ -43,7 +43,7 @@ pvoid __cdecl operator new[]		( size_t buffer_size )
 	UNREACHABLE_CODE			( return 0 );
 }
 
-void __cdecl operator delete		( pvoid pointer ) noexcept
+void XRAY_CDECL operator delete		( pvoid pointer ) noexcept
 {
 	if ( !pointer )
 		return;
@@ -61,7 +61,7 @@ void __cdecl operator delete		( pvoid pointer ) noexcept
 	UNREACHABLE_CODE			( );
 }
 
-void __cdecl operator delete[]	( pvoid pointer ) noexcept
+void XRAY_CDECL operator delete[]	( pvoid pointer ) noexcept
 {
 	if ( !pointer )
 		return;
@@ -80,13 +80,13 @@ void __cdecl operator delete[]	( pvoid pointer ) noexcept
 }
 
 #if __cpp_sized_deallocation >= 201309L
-void __cdecl operator delete( pvoid pointer, size_t size ) noexcept
+void XRAY_CDECL operator delete( pvoid pointer, size_t size ) noexcept
 {
 	XRAY_UNREFERENCED_PARAMETER(size);
 	::operator delete(pointer);
 }
 
-void __cdecl operator delete[]( pvoid pointer, size_t size ) noexcept
+void XRAY_CDECL operator delete[]( pvoid pointer, size_t size ) noexcept
 {
 	XRAY_UNREFERENCED_PARAMETER(size);
 	::operator delete[](pointer);
@@ -114,7 +114,7 @@ static inline void check_if_CRT_allocations_enabled() {
 
 extern "C" {
 
-pvoid malloc					( size_t size )
+pvoid malloc					( size_t size ) XRAY_CRT_NOEXCEPT
 {
 	check_if_CRT_allocations_enabled( );
 	R_ASSERT					( g_crt_allocator, "CRT allocation detected. do not use CRT allocations or setup crt allocator (the last doesn't work in MASTER_GOLD configuration)" );
@@ -125,14 +125,14 @@ pvoid malloc					( size_t size )
 #endif
 }
 
-pvoid calloc					( size_t count, size_t element_size )
+pvoid calloc					( size_t count, size_t element_size ) XRAY_CRT_NOEXCEPT
 {
 	pvoid const result			= malloc( count*element_size );
 	memset						( result, 0, count*element_size );
 	return						result;
 }
 
-pvoid realloc					( pvoid pointer, size_t size )
+pvoid realloc					( pvoid pointer, size_t size ) XRAY_CRT_NOEXCEPT
 {
 	check_if_CRT_allocations_enabled( );
 	R_ASSERT					( g_crt_allocator, "CRT allocation detected. do not use CRT allocations or setup crt allocator (the last doesn't work in MASTER_GOLD configuration)" );
@@ -143,7 +143,7 @@ pvoid realloc					( pvoid pointer, size_t size )
 #endif // #ifdef DEBUG
 }
 
-void free						( pvoid pointer )
+void free						( pvoid pointer ) XRAY_CRT_NOEXCEPT
 {
 	check_if_CRT_allocations_enabled( );
 	R_ASSERT					( g_crt_allocator, "CRT allocation detected. do not use CRT allocations or setup crt allocator (the last doesn't work in MASTER_GOLD configuration)" );

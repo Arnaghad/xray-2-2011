@@ -8,11 +8,18 @@
 
 using xray::editor::hosting::abi_version;
 using xray::editor::hosting::callbacks;
+using xray::editor::hosting::surface_descriptor;
+using xray::editor::hosting::window_control_request;
 using xray::editor::hosting::world_bridge;
 
-static_assert(abi_version == 2, "EditorHost C ABI version mismatch");
+static_assert(abi_version == 3, "EditorHost C ABI version mismatch");
+static_assert(sizeof(surface_descriptor) == 24, "surface_descriptor struct size mismatch");
+static_assert(offsetof(surface_descriptor, handle) == 8);
+static_assert(offsetof(surface_descriptor, display) == 16);
+static_assert(sizeof(window_control_request) == 56, "window_control_request struct size mismatch");
+static_assert(offsetof(window_control_request, surface) == 32);
 static_assert(sizeof(callbacks) == 80, "callbacks struct size mismatch");
-static_assert(sizeof(world_bridge) == 112, "world_bridge struct size mismatch");
+static_assert(sizeof(world_bridge) == 120, "world_bridge struct size mismatch");
 static_assert(offsetof(callbacks, version) == 0);
 static_assert(offsetof(callbacks, size) == 4);
 static_assert(offsetof(callbacks, context) == 8);
@@ -22,8 +29,12 @@ static_assert(offsetof(callbacks, render) == 32);
 static_assert(offsetof(callbacks, preview) == 72);
 static_assert(offsetof(world_bridge, context) == 8);
 static_assert(offsetof(world_bridge, load) == 16);
+static_assert(offsetof(world_bridge, main_surface) == 48);
+static_assert(offsetof(world_bridge, view_surface) == 56);
 static_assert(offsetof(world_bridge, render) == 72);
+static_assert(offsetof(world_bridge, preview_surface) == 96);
 static_assert(offsetof(world_bridge, preview_closed) == 104);
+static_assert(offsetof(world_bridge, window_control) == 112);
 
 using xray::editor::hosting::sdk_position;
 using xray::editor::hosting::sdk_callbacks;

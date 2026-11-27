@@ -7,7 +7,7 @@
 #ifndef XRAY_FS_SIMPLE_SYNC_INTERFACE_H_INCLUDED
 #define XRAY_FS_SIMPLE_SYNC_INTERFACE_H_INCLUDED
 
-#include <xray/fs/windows_hdd_file_system.h>
+#include <xray/fs/native_hdd_file_system.h>
 #include <xray/fs/asynchronous_device_interface.h>
 
 namespace xray {
@@ -22,8 +22,8 @@ public:
 
 	// order of member is important due to construction
 private:
-	windows_hdd_file_system					hdd_device;
-	windows_hdd_file_system					dvd_device;
+	native_hdd_file_system					hdd_device;
+	native_hdd_file_system					dvd_device;
 public:
 	synchronous_device_interface			hdd_sync;
 	synchronous_device_interface			dvd_sync;

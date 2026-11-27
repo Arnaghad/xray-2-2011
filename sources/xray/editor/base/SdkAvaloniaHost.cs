@@ -11,6 +11,7 @@ using Avalonia.Media;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 using xray.editor.avalonia_controls;
+using xray.editor.avalonia_controls.Controls;
 using xray.editor.avalonia_controls.Ide.Controls;
 using xray.editor.avalonia_controls.Themes;
 
@@ -25,33 +26,7 @@ internal sealed class AvaloniaUiDispatcher : IUiDispatcher
 
 internal static class SdkAvaloniaBootstrap
 {
-    private const uint PmRemove = 0x0001;
-    private const uint WmQuit = 0x0012;
-
     private static bool s_initialized;
-
-    [StructLayout(LayoutKind.Sequential)]
-    private struct NativeMsg
-    {
-        public nint hwnd;
-        public uint message;
-        public nuint wParam;
-        public nint lParam;
-        public uint time;
-        public int ptX;
-        public int ptY;
-    }
-
-    [DllImport("user32.dll")]
-    [return: MarshalAs(UnmanagedType.Bool)]
-    private static extern bool PeekMessageW(out NativeMsg lpMsg, nint hWnd, uint wMsgFilterMin, uint wMsgFilterMax, uint wRemoveMsg);
-
-    [DllImport("user32.dll")]
-    [return: MarshalAs(UnmanagedType.Bool)]
-    private static extern bool TranslateMessage(ref NativeMsg lpMsg);
-
-    [DllImport("user32.dll")]
-    private static extern nint DispatchMessageW(ref NativeMsg lpMsg);
 
     internal static void EnsureInitialized()
     {
@@ -60,9 +35,29 @@ internal static class SdkAvaloniaBootstrap
 
         if (Avalonia.Application.Current == null)
         {
-            AppBuilder.Configure<SdkAvaloniaApp>()
-                .UsePlatformDetect()
-                .SetupWithoutStarting();
+            var builder = AppBuilder.Configure<SdkAvaloniaApp>().UsePlatformDetect();
+            if (OperatingSystem.IsLinux())
+            {
+                string? surfaceOverride = Environment.GetEnvironmentVariable("XRAY_EDITOR_SURFACE_BACKEND");
+                bool allowWayland = !string.Equals(surfaceOverride, "x11", StringComparison.OrdinalIgnoreCase)
+                    && !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("WAYLAND_DISPLAY"));
+                if (allowWayland)
+                {
+                    builder = builder
+                        .With(new WaylandPlatformOptions { AppId = "xray-sdk-editor" })
+                        .UseWaylandWithFallback();
+                }
+            }
+            builder.SetupWithoutStarting();
+
+            if (OperatingSystem.IsLinux())
+            {
+                var probe = new Window();
+                string? winImpl = probe.PlatformImpl?.GetType().FullName;
+                probe.Close();
+                AvaloniaViewportHost.PreferOffscreenBackend =
+                    winImpl != null && winImpl.Contains("Wayland", StringComparison.OrdinalIgnoreCase);
+            }
         }
 
         SdkUiHost.RegisterServices(dispatcher: new AvaloniaUiDispatcher());
@@ -285,6 +280,10 @@ internal static class SdkAvaloniaBootstrap
         EnsureInitialized();
         Window? tempWindow = null;
         IStorageProvider? storage = anchor != null ? TopLevel.GetTopLevel(anchor)?.StorageProvider : null;
+        if (storage == null && Application.Current?.ApplicationLifetime is Avalonia.Controls.ApplicationLifetimes.IClassicDesktopStyleApplicationLifetime desktop)
+        {
+            storage = desktop.Windows.FirstOrDefault(w => w.IsVisible)?.StorageProvider;
+        }
         if (storage == null)
         {
             tempWindow = new Window
@@ -317,6 +316,7 @@ internal static class SdkAvaloniaBootstrap
         EnsureInitialized();
 
         Window? ownerWindow = owner as Window ?? (owner as WindowIde)?.Window;
+        bool hasVisibleOwner = ownerWindow != null && ownerWindow.IsVisible;
         bool reenableOwner = ownerWindow != null && ownerWindow.IsEnabled;
         if (reenableOwner)
             ownerWindow!.IsEnabled = false;
@@ -337,7 +337,15 @@ internal static class SdkAvaloniaBootstrap
         dialog.Closed += closedHandler;
         try
         {
-            dialog.Show();
+            if (hasVisibleOwner)
+            {
+                dialog.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+                dialog.Show(ownerWindow!);
+            }
+            else
+            {
+                dialog.Show();
+            }
             dialog.Activate();
             Dispatcher.UIThread.PushFrame(frame);
         }
@@ -353,18 +361,5 @@ internal static class SdkAvaloniaBootstrap
         }
     }
 
-    private static void PumpAvaloniaOnly()
-    {
-        if (OperatingSystem.IsWindows())
-        {
-            for (int i = 0; i < 64 && PeekMessageW(out var msg, 0, 0, 0, PmRemove); i++)
-            {
-                if (msg.message == WmQuit)
-                    break;
-                TranslateMessage(ref msg);
-                DispatchMessageW(ref msg);
-            }
-        }
-        Dispatcher.UIThread.RunJobs();
-    }
+    private static void PumpAvaloniaOnly() => PlatformEventPump.Current.Pump();
 }

@@ -50,7 +50,9 @@ triangle_mesh_base::triangle_mesh_base	( base_allocator* allocator )	:
 #endif
 	m_bounding_aabb			( math::create_zero_aabb() )
 {
+#if !(defined(XRAY_COLLISION_USE_BULLET_BVH) && XRAY_COLLISION_USE_BULLET_BVH)
 	::g_allocator			= allocator;
+#endif
 }
 
 void triangle_mesh_base::add_triangles		( triangles_type& triangles ) const
@@ -90,10 +92,10 @@ void triangle_mesh_base::initialize		( float3 const* const vertices, u32 const v
 
 triangle_mesh_base::~triangle_mesh_base		( )
 {
-	::g_allocator			= m_allocator;
 #if defined(XRAY_COLLISION_USE_BULLET_BVH) && XRAY_COLLISION_USE_BULLET_BVH
 	m_bullet_bvh.reset		( );
 #else
+	::g_allocator			= m_allocator;
 	XRAY_DELETE_IMPL		( m_allocator, m_model );
 	XRAY_DELETE_IMPL		( m_allocator, m_mesh );
 #endif

@@ -4,7 +4,6 @@ using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Numerics;
-using System.Runtime.InteropServices;
 using System.Text;
 
 namespace xray.editor_base;
@@ -373,20 +372,24 @@ public sealed class SdkWavAudioData
     }
 }
 
+public interface ISdkAudioBackendProbe
+{
+    int GetHardwareDeviceCount();
+    string BackendName { get; }
+}
+
 public static class SdkSoundAudioBackend
 {
-    [DllImport("winmm.dll")]
-    private static extern uint waveOutGetNumDevs();
-
+    public static ISdkAudioBackendProbe? HardwareBackendProbe { get; set; }
     public static Func<ISdkWaveOutputPlayer>? HardwarePlayerFactory { get; set; }
 
     public static int HardwareDeviceCount
     {
         get
         {
-            if (!OperatingSystem.IsWindows())
+            if (HardwareBackendProbe == null)
                 return 0;
-            try { return (int)waveOutGetNumDevs(); }
+            try { return Math.Max(0, HardwareBackendProbe.GetHardwareDeviceCount()); }
             catch { return 0; }
         }
     }
@@ -395,7 +398,9 @@ public static class SdkSoundAudioBackend
     public static bool EnableHardwareAudioOutput { get; set; } = true;
 
     public static string ActiveBackendName =>
-        HardwareOutputAvailable && EnableHardwareAudioOutput ? "WinMM/SoundPlayer+PCM" : "SoftwarePCM-Headless";
+        HardwareOutputAvailable && EnableHardwareAudioOutput
+            ? (HardwareBackendProbe?.BackendName ?? "HardwareAudio+PCM")
+            : "SoftwarePCM-Headless";
 }
 
 public sealed record SdkSoundTrackEvent(

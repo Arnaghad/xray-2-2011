@@ -44,7 +44,7 @@ public:
 	~vulkan_backend();
     std::shared_ptr<presentation_output> output() const { return m_output; }
     // All output operations run on the renderer owner, between recorded frames.
-    std::shared_ptr<presentation_output> create_output(HWND);
+    std::shared_ptr<presentation_output> create_output(platform::native_surface_handle);
     void adopt_output(std::shared_ptr<presentation_output> const&);
     std::vector<std::shared_ptr<presentation_output>> outputs() const;
     void select_output(std::shared_ptr<presentation_output> const&);
@@ -68,7 +68,7 @@ public:
     heap_budget_snapshot memory_heaps() const;
 
 	// --- rhi::rhi_backend interface ---
-	virtual bool			initialize	(HWND hwnd = nullptr) override;
+	virtual bool			initialize	(platform::native_surface_handle surface = {}) override;
 	virtual void            shutdown() noexcept override;
 
 	virtual rhi::rhi_buffer_handle	create_buffer(rhi::buffer_type type, size_t size, const void* data) override;
@@ -259,11 +259,11 @@ private:
     std::vector<owned_output> m_outputs;
     output_frames m_idle_frames;
     output_frames* m_frames=&m_idle_frames;
-    DWORD m_owner_thread=0;
+    u32 m_owner_thread=0;
     void require_output_owner() const;
     void destroy_output_objects() noexcept;
     void create_command_objects();
-    std::shared_ptr<presentation_output> create_output_for(HWND,std::shared_ptr<presentation_output>);
+    std::shared_ptr<presentation_output> create_output_for(platform::native_surface_handle,std::shared_ptr<presentation_output>);
     VkDescriptorSetLayout m_descriptor_layouts[4] = {};
     VkDescriptorPool m_bindless_pool = VK_NULL_HANDLE;
     VkDescriptorSet m_bindless_set = VK_NULL_HANDLE;

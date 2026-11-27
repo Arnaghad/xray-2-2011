@@ -19,6 +19,7 @@
 
 #include <xray/extensions.h>
 
+#if XRAY_PLATFORM_WINDOWS
 #include <xray/os_preinclude.h>
 #undef	NOGDICAPMASKS     			// CC_*, LC_*, PC_*, CP_*, TC_*, RC_
 #undef	NOVIRTUALKEYCODES 			// VK_*
@@ -60,6 +61,7 @@
 //#undef	NODEFERWINDOWPOS  			// DeferWindowPos routines
 //#undef	NOMCX             			// Modem Configuration Extensions
 #include <xray/os_include.h>
+#endif // #if XRAY_PLATFORM_WINDOWS
 
 #include <cstdio>
 #include <cstdlib>

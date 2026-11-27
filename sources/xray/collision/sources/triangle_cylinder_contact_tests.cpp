@@ -582,6 +582,9 @@ if(code==0){
 							   cv[0].depth = outDepth;
 							   ret=1;
   }
+#ifdef M_SQRT1_2
+#	undef M_SQRT1_2
+#endif
 const float M_SQRT1_2 = 1.f/sqrt(2.f);
 const float M_SIN_PI_3 = sqrt(3.f)/2.f;
 const float M_COS_PI_3 = 1.f/2.f;

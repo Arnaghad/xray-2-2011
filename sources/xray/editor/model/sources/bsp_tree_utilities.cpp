@@ -6,7 +6,7 @@
 
 #include "pch.h"
 #include "bsp_tree_utilities.h"
-#include "xray\math_randoms_generator.h"
+#include "xray/math_randoms_generator.h"
 namespace xray {
 namespace model_editor {
 #pragma message( XRAY_TODO( "The following code duplicates code from graph_generator::remove_duplicates" ) )

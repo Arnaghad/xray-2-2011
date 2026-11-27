@@ -6,13 +6,13 @@
 
 #include "pch.h"
 #include "sectors_generator.h"
-#include <xray\ai_navigation\sources\graph_generator_adjacency_builder.h>
+#include <xray/ai_navigation/sources/graph_generator_adjacency_builder.h>
 #include <xray/collision/geometry.h>
 #pragma managed(push, off)
 #include <xray/render/facade/debug_renderer.h>
 #pragma managed(pop)
 #include <xray/math_randoms_generator.h>
-#include <xray\ai_navigation\api.h>
+#include <xray/ai_navigation/api.h>
 #include "unmanaged_delegate.h"
 
 namespace xray {

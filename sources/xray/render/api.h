@@ -7,12 +7,14 @@
 #ifndef XRAY_RENDER_API_H_INCLUDED
 #define XRAY_RENDER_API_H_INCLUDED
 
+#include <xray/macro_compiler.h>
+
 #ifndef XRAY_RENDER_API
 #   if defined(XRAY_RENDER_SHARED)
 #       if defined(XRAY_RENDER_BUILDING)
-#           define XRAY_RENDER_API __declspec(dllexport)
+#           define XRAY_RENDER_API XRAY_DLL_EXPORT
 #       else
-#           define XRAY_RENDER_API __declspec(dllimport)
+#           define XRAY_RENDER_API XRAY_DLL_IMPORT
 #       endif
 #	elif defined(XRAY_STATIC_LIBRARIES)
 #		define XRAY_RENDER_API

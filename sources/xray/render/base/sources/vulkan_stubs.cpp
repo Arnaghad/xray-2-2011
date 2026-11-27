@@ -10,7 +10,9 @@
 //XRAY_INCLUDE_TO_LINKAGE(core_math_convex)		// guarded by #ifndef XRAY_STATIC_LIBRARIES
 XRAY_INCLUDE_TO_LINKAGE(core_math_sphere)
 XRAY_INCLUDE_TO_LINKAGE(core_geometry_utils)
+#if XRAY_PLATFORM_WINDOWS
 XRAY_INCLUDE_TO_LINKAGE(core_os_functions_win)
+#endif
 XRAY_INCLUDE_TO_LINKAGE(core_memory_writer)
 XRAY_INCLUDE_TO_LINKAGE(core_text_tree)
 XRAY_INCLUDE_TO_LINKAGE(core_profiler)
@@ -115,10 +117,10 @@ void world::load_console_commands_config_query(pcstr, bool) { XRAY_REJECT_VULKAN
 namespace xray {
 namespace render {
 namespace dx9 {
-render::platform* create_render_platform(xray::render::engine::wrapper&, HWND) { XRAY_REJECT_VULKAN_LEGACY(dx9_create_render_platform); }
+render::platform* create_render_platform(xray::render::engine::wrapper&, xray::platform::native_surface_handle) { XRAY_REJECT_VULKAN_LEGACY(dx9_create_render_platform); }
 } // namespace dx9
 namespace dx10 {
-render::platform* create_render_platform(xray::render::engine::wrapper&, HWND) {
+render::platform* create_render_platform(xray::render::engine::wrapper&, xray::platform::native_surface_handle) {
     XRAY_REJECT_VULKAN_LEGACY(dx10_create_render_platform);
 }
 } // namespace dx10

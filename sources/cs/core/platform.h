@@ -11,8 +11,12 @@
 
 #include <cs/core/os_functions.h>
 
+#if defined(_MSC_VER)
 #	include <intrin.h>
 #	pragma intrinsic(__rdtsc)
+#elif defined(__x86_64__) || defined(__i386__)
+#	include <x86intrin.h>
+#endif
 
 namespace cs {
 namespace core {
@@ -29,7 +33,11 @@ public:
 						platform		();
 	inline u64			get_clocks		()
 	{
+#if defined(_MSC_VER) || defined(__x86_64__) || defined(__i386__)
 		return			__rdtsc();
+#else
+		return			get_QPC();
+#endif
 	}
 	
 	u64					get_QPC			();

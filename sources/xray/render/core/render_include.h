@@ -7,13 +7,16 @@
 #ifndef XRAY_RENDER_CORE_RENDER_INCLUDE_H_INCLUDED
 #define XRAY_RENDER_CORE_RENDER_INCLUDE_H_INCLUDED
 
-#include <xray/os_preinclude.h>
-#undef NOUSER
-#undef NOMSG
-#include <xray/os_include.h>
-
+#include <xray/os_platform.h>
+#if XRAY_PLATFORM_WINDOWS
+#	include <xray/os_preinclude.h>
+#	undef NOUSER
+#	undef NOMSG
+#	include <xray/os_include.h>
 #	define VK_USE_PLATFORM_WIN32_KHR
-#	include <vulkan/vulkan.h>
+#endif
+
+#include <vulkan/vulkan.h>
 
 namespace xray {
 namespace render {

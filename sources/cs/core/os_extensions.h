@@ -20,7 +20,11 @@
 #define DLL_PROCESS_DETACH			0
 #define DLL_PROCESS_ATTACH			1
 
-#define APIENTRY					__stdcall
+#if CS_PLATFORM_WINDOWS
+#	define APIENTRY					__stdcall
+#else
+#	define APIENTRY
+#endif
 
 #define HMODULE						pvoid
 

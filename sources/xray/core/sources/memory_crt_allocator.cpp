@@ -7,7 +7,9 @@
 #include "pch.h"
 #include <xray/memory_crt_allocator.h>
 #include "memory_monitor.h"
-#include <new.h>
+#if XRAY_PLATFORM_WINDOWS
+#	include <new.h>
+#endif
 
 #include <mimalloc.h>
 

@@ -23,21 +23,35 @@ bool   make_dir_r (pcstr portable_path, bool create_last)
 {
 	verify_path_is_portable			(portable_path);
 	pcstr colon_pos				=	strchr(portable_path, ':');
-	
-	bool const absolute_path	=	!!colon_pos;
-	pcstr	disk_letter_end		=	absolute_path ? colon_pos + 1 : portable_path;
+
+	bool const has_drive		=	!!colon_pos;
+	bool const has_root_slash	=	!has_drive && portable_path[0] == '/';
 
 	path_string		cur_path;
-	cur_path.append					(portable_path, disk_letter_end);
-	if ( absolute_path )
+	u32 drive_part_length		=	0;
+	if ( has_drive )
+	{
+		pcstr disk_letter_end	=	colon_pos + 1;
+		cur_path.append				(portable_path, disk_letter_end);
 		cur_path				+=	'/';
-	u32 const drive_part_length	=	absolute_path ? (u32(disk_letter_end - portable_path) + 1) : 0; // with '/'
+		drive_part_length		=	u32(disk_letter_end - portable_path) + 1;
+	}
+	else if ( has_root_slash )
+	{
+		cur_path				=	"/";
+		drive_part_length		=	1;
+	}
+
+	u32 const path_len			=	strings::length(portable_path);
+	if ( drive_part_length >= path_len )
+		return						true;
 
 	path_iterator	it				(portable_path + drive_part_length, // skip '/' if absolute path
-									 int(strings::length(portable_path) - drive_part_length));
+									 int(path_len - drive_part_length));
 
 	path_iterator	end_it		=	path_iterator::end();
-	ASSERT							( it != end_it );
+	if ( it == end_it )
+		return						true;
 
 	bool			result		=	true;
 
@@ -92,15 +106,23 @@ void   flush_file (file_type * file)
 
 bool   seek_file (file_type * file, file_size_type offset, int origin)
 {
+#if XRAY_PLATFORM_WINDOWS
 	// dunno why _fseeki64 tells non-0 success result sometimes
 	// while fseek works correctly!
 	_fseeki64					(file_type_to_FILE(file), offset, origin);
+#else
+	::fseeko					(file_type_to_FILE(file), static_cast<off_t>(offset), origin);
+#endif
 	return						true;
 }
 
 file_size_type   tell_file (file_type * file)
 {
+#if XRAY_PLATFORM_WINDOWS
 	return						_ftelli64(file_type_to_FILE(file));
+#else
+	return						static_cast<file_size_type>(::ftello(file_type_to_FILE(file)));
+#endif
 }
 
 

@@ -11,9 +11,9 @@
 #include "triangles_mesh_utilities.h"
 #pragma managed(push, off)
 #include <xray/render/facade/debug_renderer.h>
-#include <xray\collision\geometry.h>
-#include <xray\ai_navigation\sources\graph_generator_adjacency_builder.h>
-#include <xray\ai_navigation\sources\constrained_delaunay_triangulator.h>
+#include <xray/collision/geometry.h>
+#include <xray/ai_navigation/sources/graph_generator_adjacency_builder.h>
+#include <xray/ai_navigation/sources/constrained_delaunay_triangulator.h>
 #pragma managed(pop)
 namespace xray {
 namespace model_editor {

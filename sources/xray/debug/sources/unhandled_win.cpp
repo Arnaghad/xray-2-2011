@@ -8,6 +8,7 @@
 #include <windows.h>
 #include <stdio.h>
 #include <dbghelp.h>
+#include <iostream>
 #include <xray/debug/extensions.h>
 #include <xray/debug/call_stack.h>
 #include <xray/os_raii_win.h>
@@ -91,15 +92,67 @@ void xray::debug::platform::format_message	( )
     LocalFree					( message );
 }
 
-void xray::debug::platform::save_minidump		( SYSTEMTIME const& date_time, _EXCEPTION_POINTERS* exception_information )
+void xray::debug::platform::save_minidump		( date_time const& time_stamp, _EXCEPTION_POINTERS* exception_information )
 {
 	string_path					temp;
-	debug_engine()->generate_debug_file_name	( temp, & date_time, "error_report", ".dmp");
+	debug_engine()->generate_debug_file_name	( temp, &time_stamp, "error_report", ".dmp");
 
 	string_path					minidump_file_name;
 	strcpy_s					( minidump_file_name, temp );
 	save_minidump				( minidump_file_name, exception_information );
 	bugtrap::add_file			( minidump_file_name );
+}
+
+bool xray::debug::write_crash_report			( pcstr const output_file_name, void* const platform_context )
+{
+	return write_local_minidump( output_file_name, static_cast<_EXCEPTION_POINTERS*>( platform_context ) );
+}
+
+namespace {
+
+char s_win_fault_tracer_label[128] = "fault";
+
+LONG CALLBACK win_fault_tracer_handler( EXCEPTION_POINTERS* const exception )
+{
+	if ( !exception || !exception->ExceptionRecord || exception->ExceptionRecord->ExceptionCode != EXCEPTION_ACCESS_VIOLATION )
+		return EXCEPTION_CONTINUE_SEARCH;
+
+	std::cerr << s_win_fault_tracer_label << ": address=" << exception->ExceptionRecord->ExceptionAddress << '\n';
+	void* frames[32]{};
+	auto const count = CaptureStackBackTrace( 0, 32, frames, nullptr );
+	for ( unsigned i = 0; i < count; ++i ) {
+		HMODULE module = nullptr;
+		char path[MAX_PATH]{};
+		GetModuleHandleExA(
+			GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
+			static_cast<char const*>( frames[i] ),
+			&module
+		);
+		if ( module )
+			GetModuleFileNameA( module, path, MAX_PATH );
+		std::cerr << "fault frame: " << frames[i] << " module=" << path
+			<< " offset=" << reinterpret_cast<void*>( reinterpret_cast<uintptr_t>( frames[i] ) - reinterpret_cast<uintptr_t>( module ) ) << '\n';
+	}
+	return EXCEPTION_CONTINUE_SEARCH;
+}
+
+} // namespace
+
+xray::debug::scoped_fault_tracer::scoped_fault_tracer( pcstr const label, bool const enabled )
+{
+	if ( !enabled )
+		return;
+	if ( label && *label )
+		std::snprintf( s_win_fault_tracer_label, sizeof( s_win_fault_tracer_label ), "%s", label );
+	m_handle = AddVectoredExceptionHandler( 1, &win_fault_tracer_handler );
+}
+
+xray::debug::scoped_fault_tracer::~scoped_fault_tracer()
+{
+	if ( m_handle ) {
+		RemoveVectoredExceptionHandler( m_handle );
+		m_handle = nullptr;
+	}
 }
 
 static inline u32 execute_handler_filter( ... )

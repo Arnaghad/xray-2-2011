@@ -81,8 +81,12 @@ target_link_libraries(xray_collision PUBLIC
     $<$<NOT:$<BOOL:${XRAY_COLLISION_USE_BULLET_BVH}>>:opcode>
     xray_core
     xray_animation
-    "$<LINK_ONLY:xray_render_vulkan>"
 )
+if(TARGET xray_render_vulkan)
+    target_link_libraries(xray_collision PUBLIC "$<LINK_ONLY:xray_render_vulkan>")
+elseif(TARGET xray_render_headless_stub)
+    target_link_libraries(xray_collision PUBLIC xray_render_headless_stub)
+endif()
 target_link_libraries(xray_collision PRIVATE PkgConfig::BULLET)
 
 target_compile_definitions(xray_collision PRIVATE

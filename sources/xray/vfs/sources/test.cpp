@@ -4,7 +4,7 @@
 #include <xray/intrusive_spsc_queue.h>
 #include <xray/intrusive_mpsc_queue.h>
 #include <xray/fs/asynchronous_device_interface.h>
-#include <xray/fs/windows_hdd_file_system.h>
+#include <xray/fs/native_hdd_file_system.h>
 #include <xray/fs/portable_path_string.h>
 #include <xray/fs/native_path_string.h>
 #include <xray/fs/physical_path_iterator.h>
@@ -15,7 +15,9 @@
 #include "test.h"
 #include <xray/core_test_suite.h>
 
-#include <xray/os_include.h>
+#if XRAY_PLATFORM_WINDOWS
+#	include <xray/os_include.h>
+#endif
 
 #if 1
 
@@ -46,7 +48,7 @@ void	device_thread					(fs_new::asynchronous_device_interface * device_interface
 void   vfs_test::test					(core_test_suite * suite)
 {
 	m_suite								=	suite;
-	fs_new::windows_hdd_file_system			device;
+	fs_new::native_hdd_file_system			device;
 	XRAY_CONSTRUCT_REFERENCE				(m_device, fs_new::asynchronous_device_interface) 
 												(& device, fs_new::watcher_enabled_true);
 

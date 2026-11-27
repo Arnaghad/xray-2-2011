@@ -6,7 +6,9 @@
  ****************************************************************************/
 #include "pch.h"
 #include <xray/compressor_ppmd.h>
-#include <xray/os_include.h>
+#if XRAY_PLATFORM_WINDOWS
+#	include <xray/os_include.h>
+#endif
 #include <xray/memory_buffer.h>
 #include <string.h>
 #include <stdio.h>
@@ -19,9 +21,12 @@
 #pragma warning (disable: 4189)
 #pragma warning (disable: 4389)
 
-#define _WIN32_ENVIRONMENT_
+#if XRAY_PLATFORM_WINDOWS
+#	define _WIN32_ENVIRONMENT_
+#else
+#	define _POSIX_ENVIRONMENT_
+#endif
 //#define _DOS32_ENVIRONMENT_
-//#define _POSIX_ENVIRONMENT_
 //#define _UNKNOWN_ENVIRONMENT_
 #if defined(_WIN32_ENVIRONMENT_)+defined(_DOS32_ENVIRONMENT_)+defined(_POSIX_ENVIRONMENT_)+defined(_UNKNOWN_ENVIRONMENT_) != 1
 #error Only one environment must be defined
@@ -32,13 +37,17 @@
 //	#include <windows.h>
 
 #else /* _DOS32_ENVIRONMENT_ || _POSIX_ENVIRONMENT_ || _UNKNOWN_ENVIRONMENT_ */
+#undef BOOL
+#undef FALSE
+#undef TRUE
 typedef int   BOOL;
 #define FALSE 0
 #define TRUE  1
-typedef unsigned char  BYTE;
-typedef unsigned short WORD;
-typedef unsigned long  DWORD;
-typedef unsigned int   UINT;
+typedef u8    BYTE;
+typedef u16   WORD;
+typedef u32   DWORD;
+typedef u32   UINT;
+typedef s32   INT;
 #endif /* defined(_WIN32_ENVIRONMENT_)  */
 
 const DWORD PPMdSignature=0x84ACAF8F, Variant='I';

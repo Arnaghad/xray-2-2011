@@ -27,14 +27,11 @@ public sealed unsafe partial class EditorWorld : IDisposable
     private bool loaded, cleared, disposed;
     private bool interactiveCameraSeeded;
 
-    [System.Runtime.InteropServices.DllImport("user32.dll")]
-    private static extern nint SetThreadDpiAwarenessContext(nint dpiContext);
-
     public EditorWorld(NativeCallbacks callbacks)
     {
         native = callbacks;
         background = (callbacks.Flags & 1) != 0;
-        SetThreadDpiAwarenessContext((nint)(-4));
+        PlatformWindowService.Current.ConfigureProcessDpi();
         SdkAvaloniaBootstrap.EnsureInitialized();
 
         view = new AvaloniaViewportHost(initialPixelWidth: 960, initialPixelHeight: 640);
@@ -173,9 +170,112 @@ public sealed unsafe partial class EditorWorld : IDisposable
             throw new InvalidOperationException("Native editor callback failed");
     }
 
-    public nint MainHandle { get { CheckOwner(); return window.TryGetPlatformHandle()?.Handle ?? 0; } }
+    public nint MainHandle { get { CheckOwner(); return PlatformWindowService.Current.ResolveTopLevelSurface(window).Handle; } }
     public nint ViewHandle { get { CheckOwner(); if (!view.SurfaceLeased) view.AcquireSurfaceLease(); return view.SurfaceHandle; } }
     public nint PreviewHandle { get { CheckOwner(); return preview?.ViewportHost.SurfaceHandle ?? 0; } }
+
+    public NativeSurfaceDescriptor MainSurface
+    {
+        get
+        {
+            CheckOwner();
+            return PlatformWindowService.Current.ResolveTopLevelSurface(window);
+        }
+    }
+
+    public NativeSurfaceDescriptor ViewSurface
+    {
+        get
+        {
+            CheckOwner();
+            if (!view.SurfaceLeased) view.AcquireSurfaceLease();
+            return view.SurfaceDescriptor;
+        }
+    }
+
+    public NativeSurfaceDescriptor PreviewSurface
+    {
+        get
+        {
+            CheckOwner();
+            return preview != null ? preview.ViewportHost.SurfaceDescriptor : default;
+        }
+    }
+
+    internal void HandleWindowControl(WindowControlRequest* request, SurfaceDescriptor* outSurface)
+    {
+        CheckOwner();
+        if (request == null || request->Version != 1 || request->Size != sizeof(WindowControlRequest))
+            throw new InvalidOperationException("Invalid window control request.");
+
+        switch (request->Operation)
+        {
+            case 0: // protect_background
+            {
+                var target = ResolveTargetWindow(request->Target);
+                PlatformWindowService.Current.ProtectBackgroundWindow(target);
+                break;
+            }
+            case 1: // resize
+            {
+                if (request->Target == 0)
+                    PlatformWindowService.Current.ResizeMainForViewport(window, view, request->Width, request->Height);
+                else if (request->Target == 1)
+                {
+                    if (preview == null)
+                        throw new InvalidOperationException("Preview window is closed.");
+                    PlatformWindowService.Current.ResizeWindow(preview.Window, request->Width, request->Height);
+                    preview.ViewportHost.ForceResizePixels(request->Width, request->Height);
+                }
+                else
+                    throw new InvalidOperationException("Unsupported resize target.");
+                break;
+            }
+            case 2: // minimize
+            {
+                var target = ResolveTargetWindow(request->Target);
+                PlatformWindowService.Current.SetMinimized(target, request->Arg0 != 0);
+                break;
+            }
+            case 3: // close
+            {
+                var target = ResolveTargetWindow(request->Target);
+                PlatformWindowService.Current.CloseWindow(target);
+                break;
+            }
+            case 4: // is_alive
+            {
+                bool alive = request->Target switch
+                {
+                    0 => PlatformWindowService.Current.ResolveTopLevelSurface(window).IsValid,
+                    1 => preview != null && preview.ViewportHost.HasSurface && PlatformWindowService.Current.IsSurfaceAlive(preview.ViewportHost.SurfaceDescriptor),
+                    _ => PlatformWindowService.Current.IsSurfaceAlive(request->Surface.ToManaged())
+                };
+                if (!alive)
+                    throw new InvalidOperationException("Surface is no longer alive.");
+                break;
+            }
+            case 5: // resolve_surface
+            {
+                if (outSurface == null)
+                    throw new ArgumentNullException(nameof(outSurface));
+                nint handle = unchecked((nint)(long)request->Surface.Handle);
+                if (!AvaloniaViewportHost.TryResolveSurface(handle, out var resolved))
+                    throw new InvalidOperationException("Unknown or foreign SDK output surface.");
+                *outSurface = SurfaceDescriptor.From(resolved);
+                break;
+            }
+            default:
+                throw new InvalidOperationException("Unknown window control operation.");
+        }
+    }
+
+    private Window ResolveTargetWindow(uint target) => target switch
+    {
+        0 => window,
+        1 => preview?.Window ?? throw new InvalidOperationException("Preview window is closed."),
+        _ => throw new InvalidOperationException("Unsupported target window.")
+    };
 
     private void TogglePreview()
     {
@@ -185,8 +285,9 @@ public sealed unsafe partial class EditorWorld : IDisposable
         try
         {
             previewWindow.ViewportHost.AcquireSurfaceLease();
+            var desc = SurfaceDescriptor.From(previewWindow.ViewportHost.SurfaceDescriptor);
             // Publish only after the native side accepts the independent surface handle.
-            Require(native.Preview(native.Context, (nuint)previewWindow.ViewportHost.SurfaceHandle, 0));
+            Require(native.Preview(native.Context, &desc, 0));
             preview = previewWindow;
             previewWindow.CloseRequested += () => { try { RequestPreviewClose(); } catch (Exception error) { Console.Error.WriteLine("Editor preview close: " + error); } };
             if (commands.TryGetValue(9, out var entry) && entry.Button is ToggleButton tb) tb.IsChecked = true;
@@ -198,7 +299,8 @@ public sealed unsafe partial class EditorWorld : IDisposable
     private void RequestPreviewClose()
     {
         if (preview == null || previewClosing) return;
-        Require(native.Preview(native.Context, (nuint)preview.ViewportHost.SurfaceHandle, 1));
+        var desc = SurfaceDescriptor.From(preview.ViewportHost.SurfaceDescriptor);
+        Require(native.Preview(native.Context, &desc, 1));
         previewClosing = true;
         if (commands.TryGetValue(9, out var entry)) entry.Button.IsEnabled = false;
     }
@@ -294,6 +396,7 @@ public sealed unsafe partial class EditorWorld : IDisposable
         projectIde?.ViewportOutputs?.Tick();
         projectIde?.UpdateResourceReloadStatus();
         fixed (float* values = copy) Require(native.Render(native.Context, frame, values));
+        AvaloniaViewportHost.PollAllOffscreenFrames();
         TickStage06Smoke(frame);
     }
 

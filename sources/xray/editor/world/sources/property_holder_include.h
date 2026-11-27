@@ -7,7 +7,7 @@
 #ifndef PROPERTY_HOLDER_INCLUDE_HPP_INCLUDED
 #define PROPERTY_HOLDER_INCLUDE_HPP_INCLUDED
 #include <xray/noncopyable.h>
-#include <fastdelegate/fastdelegate.h>
+#include <fastdelegate/FastDelegate.h>
 #include <utility>
 #include <xray/editor/world/property_holder.h>
 

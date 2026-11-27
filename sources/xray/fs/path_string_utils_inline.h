@@ -50,13 +50,16 @@ signalling_bool   append_relative_path	(out_path_type * in_out_path, in_path_typ
 				return						false;
 			in_out_path->set_length			(0);
 		}
+		else if ( last_slash == 0 && (*in_out_path)[0] == '/' )
+			in_out_path->set_length			(1);
 		else
 			in_out_path->set_length			(last_slash);
 	}
 
 	if ( * relative_path )
 	{
-		if ( in_out_path->length() )
+		if ( in_out_path->length() &&
+			 !(in_out_path->length() == 1 && (*in_out_path)[0] == (char)select_separator<out_path_type, in_path_type>::separator) )
 			* in_out_path				+=	(char)select_separator<out_path_type, in_path_type>::separator;
 		in_out_path->append_with_conversion	(relative_path);
 	}
@@ -67,6 +70,10 @@ signalling_bool   append_relative_path	(out_path_type * in_out_path, in_path_typ
 template <class path_type>
 bool   is_absolute_path					(path_type const & path)
 {
+#if XRAY_PLATFORM_WINDOWS
+	if ( path.length() >= 2 && path[0] == '\\' && path[1] == '\\' )
+		return								true;
+
 	typename path_type::const_iterator	it		=	path.begin();
 	typename path_type::const_iterator	it_end	=	path.end();
 	for ( ; it != it_end; ++it )
@@ -77,6 +84,9 @@ bool   is_absolute_path					(path_type const & path)
 			return							false;
 	}
 	return									false;
+#else
+	return									!path.empty() && (path[0] == '/' || path[0] == '\\');
+#endif
 }
 
 template <class path_type>

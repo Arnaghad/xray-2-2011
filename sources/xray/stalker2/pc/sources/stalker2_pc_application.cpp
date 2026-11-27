@@ -12,7 +12,13 @@ using stalker2::application;
 
 void application::initialize( )
 {
+	initialize						( "" );
+}
+
+void application::initialize( pcstr const command_line )
+{
 	m_exit_code						= 0;
+	m_command_line					= command_line ? command_line : "";
 
 	preinitialize					( );
 	xray::engine::initialize		( );
@@ -21,6 +27,7 @@ void application::initialize( )
 
 void application::finalize	( )
 {
+	m_splash_screen.reset			( );
 	xray::engine::finalize			( );
 }
 

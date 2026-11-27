@@ -714,6 +714,71 @@ internal static class Program
             Require(!Win32NativeSurfaceHostBackend.IsWindowValid(realHwnd), "Win32 HWND must be destroyed after ReleaseSurfaceLease.");
         }
 
+        // Step 26B: PAL-7 zero-airspace offscreen viewport host (Wayland/X11/headless composition)
+        {
+            var offscreen = new AvaloniaOffscreenViewportHost(320, 240);
+            offscreen.AcquireSurfaceLease();
+            nint syntheticHandle = offscreen.SurfaceHandle;
+            Require(syntheticHandle != 0 && offscreen.HasSurface && offscreen.SurfaceLeased, "Expected leased offscreen surface.");
+            offscreen.ForceResizePixels(640, 360);
+            byte[] pixels = new byte[640 * 360 * 4];
+            pixels[0] = 0xFF;
+            pixels[3] = 0xFF;
+            offscreen.UpdateFrameBgra(pixels, 640, 360);
+            Require(offscreen.FrameCount == 1 && offscreen.SurfacePixelWidth == 640 && offscreen.SurfacePixelHeight == 360,
+                "Offscreen viewport frame upload/resize mismatch.");
+            offscreen.Dispose();
+            Require(offscreen.IsDisposed && offscreen.HasSurface, "Offscreen viewport must remain allocated while SurfaceLeased.");
+            offscreen.ReleaseSurfaceLease();
+            Require(!offscreen.SurfaceLeased && !offscreen.HasSurface, "Offscreen viewport must release resources after ReleaseSurfaceLease.");
+        }
+
+        // Step 26C: PAL-7 real Linux X11 viewport surface lifecycle (Stage 7A)
+        if (OperatingSystem.IsLinux() && !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("DISPLAY")))
+        {
+            var x11Backend = new LinuxX11NativeSurfaceHostBackend();
+            var x11Host = new AvaloniaViewportHost(x11Backend, 320, 240);
+            x11Host.AcquireSurfaceLease();
+            nint xid = x11Host.SurfaceHandle;
+            var x11Desc = x11Host.SurfaceDescriptor;
+            Require(x11Desc.Kind == NativeSurfaceKind.X11Xlib && x11Desc.Handle == xid && x11Desc.Display != 0,
+                "Expected valid X11 surface descriptor.");
+            Require(LinuxX11NativeSurfaceHostBackend.IsWindowValid(xid), "Expected live X11 child window.");
+            Require(AvaloniaViewportHost.TryResolveSurface(xid, out var resolvedX11) && resolvedX11 == x11Desc,
+                "AvaloniaViewportHost.TryResolveSurface failed for X11 surface.");
+            x11Host.ForceResizePixels(800, 600);
+            x11Host.DetachFromParentForTest(new PlatformHandle(xid, "XID"));
+            x11Host.Dispose();
+            Require(LinuxX11NativeSurfaceHostBackend.IsWindowValid(xid), "X11 window must remain valid while SurfaceLeased.");
+            x11Host.ReleaseSurfaceLease();
+            Require(!LinuxX11NativeSurfaceHostBackend.IsWindowValid(xid), "X11 window must be destroyed after ReleaseSurfaceLease.");
+        }
+
+        // Step 26D: PAL-7 real Linux Wayland subsurface lifecycle (Stage 7B)
+        if (OperatingSystem.IsLinux() && !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("WAYLAND_DISPLAY")))
+        {
+            using var waylandBackend = new LinuxWaylandNativeSurfaceHostBackend();
+            var wlHost = new AvaloniaViewportHost(waylandBackend, 320, 240);
+            wlHost.AcquireSurfaceLease();
+            nint wlSurface = wlHost.SurfaceHandle;
+            var wlDesc = wlHost.SurfaceDescriptor;
+            Require(wlDesc.Kind == NativeSurfaceKind.Wayland && wlDesc.Handle == wlSurface && wlDesc.Display != 0,
+                "Expected valid Wayland surface descriptor.");
+            Require(LinuxWaylandNativeSurfaceHostBackend.IsSurfaceValid(wlSurface), "Expected live Wayland wl_surface.");
+            Require(AvaloniaViewportHost.TryResolveSurface(wlSurface, out var resolvedWl) && resolvedWl == wlDesc,
+                "AvaloniaViewportHost.TryResolveSurface failed for Wayland surface.");
+            wlHost.ForceResizePixels(800, 600);
+            wlHost.DetachFromParentForTest(new PlatformHandle(wlSurface, "wl_surface"));
+            wlHost.Dispose();
+            Require(LinuxWaylandNativeSurfaceHostBackend.IsSurfaceValid(wlSurface), "Wayland wl_surface must remain valid while SurfaceLeased.");
+            wlHost.ReleaseSurfaceLease();
+            Require(!LinuxWaylandNativeSurfaceHostBackend.IsSurfaceValid(wlSurface), "Wayland wl_surface must be destroyed after ReleaseSurfaceLease.");
+        }
+
+        // Step 26E: PAL-7 cross-platform tool locator contract
+        Require(SdkProcessLocator.CookerExecutableName == (OperatingSystem.IsWindows() ? "xray_asset_cook_cli.exe" : "xray_asset_cook_cli"),
+            "Unexpected platform cooker executable name.");
+
         // Step 27: UI-4 AvaloniaImageAtlas cropping from images16x16.png
         var atlas = AvaloniaImageAtlas.Shared;
         Require(atlas.HasAtlasBitmap, "Expected images16x16.png atlas to load from avares://.");
@@ -2165,6 +2230,8 @@ internal static class Program
     private sealed class RecordingSurfaceBackend : INativeSurfaceHostBackend
     {
         public string HandleDescriptor => "HWND";
+        public NativeSurfaceKind SurfaceKind => NativeSurfaceKind.Win32Hwnd;
+        public nint DisplayHandle => 0;
         public nint ParkingHandle { get; private set; }
         public nint SurfaceHandle { get; private set; }
         public int LastWidth { get; private set; }

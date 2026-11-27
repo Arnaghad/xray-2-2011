@@ -11,12 +11,14 @@
 #include <xray/testing.h>
 #include <xray/debug/call_stack.h>
 
-#include <xray/os_preinclude.h>
-#undef NOUSER
-#undef NOMSG
-#undef NOWINMESSAGES
-#undef NOCTLMGR
-#include <xray/os_include.h>
+#if XRAY_PLATFORM_WINDOWS
+#	include <xray/os_preinclude.h>
+#	undef NOUSER
+#	undef NOMSG
+#	undef NOWINMESSAGES
+#	undef NOCTLMGR
+#	include <xray/os_include.h>
+#endif
 
 #include <xray/core/engine.h>
 #include <xray/logging/log_file.h>
@@ -181,12 +183,12 @@ u32   tests_failed_so_far ()
 
 void   run_protected_test (test_base*);
 
-#if 1
+#ifdef _MSC_VER
 static inline u32 execute_handler_filter( ... )
 {
 	return						EXCEPTION_EXECUTE_HANDLER;
 }
-#endif // #if 1
+#endif // #ifdef _MSC_VER
 
 void   on_exception (assert_enum			assert_type, 
 					 pcstr					description, 
@@ -375,10 +377,10 @@ void   check_awaited_exception (assert_enum previous_awaited_exception)
 
 } // namespace detail
 
-#if 1
+#if XRAY_PLATFORM_WINDOWS
 COMPILE_ASSERT	(XRAY_EXCEPTION_EXECUTE_HANDLER == EXCEPTION_EXECUTE_HANDLER,
 				 please_define_XRAY_EXCEPTION_EXECUTE_HANDLER_to_be_equal_EXCEPTION_EXECUTE_HANDLER);
-#endif // #if 1
+#endif // #if XRAY_PLATFORM_WINDOWS
 
 } // namespace testing
 } // namespace xray

@@ -8,7 +8,7 @@
 #include <cstdlib>
 #include <cmath>
 #include <stdexcept>
-#include <windows.h>
+#include <xray/os_platform.h>
 namespace xray { namespace render { namespace vulkan {
 namespace {
 struct vertex { float position[3], uv[2]; };
@@ -44,17 +44,15 @@ smoke_materials::smoke_materials(rhi::rhi_backend& backend) : m_backend(&backend
         if (configured && *configured) {
             shader_dir = std::filesystem::path(configured);
         } else {
-            wchar_t executable[32768]{};
-            DWORD length = GetModuleFileNameW(nullptr, executable, 32768);
-            if (length > 0 && length < 32768) {
+            auto const exe_dir = xray::os::executable_directory();
+            if (!exe_dir.empty()) {
                 std::error_code ec;
-                auto exe_dir = std::filesystem::path(executable).parent_path();
                 for (auto const& candidate : {
-                         exe_dir.parent_path() / L"shaders" / L"basic",
-                         exe_dir.parent_path() / L"shaders",
-                         exe_dir / L"shaders" / L"basic",
-                         exe_dir / L"shaders"}) {
-                    if (std::filesystem::is_regular_file(candidate / L"materials.hlsl", ec)) {
+                         exe_dir.parent_path() / "shaders" / "basic",
+                         exe_dir.parent_path() / "shaders",
+                         exe_dir / "shaders" / "basic",
+                         exe_dir / "shaders"}) {
+                    if (std::filesystem::is_regular_file(candidate / "materials.hlsl", ec)) {
                         shader_dir = candidate;
                         break;
                     }

@@ -14,7 +14,7 @@
 #include <xray/render/facade/debug_renderer.h>
 #pragma managed(pop)
 #include "triangles_mesh_utilities.h"
-#include "xray\ai_navigation\sources\delaunay_triangulator.h"
+#include "xray/ai_navigation/sources/delaunay_triangulator.h"
 
 namespace xray {
 namespace model_editor {

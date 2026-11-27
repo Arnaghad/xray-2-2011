@@ -37,8 +37,29 @@ bool   create_folder_r					(synchronous_device_interface const & device,
 		return								false;
 
 	u32 const colon_pos					=	absolute_path.find(':');
-	ASSERT									(colon_pos != u32(-1));
-	u32 const drive_part_length			=	colon_pos + 2;
+	u32 drive_part_length				=	0;
+	if ( colon_pos != u32(-1) )
+	{
+		drive_part_length				=	colon_pos + 2;
+		if ( drive_part_length > absolute_path.length() )
+			drive_part_length			=	absolute_path.length();
+	}
+	else if ( absolute_path.length() >= 1 && absolute_path[0] == '/' )
+	{
+		drive_part_length				=	1;
+	}
+	else if ( absolute_path.length() >= 2 && absolute_path[0] == '\\' && absolute_path[1] == '\\' )
+	{
+		u32 const server_end			=	absolute_path.find('\\', 2);
+		u32 const share_end				=	(server_end != u32(-1)) ? absolute_path.find('\\', server_end + 1) : u32(-1);
+		drive_part_length				=	(share_end != u32(-1)) ? (share_end + 1) : absolute_path.length();
+	}
+	else
+	{
+		NODEFAULT							();
+		return								false;
+	}
+
 	native_path_string						cur_path;
 	cur_path.assign							(absolute_path.c_str(), absolute_path.c_str() + drive_part_length);
 
@@ -47,7 +68,8 @@ bool   create_folder_r					(synchronous_device_interface const & device,
 											 absolute_path.separator);
 
 	path_part_iterator	end_it			=	path_part_iterator::end();
-	ASSERT									(it != end_it);
+	if ( it == end_it )
+		return								true;
 	bool			result				=	true;
 	while ( it != end_it )
 	{

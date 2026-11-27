@@ -74,7 +74,7 @@ public:
 			void		on_buffer_start						( pvoid buffer_context );
 			void		on_buffer_end						( pvoid buffer_context );
 			void		on_loop_end							( pvoid buffer_context );
-			void		on_voice_error						( pvoid buffer_context, HRESULT error );
+			void		on_voice_error						( pvoid buffer_context, s32 error );
 
 // in sound thread callback implementation
 private:

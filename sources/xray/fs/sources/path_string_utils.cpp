@@ -35,8 +35,8 @@ u32   path_crc32						(pcstr const data, u32 const size, u32 const start_value)
 	int cur_index						=	0;
 	while ( cur_index < (int)size )
 	{
-		const bool is_path_separator	=	(data[cur_index] == virtual_path_string::separator) || 
-											(data[cur_index] == native_path_string::separator);
+		const bool is_path_separator	=	(data[cur_index] == '/') ||
+											(data[cur_index] == '\\');
 		if ( is_path_separator )
 		{
 			if ( start_index != -1 )

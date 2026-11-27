@@ -11,7 +11,7 @@
 #include "bsp_portal_blank.h"
 #include "bsp_tree_triangle.h"
 #include "bsp_typedefs.h"
-#include <xray\math_convex.h>
+#include <xray/math_convex.h>
 #pragma managed(pop)
 
 namespace xray {

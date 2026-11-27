@@ -270,6 +270,43 @@ void xray::debug::debug_message_box (pcstr message)
 	MessageBox						( 0, message, "Debug Break", MB_OK );
 }
 
+void xray::debug::debug_break		( )
+{
+	DebugBreak						( );
+}
+
+void xray::debug::show_error_dialog	( pcstr title, pcstr message )
+{
+	pcstr const safe_title = ( title && *title ) ? title : "Error";
+	pcstr const safe_msg = ( message && *message ) ? message : "(no message)";
+	if ( debug_engine() && debug_engine()->terminate_on_error() ) {
+		std::fprintf( stderr, "[%s] %s\n", safe_title, safe_msg );
+		std::fflush( stderr );
+		return;
+	}
+	MessageBoxA( GetTopWindow( nullptr ), safe_msg, safe_title, MB_OK | MB_ICONERROR | MB_SYSTEMMODAL );
+}
+
+bool xray::debug::format_system_error	( int const error_code, char* const buffer, u32 const buffer_size )
+{
+	if ( !buffer || buffer_size == 0 )
+		return false;
+
+	DWORD const written = FormatMessageA(
+		FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+		nullptr,
+		static_cast<DWORD>( error_code ),
+		MAKELANGID( LANG_NEUTRAL, SUBLANG_DEFAULT ),
+		buffer,
+		buffer_size,
+		nullptr
+	);
+	if ( written == 0 ) {
+		std::snprintf( buffer, buffer_size, "Win32 error %d", error_code );
+	}
+	return true;
+}
+
 void xray::debug::platform::terminate				( pcstr message, int const error_code  )
 {
 	if ( *message ) {

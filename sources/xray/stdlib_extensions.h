@@ -7,23 +7,23 @@
 #ifndef XRAY_STDLIB_EXTENSIONS_H_INCLUDED
 #define XRAY_STDLIB_EXTENSIONS_H_INCLUDED
 
+#include <xray/crt_compat.h>
 #include <stdio.h>
 #include <string.h>
 
-#ifdef _MSC_VER
+#if XRAY_PLATFORM_WINDOWS
 #	include <io.h>
-#elif defined(__GNUC__)
-#	include <io.h>
+#elif defined(__GNUC__) || defined(__clang__)
 #	include <ctype.h>
 #	include <unistd.h>
-#elif defined(__SNC__) // #ifdef _MSC_VER
+#elif defined(__SNC__)
 #	include <ctype.h>
 #	include <unistd.h>
-#endif // #ifdef _MSC_VER
+#endif
 
 namespace xray {
 
-inline int	vsnprintf	( pstr const destination, u32 const destination_size, u32 const max_count, pcstr const format, va_list const args )
+inline int	vsnprintf	( pstr const destination, u32 const destination_size, u32 const max_count, pcstr const format, va_list args )
 {
 #ifdef _MSC_VER
 	return				_vsnprintf_s( destination, destination_size, max_count, format, args );
@@ -33,12 +33,12 @@ inline int	vsnprintf	( pstr const destination, u32 const destination_size, u32 c
 }
 
 template <int Size>
-inline int	vsnprintf	( char (&destination)[Size], u32 const max_count, pcstr const format, va_list const args )
+inline int	vsnprintf	( char (&destination)[Size], u32 const max_count, pcstr const format, va_list args )
 {
 	return				vsnprintf( &destination[0], Size, max_count, format, args );
 }
 
-inline int	vsprintf	( pstr const destination, u32 const destination_size, pcstr const format, va_list const args )
+inline int	vsprintf	( pstr const destination, u32 const destination_size, pcstr const format, va_list args )
 {
 #ifdef _MSC_VER
 	return				vsprintf_s( destination, destination_size, format, args );

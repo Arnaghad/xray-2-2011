@@ -19,12 +19,7 @@
 #	endif // #ifdef XRAY_STATIC_LIBRARIES
 #endif // #ifndef XRAY_INPUT_API
 
-#ifndef _MSC_VER
-#ifndef _WINDEF_
-struct HWND__;
-typedef HWND__* HWND;
-#endif
-#endif // #ifndef _MSC_VER
+#include <xray/platform_surface.h>
 
 namespace xray {
 namespace input {
@@ -34,7 +29,7 @@ struct world;
 
 typedef memory::mimalloc_allocator_type		allocator_type;
 
-XRAY_INPUT_API	world*	create_world		( engine& engine, HWND window_handle );
+XRAY_INPUT_API	world*	create_world		( engine& engine, platform::native_surface_handle window_handle = {} );
 XRAY_INPUT_API	void	destroy_world		( world*& world );
 XRAY_INPUT_API	void	set_memory_allocator( allocator_type& allocator );
 

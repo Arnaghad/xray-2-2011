@@ -7,6 +7,12 @@
 #include "pch.h"
 #include "ogg_utils.h"
 #include <float.h>
+#if !XRAY_PLATFORM_WINDOWS
+#	include <alloca.h>
+#	ifndef _alloca
+#		define _alloca alloca
+#	endif
+#endif
 
 namespace xray {
 namespace sound {
@@ -608,9 +614,11 @@ int ogg_encode_impl(fs_new::file_type* input_file,
 					int new_bitrate)
 {
 
+#if XRAY_PLATFORM_WINDOWS
 	u32 old_float_point_control = 0;
 	errno_t fp_error = _controlfp_s(&old_float_point_control, _PC_53,_MCW_PC );
 	ASSERT			(fp_error == 0);
+#endif
 
 	void *readdata		= nullptr;
 	open_audio_file(input_file, device);
@@ -985,8 +993,10 @@ int ogg_encode_impl(fs_new::file_type* input_file,
     vorbis_dsp_clear(&vd);
     vorbis_info_clear(&vi);
 
+#if XRAY_PLATFORM_WINDOWS
 	fp_error		= _controlfp_s( 0, old_float_point_control,	_MCW_EM);
 	ASSERT			(fp_error == 0);
+#endif
 
 	return 0;
 }

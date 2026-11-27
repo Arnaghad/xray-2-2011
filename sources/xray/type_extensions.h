@@ -7,33 +7,24 @@
 #ifndef XRAY_TYPE_EXTENSIONS_H_INCLUDED
 #define XRAY_TYPE_EXTENSIONS_H_INCLUDED
 
-typedef	signed		char		s8;
-typedef	unsigned	char		u8;
+#include <cstdint>
 
-typedef	signed		short		s16;
-typedef	unsigned	short		u16;
+typedef	std::int8_t		s8;
+typedef	std::uint8_t	u8;
 
-typedef	signed		int			s32;
-typedef	unsigned	int			u32;
+typedef	std::int16_t	s16;
+typedef	std::uint16_t	u16;
 
-#if defined(_MSC_VER)
-	typedef	signed		__int64	s64;
-	typedef	unsigned	__int64	u64;
-#else // #if defined(_MSC_VER)
-	typedef	signed long long	s64;
-	typedef	unsigned long long	u64;
-#endif // #if defined(_MSC_VER)
+typedef	std::int32_t	s32;
+typedef	std::uint32_t	u32;
 
-namespace std {
-	typedef u8				uint8_t;
-	typedef s8				int8_t;
-	typedef u16				uint16_t;
-	typedef s16				int16_t;
-	typedef u32				uint32_t;
-	typedef s32				int32_t;
-	typedef u64				uint64_t;
-	typedef s64				int64_t;
-} // namespace std
+typedef	std::int64_t	s64;
+typedef	std::uint64_t	u64;
+
+static_assert(sizeof(s8) == 1 && sizeof(u8) == 1, "8-bit integer size mismatch");
+static_assert(sizeof(s16) == 2 && sizeof(u16) == 2, "16-bit integer size mismatch");
+static_assert(sizeof(s32) == 4 && sizeof(u32) == 4, "32-bit integer size mismatch");
+static_assert(sizeof(s64) == 8 && sizeof(u64) == 8, "64-bit integer size mismatch");
 
 namespace xray {
 	enum assert_enum : int {

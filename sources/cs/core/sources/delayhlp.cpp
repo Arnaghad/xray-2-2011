@@ -25,7 +25,7 @@
 #define STRICT
 #include <windows.h>
 
-#include "DelayImp.h"
+#include "delayimp.h"
 
 //
 // Local copies of strlen, memcmp, and memcpy to make sure we do not need the CRT

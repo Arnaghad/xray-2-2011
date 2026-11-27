@@ -36,7 +36,7 @@ performance_snapshot vulkan_backend::performance() const {
     result.outputs.reserve(m_outputs.size());
     for (auto const& entry:m_outputs) {
         auto value=entry.frames->performance;
-        value.output_id=reinterpret_cast<uintptr_t>(entry.presentation->hwnd);
+        value.output_id=entry.presentation->surface_handle.handle;
         value.presented_frames=entry.presentation->presented_frames;
         value.capture_enabled=entry.frames->capture_enabled;
         for (auto const& frame:entry.frames->materials) {

@@ -9,32 +9,36 @@
 #include "pch.h"
 #include "fs_readers_file.h"
 
-#ifdef _MSC_VER
+#if defined(_WIN32)
 #	include <io.h>
 #	include <share.h>
-#endif // #ifdef _MSC_VER
+#else
+#	include <unistd.h>
+#endif
 
 #include <fcntl.h>
 #include <sys/stat.h>
 
 fs::readers::file::file		(int const file_handle, pcstr path)
 {
-#ifdef _MSC_VER
+#if defined(_WIN32)
 	u32			buffer_size = _filelength(file_handle);
 	pvoid		buffer = cs_malloc(buffer_size, "file reader data");
 
 	u32			result = _read(file_handle,buffer,buffer_size);
 	R_ASSERT	(buffer_size == result,"Cannot read from file \"%s\"",path);
 	R_ASSERT	(!_close(file_handle),"Cannot close file \"%s\" after reading",path);
-#else // #ifdef _MSC_VER
-	u32			buffer_size = lseek(file_handle, SEEK_END, 0);
-	lseek		(file_handle, SEEK_SET, 0);
+#else
+	off_t const end_pos = ::lseek(file_handle, 0, SEEK_END);
+	R_ASSERT	(end_pos >= 0, "Cannot determine file length \"%s\"", path);
+	u32			buffer_size = static_cast<u32>(end_pos);
+	::lseek		(file_handle, 0, SEEK_SET);
 	pvoid		buffer = cs_malloc(buffer_size, "file reader data");
 
-	u32			result = read(file_handle,buffer,buffer_size);
+	u32			result = static_cast<u32>(::read(file_handle, buffer, buffer_size));
 	R_ASSERT	(buffer_size == result,"Cannot read from file \"%s\"",path);
-	R_ASSERT	(!close(file_handle),"Cannot close file \"%s\" after reading",path);
-#endif // #ifdef _MSC_VER
+	R_ASSERT	(!::close(file_handle),"Cannot close file \"%s\" after reading",path);
+#endif
 
 	setup		(buffer,result,0);
 }

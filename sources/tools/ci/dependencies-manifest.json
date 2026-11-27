@@ -115,6 +115,11 @@
         "consumer": "sources/xray/editor/base/EditorHost.csproj.in"
       },
       {
+        "name": "Avalonia.Wayland",
+        "version": "12.2.0",
+        "consumer": "sources/xray/editor/base/EditorHost.csproj.in"
+      },
+      {
         "name": "Avalonia",
         "version": "12.2.0",
         "consumer": "sources/xray/editor/avalonia_controls/xray.editor.avalonia_controls.csproj"
@@ -166,6 +171,55 @@
       "kernel32.dll",
       "user32.dll",
       "gdi32.dll"
+    ],
+    "linuxSystemPackages": {
+      "fedora": [
+        "gcc-c++",
+        "cmake",
+        "ninja-build",
+        "lua-devel",
+        "boost-devel",
+        "SDL3-devel",
+        "mimalloc-devel",
+        "zlib-ng-compat-devel",
+        "bullet-devel",
+        "vulkan-headers",
+        "vulkan-loader-devel",
+        "libogg-devel",
+        "libvorbis-devel",
+        "asio-devel",
+        "pkgconf-pkg-config",
+        "wayland-devel",
+        "libxkbcommon-devel",
+        "libX11-devel",
+        "libXext-devel"
+      ],
+      "ubuntuEquivalent": [
+        "g++-15",
+        "cmake",
+        "ninja-build",
+        "libboost-all-dev",
+        "libsdl3-dev",
+        "libmimalloc-dev",
+        "libbullet-dev",
+        "libvulkan-dev",
+        "libogg-dev",
+        "libvorbis-dev",
+        "libasio-dev",
+        "libwayland-dev",
+        "libxkbcommon-dev"
+      ]
+    },
+    "linuxSystemApis": [
+      "libvulkan.so.1",
+      "libSDL3.so.0",
+      "libwayland-client.so.0",
+      "libwayland-egl.so.1",
+      "libxkbcommon.so.0",
+      "libX11.so.6",
+      "libXext.so.6",
+      "libhostfxr.so",
+      "libdxcompiler.so"
     ]
   },
   "removedArchivalDependencies": [

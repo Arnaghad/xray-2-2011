@@ -6,7 +6,7 @@
 
 #ifndef BSP_TREE_TRIANGLE_H_INCLUDED
 #define BSP_TREE_TRIANGLE_H_INCLUDED
-#include <xray\ai_navigation\sources\triangles_mesh.h>
+#include <xray/ai_navigation/sources/triangles_mesh.h>
 #include "edge_utilities.h"
 namespace xray {
 namespace model_editor {

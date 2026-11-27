@@ -1,7 +1,7 @@
 #ifndef XRAY_VULKAN_SCENE_RESOURCES_H_INCLUDED
 #define XRAY_VULKAN_SCENE_RESOURCES_H_INCLUDED
 #include <xray/extensions.h>
-#include <xray/os_include.h>
+#include <xray/platform_surface.h>
 #include <xray/render/engine/base_classes.h>
 #include <xray/render/facade/common_types.h>
 #include <xray/render/vulkan/library_linkage.h>
@@ -61,7 +61,7 @@ class XRAY_RENDER_VULKAN_API scene_registry : public std::enable_shared_from_thi
     mutable std::mutex m_mutex;
     u32 const m_thread;
     bool m_accepting = true;
-    HWND m_window;
+    platform::native_surface_handle m_window;
     std::shared_ptr<presentation_output> m_output;
     std::unordered_set<void*> m_resources[3];
     std::vector<std::weak_ptr<texture_state>> m_textures;
@@ -80,15 +80,15 @@ class XRAY_RENDER_VULKAN_API scene_registry : public std::enable_shared_from_thi
     friend class terrain_instance_resource;
     std::vector<std::shared_ptr<texture_data const>> terrain_texture_snapshots(std::vector<std::shared_ptr<texture_state>> const&) const;
 public:
-    explicit scene_registry(HWND window, std::shared_ptr<presentation_output> output = {});
-    void add(unsigned kind, void* resource, HWND window = nullptr);
+    explicit scene_registry(platform::native_surface_handle window, std::shared_ptr<presentation_output> output = {});
+    void add(unsigned kind, void* resource, platform::native_surface_handle window = {});
     void remove(unsigned kind, void* resource) noexcept;
     void close();
     bool accepting() const;
     bool on_owner_thread() const {return m_thread==threading::current_thread_id();}
-    HWND window() const { return m_window; }
+    platform::native_surface_handle window() const { return m_window; }
     std::shared_ptr<presentation_output> presentation() const { return m_output; }
-    std::shared_ptr<presentation_output> make_presentation(HWND) const;
+    std::shared_ptr<presentation_output> make_presentation(platform::native_surface_handle) const;
     std::array<size_t,3> counts() const;
     void track_texture(std::shared_ptr<texture_state> const&);
     void track_material(std::string const&);
@@ -153,21 +153,21 @@ public:
     editor_selection_settings selection() const;
 };
 class XRAY_RENDER_VULKAN_API output_resource final : public base_output_window {
-    HWND m_window;
+    platform::native_surface_handle m_window;
     std::shared_ptr<presentation_output> m_presentation;
 public:
     u64 const temporal_id;
     std::shared_ptr<scene_registry> const owner;
-    output_resource(std::shared_ptr<scene_registry>, HWND);
+    output_resource(std::shared_ptr<scene_registry>, platform::native_surface_handle);
     ~output_resource() override;
-    HWND window() const { return m_window; }
+    platform::native_surface_handle window() const { return m_window; }
     std::shared_ptr<presentation_output> presentation() const { return m_presentation; }
     void request_close();
     bool closed() const;
     math::uint2 client_size() const;
 };
 // Registration and finalization run on the renderer's resource-dispatch thread.
-XRAY_RENDER_VULKAN_API std::shared_ptr<scene_registry> register_scene_resources(HWND, std::shared_ptr<presentation_output> output = {});
+XRAY_RENDER_VULKAN_API std::shared_ptr<scene_registry> register_scene_resources(platform::native_surface_handle, std::shared_ptr<presentation_output> output = {});
 XRAY_RENDER_VULKAN_API bool finalize_scene_resources();
 } } }
 #endif

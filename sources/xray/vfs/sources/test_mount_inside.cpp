@@ -9,7 +9,7 @@
 #include "test.h"
 #include <xray/vfs/watcher.h>
 #include <xray/fs/asynchronous_device_interface.h>
-#include <xray/fs/windows_hdd_file_system.h>
+#include <xray/fs/native_hdd_file_system.h>
 #include "mount_archive.h"
 #include "find.h"
 #include "branch_locks.h"

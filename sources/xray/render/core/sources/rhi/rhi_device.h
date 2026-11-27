@@ -8,7 +8,7 @@
 
 #include <memory>
 #include <xray/type_extensions.h>
-#include <xray/os_include.h>
+#include <xray/platform_surface.h>
 #include "rhi_backend.h"
 #include <xray/render/vulkan/library_linkage.h>
 
@@ -21,7 +21,7 @@ public:
 	static rhi_device&	ref	();
 
 	// Ownership is transferred even on failure. Backends use standard new/delete.
-	bool            initialize(std::unique_ptr<rhi_backend> backend, HWND hwnd = nullptr);
+	bool            initialize(std::unique_ptr<rhi_backend> backend, platform::native_surface_handle surface = {});
 	void			shutdown	();
 	bool            begin_frame();
 	bool            end_frame();

@@ -7,6 +7,8 @@
 #ifndef XRAY_EDITOR_WORLD_H_INCLUDED
 #define XRAY_EDITOR_WORLD_H_INCLUDED
 
+#include <xray/platform_surface.h>
+
 namespace xray {
 namespace editor_base {
 	class property_holder;
@@ -22,8 +24,8 @@ struct XRAY_NOVTABLE world {
 	virtual	void	run				( ) = 0;
 	virtual	void	clear_resources	( ) = 0;
 	virtual void on_render_session_closed() {}
-	virtual	HWND	main_handle		( ) = 0;
-	virtual	HWND	view_handle		( ) = 0;
+	virtual	platform::native_surface_handle	main_handle		( ) = 0;
+	virtual	platform::native_surface_handle	view_handle		( ) = 0;
 	virtual	void	editor_mode		( bool beditor_mode) = 0;
 	virtual	void	render			( u32 frame_id, math::float4x4 view_matrix ) = 0;
 	virtual	int		exit_code		( ) const = 0;

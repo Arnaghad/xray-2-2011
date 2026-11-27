@@ -7,8 +7,8 @@
 #include "pch.h"
 #include "ogg_utils.h"
 #include <xray/fs/file_type_pointer.h>
+#include <xray/os_platform.h>
 #include <vorbis/vorbisfile.h>
-#include <xray/os_include.h>
 
 namespace xray {
 namespace sound {
@@ -46,7 +46,7 @@ size_t ov_read_func(void *ptr, size_t size, size_t nmemb, void *datasource)
 	memory::reader r		(pdata.c_ptr(), pdata.size());
 	r.seek					(sdata->pointer);
 
-	size_t exist_block	= math::max	(0ul, math::floor(r.elapsed()/(float)size));
+	size_t exist_block	= math::max<size_t>	(0u, static_cast<size_t>(math::floor(r.elapsed()/(float)size)));
 	size_t read_block	= math::min	(exist_block, nmemb);
 	
 	size_t bytes_to_read = read_block*size;
@@ -169,26 +169,18 @@ void make_sound_rms( fs_new::native_path_string & end_file_path )
 	file_path.set_length	(file_path.length()-8);
 	file_path.append		(".ogg");
 
-	STARTUPINFO				si;
-	ZeroMemory				( &si, sizeof(si) );
-	si.cb					= sizeof(STARTUPINFO);
-	si.wShowWindow			= 0;
-	si.dwFlags				= STARTF_USESHOWWINDOW;
-
-	PROCESS_INFORMATION		pi;
-	ZeroMemory				( &pi, sizeof(pi) );
-
-	fixed_string512			cl_args;
-	cl_args					+= "xray_rms_generator-debug.exe";
-	cl_args 				+= " -o=\"";
-	cl_args 				+= end_file_path.c_str();
-	cl_args 				+= "\" -i=\"";
-	cl_args 				+= file_path.c_str();
-	cl_args 				+= "\"";
-
-	if(CreateProcess(nullptr, cl_args.c_str(), nullptr, nullptr, FALSE, 0, nullptr, nullptr, &si, &pi))
-		WaitForSingleObject(pi.hProcess, INFINITE);
-
+#if XRAY_PLATFORM_WINDOWS
+	std::filesystem::path const rms_tool( "xray_rms_generator-debug.exe" );
+#else
+	std::filesystem::path const rms_tool( "xray_rms_generator" );
+#endif
+	xray::os::run_process(
+		rms_tool,
+		{
+			std::string( "-o=" ) + end_file_path.c_str(),
+			std::string( "-i=" ) + file_path.c_str()
+		}
+	);
 #endif // #ifndef MASTER_GOLD
 }
 

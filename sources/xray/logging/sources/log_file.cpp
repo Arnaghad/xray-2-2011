@@ -268,8 +268,6 @@ bool log_file::skip_next_line	( )
 } // namespace logging
 } // namespace xray
 
-#include <xray/os_include.h>	// for MemoryBarrier
-
 namespace xray {
 namespace logging {
 

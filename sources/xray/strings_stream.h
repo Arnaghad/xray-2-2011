@@ -14,7 +14,7 @@ class XRAY_CORE_API stream {
 public:
 	inline	explicit		stream			( memory::base_allocator* allocator );
 	inline					~stream			( );
-			void __cdecl	append			( pcstr format, ... );
+			void XRAY_CDECL	append			( pcstr format, ... );
 	inline	pcbyte			get_buffer		( ) const;
 	inline	u32				get_buffer_size	( ) const;
 	inline	void			clear			( );

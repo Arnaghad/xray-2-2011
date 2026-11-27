@@ -73,7 +73,7 @@ void test_keyboard_sdl3_and_queue() {
     XRAY_TEST_CHECK(receiver::keyboard::translate_sdl_scancode(SDL_SCANCODE_F4) == key_f4);
 
     int dummy_engine = 0;
-    input_world world(reinterpret_cast<xray::input::engine&>(dummy_engine), nullptr);
+    input_world world(reinterpret_cast<xray::input::engine&>(dummy_engine), {});
     world.acquire();
 
     recording_handler h_low(1);
@@ -128,7 +128,7 @@ void test_mouse_sdl3_motion_buttons_wheel() {
     clear_normalized_input_events();
 
     int dummy_engine = 0;
-    input_world world(reinterpret_cast<xray::input::engine&>(dummy_engine), nullptr);
+    input_world world(reinterpret_cast<xray::input::engine&>(dummy_engine), {});
     world.acquire();
     recording_handler h(0);
     h.consume_mouse_move = true;
@@ -176,7 +176,7 @@ void test_gamepad_sdl3_hotplug_and_vibration() {
     }
 
     int dummy_engine = 0;
-    input_world world(reinterpret_cast<xray::input::engine&>(dummy_engine), nullptr);
+    input_world world(reinterpret_cast<xray::input::engine&>(dummy_engine), {});
     receiver::gamepad gp(0, world);
 
     xray::input::vector<handler*> handlers;

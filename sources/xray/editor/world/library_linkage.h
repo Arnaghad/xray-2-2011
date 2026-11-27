@@ -7,8 +7,13 @@
 #ifndef XRAY_EDITOR_LIBRARY_LINKAGE_H_INCLUDED
 #define XRAY_EDITOR_LIBRARY_LINKAGE_H_INCLUDED
 
+#include <xray/os_platform.h>
 #include <xray/macro_library_name.h>
 
-#define XRAY_EDITOR_FILE_NAME "xray_editor_world.dll"
+#if XRAY_PLATFORM_WINDOWS
+#	define XRAY_EDITOR_FILE_NAME "xray_editor_world.dll"
+#else
+#	define XRAY_EDITOR_FILE_NAME "xray_editor_world.so"
+#endif
 
 #endif // #ifndef XRAY_EDITOR_LIBRARY_LINKAGE_H_INCLUDED

@@ -9,7 +9,7 @@
 
 #include <xray/render/base/engine_wrapper.h>
 #include <xray/render/base/debug_renderer.h>
-#include <fastdelegate/fastdelegate.h>
+#include <fastdelegate/FastDelegate.h>
 
 namespace xray {
 namespace render {

@@ -8,6 +8,7 @@ using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Media;
 using xray.editor.avalonia_controls.property_editors.attributes;
+using xray.editor.avalonia_controls.Themes;
 
 namespace xray.editor.avalonia_controls.property_editors.value;
 
@@ -150,7 +151,7 @@ public partial class properties_collection_editor : value_collection_editor_base
             Content = new Path
             {
                 Data = geom,
-                Stroke = Brushes.Black,
+                Stroke = SdkWorkspaceTheme.MutedText,
                 StrokeThickness = 1
             }
         };

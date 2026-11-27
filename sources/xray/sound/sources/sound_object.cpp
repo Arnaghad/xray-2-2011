@@ -34,27 +34,24 @@ void sound_object_impl::refill_buffers( )
 #if 1
 	R_ASSERT				(m_playing);
 	ASSERT					( m_stream );
-	HRESULT					res;
-	XAUDIO2_VOICE_STATE		vstate;
-	m_source_voice->GetState( &vstate );
+	u32 queued				= m_source_voice->buffers_queued();
 	u32 pcm_total 			= m_stream->pcm_total();
 	
-	while( (vstate.BuffersQueued < max_queued_buffers) && ( m_stream_cursor_pcm < pcm_total) )
+	while( (queued < max_queued_buffers) && ( m_stream_cursor_pcm < pcm_total) )
 	{
-		XAUDIO2_BUFFER			buffer = {0};
+		audio_buffer_desc		buffer;
 
 		pbyte const cache_buffer = g_sound_world->get_cache_buffer( snd_buff_size );
-		buffer.pAudioData		= cache_buffer;
-		buffer.AudioBytes		= m_stream->decompress( cache_buffer, m_stream_cursor_pcm, snd_buff_size );
-		buffer.pContext			= cache_buffer;
+		buffer.audio_data		= cache_buffer;
+		buffer.audio_bytes		= m_stream->decompress( cache_buffer, m_stream_cursor_pcm, snd_buff_size );
+		buffer.context			= cache_buffer;
 
-		buffer.Flags			= ( m_stream_cursor_pcm==pcm_total ) ? XAUDIO2_END_OF_STREAM : 0;
+		buffer.flags			= ( m_stream_cursor_pcm==pcm_total ) ? audio_buffer_flag_end_of_stream : 0u;
 
-		ASSERT					( buffer.AudioBytes>0 );
+		ASSERT					( buffer.audio_bytes>0 );
 
-		res						= m_source_voice->SubmitSourceBuffer( &buffer );
-		ASSERT					( !FAILED(res) );
-		++vstate.BuffersQueued;
+		m_source_voice->submit_buffer( buffer );
+		++queued;
 	}
 #endif // #if 1
 }
@@ -65,7 +62,7 @@ void sound_object_impl::on_end_stream( )
 	LOG_INFO						("---voice destroyed");
 }
 
-void sound_object_impl::on_buffer_end( void* pcontext )
+void sound_object_impl::on_buffer_end_impl( void* pcontext )
 {
 	g_sound_world->free_cache_buffer ( (pbyte)pcontext );
 	
@@ -102,26 +99,18 @@ void sound_object_impl::play_impl( )
 
 	if(!m_source_voice)
 	{
-#if 1
-		HRESULT res = g_sound_world->xaudio_engine()->CreateSourceVoice( 
-											&m_source_voice,
-											&m_stream->wave_format(), 
-											0, 
-											XAUDIO2_DEFAULT_FREQ_RATIO, 
-											this, 
-											nullptr, 
-											nullptr
-											);
+		audio_voice_desc desc;
+		desc.channels			= count_to_channels_type( m_stream->wave_format().channels );
+		desc.sample_rate		= m_stream->wave_format().samples_per_sec;
+		desc.bits_per_sample	= m_stream->wave_format().bits_per_sample;
+		desc.use_filter			= false;
 
-		R_ASSERT_U					(!FAILED(res));
-#endif // #if 1
+		m_source_voice			= g_sound_world->audio_backend()->create_voice( desc, this );
+		R_ASSERT_U				( m_source_voice );
 	}
 	m_playing				= true;
 	refill_buffers			( );
-#if 1
-	HRESULT res				= m_source_voice->Start( );
-	R_ASSERT_U					( !FAILED(res) );
-#endif // #if 1
+	m_source_voice->start	( );
 
 //	g_sound_world->on_voice_started( this );
 }
@@ -135,12 +124,13 @@ void sound_object_impl::set_position_impl( float3 const& position )
 void sound_object_impl::stop_impl( )
 {
 	m_playing						= false;
-#if 1
-	m_source_voice->Stop			( );
-	m_source_voice->FlushSourceBuffers( );
-	m_source_voice->DestroyVoice	( );
-	m_source_voice					= nullptr;
-#endif // #if 1
+	if ( m_source_voice ) {
+		m_source_voice->stop			( );
+		m_source_voice->flush_buffers	( );
+		if ( g_sound_world && g_sound_world->audio_backend() )
+			g_sound_world->audio_backend()->destroy_voice( m_source_voice );
+		m_source_voice					= nullptr;
+	}
 //	g_sound_world->on_voice_stopped	( this );
 }
 

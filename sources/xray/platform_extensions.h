@@ -7,6 +7,8 @@
 #ifndef XRAY_PLATFORM_EXTENSIONS_H_INCLUDED
 #define XRAY_PLATFORM_EXTENSIONS_H_INCLUDED
 
+#include <xray/macro_platform.h>
+
 namespace xray {
 namespace platform {
 
@@ -23,8 +25,17 @@ inline bool	big_endian		( )
 
 inline pcstr platform_name ( )
 {
+#if XRAY_PLATFORM_WINDOWS
 	return "windows";
+#elif XRAY_PLATFORM_LINUX
+	return "linux";
+#else
+#	error unknown platform
+#endif
 }
+
+u64		XRAY_CORE_API	get_local_video_memory_size			( );
+u64		XRAY_CORE_API	get_minimal_local_video_memory_size	( );
 
 } // namespace platform
 } // namespace xray

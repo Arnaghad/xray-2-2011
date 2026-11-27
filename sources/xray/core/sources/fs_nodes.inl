@@ -712,7 +712,7 @@ void   fat_node<pointer_for_fat_size>::set_associated (resources::resource_base 
 {
 	R_ASSERT								(! is_folder());
 
-	COMPILE_ASSERT							(sizeof(long) == sizeof(u32),
+	COMPILE_ASSERT							(sizeof(threading::atomic32_value_type) == sizeof(u32),
 											 use_32_bit_version_of_interlocked_or_on_this_platform);
 
 	lock_associated							();

@@ -16,11 +16,11 @@ renderer::renderer					( xray::render::engine::world& engine_world ) :
 }
 
 #if defined(USE_VULKAN_RENDERER)
-bool renderer::initialize(HWND window_handle)
+bool renderer::initialize(platform::native_surface_handle surface)
 {
-	return m_render_engine_world.initialize(window_handle);
+	return m_render_engine_world.initialize(surface);
 }
-bool renderer::initialize_game(HWND window_handle) { return m_render_engine_world.initialize_game(window_handle); }
+bool renderer::initialize_game(platform::native_surface_handle surface) { return m_render_engine_world.initialize_game(surface); }
 bool renderer::finalize_game_resources() { return m_render_engine_world.finalize_game_resources(); }
 bool renderer::initialized() const { return m_render_engine_world.initialized(); }
 bool renderer::initialize_geometry_smoke() { return m_render_engine_world.initialize_geometry_smoke(); }

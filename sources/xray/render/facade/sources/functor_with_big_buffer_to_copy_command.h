@@ -8,7 +8,7 @@
 #define FUNCTOR_WITH_BIG_BUFFER_TO_COPY_COMMAND_H_INCLUDED
 
 #include <xray/render/facade/base_command.h>
-#include <fastdelegate/fastdelegate.h>
+#include <fastdelegate/FastDelegate.h>
 
 namespace xray {
 namespace render {

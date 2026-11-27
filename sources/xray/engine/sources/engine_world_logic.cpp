@@ -50,7 +50,7 @@ void engine_world::initialize_logic_modules( )
 	engine_user_world().enable	( m_game_enabled );
 }
 
-HWND new_window	( );
+xray::platform::native_surface_handle new_window	( );
 
 void engine_world::initialize_logic		( )
 {

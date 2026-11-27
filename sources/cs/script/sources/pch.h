@@ -30,7 +30,11 @@
 #include <cs/core/extensions.h>
 
 #ifndef CS_STATIC_LIBRARIES
-#	define CS_SCRIPT_API	__declspec(dllexport)
+#	if CS_PLATFORM_WINDOWS
+#		define CS_SCRIPT_API	__declspec(dllexport)
+#	else
+#		define CS_SCRIPT_API	__attribute__((visibility("default")))
+#	endif
 #endif // #ifdef CS_STATIC_LIBRARIES
 
 #include <cs/script/interfaces.h>

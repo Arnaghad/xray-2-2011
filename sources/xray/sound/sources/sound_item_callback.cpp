@@ -13,55 +13,46 @@ namespace xray {
 namespace sound {
 
 // Called just before this voice's processing pass begins.
-void sound_item::OnVoiceProcessingPassStart( UINT32 BytesRequired )
+void sound_item::on_voice_processing_pass_start( u32 bytes_required )
 {
-	XRAY_UNREFERENCED_PARAMETERS( BytesRequired );
-//	LOG_INFO("OnVoiceProcessingPassStart: %d", BytesRequired);
+	XRAY_UNREFERENCED_PARAMETERS( bytes_required );
 }
 
 // Called just after this voice's processing pass ends.
-void sound_item::OnVoiceProcessingPassEnd( )
+void sound_item::on_voice_processing_pass_end( )
 {
-//	LOG_INFO("OnVoiceProcessingPassEnd");
 }
 
 // Called when this voice has just finished playing a buffer stream
-// (as marked with the XAUDIO2_END_OF_STREAM flag on the last buffer).
-void sound_item::OnStreamEnd( )
+void sound_item::on_stream_end( )
 {
 	m_sound_world.add_xaudio_order( MT_NEW(sound_item_callback_command)(sound_item_callback_command::ev_stream_end, this, nullptr));
 	LOG_INFO("OnStreamEnd");
 }
 
 // Called when this voice is about to start processing a new buffer.
-void sound_item::OnBufferStart( void* pBufferContext )
+void sound_item::on_buffer_start( void* buffer_context )
 {
-	XRAY_UNREFERENCED_PARAMETERS( pBufferContext );
-//	LOG_INFO("OnBufferStart: %x", pBufferContext);
+	XRAY_UNREFERENCED_PARAMETERS( buffer_context );
 }
 
 // Called when this voice has just finished processing a buffer.
 // The buffer can now be reused or destroyed.
-void sound_item::OnBufferEnd( void* pBufferContext )
+void sound_item::on_buffer_end( void* buffer_context )
 {
-	m_sound_world.add_xaudio_order( MT_NEW(sound_item_callback_command)(sound_item_callback_command::ev_buffer_end, this, pBufferContext));
-//	LOG_INFO("OnBufferEnd: %x", pBufferContext);
+	m_sound_world.add_xaudio_order( MT_NEW(sound_item_callback_command)(sound_item_callback_command::ev_buffer_end, this, buffer_context));
 }
 
 // Called when this voice has just reached the end position of a loop.
-void sound_item::OnLoopEnd( void* pBufferContext )
+void sound_item::on_loop_end( void* buffer_context )
 {
-	LOG_INFO("OnLoopEnd: %x", pBufferContext);
+	LOG_INFO("OnLoopEnd: %p", buffer_context);
 }
-// Called in the event of a critical error during voice processing,
-// such as a failing xAPO or an error from the hardware XMA decoder.
-// The voice may have to be destroyed and re-created to recover from
-// the error.  The callback arguments report which buffer was being
-// processed when the error occurred, and its HRESULT code.
-void sound_item::OnVoiceError( void* pBufferContext, HRESULT Error )
+
+void sound_item::on_voice_error( void* buffer_context, s32 error )
 {
-	m_sound_world.add_xaudio_order( MT_NEW(sound_item_callback_command)(sound_item_callback_command::ev_buffer_error, this, pBufferContext));
-	LOG_INFO("OnVoiceError: %d, %x", Error, pBufferContext);
+	m_sound_world.add_xaudio_order( MT_NEW(sound_item_callback_command)(sound_item_callback_command::ev_buffer_error, this, buffer_context));
+	LOG_INFO("OnVoiceError: %d, %p", error, buffer_context);
 }
 
 void sound_item_callback_command::execute( )
@@ -73,7 +64,7 @@ void sound_item_callback_command::execute( )
 		break;
 
 	case ev_buffer_end:
-		m_owner->on_buffer_end( m_context );
+		m_owner->on_buffer_end_impl( m_context );
 		break;
 
 	case ev_buffer_error:

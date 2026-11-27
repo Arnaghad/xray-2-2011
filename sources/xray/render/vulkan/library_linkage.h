@@ -1,13 +1,14 @@
 #ifndef XRAY_RENDER_VULKAN_LIBRARY_LINKAGE_H_INCLUDED
 #define XRAY_RENDER_VULKAN_LIBRARY_LINKAGE_H_INCLUDED
 
+#include <xray/macro_compiler.h>
 #include <xray/macro_library_name.h>
 
 #if defined(XRAY_RENDER_SHARED)
 #   if defined(XRAY_RENDER_VULKAN_BUILDING)
-#       define XRAY_RENDER_VULKAN_API __declspec(dllexport)
+#       define XRAY_RENDER_VULKAN_API XRAY_DLL_EXPORT
 #   else
-#       define XRAY_RENDER_VULKAN_API __declspec(dllimport)
+#       define XRAY_RENDER_VULKAN_API XRAY_DLL_IMPORT
 #   endif
 #elif defined(XRAY_RENDER_VULKAN_BUILDING)
 #	define XRAY_RENDER_VULKAN_API

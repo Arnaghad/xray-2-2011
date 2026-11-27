@@ -32,7 +32,11 @@
 #	error do not define CS_CALL macro
 #endif // #ifdef CS_CALL
 
-#define CS_CALL					__stdcall
+#if CS_PLATFORM_WINDOWS
+#	define CS_CALL					__stdcall
+#else
+#	define CS_CALL
+#endif
 
 ////////////////////////////////////////////////////////////////////////////
 // CS_PACK_SIZE
@@ -46,8 +50,10 @@
 #ifndef CS_API
 #	ifdef CS_STATIC_LIBRARIES
 #		define CS_API
-#	else // #ifdef CS_STATIC_LIBRARIES
+#	elif CS_PLATFORM_WINDOWS // #ifdef CS_STATIC_LIBRARIES
 #		define CS_API			__declspec(dllimport)
+#	else
+#		define CS_API
 #	endif // #ifdef CS_STATIC_LIBRARIES
 #endif // #ifndef CS_API
 

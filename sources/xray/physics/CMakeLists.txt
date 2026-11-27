@@ -76,6 +76,16 @@ target_include_directories(xray_physics PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/../../../
 )
 
-target_link_libraries(xray_physics PUBLIC xray_physics_shapes ode opcode xray_core xray_render_vulkan)
+target_link_libraries(xray_physics PUBLIC
+    xray_physics_shapes
+    ode
+    $<$<NOT:$<BOOL:${XRAY_COLLISION_USE_BULLET_BVH}>>:opcode>
+    xray_core
+)
+if(TARGET xray_render_vulkan)
+    target_link_libraries(xray_physics PUBLIC xray_render_vulkan)
+elseif(TARGET xray_render_headless_stub)
+    target_link_libraries(xray_physics PUBLIC xray_render_headless_stub)
+endif()
 
 target_compile_definitions(xray_physics PRIVATE XRAY_PHYSICS_BUILDING XRAY_ENGINE_BUILDING)

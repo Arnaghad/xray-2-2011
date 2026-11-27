@@ -7,7 +7,7 @@
 #ifndef PROPERTY_HOLDER_INCLUDE_HPP_INCLUDED
 #define PROPERTY_HOLDER_INCLUDE_HPP_INCLUDED
 #include <xray/noncopyable.h>
-#	include <fastdelegate/fastdelegate.h>
+#	include <fastdelegate/FastDelegate.h>
 #	include <utility>
 generic <typename type0, typename type1>
 private ref struct Pair {

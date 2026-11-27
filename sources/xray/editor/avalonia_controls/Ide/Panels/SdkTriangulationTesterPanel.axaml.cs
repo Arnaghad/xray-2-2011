@@ -10,6 +10,7 @@ using Avalonia.Input;
 using Avalonia.Media;
 using Avalonia.Platform.Storage;
 using xray.editor.avalonia_controls.Shell.Docking;
+using xray.editor.avalonia_controls.Themes;
 
 namespace xray.editor.avalonia_controls.Ide.Panels;
 
@@ -62,7 +63,7 @@ public sealed class SdkTriangulationCanvas : Control
     public override void Render(DrawingContext context)
     {
         base.Render(context);
-        context.FillRectangle(Brushes.White, new Rect(Bounds.Size));
+        context.FillRectangle(SdkWorkspaceTheme.Canvas, new Rect(Bounds.Size));
 
         if (Vertices.Count < 3)
         {
@@ -72,14 +73,14 @@ public sealed class SdkTriangulationCanvas : Control
                 FlowDirection.LeftToRight,
                 Typeface.Default,
                 12,
-                Brushes.Gray);
+                SdkWorkspaceTheme.MutedText);
             context.DrawText(hint, new Point(8, 8));
         }
 
         if (Vertices.Count >= 3)
         {
             var tris = SdkTriangulationTesterPanel.ComputeDelaunay(Vertices, out var superTri);
-            var edgePen = new Pen(Brushes.SteelBlue, 1.2);
+            var edgePen = new Pen(SdkWorkspaceTheme.Accent, 1.2);
             foreach (var t in tris)
             {
                 context.DrawLine(edgePen, Vertices[t.A], Vertices[t.B]);
@@ -89,7 +90,7 @@ public sealed class SdkTriangulationCanvas : Control
 
             if (ConstrainedMode && Vertices.Count >= 2)
             {
-                var chainPen = new Pen(Brushes.DarkGreen, 1.8);
+                var chainPen = new Pen(SdkWorkspaceTheme.Success, 1.8);
                 for (int i = 0; i < Vertices.Count - 1; i++)
                     context.DrawLine(chainPen, Vertices[i], Vertices[i + 1]);
             }
@@ -108,7 +109,7 @@ public sealed class SdkTriangulationCanvas : Control
             var pt = Vertices[i];
             bool dup = ShowErrors && Enumerable.Range(0, Vertices.Count).Any(j =>
                 j != i && Math.Abs(Vertices[j].X - pt.X) < 1.0 && Math.Abs(Vertices[j].Y - pt.Y) < 1.0);
-            context.DrawEllipse(dup ? Brushes.Red : Brushes.Black, null, pt, 3.0, 3.0);
+            context.DrawEllipse(dup ? SdkWorkspaceTheme.Warning : SdkWorkspaceTheme.Text, null, pt, 3.0, 3.0);
         }
     }
 }

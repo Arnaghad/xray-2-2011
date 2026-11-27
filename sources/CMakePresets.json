@@ -42,6 +42,46 @@
         "CMAKE_BUILD_TYPE": "Release",
         "XRAY_BINARY_OUTPUT_DIRECTORY": "${sourceParentDir}/build/presets/windows-x64-release/binaries"
       }
+    },
+    {
+      "name": "linux-x64-base",
+      "hidden": true,
+      "generator": "Ninja",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
+      },
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "gcc",
+        "CMAKE_CXX_COMPILER": "g++",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+        "USE_VULKAN_RENDERER": "ON",
+        "XRAY_HEADLESS_BUILD": "OFF",
+        "XRAY_BUILD_EDITOR_HOST": "ON",
+        "XRAY_COLLISION_USE_BULLET_BVH": "ON",
+        "XRAY_ENABLE_TESTS": "ON"
+      }
+    },
+    {
+      "name": "linux-x64-debug",
+      "displayName": "Linux x64 Debug (GCC + Ninja)",
+      "inherits": "linux-x64-base",
+      "binaryDir": "${sourceParentDir}/build/presets/linux-x64-debug",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "XRAY_BINARY_OUTPUT_DIRECTORY": "${sourceParentDir}/build/presets/linux-x64-debug/binaries"
+      }
+    },
+    {
+      "name": "linux-x64-release",
+      "displayName": "Linux x64 Release (GCC + Ninja)",
+      "inherits": "linux-x64-base",
+      "binaryDir": "${sourceParentDir}/build/presets/linux-x64-release",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "XRAY_BINARY_OUTPUT_DIRECTORY": "${sourceParentDir}/build/presets/linux-x64-release/binaries"
+      }
     }
   ],
   "buildPresets": [
@@ -61,6 +101,7 @@
       "targets": [
         "xray_lua_sol_binding",
         "xray_windows_x64_contract",
+        "xray_platform_x64_contract",
         "xray_vfs_legacy_decode",
         "xray_editor_host_abi_contract",
         "xray_avalonia_headless_tests",
@@ -70,10 +111,14 @@
         "xray_callback_and_raii_contract",
         "xray_input_sdl3_contract",
         "xray_diagnostics_minidump_contract",
+        "xray_diagnostics_pal3_contract",
+        "xray_fs_vfs_pal2_contract",
         "xray_network_udp_loopback",
         "xray_physics_world_parity_contract",
         "xray_collision_bvh_parity_contract",
         "xray_physics_cook_fitter_contract",
+        "xray_shader_compiler_pal5_contract",
+        "xray_audio_backend_contract",
         "xray_asset_cook_cli"
       ]
     },
@@ -88,6 +133,147 @@
       "displayName": "Build CPU Tests & Cooker (Release)",
       "inherits": "windows-x64-cpu-tests-base",
       "configurePreset": "windows-x64-release"
+    },
+    {
+      "name": "linux-x64-cpu-tests-base",
+      "hidden": true,
+      "targets": [
+        "xray_debug",
+        "xray_core",
+        "xray_fs",
+        "xray_vfs",
+        "xray_logging",
+        "cs_core",
+        "cs_script",
+        "xray_collision",
+        "xray_physics",
+        "xray_animation",
+        "xray_lua_sol_binding",
+        "xray_windows_x64_contract",
+        "xray_platform_x64_contract",
+        "xray_fs_vfs_pal2_contract",
+        "xray_vfs_legacy_decode",
+        "xray_editor_host_abi_contract",
+        "xray_ogg_vorbis_contract",
+        "xray_dependency_single_source_contract",
+        "xray_math_and_binary_config_contract",
+        "xray_callback_and_raii_contract",
+        "xray_diagnostics_pal3_contract",
+        "xray_input_sdl3_contract",
+        "xray_network_udp_loopback",
+        "xray_physics_world_parity_contract",
+        "xray_collision_bvh_parity_contract",
+        "xray_physics_cook_fitter_contract",
+        "xray_shader_compiler_pal5_contract",
+        "xray_audio_backend_contract",
+        "xray_asset_cook_cli"
+      ]
+    },
+    {
+      "name": "linux-x64-pal4-base",
+      "hidden": true,
+      "targets": [
+        "xray_input",
+        "xray_render_vulkan",
+        "xray_shader_compiler",
+        "xray_engine",
+        "xray_game",
+        "xray_ui",
+        "xray_ai",
+        "xray_ai_navigation",
+        "xray_particle",
+        "xray_rtp",
+        "xray_network",
+        "xray_sound",
+        "xray_input_sdl3_contract",
+        "xray_vulkan_original_archive",
+        "xray_vulkan_sdl3_surface_contract",
+        "xray_vulkan_sync2_dynamic_rendering_contract"
+      ]
+    },
+    {
+      "name": "linux-x64-pal6-base",
+      "hidden": true,
+      "targets": [
+        "xray_sound",
+        "xray_network",
+        "xray_engine",
+        "stalker2",
+        "xray_audio_backend_contract",
+        "xray_network_udp_loopback"
+      ]
+    },
+    {
+      "name": "linux-x64-pal7-base",
+      "hidden": true,
+      "targets": [
+        "xray_editor_base",
+        "xray_editor_animation",
+        "xray_editor_sound",
+        "xray_editor_world",
+        "xray_editor_host",
+        "xray_avalonia_headless_tests",
+        "stalker2",
+        "xray_editor_host_abi_contract"
+      ]
+    },
+    {
+      "name": "linux-x64-debug",
+      "displayName": "Build Linux Full Stack (Debug)",
+      "configurePreset": "linux-x64-debug"
+    },
+    {
+      "name": "linux-x64-release",
+      "displayName": "Build Linux Full Stack (Release)",
+      "configurePreset": "linux-x64-release"
+    },
+    {
+      "name": "linux-x64-debug-cpu-tests",
+      "displayName": "Build Linux CPU Tests & Cooker (Debug)",
+      "inherits": "linux-x64-cpu-tests-base",
+      "configurePreset": "linux-x64-debug"
+    },
+    {
+      "name": "linux-x64-release-cpu-tests",
+      "displayName": "Build Linux CPU Tests & Cooker (Release)",
+      "inherits": "linux-x64-cpu-tests-base",
+      "configurePreset": "linux-x64-release"
+    },
+    {
+      "name": "linux-x64-debug-pal4",
+      "displayName": "Build Linux PAL-4 Stack & Tests (Debug)",
+      "inherits": "linux-x64-pal4-base",
+      "configurePreset": "linux-x64-debug"
+    },
+    {
+      "name": "linux-x64-release-pal4",
+      "displayName": "Build Linux PAL-4 Stack & Tests (Release)",
+      "inherits": "linux-x64-pal4-base",
+      "configurePreset": "linux-x64-release"
+    },
+    {
+      "name": "linux-x64-debug-pal6",
+      "displayName": "Build Linux PAL-6 Audio/Network & stalker2 (Debug)",
+      "inherits": "linux-x64-pal6-base",
+      "configurePreset": "linux-x64-debug"
+    },
+    {
+      "name": "linux-x64-release-pal6",
+      "displayName": "Build Linux PAL-6 Audio/Network & stalker2 (Release)",
+      "inherits": "linux-x64-pal6-base",
+      "configurePreset": "linux-x64-release"
+    },
+    {
+      "name": "linux-x64-debug-pal7",
+      "displayName": "Build Linux PAL-7 Editor Host & Tests (Debug)",
+      "inherits": "linux-x64-pal7-base",
+      "configurePreset": "linux-x64-debug"
+    },
+    {
+      "name": "linux-x64-release-pal7",
+      "displayName": "Build Linux PAL-7 Editor Host & Tests (Release)",
+      "inherits": "linux-x64-pal7-base",
+      "configurePreset": "linux-x64-release"
     }
   ],
   "testPresets": [
@@ -138,6 +324,124 @@
       "name": "windows-x64-release-all",
       "displayName": "Run All CTest Suites (Release)",
       "configurePreset": "windows-x64-release",
+      "output": {
+        "outputOnFailure": true
+      },
+      "execution": {
+        "noTestsAction": "error"
+      }
+    },
+    {
+      "name": "linux-x64-debug-cpu",
+      "displayName": "Run Linux CPU CTest Suite (Debug)",
+      "configurePreset": "linux-x64-debug",
+      "output": {
+        "outputOnFailure": true
+      },
+      "execution": {
+        "noTestsAction": "error"
+      },
+      "filter": {
+        "include": {
+          "label": "^cpu$"
+        }
+      }
+    },
+    {
+      "name": "linux-x64-release-cpu",
+      "displayName": "Run Linux CPU CTest Suite (Release)",
+      "configurePreset": "linux-x64-release",
+      "output": {
+        "outputOnFailure": true
+      },
+      "execution": {
+        "noTestsAction": "error"
+      },
+      "filter": {
+        "include": {
+          "label": "^cpu$"
+        }
+      }
+    },
+    {
+      "name": "linux-x64-release-vulkan",
+      "displayName": "Run Linux Vulkan CTest Suite (Release)",
+      "configurePreset": "linux-x64-release",
+      "output": {
+        "outputOnFailure": true
+      },
+      "execution": {
+        "noTestsAction": "error"
+      },
+      "filter": {
+        "include": {
+          "label": "^vulkan$"
+        }
+      }
+    },
+    {
+      "name": "linux-x64-release-dxc",
+      "displayName": "Run Linux DXC Shader Compile Suite (Release)",
+      "configurePreset": "linux-x64-release",
+      "output": {
+        "outputOnFailure": true
+      },
+      "execution": {
+        "noTestsAction": "error"
+      },
+      "filter": {
+        "include": {
+          "label": "^dxc$"
+        }
+      }
+    },
+    {
+      "name": "linux-x64-debug-sdk",
+      "displayName": "Run Linux SDK Package Smoke Suite (Debug)",
+      "configurePreset": "linux-x64-debug",
+      "output": {
+        "outputOnFailure": true
+      },
+      "execution": {
+        "noTestsAction": "error"
+      },
+      "filter": {
+        "include": {
+          "label": "^sdk$"
+        }
+      }
+    },
+    {
+      "name": "linux-x64-release-sdk",
+      "displayName": "Run Linux SDK Package Smoke Suite (Release)",
+      "configurePreset": "linux-x64-release",
+      "output": {
+        "outputOnFailure": true
+      },
+      "execution": {
+        "noTestsAction": "error"
+      },
+      "filter": {
+        "include": {
+          "label": "^sdk$"
+        }
+      }
+    },
+    {
+      "name": "linux-x64-debug-all",
+      "displayName": "Run All Linux CTest Suites (Debug)",
+      "configurePreset": "linux-x64-debug",
+      "output": {
+        "outputOnFailure": true
+      },
+      "execution": {
+        "noTestsAction": "error"
+      }
+    },
+    {
+      "name": "linux-x64-release-all",
+      "displayName": "Run All Linux CTest Suites (Release)",
+      "configurePreset": "linux-x64-release",
       "output": {
         "outputOnFailure": true
       },

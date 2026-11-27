@@ -8,6 +8,10 @@
 
 #include "pch_script.h"
 #include <mimalloc.h>
+#if !defined(_WIN32)
+#	include <sys/syscall.h>
+#	include <unistd.h>
+#endif
 
 
 
@@ -159,7 +163,11 @@ cs::core::memory_allocation_function_parameter cs::core::memory_allocator_parame
 			*(u32*)&buffer,
 			(*I).second,
 			total,
+#if defined(_WIN32)
 			GetCurrentThreadId(),
+#else
+			static_cast<u32>(::syscall(SYS_gettid)),
+#endif
 			addresses.size() - 1
 		);
 		addresses.erase			(I);
@@ -182,7 +190,11 @@ cs::core::memory_allocation_function_parameter cs::core::memory_allocator_parame
 			*(u32*)&result,
 			size,
 			total,
+#if defined(_WIN32)
 			GetCurrentThreadId(),
+#else
+			static_cast<u32>(::syscall(SYS_gettid)),
+#endif
 			addresses.size()
 		);
 		OUTPUT_DEBUG_STRING		(temp);

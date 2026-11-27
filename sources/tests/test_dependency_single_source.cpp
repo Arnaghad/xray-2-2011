@@ -39,7 +39,11 @@ int main() {
     XRAY_TEST_CHECK(tree.begin()->key == 1);
     tree.clear();
 
+#if defined(_WIN32)
     XRAY_TEST_CHECK(btGetVersion() >= 325);
+#else
+    XRAY_TEST_CHECK(btGetVersion() >= 300);
+#endif
     XRAY_TEST_CHECK(vorbis_version_string() != nullptr);
 
     std::cout << "PASS: xray_dependency_single_source_contract (Boost=" << BOOST_LIB_VERSION

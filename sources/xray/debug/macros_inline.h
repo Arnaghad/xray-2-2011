@@ -54,7 +54,7 @@ struct to_string_helper<T,to_string_flag_integer> {
 		COMPILE_ASSERT	(std::is_integral<T>::value || std::is_enum<T>::value, wrong_type_T);
 		string_helper	string;
 		s64				value64	=	(s64)value;
-		string.appendf	("%I64i", value64);
+		string.appendf	("%lld", static_cast<long long>(value64));
 		return			string;
 	}
 }; // class to_string_helper

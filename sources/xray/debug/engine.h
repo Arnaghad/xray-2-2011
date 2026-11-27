@@ -7,7 +7,6 @@
 #ifndef XRAY_DEBUG_ENGINE_H_INCLUDED
 #define XRAY_DEBUG_ENGINE_H_INCLUDED
 
-struct _SYSTEMTIME;
 struct _EXCEPTION_POINTERS;
 
 namespace xray {
@@ -15,6 +14,16 @@ namespace xray {
 enum assert_enum : int;
 
 namespace debug {
+
+struct date_time {
+	u16		year = 0;
+	u16		month = 0;
+	u16		day = 0;
+	u16		hour = 0;
+	u16		minute = 0;
+	u16		second = 0;
+	u16		millisecond = 0;
+};
 
 struct XRAY_NOVTABLE engine {
 
@@ -24,7 +33,7 @@ struct XRAY_NOVTABLE engine {
 	virtual int  	get_exit_code				() const = 0;
 	virtual bool	core_initialized			() const = 0;
 	virtual void	generate_debug_file_name	(string_path &				file_name,
-												 _SYSTEMTIME const * const	date_time,
+												 date_time const * const	date_time,
 												 pcstr const				report_id,
 												 pcstr const				extension) const = 0;
 	virtual void	flush_log_file				(pcstr file_name) const = 0;

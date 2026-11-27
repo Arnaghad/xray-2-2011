@@ -7,6 +7,7 @@
 #ifndef FS_NATIVE_PATH_STRING_H_INCLUDED
 #define FS_NATIVE_PATH_STRING_H_INCLUDED
 
+#include <xray/macro_platform.h>
 #include <xray/fs/path_string_impl.h>
 
 namespace xray {
@@ -18,7 +19,11 @@ class XRAY_FS_API native_path_string : public path_string_impl
 {
 public:
 	typedef	path_string_impl	super;
+#if XRAY_PLATFORM_WINDOWS
 	static inline const char separator = '\\';
+#else
+	static inline const char separator = '/';
+#endif
 
 public:
 	native_path_string() : path_string_impl(separator) {}

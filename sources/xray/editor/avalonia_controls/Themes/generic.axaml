@@ -6,6 +6,6 @@
     <ResourceInclude Source="avares://xray.editor.avalonia_controls/type_editors/themes/editors_themes.axaml" />
     <ResourceInclude Source="avares://xray.editor.avalonia_controls/property_editors/item/themes/item_editor_themes.axaml" />
     <ResourceInclude Source="avares://xray.editor.avalonia_controls/property_editors/value/themes/value_editors_themes.axaml" />
-    <ResourceInclude Source="avares://xray.editor.avalonia_controls/controls/property_grid/themes/property_grid_item_theme.axaml" />
+    <ResourceInclude Source="avares://xray.editor.avalonia_controls/Controls/property_grid/themes/property_grid_item_theme.axaml" />
   </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

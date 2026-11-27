@@ -1,4 +1,4 @@
-name: Modernization CI (Windows x64)
+name: Modernization CI (Windows x64 & Linux x64)
 
 on:
   push:
@@ -168,3 +168,121 @@ jobs:
         with:
           name: full-sdk-${{ matrix.config }}
           path: build/ci-artifacts/
+
+  cpu-linux-x64:
+    name: Linux x64 CPU Build & CTest (${{ matrix.config }})
+    runs-on: ubuntu-24.04
+    container:
+      image: fedora:latest
+    strategy:
+      fail-fast: false
+      matrix:
+        config: [debug, release]
+    steps:
+      - name: Install Linux x64 build dependencies and .NET 11 SDK
+        run: |
+          dnf install -y --setopt=install_weak_deps=False \
+            git python3 gcc-c++ cmake ninja-build lua-devel boost-devel \
+            SDL3-devel mimalloc-devel zlib-ng-compat-devel bullet-devel \
+            vulkan-headers vulkan-loader-devel libogg-devel libvorbis-devel \
+            asio-devel pkgconf-pkg-config wayland-devel libxkbcommon-devel \
+            libX11-devel libXext-devel binutils findutils curl tar gzip ca-certificates
+          if dnf install -y dotnet-sdk-11.0; then
+            echo "DOTNET_ROOT=/usr/lib64/dotnet" >> "$GITHUB_ENV"
+          else
+            curl -fsSL https://dot.net/v1/dotnet-install.sh -o /tmp/dotnet-install.sh
+            bash /tmp/dotnet-install.sh --channel 11.0 --quality daily --install-dir /usr/local/dotnet
+            ln -sf /usr/local/dotnet/dotnet /usr/local/bin/dotnet
+            echo "DOTNET_ROOT=/usr/local/dotnet" >> "$GITHUB_ENV"
+            echo "/usr/local/dotnet" >> "$GITHUB_PATH"
+          fi
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure Linux CMake preset
+        run: cmake -S sources --preset "linux-x64-${{ matrix.config }}"
+
+      - name: Build Linux CPU test targets and asset cooker
+        working-directory: sources
+        run: |
+          mkdir -p ../build/ci-artifacts
+          cmake --build --preset "linux-x64-${{ matrix.config }}-cpu-tests" --parallel 2>&1 | \
+            tee "../build/ci-artifacts/build-linux-${{ matrix.config }}-cpu.log"
+
+      - name: Run Linux CPU CTest suite
+        working-directory: sources
+        run: |
+          ctest --preset "linux-x64-${{ matrix.config }}-cpu" \
+            --output-junit "${{ github.workspace }}/build/ci-artifacts/junit-linux-${{ matrix.config }}-cpu.xml"
+
+      - name: Collect Linux baseline metrics
+        if: always()
+        run: |
+          python3 sources/tools/ci/collect_build_baseline.py \
+            --preset "linux-x64-${{ matrix.config }}" \
+            --build-dir "build/presets/linux-x64-${{ matrix.config }}" \
+            --build-log "build/ci-artifacts/build-linux-${{ matrix.config }}-cpu.log" \
+            --ctest-junit "build/ci-artifacts/junit-linux-${{ matrix.config }}-cpu.xml" \
+            --output "build/ci-artifacts/baseline-linux-${{ matrix.config }}-cpu.json"
+
+      - name: Upload Linux CPU CI artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cpu-linux-${{ matrix.config }}
+          path: build/ci-artifacts/
+
+  vulkan-wayland-linux-x64:
+    name: Linux x64 Headless Vulkan (Wayland Weston + Lavapipe & X11 Xvfb)
+    runs-on: ubuntu-24.04
+    container:
+      image: fedora:latest
+    steps:
+      - name: Install Linux Vulkan, Wayland, Xvfb and build packages
+        run: |
+          dnf install -y --setopt=install_weak_deps=False \
+            git python3 gcc-c++ cmake ninja-build lua-devel boost-devel \
+            SDL3-devel mimalloc-devel zlib-ng-compat-devel bullet-devel \
+            vulkan-headers vulkan-loader-devel libogg-devel libvorbis-devel \
+            asio-devel pkgconf-pkg-config wayland-devel libxkbcommon-devel \
+            libX11-devel libXext-devel mesa-vulkan-drivers \
+            vulkan-validation-layers weston xorg-x11-server-Xvfb binutils
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure and build Vulkan surface & Sync2 contracts
+        working-directory: sources
+        run: |
+          cmake --preset linux-x64-release
+          cmake --build --preset linux-x64-release --target \
+            xray_vulkan_sdl3_surface_contract \
+            xray_vulkan_sync2_dynamic_rendering_contract \
+            --parallel
+
+      - name: Run Vulkan contracts under headless Weston (Wayland + Lavapipe)
+        working-directory: .
+        run: |
+          export XDG_RUNTIME_DIR="/tmp/xdg-runtime-ci"
+          mkdir -p "$XDG_RUNTIME_DIR"
+          chmod 700 "$XDG_RUNTIME_DIR"
+          weston --backend=headless --socket=wayland-ci --idle-time=0 &
+          WESTON_PID=$!
+          trap 'kill "$WESTON_PID" 2>/dev/null || true' EXIT
+          for _ in $(seq 1 30); do
+            [[ -S "$XDG_RUNTIME_DIR/wayland-ci" ]] && break
+            sleep 0.2
+          done
+          export WAYLAND_DISPLAY=wayland-ci
+          export SDL_VIDEODRIVER=wayland
+          export VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/lvp_icd.x86_64.json
+          ./build/presets/linux-x64-release/binaries/xray_vulkan_sdl3_surface_contract
+          ./build/presets/linux-x64-release/binaries/xray_vulkan_sync2_dynamic_rendering_contract
+
+      - name: Run Vulkan contracts under Xvfb (X11 + Lavapipe)
+        run: |
+          export SDL_VIDEODRIVER=x11
+          export VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/lvp_icd.x86_64.json
+          xvfb-run -a ./build/presets/linux-x64-release/binaries/xray_vulkan_sdl3_surface_contract
+          xvfb-run -a ./build/presets/linux-x64-release/binaries/xray_vulkan_sync2_dynamic_rendering_contract

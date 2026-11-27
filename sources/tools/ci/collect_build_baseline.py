@@ -5,7 +5,9 @@ from __future__ import annotations
 import argparse
 from collections import Counter
 import json
+import os
 from pathlib import Path
+import platform
 import re
 import shutil
 import subprocess
@@ -19,9 +21,12 @@ WARNING_FLAG_RE = re.compile(r"warning:.*?\[(-W[^\]]+)\]")
 
 def run_capture(cmd: list[str], cwd: Path | None = None) -> tuple[int, str]:
     try:
+        env = os.environ.copy()
+        env["LC_ALL"] = "C"
         proc = subprocess.run(
             cmd,
             cwd=str(cwd) if cwd else None,
+            env=env,
             capture_output=True,
             text=True,
             encoding="utf-8",
@@ -32,6 +37,14 @@ def run_capture(cmd: list[str], cwd: Path | None = None) -> tuple[int, str]:
         return proc.returncode, out or err
     except OSError as exc:
         return 1, str(exc)
+
+
+def is_elf_file(path: Path) -> bool:
+    try:
+        with path.open("rb") as f:
+            return f.read(4) == b"\x7fELF"
+    except OSError:
+        return False
 
 
 def collect_tool_versions(manifest: dict) -> dict:
@@ -48,35 +61,51 @@ def collect_tool_versions(manifest: dict) -> dict:
 
     versions["python"] = sys.version.split()[0]
 
-    dxc_exe = REPO_ROOT / manifest["dxc"]["defaultDir"] / "dxc.exe"
-    if dxc_exe.is_file():
-        rc, out = run_capture([str(dxc_exe), "--version"])
-        versions["dxc"] = out.splitlines()[0].strip() if rc == 0 and out else None
-    else:
-        versions["dxc"] = None
+    if os.name == "nt":
+        dxc_exe = REPO_ROOT / manifest["dxc"]["defaultDir"] / "dxc.exe"
+        if dxc_exe.is_file():
+            rc, out = run_capture([str(dxc_exe), "--version"])
+            versions["dxc"] = out.splitlines()[0].strip() if rc == 0 and out else None
+        else:
+            versions["dxc"] = None
 
-    compiler = shutil.which("g++")
-    toolchain_prefix = Path(compiler).resolve().parent.parent if compiler else None
-    ucrt = toolchain_prefix is not None and toolchain_prefix.name.lower() == "ucrt64"
-    pkg_names = list(manifest.get("msys2Mingw64Packages", {}))
-    if ucrt:
-        pkg_names = [name.replace("mingw-w64-x86_64-", "mingw-w64-ucrt-x86_64-", 1) for name in pkg_names]
-    pacman_exe = toolchain_prefix.parent / "usr/bin/pacman.exe" if toolchain_prefix else None
-    msys2_pkgs: dict[str, str | None] = {}
-    if pacman_exe and pacman_exe.is_file() and pkg_names:
-        _, out = run_capture([str(pacman_exe), "-Q", *pkg_names])
-        installed: dict[str, str] = {}
-        for line in out.splitlines():
-            parts = line.split()
-            if len(parts) == 2 and parts[0] in pkg_names:
-                installed[parts[0]] = parts[1]
-        for pkg in pkg_names:
-            msys2_pkgs[pkg] = installed.get(pkg)
-    versions["msys2Ucrt64Packages" if ucrt else "msys2Mingw64Packages"] = msys2_pkgs
+        compiler = shutil.which("g++")
+        toolchain_prefix = Path(compiler).resolve().parent.parent if compiler else None
+        ucrt = toolchain_prefix is not None and toolchain_prefix.name.lower() == "ucrt64"
+        pkg_names = list(manifest.get("msys2Mingw64Packages", {}))
+        if ucrt:
+            pkg_names = [name.replace("mingw-w64-x86_64-", "mingw-w64-ucrt-x86_64-", 1) for name in pkg_names]
+        pacman_exe = toolchain_prefix.parent / "usr/bin/pacman.exe" if toolchain_prefix else None
+        msys2_pkgs: dict[str, str | None] = {}
+        if pacman_exe and pacman_exe.is_file() and pkg_names:
+            _, out = run_capture([str(pacman_exe), "-Q", *pkg_names])
+            installed: dict[str, str] = {}
+            for line in out.splitlines():
+                parts = line.split()
+                if len(parts) == 2 and parts[0] in pkg_names:
+                    installed[parts[0]] = parts[1]
+            for pkg in pkg_names:
+                msys2_pkgs[pkg] = installed.get(pkg)
+        versions["msys2Ucrt64Packages" if ucrt else "msys2Mingw64Packages"] = msys2_pkgs
+    else:
+        linux_dxc_dir = REPO_ROOT / manifest.get("linuxPlatform", {}).get("dxcDefaultDir", "build/dxc/linux-x64")
+        dxc_bin = linux_dxc_dir / "bin/dxc"
+        dxc_lib = linux_dxc_dir / "lib/libdxcompiler.so"
+        if dxc_bin.is_file():
+            rc, out = run_capture([str(dxc_bin), "--version"])
+            versions["dxc"] = out.splitlines()[0].strip() if rc == 0 and out else str(dxc_bin)
+        elif dxc_lib.is_file():
+            versions["dxc"] = f"libdxcompiler.so ({dxc_lib})"
+        else:
+            versions["dxc"] = None
+        versions["linuxKernel"] = platform.platform()
+
     return versions
 
 
 def collect_pe_imports(bin_dir: Path) -> dict[str, list[str]]:
+    if os.name != "nt":
+        return {}
     objdump = shutil.which("objdump") or "C:/msys64/mingw64/bin/objdump.exe"
     if not bin_dir.is_dir() or not Path(objdump).is_file():
         return {}
@@ -90,6 +119,26 @@ def collect_pe_imports(bin_dir: Path) -> dict[str, list[str]]:
             dlls = sorted(set(re.findall(r"DLL Name:\s*([^\r\n]+)", out)))
             imports_by_bin[binary.name] = dlls
     return imports_by_bin
+
+
+def collect_elf_imports(bin_dir: Path) -> dict[str, dict[str, list[str]]]:
+    if os.name == "nt" or not bin_dir.is_dir():
+        return {}
+    readelf = shutil.which("readelf")
+    if not readelf:
+        return {}
+    elf_by_bin: dict[str, dict[str, list[str]]] = {}
+    for p in sorted(bin_dir.iterdir()):
+        if not p.is_file() or not is_elf_file(p):
+            continue
+        rc, out = run_capture([readelf, "-d", str(p)])
+        if rc != 0:
+            continue
+        needed = sorted(set(re.findall(r"\(NEEDED\)\s+Shared library:\s*\[([^\]]+)\]", out)))
+        runpath_matches = re.findall(r"\((?:RUNPATH|RPATH)\)\s+Library (?:runpath|rpath):\s*\[([^\]]+)\]", out)
+        runpath = [entry for raw in runpath_matches for entry in raw.split(":") if entry]
+        elf_by_bin[p.name] = {"needed": needed, "runpath": runpath}
+    return elf_by_bin
 
 
 def read_text_auto(path: Path) -> str:
@@ -167,6 +216,7 @@ def main() -> None:
 
     report = {
         "schemaVersion": 1,
+        "platform": "windows-x64" if os.name == "nt" else "linux-x64",
         "preset": args.preset,
         "git": {
             "head": git_head,
@@ -174,6 +224,7 @@ def main() -> None:
         },
         "toolchain": collect_tool_versions(manifest),
         "peImports": collect_pe_imports(build_dir / "binaries"),
+        "elfImports": collect_elf_imports(build_dir / "binaries"),
         "warnings": collect_warnings(Path(args.build_log) if args.build_log else None),
         "ctest": collect_junit(Path(args.ctest_junit) if args.ctest_junit else None),
     }

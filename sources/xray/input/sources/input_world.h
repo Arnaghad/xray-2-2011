@@ -8,6 +8,7 @@
 #define INPUT_WORLD_H_INCLUDED
 
 #include <xray/input/world.h>
+#include <xray/platform_surface.h>
 #include <SDL3/SDL_events.h>
 
 namespace xray {
@@ -28,7 +29,7 @@ class input_world :
 	private xray::noncopyable
 {
 public:
-							input_world		( input::engine& engine, HWND window_handle );
+							input_world		( input::engine& engine, platform::native_surface_handle window_handle );
 	virtual					~input_world	( );
 	virtual	void			tick			( );
 	virtual	void			clear_resources	( );
@@ -46,7 +47,7 @@ public:
 			void			feed_sdl_event	( SDL_Event const& ev );
 
 private:
-			void			create_devices	( HWND window_handle );
+			void			create_devices	( platform::native_surface_handle window_handle );
 			void			destroy_devices	( );
 			void			pump_events		( );
 			void		process_on_activate	( );
@@ -65,7 +66,7 @@ private:
 private:
 	handlers_type				m_handlers;
 	engine&						m_engine;
-	HWND						m_target_window;
+	platform::native_surface_handle	m_target_window;
 	receiver::gamepad*			m_gamepad;
 	receiver::keyboard*			m_keyboard;
 	receiver::mouse*			m_mouse;

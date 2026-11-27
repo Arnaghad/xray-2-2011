@@ -9,7 +9,7 @@
 #include <cstddef>
 #include <stdexcept>
 #include <xray/macro_extensions.h>
-#include <xray/os_include.h>
+#include <xray/platform_surface.h>
 #include "rhi_types.h"
 #include "rhi_enums.h"
 
@@ -22,7 +22,7 @@ public:
 	virtual ~rhi_backend() = default;
 
 	// --- Device Management ---
-	virtual bool			initialize	(HWND hwnd = nullptr) = 0;
+	virtual bool			initialize	(platform::native_surface_handle surface = {}) = 0;
 	virtual void            shutdown() noexcept = 0;
 
 	// Clear values are set before begin_frame. Commands are recorded only

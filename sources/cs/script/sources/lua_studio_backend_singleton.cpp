@@ -12,7 +12,7 @@
 #include <cs/core/os_include.h>
 
 #ifndef _MSC_VER
-#ifndef _WINDEF_
+#if !defined(_WINDEF_) && !defined(HMODULE)
 struct HINSTANCE__;
 typedef HINSTANCE__* HMODULE;
 #endif

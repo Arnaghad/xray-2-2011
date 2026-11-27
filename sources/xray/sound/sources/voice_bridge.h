@@ -8,11 +8,9 @@
 #define VOICE_BRIDGE_H_INCLUDED
 
 #include <xray/sound/channels_type.h>
+#include "audio_backend.h"
 #include "voice_format.h"
 #include "voice_callback_handler.h"
-
-struct IXAudio2Voice;
-struct IXAudio2SubmixVoice;
 
 namespace xray {
 namespace sound {
@@ -20,7 +18,7 @@ namespace sound {
 class sound_buffer;
 
 class voice_bridge :
-	private IXAudio2VoiceCallback,
+	private i_audio_voice_callback,
 	private xray::noncopyable
 {
 public:
@@ -31,8 +29,6 @@ public:
 			void			start							( );
 			void			stop							( );
 			void			submit_source_buffer			( sound_buffer* buffer, u32 playing_offset = 0, u32 playing_length = 0 );
-//			for debug only
-//			void			submit_source_buffer			( XAUDIO2_BUFFER& buf );
 			void			flush_source_buffers			( );
 
 			u32				buffers_queued					( ) const;
@@ -42,13 +38,13 @@ public:
 			void			set_output_matrix				( float const* level_matrix );
 			void			set_channel_volumes				( channels_type type, float const* level_matrix );
 			void			set_low_pass_filter_params		( float coeff );
-			void			set_output_voice				( IXAudio2SubmixVoice* output_voice  );
+			void			set_output_voice				( i_audio_submix* output_voice );
 			void			set_sample_rate					( u32 new_sample_rate );
 			void			set_frequency_ratio				( float ratio );
 private:
 	struct creation_parametrs
 	{
-		IXAudio2*			xaudio_engine;
+		i_audio_backend*	audio_backend;
 		float				max_frequency_ratio;
 		channels_type		type;
 		channels_type		master_channels_type;
@@ -61,20 +57,21 @@ private:
 			void			set_handler						( voice_callback_handler* handler );
 			
 
-	virtual void __stdcall	OnVoiceProcessingPassStart		( UINT32 BytesRequired );
-    virtual void __stdcall	OnVoiceProcessingPassEnd		( );
-    virtual void __stdcall	OnStreamEnd						( );
-    virtual void __stdcall	OnBufferStart					( void* pBufferContext );
-    virtual void __stdcall	OnBufferEnd						( void* pBufferContext );
-    virtual void __stdcall	OnLoopEnd						( void* pBufferContext );
-    virtual void __stdcall	OnVoiceError					( void* pBufferContext, HRESULT Error );
+	void					on_voice_processing_pass_start	( u32 bytes_required ) override;
+	void					on_voice_processing_pass_end	( ) override;
+	void					on_stream_end					( ) override;
+	void					on_buffer_start					( void* buffer_context ) override;
+	void					on_buffer_end					( void* buffer_context ) override;
+	void					on_loop_end						( void* buffer_context ) override;
+	void					on_voice_error					( void* buffer_context, s32 error ) override;
 
 public:
 	voice_bridge*			m_next;
 	virtual					~voice_bridge					( );
 private:
+	i_audio_backend*		m_backend;
 	voice_callback_handler*	m_handler;
-	IXAudio2SourceVoice*	m_source_voice;
+	i_audio_source_voice*	m_source_voice;
 	channels_type			m_master_channels;
 
 	friend class			voice_factory;

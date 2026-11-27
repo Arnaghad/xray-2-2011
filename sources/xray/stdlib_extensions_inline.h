@@ -62,11 +62,11 @@ inline pstr strupr		( char (&string)[Count] )
 
 inline s64 fseek64		( FILE* const file, u64 const offset, u32 origin )
 {
-#ifdef _MSC_VER
+#if XRAY_PLATFORM_WINDOWS
 	return				_lseeki64( _fileno(file), offset, origin );
-#else // #ifdef _MSC_VER
-	return				_lseeki64( _fileno(file), offset, origin );
-#endif // #ifdef _MSC_VER
+#else // #if XRAY_PLATFORM_WINDOWS
+	return				static_cast<s64>( ::lseek( ::fileno(file), static_cast<off_t>(offset), static_cast<int>(origin) ) );
+#endif // #if XRAY_PLATFORM_WINDOWS
 }
 
 inline int unlink		( pcstr const file_name )

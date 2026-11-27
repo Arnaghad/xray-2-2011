@@ -101,9 +101,9 @@ void sound_voice::on_loop_end			( pvoid buffer_context )
 }
 
 // Called in the event of a critical error during voice processing,
-void sound_voice::on_voice_error		( pvoid buffer_context, HRESULT error )
+void sound_voice::on_voice_error		( pvoid buffer_context, s32 error )
 {
-	LOG_ERROR("OnVoiceError: %d, %x", error, buffer_context);
+	LOG_ERROR("OnVoiceError: %d, %p", error, buffer_context);
 }
 
 void sound_voice::on_stream_end_impl( )

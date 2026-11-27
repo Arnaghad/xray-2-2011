@@ -49,7 +49,10 @@ inline pstr xray::strings::copy			( pstr destination, u32 destination_size, pcst
 	errno_t const error	= strcpy_s( destination, destination_size, source );
 	XRAY_UNREFERENCED_PARAMETER	( error );
 #elif defined(__GNUC__) // #ifdef _MSC_VER
-	strncpy			( destination, source, destination_size );
+	if ( destination_size > 0 ) {
+		strncpy			( destination, source, destination_size );
+		destination[destination_size - 1] = '\0';
+	}
 #elif defined(__SNC__) // #ifdef _MSC_VER
 	XRAY_UNREFERENCED_PARAMETER	( destination_size );
 	strcpy			( destination, source );

@@ -175,7 +175,7 @@ public sealed class AvaloniaGuiBinder
             ? new StackPanel
             {
                 Orientation = Avalonia.Layout.Orientation.Horizontal,
-                Spacing = 4,
+                Spacing = 5,
                 Children =
                 {
                     new Image { Source = img, Width = 16, Height = 16 },
@@ -185,8 +185,9 @@ public sealed class AvaloniaGuiBinder
             : display;
 
         Button button = isToggle
-            ? new ToggleButton { Name = actionName, Content = content, Padding = new Avalonia.Thickness(6, 2) }
-            : new Button { Name = actionName, Content = content, Padding = new Avalonia.Thickness(6, 2) };
+            ? new ToggleButton { Name = actionName, Content = content, Padding = new Avalonia.Thickness(7, 4) }
+            : new Button { Name = actionName, Content = content, Padding = new Avalonia.Thickness(7, 4) };
+        button.Classes.Add("sdkTool");
 
         button.Command = bound?.Command;
         string tip = string.IsNullOrWhiteSpace(bound?.ShortcutText) ? display : $"{display} ({bound.ShortcutText})";
@@ -203,7 +204,9 @@ public sealed class AvaloniaGuiBinder
         toolbar.Children.Add(new Border
         {
             Width = 1,
-            Margin = new Avalonia.Thickness(4, 3),
+            Height = 16,
+            VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center,
+            Margin = new Avalonia.Thickness(5, 0),
             Background = Themes.SdkWorkspaceTheme.Divider
         });
     }

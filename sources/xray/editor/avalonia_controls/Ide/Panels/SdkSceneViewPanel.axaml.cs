@@ -481,10 +481,11 @@ public partial class SdkSceneViewPanel : UserControl, ISdkSceneViewOptionsTarget
 
         var renderModesBtn = new Button
         {
-            Margin = new Thickness(4, 1, 1, 1),
-            Padding = new Thickness(8, 2),
+            Margin = new Thickness(4, 1, 2, 1),
+            Padding = new Thickness(9, 3),
             Content = ViewModeNames[m_render_view_mode]
         };
+        renderModesBtn.Classes.Add("sdkTool");
         ToolTip.SetTip(renderModesBtn, "Render view mode (Left-click: cycle, Right-click: select)");
         renderModesBtn.Click += (_, _) => CycleRenderViewMode();
         renderModesBtn.PointerPressed += (_, e) =>
@@ -506,7 +507,7 @@ public partial class SdkSceneViewPanel : UserControl, ISdkSceneViewOptionsTarget
         {
             IsChecked = initialState,
             Margin = new Thickness(1),
-            Padding = new Thickness(4, 2),
+            Padding = new Thickness(5, 4),
             Content = new Image
             {
                 Source = AvaloniaImageAtlas.Shared.GetIcon(icon),
@@ -514,6 +515,7 @@ public partial class SdkSceneViewPanel : UserControl, ISdkSceneViewOptionsTarget
                 Height = 16
             }
         };
+        btn.Classes.Add("sdkIconTool");
         ToolTip.SetTip(btn, name);
         btn.Click += (_, _) => onToggle();
         m_toggleButtons[name] = btn;

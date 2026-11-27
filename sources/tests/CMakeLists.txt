@@ -26,6 +26,17 @@ target_link_libraries(xray_windows_x64_contract PRIVATE xray_core)
 add_test(NAME xray_windows_x64_contract COMMAND xray_windows_x64_contract)
 set_tests_properties(xray_windows_x64_contract PROPERTIES LABELS "cpu" TIMEOUT 60)
 
+add_executable(xray_platform_x64_contract test_platform_x64_contract.cpp)
+target_link_libraries(xray_platform_x64_contract PRIVATE xray_core)
+target_compile_options(xray_platform_x64_contract PRIVATE ${_xray_test_cxx_warnings})
+add_test(NAME xray_platform_x64_contract COMMAND xray_platform_x64_contract)
+set_tests_properties(xray_platform_x64_contract PROPERTIES LABELS "cpu" TIMEOUT 60)
+
+add_executable(xray_fs_vfs_pal2_contract test_fs_vfs_pal2_contract.cpp)
+target_link_libraries(xray_fs_vfs_pal2_contract PRIVATE xray_fs xray_core)
+add_test(NAME xray_fs_vfs_pal2_contract COMMAND xray_fs_vfs_pal2_contract)
+set_tests_properties(xray_fs_vfs_pal2_contract PROPERTIES LABELS "cpu" TIMEOUT 60)
+
 add_executable(xray_vfs_legacy_decode test_vfs_legacy_decode.cpp)
 target_include_directories(xray_vfs_legacy_decode PRIVATE "${CMAKE_SOURCE_DIR}/xray/maya_cook/sources")
 target_link_libraries(xray_vfs_legacy_decode PRIVATE xray_maya_cook)
@@ -57,7 +68,7 @@ add_executable(xray_editor_host_abi_contract test_editor_host_abi.cpp)
 add_test(NAME xray_editor_host_abi_contract COMMAND xray_editor_host_abi_contract)
 set_tests_properties(xray_editor_host_abi_contract PROPERTIES LABELS "cpu" TIMEOUT 60)
 
-if(XRAY_BUILD_EDITOR_HOST)
+if(XRAY_BUILD_EDITOR_HOST AND TARGET xray_editor_world)
     find_program(_xray_dotnet_test_exe dotnet REQUIRED)
     add_test(
         NAME xray_avalonia_headless_smoke
@@ -66,25 +77,29 @@ if(XRAY_BUILD_EDITOR_HOST)
     set_tests_properties(xray_avalonia_headless_smoke PROPERTIES LABELS "cpu" TIMEOUT 60)
 endif()
 
-add_executable(xray_ogg_vorbis_contract test_ogg_vorbis_contract.cpp)
-target_link_libraries(xray_ogg_vorbis_contract PRIVATE PkgConfig::OGG_VORBIS)
-add_test(NAME xray_ogg_vorbis_contract COMMAND xray_ogg_vorbis_contract)
-set_tests_properties(xray_ogg_vorbis_contract PROPERTIES LABELS "cpu" TIMEOUT 60)
+if(TARGET PkgConfig::OGG_VORBIS)
+    add_executable(xray_ogg_vorbis_contract test_ogg_vorbis_contract.cpp)
+    target_link_libraries(xray_ogg_vorbis_contract PRIVATE PkgConfig::OGG_VORBIS)
+    add_test(NAME xray_ogg_vorbis_contract COMMAND xray_ogg_vorbis_contract)
+    set_tests_properties(xray_ogg_vorbis_contract PROPERTIES LABELS "cpu" TIMEOUT 60)
 
-set(_legacy_ogg_sample "C:/Stalker2_2011/xr2-dsgn/resources/sources/sounds/single/stereo_test/rain_stereo.ogg")
-if(EXISTS "${_legacy_ogg_sample}")
-    add_test(
-        NAME xray_ogg_vorbis_legacy_corpus
-        COMMAND xray_ogg_vorbis_contract --legacy-ogg "${_legacy_ogg_sample}"
-    )
-    set_tests_properties(xray_ogg_vorbis_legacy_corpus PROPERTIES LABELS "audio" TIMEOUT 60)
+    set(_legacy_ogg_sample "C:/Stalker2_2011/xr2-dsgn/resources/sources/sounds/single/stereo_test/rain_stereo.ogg")
+    if(EXISTS "${_legacy_ogg_sample}")
+        add_test(
+            NAME xray_ogg_vorbis_legacy_corpus
+            COMMAND xray_ogg_vorbis_contract --legacy-ogg "${_legacy_ogg_sample}"
+        )
+        set_tests_properties(xray_ogg_vorbis_legacy_corpus PROPERTIES LABELS "audio" TIMEOUT 60)
+    endif()
 endif()
 
-add_executable(xray_dependency_single_source_contract test_dependency_single_source.cpp)
-target_link_libraries(xray_dependency_single_source_contract PRIVATE Boost::headers asio::asio PkgConfig::OGG_VORBIS PkgConfig::BULLET)
-target_compile_options(xray_dependency_single_source_contract PRIVATE ${_xray_test_cxx_warnings})
-add_test(NAME xray_dependency_single_source_contract COMMAND xray_dependency_single_source_contract)
-set_tests_properties(xray_dependency_single_source_contract PROPERTIES LABELS "cpu" TIMEOUT 60)
+if(TARGET asio::asio AND TARGET PkgConfig::OGG_VORBIS)
+    add_executable(xray_dependency_single_source_contract test_dependency_single_source.cpp)
+    target_link_libraries(xray_dependency_single_source_contract PRIVATE Boost::headers asio::asio PkgConfig::OGG_VORBIS PkgConfig::BULLET)
+    target_compile_options(xray_dependency_single_source_contract PRIVATE ${_xray_test_cxx_warnings})
+    add_test(NAME xray_dependency_single_source_contract COMMAND xray_dependency_single_source_contract)
+    set_tests_properties(xray_dependency_single_source_contract PROPERTIES LABELS "cpu" TIMEOUT 60)
+endif()
 
 add_executable(xray_math_and_binary_config_contract test_math_and_binary_config_contract.cpp)
 target_link_libraries(xray_math_and_binary_config_contract PRIVATE xray_core)
@@ -98,30 +113,56 @@ target_compile_options(xray_callback_and_raii_contract PRIVATE ${_xray_test_cxx_
 add_test(NAME xray_callback_and_raii_contract COMMAND xray_callback_and_raii_contract)
 set_tests_properties(xray_callback_and_raii_contract PROPERTIES LABELS "cpu" TIMEOUT 60)
 
-add_executable(xray_input_sdl3_contract test_input_sdl3_contract.cpp)
-target_include_directories(xray_input_sdl3_contract PRIVATE "${CMAKE_SOURCE_DIR}/xray/input/sources")
-target_link_libraries(xray_input_sdl3_contract PRIVATE xray_input xray_core SDL3::SDL3)
-target_compile_options(xray_input_sdl3_contract PRIVATE ${_xray_test_cxx_warnings})
-add_test(NAME xray_input_sdl3_contract COMMAND xray_input_sdl3_contract)
-set_tests_properties(xray_input_sdl3_contract PROPERTIES LABELS "cpu" TIMEOUT 60)
+add_executable(xray_diagnostics_pal3_contract test_diagnostics_pal3_contract.cpp)
+target_link_libraries(xray_diagnostics_pal3_contract PRIVATE xray_debug xray_core)
+target_compile_options(xray_diagnostics_pal3_contract PRIVATE ${_xray_test_cxx_warnings})
+add_test(NAME xray_diagnostics_pal3_contract COMMAND xray_diagnostics_pal3_contract)
+set_tests_properties(xray_diagnostics_pal3_contract PROPERTIES LABELS "cpu" TIMEOUT 60)
 
-add_executable(xray_xaudio2_9_contract test_xaudio2_9_contract.cpp)
-target_link_libraries(xray_xaudio2_9_contract PRIVATE xray_core xaudio2_9 ole32)
-target_compile_options(xray_xaudio2_9_contract PRIVATE ${_xray_test_cxx_warnings})
-add_test(NAME xray_xaudio2_9_contract COMMAND xray_xaudio2_9_contract)
-set_tests_properties(xray_xaudio2_9_contract PROPERTIES LABELS "audio" TIMEOUT 60)
+if(TARGET xray_input AND TARGET SDL3::SDL3)
+    add_executable(xray_input_sdl3_contract test_input_sdl3_contract.cpp)
+    target_include_directories(xray_input_sdl3_contract PRIVATE "${CMAKE_SOURCE_DIR}/xray/input/sources")
+    target_link_libraries(xray_input_sdl3_contract PRIVATE xray_input xray_core SDL3::SDL3)
+    target_compile_options(xray_input_sdl3_contract PRIVATE ${_xray_test_cxx_warnings})
+    add_test(NAME xray_input_sdl3_contract COMMAND xray_input_sdl3_contract)
+    set_tests_properties(xray_input_sdl3_contract PROPERTIES LABELS "cpu" TIMEOUT 60)
+endif()
 
-add_executable(xray_diagnostics_minidump_contract test_diagnostics_minidump_contract.cpp)
-target_link_libraries(xray_diagnostics_minidump_contract PRIVATE xray_debug xray_core)
-target_compile_options(xray_diagnostics_minidump_contract PRIVATE ${_xray_test_cxx_warnings})
-add_test(NAME xray_diagnostics_minidump_contract COMMAND xray_diagnostics_minidump_contract)
-set_tests_properties(xray_diagnostics_minidump_contract PROPERTIES LABELS "cpu" TIMEOUT 60)
+if(WIN32)
+    add_executable(xray_xaudio2_9_contract test_xaudio2_9_contract.cpp)
+    target_link_libraries(xray_xaudio2_9_contract PRIVATE xray_core xaudio2_9 ole32)
+    target_compile_options(xray_xaudio2_9_contract PRIVATE ${_xray_test_cxx_warnings})
+    add_test(NAME xray_xaudio2_9_contract COMMAND xray_xaudio2_9_contract)
+    set_tests_properties(xray_xaudio2_9_contract PROPERTIES LABELS "audio" TIMEOUT 60)
 
-add_executable(xray_network_udp_loopback test_network_udp_loopback.cpp)
-target_link_libraries(xray_network_udp_loopback PRIVATE asio::asio ws2_32)
-target_compile_options(xray_network_udp_loopback PRIVATE ${_xray_test_cxx_warnings})
-add_test(NAME xray_network_udp_loopback COMMAND xray_network_udp_loopback)
-set_tests_properties(xray_network_udp_loopback PROPERTIES LABELS "cpu" TIMEOUT 60)
+    add_executable(xray_diagnostics_minidump_contract test_diagnostics_minidump_contract.cpp)
+    target_link_libraries(xray_diagnostics_minidump_contract PRIVATE xray_debug xray_core)
+    target_compile_options(xray_diagnostics_minidump_contract PRIVATE ${_xray_test_cxx_warnings})
+    add_test(NAME xray_diagnostics_minidump_contract COMMAND xray_diagnostics_minidump_contract)
+    set_tests_properties(xray_diagnostics_minidump_contract PROPERTIES LABELS "cpu" TIMEOUT 60)
+endif()
+
+if(TARGET asio::asio)
+    add_executable(xray_network_udp_loopback test_network_udp_loopback.cpp)
+    target_link_libraries(xray_network_udp_loopback PRIVATE asio::asio)
+    if(WIN32)
+        target_link_libraries(xray_network_udp_loopback PRIVATE ws2_32)
+    endif()
+    target_compile_options(xray_network_udp_loopback PRIVATE ${_xray_test_cxx_warnings})
+    add_test(NAME xray_network_udp_loopback COMMAND xray_network_udp_loopback)
+    set_tests_properties(xray_network_udp_loopback PROPERTIES LABELS "cpu" TIMEOUT 60)
+endif()
+
+if(TARGET xray_sound)
+    add_executable(xray_audio_backend_contract test_audio_backend_contract.cpp)
+    target_link_libraries(xray_audio_backend_contract PRIVATE xray_sound xray_core)
+    target_compile_options(xray_audio_backend_contract PRIVATE ${_xray_test_cxx_warnings})
+    add_test(NAME xray_audio_backend_contract COMMAND xray_audio_backend_contract)
+    set_tests_properties(xray_audio_backend_contract PROPERTIES LABELS "cpu" TIMEOUT 60)
+    if(NOT WIN32)
+        set_tests_properties(xray_audio_backend_contract PROPERTIES ENVIRONMENT "SDL_AUDIODRIVER=dummy")
+    endif()
+endif()
 
 add_executable(xray_physics_world_parity_contract test_physics_world_parity_contract.cpp)
 target_include_directories(xray_physics_world_parity_contract PRIVATE "${CMAKE_SOURCE_DIR}/xray/physics/sources")
@@ -146,62 +187,105 @@ set_tests_properties(xray_physics_cook_fitter_contract PROPERTIES LABELS "cpu" T
 
 # --- Environment-gated tests (Vulkan loader, DXC compiler, packaged SDK assets) ---
 
-add_executable(xray_vulkan_original_archive test_vulkan_original_archive.cpp)
-target_include_directories(xray_vulkan_original_archive PRIVATE
-    "${CMAKE_SOURCE_DIR}/xray/maya_cook/sources"
-    "${CMAKE_SOURCE_DIR}/xray/render/vulkan/sources"
-)
-target_link_libraries(xray_vulkan_original_archive PRIVATE xray_maya_cook xray_render_vulkan)
-add_test(NAME xray_vulkan_original_archive COMMAND xray_vulkan_original_archive)
-set_tests_properties(xray_vulkan_original_archive PROPERTIES LABELS "vulkan" TIMEOUT 60)
+if(TARGET xray_render_vulkan)
+    add_executable(xray_shader_compiler_pal5_contract test_shader_compiler_pal5_contract.cpp)
+    target_link_libraries(xray_shader_compiler_pal5_contract PRIVATE xray_render_vulkan xray_core)
+    target_compile_options(xray_shader_compiler_pal5_contract PRIVATE ${_xray_test_cxx_warnings})
+    add_test(NAME xray_shader_compiler_pal5_contract COMMAND xray_shader_compiler_pal5_contract)
+    set_tests_properties(xray_shader_compiler_pal5_contract PROPERTIES LABELS "cpu" TIMEOUT 60)
 
-add_executable(xray_vulkan_sdl3_surface_contract test_vulkan_sdl3_surface_contract.cpp)
-target_link_libraries(xray_vulkan_sdl3_surface_contract PRIVATE xray_render_vulkan SDL3::SDL3)
-target_compile_options(xray_vulkan_sdl3_surface_contract PRIVATE ${_xray_test_cxx_warnings})
-add_test(NAME xray_vulkan_sdl3_surface_contract COMMAND xray_vulkan_sdl3_surface_contract)
-set_tests_properties(xray_vulkan_sdl3_surface_contract PROPERTIES LABELS "vulkan" TIMEOUT 60)
-set(_vk_val_dir "${CMAKE_SOURCE_DIR}/../build/vulkan-validation/mingw64/bin")
-if(EXISTS "${_vk_val_dir}/VkLayer_khronos_validation.json")
-    set_tests_properties(xray_vulkan_sdl3_surface_contract PROPERTIES
-        ENVIRONMENT_MODIFICATION "VK_LAYER_PATH=set:${_vk_val_dir};PATH=path_list_prepend:${_vk_val_dir}"
+    add_executable(xray_vulkan_original_archive test_vulkan_original_archive.cpp)
+    target_include_directories(xray_vulkan_original_archive PRIVATE
+        "${CMAKE_SOURCE_DIR}/xray/maya_cook/sources"
+        "${CMAKE_SOURCE_DIR}/xray/render/vulkan/sources"
     )
-endif()
+    target_link_libraries(xray_vulkan_original_archive PRIVATE xray_maya_cook xray_render_vulkan)
+    add_test(NAME xray_vulkan_original_archive COMMAND xray_vulkan_original_archive)
+    set_tests_properties(xray_vulkan_original_archive PROPERTIES LABELS "vulkan" TIMEOUT 60)
 
-add_executable(xray_vulkan_sync2_dynamic_rendering_contract test_vulkan_sync2_dynamic_rendering.cpp)
-target_link_libraries(xray_vulkan_sync2_dynamic_rendering_contract PRIVATE xray_render_vulkan xray_core)
-target_compile_options(xray_vulkan_sync2_dynamic_rendering_contract PRIVATE ${_xray_test_cxx_warnings})
-add_test(NAME xray_vulkan_sync2_dynamic_rendering_contract COMMAND xray_vulkan_sync2_dynamic_rendering_contract)
-set_tests_properties(xray_vulkan_sync2_dynamic_rendering_contract PROPERTIES LABELS "vulkan" TIMEOUT 60)
-if(EXISTS "${_vk_val_dir}/VkLayer_khronos_validation.json")
-    set_tests_properties(xray_vulkan_sync2_dynamic_rendering_contract PROPERTIES
-        ENVIRONMENT_MODIFICATION "VK_LAYER_PATH=set:${_vk_val_dir};PATH=path_list_prepend:${_vk_val_dir};XRAY_VULKAN_REQUIRE_VALIDATION=set:1;DISABLE_RTSS_LAYER=set:1;DISABLE_VULKAN_OBS_CAPTURE=set:1"
-    )
-endif()
+    add_executable(xray_vulkan_sdl3_surface_contract test_vulkan_sdl3_surface_contract.cpp)
+    target_link_libraries(xray_vulkan_sdl3_surface_contract PRIVATE xray_render_vulkan SDL3::SDL3)
+    target_compile_options(xray_vulkan_sdl3_surface_contract PRIVATE ${_xray_test_cxx_warnings})
+    add_test(NAME xray_vulkan_sdl3_surface_contract COMMAND xray_vulkan_sdl3_surface_contract)
+    set_tests_properties(xray_vulkan_sdl3_surface_contract PROPERTIES LABELS "vulkan" TIMEOUT 60)
+    set(_vk_val_dir "${CMAKE_SOURCE_DIR}/../build/vulkan-validation/mingw64/bin")
+    if(WIN32 AND EXISTS "${_vk_val_dir}/VkLayer_khronos_validation.json")
+        set_tests_properties(xray_vulkan_sdl3_surface_contract PROPERTIES
+            ENVIRONMENT_MODIFICATION "VK_LAYER_PATH=set:${_vk_val_dir};PATH=path_list_prepend:${_vk_val_dir}"
+        )
+    endif()
 
-set(XRAY_DXC_DIR "${CMAKE_SOURCE_DIR}/../build/dxc/bin/x64" CACHE PATH "Directory containing dxcompiler.dll and dxil.dll")
-if(EXISTS "${XRAY_DXC_DIR}/dxcompiler.dll")
-    add_test(
-        NAME xray_dxc_shader_compile
-        COMMAND "${Python3_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/test_dxc_shader_compile.py"
-            --compiler $<TARGET_FILE:xray_shader_compiler>
-            --shader-dir "${CMAKE_SOURCE_DIR}/xray/render/vulkan/assets"
-            --dxc-dir "${XRAY_DXC_DIR}"
-    )
-    set_tests_properties(xray_dxc_shader_compile PROPERTIES LABELS "dxc" TIMEOUT 60)
-endif()
+    add_executable(xray_vulkan_sync2_dynamic_rendering_contract test_vulkan_sync2_dynamic_rendering.cpp)
+    target_link_libraries(xray_vulkan_sync2_dynamic_rendering_contract PRIVATE xray_render_vulkan xray_core SDL3::SDL3)
+    target_compile_options(xray_vulkan_sync2_dynamic_rendering_contract PRIVATE ${_xray_test_cxx_warnings})
+    add_test(NAME xray_vulkan_sync2_dynamic_rendering_contract COMMAND xray_vulkan_sync2_dynamic_rendering_contract)
+    set_tests_properties(xray_vulkan_sync2_dynamic_rendering_contract PROPERTIES LABELS "vulkan" TIMEOUT 60)
+    if(WIN32 AND EXISTS "${_vk_val_dir}/VkLayer_khronos_validation.json")
+        set_tests_properties(xray_vulkan_sync2_dynamic_rendering_contract PROPERTIES
+            ENVIRONMENT_MODIFICATION "VK_LAYER_PATH=set:${_vk_val_dir};PATH=path_list_prepend:${_vk_val_dir};XRAY_VULKAN_REQUIRE_VALIDATION=set:1;DISABLE_RTSS_LAYER=set:1;DISABLE_VULKAN_OBS_CAPTURE=set:1"
+        )
+    endif()
 
-set(_sdk_assets_dir "${CMAKE_SOURCE_DIR}/../build/sdk-assets")
-set(_sdk_val_dir "${CMAKE_SOURCE_DIR}/../build/vulkan-validation/mingw64/bin")
-if(XRAY_BUILD_EDITOR_HOST AND EXISTS "${_sdk_assets_dir}/scene.json" AND EXISTS "${XRAY_DXC_DIR}/dxcompiler.dll" AND EXISTS "${_sdk_val_dir}/VkLayer_khronos_validation.dll")
-    add_test(
-        NAME xray_sdk_package_smoke
-        COMMAND "${Python3_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/test_sdk_package_smoke.py"
-            --repo-root "${CMAKE_SOURCE_DIR}/.."
-            --build-dir "${CMAKE_BINARY_DIR}"
-            --config "$<CONFIG>"
-            --dxc-dir "${XRAY_DXC_DIR}"
-            --validation-dir "${_sdk_val_dir}"
-            --assets-root "${_sdk_assets_dir}"
-    )
-    set_tests_properties(xray_sdk_package_smoke PROPERTIES LABELS "sdk" TIMEOUT 120)
+    if(WIN32)
+        if(XRAY_DXC_DIR STREQUAL "${CMAKE_SOURCE_DIR}/../build/dxc/linux-x64")
+            unset(XRAY_DXC_DIR CACHE)
+        endif()
+        set(XRAY_DXC_DIR "${CMAKE_SOURCE_DIR}/../build/dxc/bin/x64" CACHE PATH "Directory containing dxcompiler.dll and dxil.dll")
+        set(_xray_dxc_available FALSE)
+        if(EXISTS "${XRAY_DXC_DIR}/dxcompiler.dll")
+            set(_xray_dxc_available TRUE)
+        endif()
+    else()
+        if(XRAY_DXC_DIR STREQUAL "${CMAKE_SOURCE_DIR}/../build/dxc/bin/x64")
+            unset(XRAY_DXC_DIR CACHE)
+        endif()
+        set(XRAY_DXC_DIR "${CMAKE_SOURCE_DIR}/../build/dxc/linux-x64" CACHE PATH "Directory containing libdxcompiler.so and bin/dxc")
+        set(_xray_dxc_available FALSE)
+        if(EXISTS "${XRAY_DXC_DIR}/lib/libdxcompiler.so" OR EXISTS "${XRAY_DXC_DIR}/libdxcompiler.so" OR EXISTS "${XRAY_DXC_DIR}/bin/dxc")
+            set(_xray_dxc_available TRUE)
+        endif()
+    endif()
+    if(_xray_dxc_available)
+        add_test(
+            NAME xray_dxc_shader_compile
+            COMMAND "${Python3_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/test_dxc_shader_compile.py"
+                --compiler $<TARGET_FILE:xray_shader_compiler>
+                --shader-dir "${CMAKE_SOURCE_DIR}/xray/render/vulkan/assets"
+                --dxc-dir "${XRAY_DXC_DIR}"
+        )
+        set_tests_properties(xray_dxc_shader_compile PROPERTIES LABELS "dxc" TIMEOUT 120)
+    endif()
+
+    set(_sdk_assets_dir "${CMAKE_SOURCE_DIR}/../build/sdk-assets")
+    set(_sdk_val_dir "${CMAKE_SOURCE_DIR}/../build/vulkan-validation/mingw64/bin")
+    if(WIN32)
+        if(XRAY_BUILD_EDITOR_HOST AND EXISTS "${_sdk_assets_dir}/scene.json" AND EXISTS "${XRAY_DXC_DIR}/dxcompiler.dll" AND EXISTS "${_sdk_val_dir}/VkLayer_khronos_validation.dll")
+            add_test(
+                NAME xray_sdk_package_smoke
+                COMMAND "${Python3_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/test_sdk_package_smoke.py"
+                    --platform windows-x64
+                    --repo-root "${CMAKE_SOURCE_DIR}/.."
+                    --build-dir "${CMAKE_BINARY_DIR}"
+                    --config "$<CONFIG>"
+                    --dxc-dir "${XRAY_DXC_DIR}"
+                    --validation-dir "${_sdk_val_dir}"
+                    --assets-root "${_sdk_assets_dir}"
+            )
+            set_tests_properties(xray_sdk_package_smoke PROPERTIES LABELS "sdk" TIMEOUT 120)
+        endif()
+    else()
+        if(XRAY_BUILD_EDITOR_HOST AND TARGET stalker2 AND TARGET xray_editor_world AND EXISTS "${_sdk_assets_dir}/scene.json" AND (EXISTS "${XRAY_DXC_DIR}/lib/libdxcompiler.so" OR EXISTS "${XRAY_DXC_DIR}/libdxcompiler.so"))
+            add_test(
+                NAME xray_sdk_package_smoke
+                COMMAND "${Python3_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/test_sdk_package_smoke.py"
+                    --platform linux-x64
+                    --repo-root "${CMAKE_SOURCE_DIR}/.."
+                    --build-dir "${CMAKE_BINARY_DIR}"
+                    --config "$<$<CONFIG:Debug>:debug>$<$<NOT:$<CONFIG:Debug>>:release>"
+                    --dxc-dir "${XRAY_DXC_DIR}"
+                    --assets-root "${_sdk_assets_dir}"
+            )
+            set_tests_properties(xray_sdk_package_smoke PROPERTIES LABELS "sdk" TIMEOUT 180)
+        endif()
+    endif()
 endif()

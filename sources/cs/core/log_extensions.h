@@ -9,7 +9,8 @@
 #ifndef CS_CORE_LOG_EXTENSIONS_H_INCLUDED
 #define CS_CORE_LOG_EXTENSIONS_H_INCLUDED
 
-#include <fastdelegate/fastdelegate.h>
+#include <cstdarg>
+#include <fastdelegate/FastDelegate.h>
 #include <cs/core/logging.h>
 
 namespace logging {
@@ -34,7 +35,7 @@ namespace logging {
 										pcstr format,
 										va_list mark
 									);
-	CS_CORE_API	int		__cdecl		msg				(
+	CS_CORE_API	int		CS_CDECL	msg				(
 										cs::message_initiator const& initiator,
 										cs::core::message_type const& message_type,
 										pcstr format,

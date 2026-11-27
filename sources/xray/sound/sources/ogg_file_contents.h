@@ -7,6 +7,7 @@
 #ifndef OGG_FILE_CONTENTS_H_INCLUDED
 #define OGG_FILE_CONTENTS_H_INCLUDED
 
+#include "audio_backend.h"
 #include "ogg_utils.h"
 #include <xray/sound/channels_type.h>
 #include <xray/sound/encoded_sound_interface.h>
@@ -31,7 +32,7 @@ public:
 
 			ogg_file_source&	file_source				( ) { return m_raw_file; }
 private:
-	WAVEFORMATEX			m_wfx;
+	pcm_wave_format			m_wfx;
 	OggVorbis_File			m_ovf;
 	ogg_file_source			m_raw_file;
 	u32						m_pcm_total;

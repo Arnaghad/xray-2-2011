@@ -17,7 +17,7 @@
 namespace xray {
 namespace render {
 namespace vulkan {
-scene_runtime::scene_runtime(HWND window,
+scene_runtime::scene_runtime(platform::native_surface_handle window,
                              std::shared_ptr<presentation_output> output)
     : m_owner(register_scene_resources(window, std::move(output))),
       m_terrain_commands(std::make_shared<terrain_binding_runtime>(m_owner)) {}

@@ -24,8 +24,9 @@ namespace xray {
 namespace threading {
 
 	typedef u32								tls_key_id_type;
-	typedef long							atomic32_value_type;
+	typedef s32								atomic32_value_type;
 	typedef atomic32_value_type volatile	atomic32_type;
+	static_assert(sizeof(atomic32_value_type) == 4, "atomic32_value_type must be 32-bit");
 	typedef s64								atomic64_value_type;
 	typedef atomic64_value_type volatile	atomic64_type;
 	typedef pvoid							atomic_ptr_value_type;
@@ -80,10 +81,10 @@ XRAY_CORE_API	thread_id_type	spawn						(
 } // namespace xray
 
 #	define XRAY_THREADING_INLINE inline
-#	include <xray/threading_functions_win_inline.h>
+#	include <xray/threading_functions_inline.h>
 
 // CPU+compiler reorder preventing macro:
-#	define XRAY_MEMORY_BARRIER_EXCEPT_READS_BEFORE_WRITES	MemoryBarrier
-#	define XRAY_MEMORY_BARRIER_FULL							MemoryBarrier
+#	define XRAY_MEMORY_BARRIER_EXCEPT_READS_BEFORE_WRITES	xray::threading::memory_barrier
+#	define XRAY_MEMORY_BARRIER_FULL							xray::threading::memory_barrier
 
 #endif // #ifndef XRAY_THREADING_FUNCTIONS_H_INCLUDED

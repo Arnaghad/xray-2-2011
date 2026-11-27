@@ -91,7 +91,7 @@ void   file_system_impl::commit_replication (fat_node<> * work_node)
 
 	db_record * db				=	work_node->is_db() ? get_db(work_node) : nullptr;
 
-	COMPILE_ASSERT					(sizeof(long) == sizeof(u32),
+	COMPILE_ASSERT					(sizeof(threading::atomic32_value_type) == sizeof(u32),
 									 use_32_bit_version_of_interlocked_or_on_this_platform);
 	if ( db )
 	{

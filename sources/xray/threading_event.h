@@ -7,6 +7,11 @@
 #ifndef XRAY_THREADING_EVENT_H_INCLUDED
 #define XRAY_THREADING_EVENT_H_INCLUDED
 
+#include <xray/macro_platform.h>
+#include <xray/macro_building.h>
+#include <xray/type_extensions.h>
+#include <xray/detail_noncopyable.h>
+
 namespace xray {
 namespace threading {
 
@@ -21,10 +26,12 @@ public:
 						~event_tasks_unaware( );
 	void				set					( bool value);
 	wait_result_enum	wait				( u32 max_wait_time_ms );
+#if XRAY_PLATFORM_WINDOWS
 	pvoid				get_handle			( ) const;
+#endif
 
 private:
-	char XRAY_DEFAULT_ALIGN	m_event[sizeof(pvoid)]; // sizeof(CRITICAL_SECTION);
+	char XRAY_DEFAULT_ALIGN	m_event[sizeof(pvoid)]; // Win32 HANDLE or POSIX futex state
 
 }; // class event_tasks_unaware
 
@@ -36,7 +43,9 @@ public:
 	inline					event				( bool initial_state = false ) : m_event(initial_state) {}
 	inline	void			set					( bool value ) { m_event.set(value); }
 	wait_result_enum wait				( u32 max_wait_time_ms );
+#if XRAY_PLATFORM_WINDOWS
 	inline	pvoid			get_handle			( ) const { return m_event.get_handle(); }
+#endif
 
 private:
 	event_tasks_unaware		m_event;

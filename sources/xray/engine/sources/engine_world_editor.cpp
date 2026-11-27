@@ -24,14 +24,17 @@
 #include <filesystem>
 #include <iostream>
 
+#include <xray/engine/capture_control_bus.h>
+#include <xray/os_platform.h>
+#if XRAY_PLATFORM_WINDOWS
 #	include <xray/os_preinclude.h>
 #	undef NOUSER
 #	undef NOMSG
 #	undef NOMB
 #	include <xray/os_include.h>
-#	include <objbase.h>							// for COINIT_MULTITHREADED
+#endif
 
-	static HMODULE								s_editor_module	= 0;
+	static xray::os::dynamic_library			s_editor_module;
 	static xray::editor::create_world_ptr		s_create_world = 0;
 	static xray::editor::destroy_world_ptr		s_destroy_world = 0;
 	static xray::editor::memory_allocator_ptr	s_memory_allocator = 0;
@@ -49,28 +52,27 @@ void engine_world::try_load_editor			( )
 #endif
 
 	R_ASSERT			( !s_editor_module );
-	wchar_t executable[32768];
-	auto length=GetModuleFileNameW(nullptr,executable,32768);
-	CHECK_OR_EXIT(length && length<32768,"Cannot locate native editor deployment");
-	std::filesystem::path editor_path=std::filesystem::path(executable).parent_path()/XRAY_EDITOR_FILE_NAME;
-	s_editor_module=LoadLibraryW(editor_path.c_str());
+	auto const exe_dir = xray::os::executable_directory();
+	CHECK_OR_EXIT(!exe_dir.empty(),"Cannot locate native editor deployment");
+	std::filesystem::path editor_path = exe_dir / XRAY_EDITOR_FILE_NAME;
+	s_editor_module.open(editor_path, true);
 
 	if (!s_editor_module) {
-		LOG_WARNING		( "cannot load library \"%s\"", XRAY_EDITOR_FILE_NAME );
-		CHECK_OR_EXIT	( s_editor_module != 0, "Cannot load editor library - exiting.\r\nSee log file for details." );
+		LOG_WARNING		( "cannot load library \"%s\" (%s)", XRAY_EDITOR_FILE_NAME, s_editor_module.last_error().c_str() );
+		CHECK_OR_EXIT	( s_editor_module.valid(), "Cannot load editor library - exiting.\r\nSee log file for details." );
 		return;
 	}
 
 	R_ASSERT			( !s_create_world );
-	s_create_world		= (xray::editor::create_world_ptr)GetProcAddress(s_editor_module, "create_world");
+	s_create_world		= s_editor_module.symbol_as<xray::editor::create_world_ptr>( "create_world" );
 	R_ASSERT			( s_create_world );
 
 	R_ASSERT			( !s_destroy_world );
-	s_destroy_world		= (xray::editor::destroy_world_ptr)GetProcAddress(s_editor_module, "destroy_world");
+	s_destroy_world		= s_editor_module.symbol_as<xray::editor::destroy_world_ptr>( "destroy_world" );
 	R_ASSERT			( s_destroy_world );
 
 	R_ASSERT			( !s_memory_allocator);
-	s_memory_allocator	= (xray::editor::memory_allocator_ptr)GetProcAddress(s_editor_module, "set_memory_allocator");
+	s_memory_allocator	= s_editor_module.symbol_as<xray::editor::memory_allocator_ptr>( "set_memory_allocator" );
 	R_ASSERT			( s_memory_allocator );
 
 	m_editor_allocator.user_current_thread_id	( );
@@ -84,15 +86,15 @@ void engine_world::try_load_editor			( )
 	m_editor			= s_create_world ( *this );
 	R_ASSERT			( m_editor );
 
-	R_ASSERT			( !m_render_window_handle );
+	R_ASSERT			( !m_render_window_handle.valid() );
 	m_render_window_handle = m_editor->view_handle( );
-	R_ASSERT			( m_render_window_handle );
+	R_ASSERT			( m_render_window_handle.valid() );
 	if(background_render_capture())CHECK_OR_EXIT(
-		SetPropA(m_render_window_handle,"XRAY_VULKAN_TEST_CAPTURE",HANDLE(1)),"Cannot opt editor output into fenced capture");
+		xray::engine::capture_control_bus::set_flag(m_render_window_handle,"XRAY_VULKAN_TEST_CAPTURE"),"Cannot opt editor output into fenced capture");
 
-	R_ASSERT			( !m_main_window_handle );
+	R_ASSERT			( !m_main_window_handle.valid() );
 	m_main_window_handle = m_editor->main_handle( );
-	R_ASSERT			( m_main_window_handle );
+	R_ASSERT			( m_main_window_handle.valid() );
 
 	m_editor->load		( );
 }
@@ -109,7 +111,6 @@ void engine_world::unload_editor			( )
 	s_destroy_world		= 0;
 	s_create_world		= 0;
 	s_memory_allocator=0;
-	CoUninitialize();
 }
 
 void engine_world::release_editor_module()
@@ -118,8 +119,7 @@ void engine_world::release_editor_module()
 	// File-channel dummy nodes and their callback/destructor code can still
 	// belong to this module after world destruction. Release the loader reference
 	// only after the resource consumers and every producer TLS queue have drained.
-	CHECK_OR_EXIT(FreeLibrary(s_editor_module), "Cannot release the retired editor module");
-	s_editor_module=0;
+	s_editor_module.close();
 	if (background_render_capture()) std::cerr<<"M8 shutdown: editor module released\n";
 }
 
@@ -146,7 +146,7 @@ void engine_world::initialize_editor		( )
 
 void engine_world::editor				( )
 {
-	CoInitializeEx			( 0, COINIT_APARTMENTTHREADED );
+	xray::os::scoped_com_init	com_guard( false );
 
 	apc::assign_thread_id	( apc::editor, threading::current_thread_id( ) );
 	apc::process			( apc::editor );

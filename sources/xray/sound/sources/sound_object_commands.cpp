@@ -95,7 +95,7 @@ void sound_object_callback_command::execute( )
 		break;
 
 	case ev_buffer_end:
-		m_owner->on_buffer_end		( m_context );
+		m_owner->on_buffer_end_impl	( m_context );
 		break;
 
 	case ev_buffer_error:

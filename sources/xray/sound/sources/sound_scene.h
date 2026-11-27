@@ -24,6 +24,7 @@
 namespace xray {
 namespace sound {
 
+class i_audio_submix;
 class sound_debug_stats;
 
 namespace statistics {
@@ -85,7 +86,7 @@ class sound_scene :	public resources::unmanaged_resource,
 					private xray::noncopyable
 {
 public:
-								sound_scene					( IXAudio2SubmixVoice* submix_voice, u32 dbg_id );
+								sound_scene					( i_audio_submix* submix_voice, u32 dbg_id );
 								~sound_scene				( );
 
 	void						tick						( sound_world& world, u32 time_delta );
@@ -182,7 +183,7 @@ public:
 	inline	float3 const&		get_listenet_orient_front	( ) const { return m_listener.m_orient_front; }
 	inline	float3 const&		get_listenet_orient_top		( ) const { return m_listener.m_orient_top; }
 
-	IXAudio2SubmixVoice*		get_submix_voice			( ) const { return m_submix_voice; }
+	i_audio_submix*				get_submix_voice			( ) const { return m_submix_voice; }
 				void			fade_in						( sound_world& world, u32 time_in_msec );
 				void			fade_out					( u32 time_in_msec );
 
@@ -323,7 +324,7 @@ private:
 
 	active_voices											m_active_voices;
 
-	IXAudio2SubmixVoice*									m_submix_voice;
+	i_audio_submix*											m_submix_voice;
 
 #ifndef MASTER_GOLD
 //	debug_snapshot*											m_debug_snapshot;

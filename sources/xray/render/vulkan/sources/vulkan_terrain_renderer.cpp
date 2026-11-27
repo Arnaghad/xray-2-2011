@@ -144,6 +144,7 @@ void terrain_renderer::prepare(std::vector<terrain_draw> const& draws) {
     }
 }
 void terrain_renderer::prepare_deferred() {
+    if (m_deferred_vs && m_material_vs && m_gbuffer_ps && m_material_ps && m_surface && m_material) return;
     rhi::shader_compiler compiler;
     struct stage { rhi::shader_stage type; char const* entry; rhi::rhi_shader_handle* handle; };
     for (auto s : {stage{rhi::shader_stage::vertex,"terrain_deferred_vs",&m_deferred_vs},

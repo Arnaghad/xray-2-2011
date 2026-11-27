@@ -36,7 +36,11 @@ pstr convert_to_portable_in_place( pstr const path )
 
 pstr convert_to_native_in_place( pstr const path )
 {
+#if XRAY_PLATFORM_WINDOWS
 	for ( pstr i=strchr(path, '/'); i; *i='\\', i=strchr(i, '/') );
+#else
+	for ( pstr i=strchr(path, '\\'); i; *i='/', i=strchr(i, '\\') );
+#endif
 	return path;
 }
 

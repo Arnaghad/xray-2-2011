@@ -38,18 +38,27 @@ static void prologue											( _EXCEPTION_POINTERS* const exception_informatio
 	using namespace xray::debug;
 	platform::format_message				( );
 
-	SYSTEMTIME								date_time;
-	GetLocalTime							(&date_time);
+	SYSTEMTIME								sys_time;
+	GetLocalTime							(&sys_time);
+
+	date_time								dt;
+	dt.year									= sys_time.wYear;
+	dt.month								= sys_time.wMonth;
+	dt.day									= sys_time.wDay;
+	dt.hour									= sys_time.wHour;
+	dt.minute								= sys_time.wMinute;
+	dt.second								= sys_time.wSecond;
+	dt.millisecond							= sys_time.wMilliseconds;
 
 	string_path								log_file_name;
 
 	platform::prologue_dump_call_stack	( exception_information );
-	debug_engine()->generate_debug_file_name	( log_file_name, & date_time, "error_report", ".log");
+	debug_engine()->generate_debug_file_name	( log_file_name, &dt, "error_report", ".log");
 
 	debug_engine()->flush_log_file			( log_file_name );
 
 	bugtrap::add_file						( log_file_name );
-	platform::save_minidump					( date_time, exception_information );
+	platform::save_minidump					( dt, exception_information );
 }
 
 static void epilogue											( _EXCEPTION_POINTERS* const exception_information )

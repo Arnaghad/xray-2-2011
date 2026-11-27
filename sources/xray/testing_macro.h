@@ -10,8 +10,10 @@
 #if XRAY_IN_PCH
 #endif // #if XRAY_IN_PCH
 
-#include <xray/os_preinclude.h>
-#include <xray/os_include.h>
+#if XRAY_PLATFORM_WINDOWS
+#	include <xray/os_preinclude.h>
+#	include <xray/os_include.h>
+#endif
 
 #pragma warning(disable:4509)
 

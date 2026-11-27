@@ -35,9 +35,9 @@
 
 #	define CS_CRT_ID
 #	define CS_SCRIPT_ID
-#	ifndef _DLL
+#	if defined(_MSC_VER) && !defined(_DLL)
 #		error Please use only release CRT DLL
-#	endif // #ifdef _DLL
+#	endif // #if defined(_MSC_VER) && !defined(_DLL)
 #endif // #ifdef CS_STATIC_LIBRARIES
 
 #if defined(__SNC__)

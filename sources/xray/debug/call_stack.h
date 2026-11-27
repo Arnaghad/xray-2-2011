@@ -7,6 +7,11 @@
 #ifndef DEBUG_CALL_STACK_H_INCLUDED
 #define DEBUG_CALL_STACK_H_INCLUDED
 
+#include <functional>
+#include <xray/type_extensions.h>
+
+struct _EXCEPTION_POINTERS;
+
 namespace xray {
 namespace debug {
 namespace call_stack {

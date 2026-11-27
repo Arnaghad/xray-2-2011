@@ -23,7 +23,7 @@
     <PackageReference Include="Dock.Model.Mvvm" Version="12.2.0" />
     <PackageReference Include="Dock.Serializer.SystemTextJson" Version="12.2.0" />
     <AvaloniaResource Include="Assets/images16x16.png" />
-    <AvaloniaResource Include="controls/color_picker/*.png" />
+    <AvaloniaResource Include="Controls/color_picker/*.png" />
     <AvaloniaResource Include="type_editors/curve_editor/icons/*.png" />
   </ItemGroup>
 </Project>

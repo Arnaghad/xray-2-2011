@@ -6,6 +6,7 @@
 
 #include "pch.h"
 #include "sound_scene.h"
+#include <ctime>
 #include <xray/collision/api.h>
 #include <xray/collision/space_partitioning_tree.h>
 #include <xray/sound/sound_propagator_emitter.h>
@@ -56,7 +57,7 @@ void receiver_collision::delete_position	( sound_scene& scene )
 	m_position							= 0;
 }
 
-sound_scene::sound_scene	( IXAudio2SubmixVoice* submix_voice, u32 dbg_id ) :
+sound_scene::sound_scene	( i_audio_submix* submix_voice, u32 dbg_id ) :
 	m_next						( 0 ),
 	m_proxies_count				( 16 ),
 	m_propagators_count			( 16 ),
@@ -1116,7 +1117,7 @@ void sound_scene::process_fade	( sound_world& world, u64 time_delta )
 			m_fade_state	= none;
 		}
 		if ( m_submix_voice )
-			m_submix_voice->SetVolume( m_volume );
+			m_submix_voice->set_volume( m_volume );
 	}
 	else if ( m_fade_state == fade_out_state )
 	{
@@ -1133,7 +1134,7 @@ void sound_scene::process_fade	( sound_world& world, u64 time_delta )
 		}
 		LOG_DEBUG								( "volume: %f", m_volume );
 		if ( m_submix_voice )
-			m_submix_voice->SetVolume( m_volume );
+			m_submix_voice->set_volume( m_volume );
 	}
 }
 
@@ -1253,16 +1254,21 @@ void sound_scene::disable_debug_stream_writing	 ( )
 
 static void fill_path_name			( fs::path_string& dest, pcstr extention )
 {
-	SYSTEMTIME					date_time;
-	GetLocalTime				( &date_time );
+	std::time_t const now = std::time( nullptr );
+	std::tm date_time = {};
+#if XRAY_PLATFORM_WINDOWS
+	localtime_s( &date_time, &now );
+#else
+	localtime_r( &now, &date_time );
+#endif
 	dest.appendf				(	"%s/sound_dumps/scene_buffers_dump_%02d_%02d_%04d_%02d_%02d_%02d.%s",
 									fs_new::portable_path_string::convert( core::user_data_directory() ).c_str(),
-									date_time.wDay,
-									date_time.wMonth,
-									date_time.wYear,
-									date_time.wHour, 
-									date_time.wMinute,
-									date_time.wSecond,
+									date_time.tm_mday,
+									date_time.tm_mon + 1,
+									date_time.tm_year + 1900,
+									date_time.tm_hour,
+									date_time.tm_min,
+									date_time.tm_sec,
 									extention
 								 );
 }

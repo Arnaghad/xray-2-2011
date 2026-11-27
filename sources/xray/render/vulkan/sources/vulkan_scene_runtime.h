@@ -87,7 +87,7 @@ class scene_runtime {
     scene_view_ptr m_ui_view;
     size_t m_ui_bytes=0,m_ui_batches=0;
 public:
-    explicit scene_runtime(HWND,std::shared_ptr<presentation_output>);
+    explicit scene_runtime(platform::native_surface_handle,std::shared_ptr<presentation_output>);
     ~scene_runtime();
     view_resource& view(scene_view_ptr const&) const;
     output_resource& output(render_output_window_ptr const&) const;

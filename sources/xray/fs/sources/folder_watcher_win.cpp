@@ -69,7 +69,7 @@ void   folder_watcher::subscribe_to_receive_changes (swap_buffers_bool const swa
 																	TRUE,
  																		FILE_NOTIFY_CHANGE_FILE_NAME |
  																		FILE_NOTIFY_CHANGE_DIR_NAME |
-																		FILE_NOTIFY_CHANGE_LAST_WRITE,
+ 																		FILE_NOTIFY_CHANGE_LAST_WRITE,
 																	nullptr,
 																	overlapped,
 																	nullptr );
@@ -86,7 +86,7 @@ void   folder_watcher::try_receive_changes_sync	()
 																	TRUE,
  																		FILE_NOTIFY_CHANGE_FILE_NAME |
  																		FILE_NOTIFY_CHANGE_DIR_NAME |
-																		FILE_NOTIFY_CHANGE_LAST_WRITE,
+ 																		FILE_NOTIFY_CHANGE_LAST_WRITE,
 																	& bytes_received,
 																	nullptr,
 																	nullptr );

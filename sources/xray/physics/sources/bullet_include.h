@@ -40,7 +40,7 @@
 #include <BulletCollision/CollisionShapes/btBvhTriangleMeshShape.h>
 #include <BulletCollision/Gimpact/btGImpactShape.h>
 #include <BulletCollision/CollisionShapes/btConcaveShape.h>
-#include <BulletCollision/Gimpact/btGimpactCollisionAlgorithm.h>
+#include <BulletCollision/Gimpact/btGImpactCollisionAlgorithm.h>
 #include <BulletCollision/CollisionDispatch/btGhostObject.h>
 #include <BulletDynamics/Character/btKinematicCharacterController.h>
 

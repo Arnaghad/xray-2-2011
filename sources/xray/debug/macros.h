@@ -9,7 +9,9 @@
 
 #include <xray/type_extensions.h>
 #include <xray/macro_extensions.h>
-#include <xray/os_include.h>
+#if XRAY_PLATFORM_WINDOWS
+#	include <xray/os_include.h>
+#endif
 #include <utility>
 #include <xray/debug.h>
 

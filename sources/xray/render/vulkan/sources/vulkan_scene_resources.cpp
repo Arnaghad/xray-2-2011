@@ -1,5 +1,6 @@
 #include "pch.h"
 #include <xray/render/vulkan/scene_resources.h>
+#include <xray/render/vulkan/platform_surface.h>
 #include <xray/render/vulkan/model_resources.h>
 #include <xray/render/vulkan/material_resources.h>
 #include <xray/resources_cook_classes.h>
@@ -20,19 +21,19 @@
 
 namespace xray { namespace render { namespace vulkan {
 namespace { std::atomic<u64> next_temporal_id{1}; }
-scene_registry::scene_registry(HWND window, std::shared_ptr<presentation_output> output)
+scene_registry::scene_registry(platform::native_surface_handle window, std::shared_ptr<presentation_output> output)
     : m_thread(threading::current_thread_id()),m_window(window), m_output(std::move(output)) {
-    if (!m_output) { m_output = std::make_shared<presentation_output>(); m_output->hwnd = window; }
-    if (m_output->hwnd != window) throw std::runtime_error("Presentation output HWND does not match the resource session");
+    if (!m_output) { m_output = std::make_shared<presentation_output>(); m_output->surface_handle = window; }
+    if (m_output->surface_handle != window) throw std::runtime_error("Presentation output surface does not match the resource session");
     record_texture_reload({});
 }
-void scene_registry::add(unsigned kind, void* resource, HWND window) {
+void scene_registry::add(unsigned kind, void* resource, platform::native_surface_handle window) {
     std::lock_guard lock(m_mutex);
     if (kind >= 3 || !m_accepting || !resource) throw std::runtime_error("Scene registry is closed or invalid");
     if (kind == 2) {
-        if (!IsWindow(window)) throw std::runtime_error("Output requires a live HWND");
+        if (!surface_adapter::is_surface_alive(window)) throw std::runtime_error("Output requires a live surface");
         for (auto* value:m_resources[2]) if (static_cast<output_resource*>(value)->window()==window)
-            throw std::runtime_error("HWND already has a cooked output");
+            throw std::runtime_error("Surface already has a cooked output");
     }
     if (!m_resources[kind].insert(resource).second) throw std::runtime_error("Duplicate scene registry entry");
 }
@@ -67,13 +68,13 @@ void scene_registry::publish_model(std::string const& key,std::shared_ptr<static
     {std::lock_guard lock(m_mutex);if(!m_accepting)throw std::runtime_error("Closed model publication");m_model_overrides.swap(next);}
 }
 bool scene_registry::accepting() const { std::lock_guard lock(m_mutex); return m_accepting; }
-std::shared_ptr<presentation_output> scene_registry::make_presentation(HWND window) const {
-    if (!on_owner_thread() || !accepting() || !IsWindow(window)) throw std::runtime_error("Output lease requires its accepting cook owner and a live HWND");
+std::shared_ptr<presentation_output> scene_registry::make_presentation(platform::native_surface_handle window) const {
+    if (!on_owner_thread() || !accepting() || !surface_adapter::is_surface_alive(window)) throw std::runtime_error("Output lease requires its accepting cook owner and a live surface");
     if (window==m_window) {
         if (m_output->closed || m_output->close_requested) throw std::runtime_error("Primary output has closed");
         return m_output;
     }
-    auto result=std::make_shared<presentation_output>();result->hwnd=window;return result;
+    auto result=std::make_shared<presentation_output>();result->surface_handle=window;return result;
 }
 std::array<size_t,3> scene_registry::counts() const {
     std::lock_guard lock(m_mutex); return {m_resources[0].size(),m_resources[1].size(),m_resources[2].size()};
@@ -159,7 +160,7 @@ void view_resource::set_postprocess(postprocess_settings const& settings) {
 }
 void view_resource::enable_postprocess(bool enabled) { std::lock_guard lock(m_mutex); m_postprocess.enabled=enabled; }
 postprocess_settings view_resource::postprocess() const { std::lock_guard lock(m_mutex); return m_postprocess; }
-output_resource::output_resource(std::shared_ptr<scene_registry> state, HWND window) : m_window(window),temporal_id(next_temporal_id.fetch_add(1)),owner(std::move(state)) {
+output_resource::output_resource(std::shared_ptr<scene_registry> state, platform::native_surface_handle window) : m_window(window),temporal_id(next_temporal_id.fetch_add(1)),owner(std::move(state)) {
     if (!owner) throw std::runtime_error("Missing output registry");
     m_presentation=owner->make_presentation(window);owner->add(2,this,window);
 }
@@ -174,10 +175,12 @@ void output_resource::request_close() {
     m_presentation->close_requested=true;
 }
 math::uint2 output_resource::client_size() const {
-    RECT rect = {};
+    u32 width = 0, height = 0;
     if (!owner->accepting() || m_presentation->closed || m_presentation->close_requested
-        || !IsWindow(m_window) || IsIconic(GetAncestor(m_window,GA_ROOT)) || !GetClientRect(m_window,&rect)) return math::uint2(0,0);
-    return math::uint2(u32(rect.right-rect.left),u32(rect.bottom-rect.top));
+        || !surface_adapter::is_surface_alive(m_window) || surface_adapter::is_surface_minimized(m_window)
+        || !surface_adapter::query_surface_extent(m_window, width, height))
+        return math::uint2(0,0);
+    return math::uint2(width, height);
 }
 namespace {
 class scene_resource_cook final : public resources::translate_query_cook {
@@ -254,11 +257,9 @@ public:
         try {
             T* result = nullptr;
             if constexpr (std::is_same_v<T,output_resource>) {
-                HWND window = nullptr;
-                auto* value = query.user_data() ? query.user_data()->get_if<HWND>() : nullptr;
-                if (!value) throw std::runtime_error("Output requires HWND user data");
-                window = *value;
-                result = new(buffer.c_ptr()) T(m_owner,window);
+                auto* value = query.user_data() ? query.user_data()->get_if<platform::native_surface_handle>() : nullptr;
+                if (!value) throw std::runtime_error("Output requires native_surface_handle user data");
+                result = new(buffer.c_ptr()) T(m_owner,*value);
             } else result = new(buffer.c_ptr()) T(m_owner);
             query.set_unmanaged_resource(result,resources::nocache_memory,sizeof(T));
             query.finish_query(result_success);
@@ -279,7 +280,7 @@ struct cook_group {
     texture_cook texture;
     material_cook material;
     particle_material_cook particle_material;
-    explicit cook_group(HWND window, std::shared_ptr<presentation_output> output_state) : owner(std::make_shared<scene_registry>(window,std::move(output_state))),
+    explicit cook_group(platform::native_surface_handle window, std::shared_ptr<presentation_output> output_state) : owner(std::make_shared<scene_registry>(window,std::move(output_state))),
         scene(owner),view(resources::scene_view_class,owner),output(resources::render_output_window_class,owner),
         model(true,owner),model_asset(false,owner),skeletal_model(true,owner,true),skeletal_asset(false,owner,true),skeletal_wrapper(owner),
         tree(false,owner),tree_instance(true,owner),terrain_mesh(resources::terrain_mesh_class,owner),terrain_instance(resources::terrain_instance_class,owner),terrain_wrapper(resources::terrain_model_class,owner),texture(owner),material(owner),particle_material(owner) {}
@@ -322,8 +323,8 @@ bool finalize_scene_resources() {
     resources::unregister_cook(resources::texture_class); resources::unregister_cook(resources::material_class);
     resources::unregister_cook(resources::material_effects_instance_class); cooks.reset(); return true;
 }
-std::shared_ptr<scene_registry> register_scene_resources(HWND window, std::shared_ptr<presentation_output> output_state) {
-    if (!resources::is_initialized() || !render::g_allocator || !window || !IsWindow(window)) throw std::runtime_error("Scene cook registration requires resources, renderer allocator and a valid HWND");
+std::shared_ptr<scene_registry> register_scene_resources(platform::native_surface_handle window, std::shared_ptr<presentation_output> output_state) {
+    if (!resources::is_initialized() || !render::g_allocator || !window.valid() || !surface_adapter::is_surface_alive(window)) throw std::runtime_error("Scene cook registration requires resources, renderer allocator and a valid surface");
     if (!finalize_scene_resources()) throw std::runtime_error("Previous scene resources/queries must drain before reinitialization");
     for (auto id : {resources::scene_class,resources::scene_view_class,resources::render_output_window_class,resources::static_render_model_instance_class,
         resources::static_render_model_class,resources::skeleton_render_model_instance_class,resources::skeleton_render_model_class,resources::skeleton_model_instance_class,

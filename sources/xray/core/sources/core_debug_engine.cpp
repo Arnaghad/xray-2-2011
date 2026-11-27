@@ -9,9 +9,8 @@
 #include "build_extensions.h"
 #include <xray/testing.h>
 
-#include <xray/os_include.h>
+#include <ctime>
 #include <xray/core_entry_point.h>
-#include <xray/fs/windows_hdd_file_system.h>
 #include <xray/fs/synchronous_device_interface.h>
 #include <xray/fs/device_utils.h>
 #include <xray/logging/log_file.h>
@@ -130,10 +129,25 @@ bool	core_debug_engine::create_folder_r			( pcstr path, bool create_last ) const
 #if 1
 
 void	core_debug_engine::generate_debug_file_name	(string_path &				file_name,
-											 _SYSTEMTIME const * const	date_time,
+											 xray::debug::date_time const * const date_time,
 											 pcstr const 				report_id,
 											 pcstr const 				extension) const
 {
+	xray::debug::date_time fallback_dt = {};
+	xray::debug::date_time const* dt = date_time;
+	if ( !dt ) {
+		std::time_t const now = std::time( nullptr );
+		std::tm local_tm = {};
+		localtime_s( &local_tm, &now );
+		fallback_dt.year = static_cast<u16>( local_tm.tm_year + 1900 );
+		fallback_dt.month = static_cast<u16>( local_tm.tm_mon + 1 );
+		fallback_dt.day = static_cast<u16>( local_tm.tm_mday );
+		fallback_dt.hour = static_cast<u16>( local_tm.tm_hour );
+		fallback_dt.minute = static_cast<u16>( local_tm.tm_min );
+		fallback_dt.second = static_cast<u16>( local_tm.tm_sec );
+		dt = &fallback_dt;
+	}
+
 	pcstr const application_id			=	core::application_name();
 	sprintf_s					(
 		file_name,
@@ -145,19 +159,19 @@ void	core_debug_engine::generate_debug_file_name	(string_path &				file_name,
 		"_",
 		report_id,
 		*report_id ? "_" : "",
-		date_time->wYear % 100,
-		date_time->wMonth,
-		date_time->wDay,
-		date_time->wHour,
-		date_time->wMinute,
-		date_time->wSecond,
+		dt->year % 100,
+		dt->month,
+		dt->day,
+		dt->hour,
+		dt->minute,
+		dt->second,
 		extension
 	);
 }
 #else
 
 void	core_debug_engine::generate_debug_file_name	(string_path &				file_name,
-											 _SYSTEMTIME const * const	date_time,
+											 xray::debug::date_time const * const date_time,
 											 pcstr const				report_id,
 											 pcstr const				extension) const
 {

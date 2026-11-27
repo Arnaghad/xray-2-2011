@@ -44,10 +44,11 @@ void triangle_mesh_geometry::initialize		( memory::base_allocator* allocator, fl
 
 void triangle_mesh_geometry::destroy	( memory::base_allocator* allocator )
 {
-	::g_allocator			= allocator;
 #if defined(XRAY_COLLISION_USE_BULLET_BVH) && XRAY_COLLISION_USE_BULLET_BVH
+	XRAY_UNREFERENCED_PARAMETER(allocator);
 	m_bullet_bvh.reset		( );
 #else
+	::g_allocator			= allocator;
 	XRAY_DELETE_IMPL		( allocator, m_model );
 	XRAY_DELETE_IMPL		( allocator, m_mesh );
 	m_model					= 0;

@@ -10,7 +10,11 @@
 #include <type_traits>
 #include <xray/memory_debug_parameters.h>
 #include <typeinfo>
-#include <new.h>
+#if XRAY_PLATFORM_WINDOWS
+#	include <new.h>
+#else
+#	include <new>
+#endif
 
 namespace xray {
 namespace memory {

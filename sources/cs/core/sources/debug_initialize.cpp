@@ -10,7 +10,9 @@
 #include <cs/core/debug.h>
 
 #	include <cs/core/os_include.h>	// for BugTrap.h and dbghelp.h
-#	include <new.h>					// for _set_new_mode
+#	if defined(_WIN32)
+#		include <new.h>					// for _set_new_mode
+#	endif
 #	include <signal.h>				// for signals
 
 #	define CS_USE_BUG_TRAP				0
@@ -229,13 +231,16 @@ void debug::initialize					()
 	_set_abort_behavior				(0,_WRITE_ABORT_MSG | _CALL_REPORTFAULT);
 #endif // #ifdef _MSC_VER
 	signal							(SIGABRT,		abort_handler);
+#if defined(_WIN32) && defined(SIGABRT_COMPAT)
 	signal							(SIGABRT_COMPAT,abort_handler);
+#endif
 	signal							(SIGFPE,		floating_point_handler);
 	signal							(SIGILL,		illegal_instruction_handler);
 	signal							(SIGINT,		0);
 //	signal							(SIGSEGV,		storage_access_handler);
 	signal							(SIGTERM,		termination_handler);
 
+#if defined(_WIN32)
 	_set_invalid_parameter_handler	(&invalid_parameter_handler);
 
 #ifdef _MSC_VER
@@ -244,6 +249,7 @@ void debug::initialize					()
 #endif // #ifdef _MSC_VER
 
 	_set_purecall_handler			(&pure_call_handler);
+#endif // #if defined(_WIN32)
 }
 
 void debug::uninitialize				()

@@ -11,6 +11,57 @@
 #include <xray/physics/api.h>
 #include <xray/linkage_helper.h>
 
+#if XRAY_PLATFORM_LINUX
+#	include <cstdarg>
+#	include <cstdio>
+#	include <cstdlib>
+#	include <ode/error.h>
+
+extern "C" void dError( int num, char const* msg, ... )
+{
+	va_list ap;
+	va_start( ap, msg );
+	if ( auto* fn = dGetErrorHandler() ) {
+		fn( num, msg, ap );
+	} else {
+		std::fprintf( stderr, "ODE Error %d: ", num );
+		std::vfprintf( stderr, msg, ap );
+		std::fprintf( stderr, "\n" );
+	}
+	va_end( ap );
+	std::exit( 1 );
+}
+
+extern "C" void dDebug( int num, char const* msg, ... )
+{
+	va_list ap;
+	va_start( ap, msg );
+	if ( auto* fn = dGetDebugHandler() ) {
+		fn( num, msg, ap );
+	} else {
+		std::fprintf( stderr, "ODE INTERNAL ERROR %d: ", num );
+		std::vfprintf( stderr, msg, ap );
+		std::fprintf( stderr, "\n" );
+	}
+	va_end( ap );
+	std::abort();
+}
+
+extern "C" void dMessage( int num, char const* msg, ... )
+{
+	va_list ap;
+	va_start( ap, msg );
+	if ( auto* fn = dGetMessageHandler() ) {
+		fn( num, msg, ap );
+	} else {
+		std::fprintf( stderr, "ODE Message %d: ", num );
+		std::vfprintf( stderr, msg, ap );
+		std::fprintf( stderr, "\n" );
+	}
+	va_end( ap );
+}
+#endif // #if XRAY_PLATFORM_LINUX
+
 memory::base_allocator*	xray::physics::g_ph_allocator = nullptr;
 
 XRAY_DECLARE_LINKAGE_ID(physics_entry_point)

@@ -9,6 +9,8 @@
 #ifndef OS_INCLUDE_H_INCLUDED
 #define OS_INCLUDE_H_INCLUDED
 
+#if defined(_WIN32)
+
 #undef			INVALID_HANDLE_VALUE
 #undef			HMODULE
 
@@ -50,5 +52,13 @@
 #	include		<windows.h>
 #	define		IS_DEBUGGER_PRESENT			IsDebuggerPresent
 #	define		OUTPUT_DEBUG_STRING			OutputDebugString
+
+#else // #if defined(_WIN32)
+
+#	include		<cstdio>
+#	define		IS_DEBUGGER_PRESENT()		(false)
+#	define		OUTPUT_DEBUG_STRING(msg)	std::fprintf(stderr, "%s", (msg))
+
+#endif // #if defined(_WIN32)
 
 #endif // #ifndef OS_INCLUDE_H_INCLUDED

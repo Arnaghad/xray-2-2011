@@ -21,10 +21,13 @@
 #define XRAY_NO_SIGNALS_H
 
 
-#include <xray/os_preinclude.h>
-#undef NONET
+#include <xray/os_platform.h>
+#if XRAY_PLATFORM_WINDOWS
+#	include <xray/os_preinclude.h>
+#	undef NONET
 // Asio's Windows file API converts UTF-8 paths through the NLS declarations.
-#undef NONLS
+#	undef NONLS
+#endif
 
 #define XRAY_LOG_MODULE_INITIATOR	"network"
 #include <xray/extensions.h>
@@ -35,7 +38,19 @@
 #	ifndef _WIN32_WINNT
 #		define _WIN32_WINNT 0x0601
 #	endif
+#	pragma push_macro("malloc")
+#	pragma push_macro("calloc")
+#	pragma push_macro("realloc")
+#	pragma push_macro("free")
+#	undef malloc
+#	undef calloc
+#	undef realloc
+#	undef free
 #	include "boost_api.h"
+#	pragma pop_macro("free")
+#	pragma pop_macro("realloc")
+#	pragma pop_macro("calloc")
+#	pragma pop_macro("malloc")
 #endif // #if 1
 
 #endif // #ifndef PCH_H_INCLUDED

@@ -9,6 +9,7 @@
 
 #include <xray/input/world.h>
 #include <xray/input/mouse.h>
+#include <xray/platform_surface.h>
 #include <SDL3/SDL_events.h>
 
 namespace xray {
@@ -24,7 +25,7 @@ class mouse :
 {
 typedef vector< handler* >		handlers_type;
 public:
-							mouse			( HWND window_handle, xray::input::world& input_world );
+							mouse			( platform::native_surface_handle window_handle, xray::input::world& input_world );
 	virtual					~mouse			( );
 	virtual	state const&	get_state		( ) const;
 			void			on_activate		( );
@@ -38,7 +39,7 @@ public:
 private:
 	state					m_current_state;
 	state					m_previous_state;
-	HWND					m_window_handle;
+	platform::native_surface_handle	m_window_handle;
 	xray::input::world&		m_world;
 	long					m_pending_x;
 	long					m_pending_y;

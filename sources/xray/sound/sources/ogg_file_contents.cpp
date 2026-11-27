@@ -26,13 +26,13 @@ ogg_file_contents::ogg_file_contents(resources::managed_resource_ptr raw_file)
 
 	ASSERT						(ovi, "Invalid source info");
 
-	m_wfx.nSamplesPerSec		= (ovi->rate);
-	m_wfx.wFormatTag			= WAVE_FORMAT_PCM;
-	m_wfx.nChannels				= u16(ovi->channels);
-	m_wfx.wBitsPerSample		= 16;
+	m_wfx.samples_per_sec		= (ovi->rate);
+	m_wfx.format_tag			= 1;
+	m_wfx.channels				= u16(ovi->channels);
+	m_wfx.bits_per_sample		= 16;
 
-	m_wfx.nBlockAlign			= (m_wfx.nChannels * m_wfx.wBitsPerSample) / 8;
-	m_wfx.nAvgBytesPerSec		= m_wfx.nSamplesPerSec * m_wfx.nBlockAlign;
+	m_wfx.block_align			= (m_wfx.channels * m_wfx.bits_per_sample) / 8;
+	m_wfx.avg_bytes_per_sec		= m_wfx.samples_per_sec * m_wfx.block_align;
 
 	m_pcm_total					= (u32)ov_pcm_total(&m_ovf, -1);
 }
@@ -56,17 +56,17 @@ u32 ogg_file_contents::get_length_in_pcm ( ) const
 
 u32 ogg_file_contents::get_length_in_msec ( ) const
 {
-	return (m_pcm_total * 1000) / m_wfx.nSamplesPerSec;
+	return (m_pcm_total * 1000) / m_wfx.samples_per_sec;
 }
 
 u32  ogg_file_contents::get_samples_per_sec	( ) const
 {
-	return m_wfx.nSamplesPerSec;
+	return m_wfx.samples_per_sec;
 }
 
 channels_type ogg_file_contents::get_channels_type ( ) const
 {
-	switch (m_wfx.nChannels)
+	switch (m_wfx.channels)
 	{
 	case 1:	 return mono;
 	case 2:	 return stereo;

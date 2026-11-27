@@ -22,32 +22,52 @@
 #	define XRAY_ASSUME( expression )							__assume( expression )
 #	define XRAY_DECLARE_PURE_VIRTUAL_DESTRUCTOR( type )			virtual	~type	( ) = 0 { }
 
+#	define XRAY_STDCALL											__stdcall
+#	define XRAY_CDECL											__cdecl
+#	define XRAY_FASTCALL										__fastcall
+
+#	define XRAY_SHARED_LIB_PREFIX								""
+#	define XRAY_SHARED_LIB_SUFFIX								".dll"
+#	define XRAY_EXE_SUFFIX										".exe"
 
 #	define XRAY_ALLOCA_IMPL										_alloca
 #elif defined(__GNUC__) // #if defined(_MSC_VER)
 #	define XRAY_NOVTABLE
 #	define XRAY_ALIGN( alignment )								__attribute__( (aligned(alignment)) )
-#	define XRAY_DLL_IMPORT										__attribute__( (dllimport) )
-#	define XRAY_DLL_EXPORT										__attribute__( (dllexport) )
 #	define XRAY_DECLARE_PURE_VIRTUAL_DESTRUCTOR( type )			virtual	~type	( ) {}
 
-#	if defined(_WIN32)
+#	if XRAY_PLATFORM_WINDOWS
+#		define XRAY_DLL_IMPORT									__attribute__( (dllimport) )
+#		define XRAY_DLL_EXPORT									__attribute__( (dllexport) )
 #		include <malloc.h>
-#	else
+#		define _stdcall											__stdcall
+#		define _cdecl											__cdecl
+#		define _fastcall										__fastcall
+#		define XRAY_STDCALL										__stdcall
+#		define XRAY_CDECL										__cdecl
+#		define XRAY_FASTCALL									__fastcall
+#		define XRAY_SHARED_LIB_PREFIX							"lib"
+#		define XRAY_SHARED_LIB_SUFFIX							".dll"
+#		define XRAY_EXE_SUFFIX									".exe"
+#	else // #if XRAY_PLATFORM_WINDOWS
+#		define XRAY_DLL_IMPORT
+#		define XRAY_DLL_EXPORT									__attribute__( (visibility("default")) )
 #		include <alloca.h>
-#	endif
+#		define XRAY_STDCALL
+#		define XRAY_CDECL
+#		define XRAY_FASTCALL
+#		define XRAY_SHARED_LIB_PREFIX							"lib"
+#		define XRAY_SHARED_LIB_SUFFIX							".so"
+#		define XRAY_EXE_SUFFIX									""
+#	endif // #if XRAY_PLATFORM_WINDOWS
 #	define XRAY_ALLOCA_IMPL										alloca
-
-#	define _stdcall											__stdcall
-#	define _cdecl											__cdecl
-#	define _fastcall										__fastcall
 
 #	define __FUNCSIG__											__PRETTY_FUNCTION__
 #	define XRAY_ASSUME( expression )							do { if (!(expression)) __builtin_unreachable(); } while (0)
 #else // #elif defined(__GNUC__)
 
 #	error please define macros for your compiler here
-#endif // #if XRAY_PLATFORM_WINDOWS
+#endif // #if defined(_MSC_VER)
 
 
 #endif // #ifndef XRAY_MACRO_COMPILER_H_INCLUDED

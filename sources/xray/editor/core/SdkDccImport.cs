@@ -49,11 +49,38 @@ public sealed partial class SdkDccService {
     }
 }
 
+public static class SdkProcessLocator {
+    public static string CookerExecutableName => OperatingSystem.IsWindows() ? "xray_asset_cook_cli.exe" : "xray_asset_cook_cli";
+
+    public static string? FindBlenderExecutable() {
+        if(OperatingSystem.IsWindows()) {
+            string installed=Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles),"Blender Foundation","Blender 5.3","blender.exe");
+            if(File.Exists(installed))return installed;
+            return FindInPath("blender.exe");
+        }
+        foreach(string candidate in new[]{"/usr/bin/blender","/usr/local/bin/blender","/snap/bin/blender"})
+            if(File.Exists(candidate))return candidate;
+        return FindInPath("blender");
+    }
+
+    public static string? FindInPath(string executableName) {
+        string? pathVar=Environment.GetEnvironmentVariable("PATH");
+        if(string.IsNullOrEmpty(pathVar))return null;
+        foreach(string dir in pathVar.Split(Path.PathSeparator,StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)) {
+            string candidate=Path.Combine(dir,executableName);
+            if(File.Exists(candidate))return candidate;
+        }
+        return null;
+    }
+}
+
 public static class SdkDccDefaults {
     public static void Discover(SdkDccSettings settings) {
         string binaries=Path.GetDirectoryName(typeof(SdkDccSettings).Assembly.Location)!;
-        string installed=Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles),"Blender Foundation","Blender 5.3","blender.exe");
-        if(!File.Exists(settings.Blender) && File.Exists(installed))settings.Blender=installed;
+        if(!File.Exists(settings.Blender)) {
+            string? detected=SdkProcessLocator.FindBlenderExecutable();
+            if(!string.IsNullOrEmpty(detected))settings.Blender=detected;
+        }
         for(var folder=new DirectoryInfo(binaries);folder!=null;folder=folder.Parent) {
             string tools=Path.Combine(folder.FullName,"sources","tools");if(!File.Exists(Path.Combine(tools,"blender","sdk_bridge.py")))continue;
             if(settings.ToolsDirectory.Length==0)settings.ToolsDirectory=tools;
@@ -62,6 +89,7 @@ public static class SdkDccDefaults {
             if(settings.MigrationManifest.Length==0 && File.Exists(Path.Combine(build,"blender-b5","migration","migration-manifest.json")))settings.MigrationManifest=Path.Combine(build,"blender-b5","migration","migration-manifest.json");
             break;
         }
-        if(settings.Cooker.Length==0 && File.Exists(Path.Combine(binaries,"xray_asset_cook_cli.exe")))settings.Cooker=Path.Combine(binaries,"xray_asset_cook_cli.exe");
+        string cookerCandidate=Path.Combine(binaries,SdkProcessLocator.CookerExecutableName);
+        if(settings.Cooker.Length==0 && File.Exists(cookerCandidate))settings.Cooker=cookerCandidate;
     }
 }

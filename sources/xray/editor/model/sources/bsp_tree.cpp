@@ -12,7 +12,7 @@
 #include "generated_portal.h"
 #pragma managed(push, off)
 #include <xray/render/facade/debug_renderer.h>
-#include <xray\ai_navigation\sources\graph_generator_adjacency_builder.h>
+#include <xray/ai_navigation/sources/graph_generator_adjacency_builder.h>
 #include <xray/collision/geometry.h>
 #pragma managed(pop)
 

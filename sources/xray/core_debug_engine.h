@@ -22,7 +22,7 @@ public:
 	virtual int		get_exit_code			( ) const;
 	virtual u32		build_station_build_id	( ) const;
 	virtual void	generate_debug_file_name	( string_path &				file_name,
-												  _SYSTEMTIME const * const	date_time,
+												  xray::debug::date_time const * const date_time,
 												  pcstr	const				report_id,
 												  pcstr	const				extension ) const;
 

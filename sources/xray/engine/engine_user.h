@@ -7,12 +7,7 @@
 #ifndef XRAY_ENGINE_ENGINE_USER_H_INCLUDED
 #define XRAY_ENGINE_ENGINE_USER_H_INCLUDED
 
-#ifndef _MSC_VER
-#ifndef _WINDEF_
-struct HWND__;
-typedef HWND__* HWND;
-#endif
-#endif // #ifndef _MSC_VER
+#include <xray/platform_surface.h>
 
 namespace xray {
 
@@ -50,8 +45,8 @@ struct XRAY_NOVTABLE engine {
 	virtual	void	enter_editor_mode			( ) = 0;
 	virtual	bool	command_line_editor			( ) = 0;
 	virtual	pcstr	get_resources_path			( ) const = 0;
-	virtual	HWND	get_main_window_handle		( ) const = 0;
-	virtual	HWND	get_render_window_handle	( ) const = 0;
+	virtual	platform::native_surface_handle	get_main_window_handle		( ) const = 0;
+	virtual	platform::native_surface_handle	get_render_window_handle	( ) const = 0;
 	virtual	float2	get_render_window_size		( ) const = 0;
 	virtual xray::engine::console* create_game_console(  ui::world& uw, input::world& iw ) = 0;
 

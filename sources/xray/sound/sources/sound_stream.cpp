@@ -27,13 +27,13 @@ sound_stream::sound_stream( resources::managed_resource_ptr raw_file/*, resource
 	ASSERT						(ovi, "Invalid source info");
 
 #if 1
-	m_wfx.nSamplesPerSec		= (ovi->rate);
-	m_wfx.wFormatTag			= WAVE_FORMAT_PCM;
-	m_wfx.nChannels				= u16(ovi->channels);
-	m_wfx.wBitsPerSample		= 16;
+	m_wfx.samples_per_sec		= (ovi->rate);
+	m_wfx.format_tag			= 1;
+	m_wfx.channels				= u16(ovi->channels);
+	m_wfx.bits_per_sample		= 16;
 
-	m_wfx.nBlockAlign			= (m_wfx.nChannels * m_wfx.wBitsPerSample) / 8;
-	m_wfx.nAvgBytesPerSec		= m_wfx.nSamplesPerSec * m_wfx.nBlockAlign;
+	m_wfx.block_align			= (m_wfx.channels * m_wfx.bits_per_sample) / 8;
+	m_wfx.avg_bytes_per_sec		= m_wfx.samples_per_sec * m_wfx.block_align;
 #endif // #if 1
 
 	m_pcm_total					= (u32)ov_pcm_total(&m_ovf, -1);

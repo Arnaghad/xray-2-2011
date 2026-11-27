@@ -20,16 +20,19 @@
 #define XRAY_LOG_MODULE_INITIATOR	"sound"
 #include <xray/extensions.h>
 
-#include <xray/os_preinclude.h>
-#undef NOUSER
-#undef NOMSG
-#include <xray/os_include.h>
+#include <xray/os_platform.h>
+#if defined(XRAY_AUDIO_BACKEND_XAUDIO2)
+#	include <xray/os_preinclude.h>
+#	undef NOUSER
+#	undef NOMSG
+#	include <xray/os_include.h>
 
 #	include <xaudio2.h>
 #	include <x3daudio.h>
 #	include <xapo.h>
 // #	include <xapobase.h>
 #	include <xapofx.h>
+#endif
 
 #include <vorbis/vorbisfile.h>
 #include <vorbis/vorbisenc.h>

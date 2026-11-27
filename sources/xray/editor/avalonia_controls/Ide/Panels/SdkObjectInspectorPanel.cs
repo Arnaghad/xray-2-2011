@@ -1,6 +1,7 @@
 using Avalonia.Controls;
 using xray.editor.avalonia_controls.property_grid;
 using xray.editor.avalonia_controls.Shell.Docking;
+using xray.editor.avalonia_controls.Themes;
 
 namespace xray.editor.avalonia_controls.Ide.Panels;
 
@@ -19,6 +20,7 @@ public class SdkObjectInspectorPanel : UserControl
 
     public SdkObjectInspectorPanel()
     {
+        Background = SdkWorkspaceTheme.Surface;
         Content = m_propertyGrid;
     }
 

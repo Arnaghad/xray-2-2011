@@ -1,15 +1,21 @@
 #pragma once
+#include <xray/engine/capture_control_bus.h>
 #include <xray/render/vulkan/sources/vulkan_backend.h>
 #include <xray/render/vulkan/sources/vulkan_performance.h>
 #include <xray/render/vulkan/diagnostics.h>
 #include <xray/engine/m9_performance_protocol.h>
+#include <xray/os_platform.h>
 #include "m8_output_capture.h"
-#include <psapi.h>
+#if XRAY_PLATFORM_WINDOWS
+#	include <xray/os_include.h>
+#	include <psapi.h>
+#endif
 #include <filesystem>
 #include <fstream>
 #include <iomanip>
 #include <iostream>
 #include <charconv>
+#include <string>
 
 namespace xray { namespace engine { namespace m9_performance {
 struct session {
@@ -28,7 +34,47 @@ inline unsigned seconds(std::string const& text,unsigned maximum) {
 template<class Values> inline void array(std::ostream& stream,Values const& values) {
     stream<<'[';bool separator=false;for(auto value:values) {if(separator)stream<<',';stream<<value;separator=true;}stream<<']';
 }
-inline void start(render::vulkan::vulkan_backend& backend,HWND window,std::filesystem::path const& directory,char const* durations) {
+struct process_memory_snapshot {
+    uint64_t private_bytes = 0;
+    uint64_t working_set_bytes = 0;
+    uint64_t peak_commit_bytes = 0;
+    uint64_t peak_working_set_bytes = 0;
+};
+inline bool query_process_memory(process_memory_snapshot& out) {
+#if XRAY_PLATFORM_WINDOWS
+    PROCESS_MEMORY_COUNTERS_EX memory={};memory.cb=sizeof(memory);
+    using process_memory_function=BOOL(WINAPI*)(HANDLE,PPROCESS_MEMORY_COUNTERS,DWORD);
+    static auto get_memory=reinterpret_cast<process_memory_function>(GetProcAddress(GetModuleHandleA("kernel32.dll"),"K32GetProcessMemoryInfo"));
+    if(!get_memory || !get_memory(GetCurrentProcess(),reinterpret_cast<PPROCESS_MEMORY_COUNTERS>(&memory),sizeof(memory)))
+        return false;
+    out.private_bytes=memory.PrivateUsage;
+    out.working_set_bytes=memory.WorkingSetSize;
+    out.peak_commit_bytes=memory.PeakPagefileUsage;
+    out.peak_working_set_bytes=memory.PeakWorkingSetSize;
+    return true;
+#else
+    std::ifstream status("/proc/self/status");
+    if (!status) return false;
+    std::string line;
+    auto parse_kb = [](std::string const& text, char const* key, uint64_t& target) {
+        std::size_t const len = std::strlen(key);
+        if (text.compare(0, len, key) != 0) return;
+        std::size_t pos = len;
+        while (pos < text.size() && (text[pos] == ' ' || text[pos] == '\t' || text[pos] == ':')) ++pos;
+        uint64_t kb = 0;
+        auto parsed = std::from_chars(text.data() + pos, text.data() + text.size(), kb);
+        if (parsed.ec == std::errc{}) target = kb * 1024ull;
+    };
+    while (std::getline(status, line)) {
+        parse_kb(line, "VmData", out.private_bytes);
+        parse_kb(line, "VmRSS", out.working_set_bytes);
+        parse_kb(line, "VmPeak", out.peak_commit_bytes);
+        parse_kb(line, "VmHWM", out.peak_working_set_bytes);
+    }
+    return true;
+#endif
+}
+inline void start(render::vulkan::vulkan_backend& backend,platform::native_surface_handle const& window,std::filesystem::path const& directory,char const* durations) {
     if(current)throw std::runtime_error("Duplicate performance session");
     std::string text=durations;auto comma=text.find(',');
     if(comma==std::string::npos)throw std::runtime_error("Performance duration requires warmup,stress seconds");
@@ -48,7 +94,7 @@ inline void start(render::vulkan::vulkan_backend& backend,HWND window,std::files
     value->started=render::vulkan::performance_clock_ns();value->previous=value->started;
     value->heap_sample_ns=value->started;
     value->warmup=uint64_t(warmup)*1000000000;value->stress=uint64_t(stress)*1000000000;
-    if(!SetPropA(window,hold_property,HANDLE(1)))throw std::runtime_error("Cannot hold performance content phase");
+    if(!capture_control_bus::set_flag(window,hold_property))throw std::runtime_error("Cannot hold performance content phase");
     std::ofstream metadata(directory/"performance-start.json");
     metadata<<std::setprecision(17);
     metadata<<"{\"version\":1,\"warmup_seconds\":"<<warmup<<",\"stress_seconds\":"<<stress
@@ -66,10 +112,8 @@ inline bool sample(render::vulkan::vulkan_backend& backend) {
     if(!current)return false;
     auto& value=*current;auto now=render::vulkan::performance_clock_ns();auto elapsed=now-value.started;
     auto state=backend.performance();
-    PROCESS_MEMORY_COUNTERS_EX memory={};memory.cb=sizeof(memory);
-    using process_memory_function=BOOL(WINAPI*)(HANDLE,PPROCESS_MEMORY_COUNTERS,DWORD);
-    static auto get_memory=reinterpret_cast<process_memory_function>(GetProcAddress(GetModuleHandleA("kernel32.dll"),"K32GetProcessMemoryInfo"));
-    if(!get_memory || !get_memory(GetCurrentProcess(),reinterpret_cast<PPROCESS_MEMORY_COUNTERS>(&memory),sizeof(memory)))
+    process_memory_snapshot memory={};
+    if(!query_process_memory(memory))
         throw std::runtime_error("Cannot query process memory");
     if(!value.heap_sample_ns || now-value.heap_sample_ns>=1000000000) {
         value.heaps=backend.memory_heaps();value.heap_sample_ns=now;
@@ -81,8 +125,8 @@ inline bool sample(render::vulkan::vulkan_backend& backend) {
        <<",\"device_bytes\":"<<state.device_memory.live_bytes<<",\"device_peak_bytes\":"<<state.device_memory.peak_bytes
        <<",\"device_allocations\":"<<state.device_memory.allocations<<",\"device_frees\":"<<state.device_memory.frees
        <<",\"host_bytes\":"<<state.host_memory.live_bytes<<",\"host_allocations\":"<<state.host_memory.allocations
-       <<",\"private_bytes\":"<<memory.PrivateUsage<<",\"working_set_bytes\":"<<memory.WorkingSetSize
-       <<",\"peak_commit_bytes\":"<<memory.PeakPagefileUsage<<",\"peak_working_set_bytes\":"<<memory.PeakWorkingSetSize
+       <<",\"private_bytes\":"<<memory.private_bytes<<",\"working_set_bytes\":"<<memory.working_set_bytes
+       <<",\"peak_commit_bytes\":"<<memory.peak_commit_bytes<<",\"peak_working_set_bytes\":"<<memory.peak_working_set_bytes
        <<",\"pipelines\":"<<state.pipelines<<",\"pipeline_creations\":"<<state.pipeline_creations
        <<",\"pipeline_creation_ns\":"<<state.pipeline_creation_ns<<",\"device_idle_calls\":"<<state.device_idle_calls
        <<",\"pending_pass_objects\":"<<state.pending_pass_objects
@@ -113,15 +157,16 @@ inline bool sample(render::vulkan::vulkan_backend& backend) {
         value.stream.close();if(!value.stream)throw std::runtime_error("Cannot close performance measurements");
         auto selected=backend.output();auto outputs=backend.outputs();
         for(size_t i=0;i<outputs.size();++i) {
-            m8_outputs::protected_window(outputs[i]->hwnd);backend.select_output(outputs[i]);
+            m8_outputs::protected_window(outputs[i]->surface_handle);backend.select_output(outputs[i]);
             m8_outputs::write_image(value.directory/(i ? "performance-final.preview.bmp" : "performance-final.main.bmp"),backend.capture_frame());
         }
         backend.select_output(selected);
         std::ofstream metadata(value.directory/"performance-complete.json");
-        metadata<<"{\"elapsed_ns\":"<<elapsed<<",\"outputs\":"<<state.outputs.size()<<",\"completed\":true}\n";
-        metadata.close();if(!metadata)throw std::runtime_error("Cannot write completed performance metadata");
-        current.reset();std::cerr<<"M9 performance completed: elapsed_ns="<<elapsed<<'\n';
+        metadata<<"{\"version\":1,\"complete\":true,\"elapsed_ns\":"<<elapsed<<"}\n";
+        metadata.close();if(!metadata)throw std::runtime_error("Cannot write performance complete metadata");
+        current.reset();
+        return true;
     }
-    return complete;
+    return false;
 }
 } } }

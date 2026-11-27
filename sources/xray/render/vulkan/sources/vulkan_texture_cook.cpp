@@ -6,7 +6,9 @@
 #include <xray/resources_fs.h>
 #include <xray/resources_query_result.h>
 #include <xray/resources_pinned_ptr.h>
+#include <filesystem>
 #include <stdexcept>
+#include <system_error>
 
 namespace xray { namespace render { namespace vulkan {
 namespace {
@@ -65,13 +67,15 @@ void texture_cook::load_file(resources::query_result_for_cook& query,std::string
                 },m_allocator,nullptr,&query,assert_on_fail_false);
             };
             if (options.starts_with("@")) {
-                WIN32_FILE_ATTRIBUTE_DATA info={};
-                if (!GetFileAttributesExA(options.c_str()+1,GetFileExInfoStandard,&info)) {
-                    auto error=GetLastError();
-                    if (error!=ERROR_FILE_NOT_FOUND && error!=ERROR_PATH_NOT_FOUND) throw std::runtime_error("Unreadable TGA options");
+                std::filesystem::path const opt_path = std::filesystem::u8path(options.substr(1));
+                std::error_code ec;
+                auto const status = std::filesystem::status(opt_path, ec);
+                if (ec == std::errc::no_such_file_or_directory || ec == std::errc::not_a_directory || status.type() == std::filesystem::file_type::not_found) {
                     complete(config); return;
                 }
-                if ((info.dwFileAttributes&FILE_ATTRIBUTE_DIRECTORY) || info.nFileSizeHigh || !info.nFileSizeLow || info.nFileSizeLow>65536)
+                if (ec || std::filesystem::is_directory(status)) throw std::runtime_error("Unreadable TGA options");
+                auto const size = std::filesystem::file_size(opt_path, ec);
+                if (ec || !size || size > 65536)
                     throw std::runtime_error("Invalid TGA options file");
                 read_options(); return;
             }

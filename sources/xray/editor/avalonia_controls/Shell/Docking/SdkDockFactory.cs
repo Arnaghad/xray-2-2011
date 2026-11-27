@@ -149,6 +149,7 @@ public sealed class SdkDockFactory : Factory
             {
                 var host = new HostWindow();
                 ControlRecyclingDataTemplate.SetControlRecycling(host, m_controlRecycling);
+                host.Opened += (_, _) => AvaloniaWindowStyle.StyleTitleBar(host);
                 return host;
             }
         };

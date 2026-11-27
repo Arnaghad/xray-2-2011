@@ -393,7 +393,7 @@ public partial class WindowIde : IDisposable, IContextManager
         m_warning_count++;
         m_log_form.View.AddWarning(warning);
         if (m_error_count == 0)
-            m_window.SetErrorStatus($"Warnings: {m_warning_count}", new SolidColorBrush(Color.FromRgb(255, 220, 140)));
+            m_window.SetErrorStatus($"Warnings: {m_warning_count}", new SolidColorBrush(Color.FromRgb(107, 76, 17)));
         SetStatus(warning);
     }
 
@@ -401,7 +401,7 @@ public partial class WindowIde : IDisposable, IContextManager
     {
         m_error_count++;
         m_log_form.View.AddError(error);
-        m_window.SetErrorStatus($"Errors: {m_error_count}", new SolidColorBrush(Color.FromRgb(255, 128, 128)));
+        m_window.SetErrorStatus($"Errors: {m_error_count}", new SolidColorBrush(Color.FromRgb(138, 38, 44)));
         SetStatus(error);
     }
 
@@ -660,7 +660,8 @@ public partial class WindowIde : IDisposable, IContextManager
 
         double scale = Math.Max(0.1, m_window.RenderScaling);
         m_window.WindowState = WindowState.Normal;
-        m_window.Position = new PixelPoint(clampedBounds.X, clampedBounds.Y);
+        if (!(OperatingSystem.IsLinux() && !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("WAYLAND_DISPLAY"))))
+            m_window.Position = new PixelPoint(clampedBounds.X, clampedBounds.Y);
         m_window.Width = clampedBounds.Width / scale;
         m_window.Height = clampedBounds.Height / scale;
         if (snapshot.WindowState == (int)WindowState.Maximized && !m_background_mode)
@@ -1106,36 +1107,36 @@ public partial class WindowIde : IDisposable, IContextManager
             case "play":
                 group.Children.Add(new GeometryDrawing
                 {
-                    Brush = new SolidColorBrush(Color.FromRgb(46, 178, 86)),
+                    Brush = new SolidColorBrush(Color.FromRgb(52, 199, 123)),
                     Geometry = Geometry.Parse("M 4,3 L 13,8 L 4,13 Z")
                 });
                 break;
             case "simulate":
                 group.Children.Add(new GeometryDrawing
                 {
-                    Brush = new SolidColorBrush(Color.FromRgb(38, 138, 224)),
+                    Brush = new SolidColorBrush(Color.FromRgb(62, 166, 255)),
                     Geometry = Geometry.Parse("M 3,3 L 10,8 L 3,13 Z")
                 });
                 group.Children.Add(new GeometryDrawing
                 {
-                    Brush = new SolidColorBrush(Color.FromRgb(38, 138, 224)),
+                    Brush = new SolidColorBrush(Color.FromRgb(62, 166, 255)),
                     Geometry = new EllipseGeometry(new Rect(11, 6, 3, 4))
                 });
                 break;
             case "pause":
-                var amber = new SolidColorBrush(Color.FromRgb(224, 152, 24));
+                var amber = new SolidColorBrush(Color.FromRgb(245, 166, 35));
                 group.Children.Add(new GeometryDrawing { Brush = amber, Geometry = new RectangleGeometry(new Rect(3, 3, 4, 10)) });
                 group.Children.Add(new GeometryDrawing { Brush = amber, Geometry = new RectangleGeometry(new Rect(9, 3, 4, 10)) });
                 break;
             case "step":
-                var blue = new SolidColorBrush(Color.FromRgb(36, 132, 214));
+                var blue = new SolidColorBrush(Color.FromRgb(69, 183, 255));
                 group.Children.Add(new GeometryDrawing { Brush = blue, Geometry = Geometry.Parse("M 3,3 L 10,8 L 3,13 Z") });
                 group.Children.Add(new GeometryDrawing { Brush = blue, Geometry = new RectangleGeometry(new Rect(11, 3, 2, 10)) });
                 break;
             default:
                 group.Children.Add(new GeometryDrawing
                 {
-                    Brush = new SolidColorBrush(Color.FromRgb(214, 58, 58)),
+                    Brush = new SolidColorBrush(Color.FromRgb(238, 90, 90)),
                     Geometry = new RectangleGeometry(new Rect(3, 3, 10, 10))
                 });
                 break;

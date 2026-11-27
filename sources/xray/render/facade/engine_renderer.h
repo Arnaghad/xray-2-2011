@@ -8,7 +8,7 @@
 #define XRAY_RENDER_FACADE_ENGINE_RENDERER_H_INCLUDED
 
 #include <xray/render/api.h>
-#include <xray/os_include.h>
+#include <xray/platform_surface.h>
 
 namespace xray {
 namespace render {
@@ -23,9 +23,9 @@ private:
 
 public:
 #if defined(USE_VULKAN_RENDERER)
-	bool initialize(HWND window_handle);
+	bool initialize(platform::native_surface_handle surface);
 	// Production scene startup includes the external particle cooks on the render owner.
-	bool initialize_game(HWND window_handle);
+	bool initialize_game(platform::native_surface_handle surface);
 	// Retry after producer references and resource callbacks have drained.
 	bool finalize_game_resources();
 	bool initialize_geometry_smoke();

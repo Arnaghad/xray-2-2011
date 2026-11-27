@@ -11,9 +11,9 @@
 
 XRAY_DECLARE_LINKAGE_ID(sound_library_linkage)
 
-#if 1
+#if defined(_MSC_VER) && defined(XRAY_AUDIO_BACKEND_XAUDIO2)
 #	pragma comment( lib, "x3daudio.lib" )
 #	pragma comment( lib, "xapofx.lib" )
 #	pragma comment( lib, "xapobase.lib" )
-#endif // #if 1
+#endif // #if defined(_MSC_VER) && defined(XRAY_AUDIO_BACKEND_XAUDIO2)
 

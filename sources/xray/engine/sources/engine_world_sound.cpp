@@ -11,19 +11,13 @@
 #include <xray/sound/api.h>
 #include <xray/render/facade/engine_renderer.h>
 #include <xray/render/world.h>
-
-#	include <xray/os_preinclude.h>
-#	undef NOUSER
-#	undef NOMSG
-#	undef NOMB
-#	include <xray/os_include.h>
-#	include <objbase.h>						// for COINIT_MULTITHREADED
+#include <xray/os_platform.h>
 
 using xray::engine::engine_world;
 
 void engine_world::initialize_sound_modules	( )
 {
-	CoInitializeEx					( 0, COINIT_APARTMENTTHREADED );
+	static thread_local xray::os::scoped_com_init	s_sound_com_init( false );
 
 	m_sound_allocator.user_current_thread_id( );
 	sound::set_memory_allocator		( m_sound_allocator );

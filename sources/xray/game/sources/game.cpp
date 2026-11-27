@@ -59,7 +59,11 @@ static console_commands::cc_bool s_draw_stats("draw_stats", s_draw_stats_value, 
 static command_line::key		s_level_key			( "level", "", "", "level to load" );
 bool stalker2::m8_control_level_requested() {
 	xray::fixed_string512 level;
-	return s_level_key.is_set_as_string(&level) && level=="vulkan_m8_control";
+	return s_level_key.is_set_as_string(&level) && (level=="vulkan_m8_control" || level=="test_range");
+}
+bool stalker2::test_range_requested() {
+	xray::fixed_string512 level;
+	return s_level_key.is_set_as_string(&level) && level=="test_range";
 }
 static command_line::key		s_run_sound_tests	( "run_sound_test", "", "", "test for sound system" );
 
@@ -301,8 +305,8 @@ void game::query_scene			( )
 	temp_data.set				( render_configuration );
 	
 	resources::user_data_variant output_window_data;
-	HWND render_window_handle	= m_engine.get_render_window_handle();
-	output_window_data.set		( *(HWND*)&render_window_handle );
+	xray::platform::native_surface_handle render_window_handle = m_engine.get_render_window_handle();
+	output_window_data.set		( render_window_handle );
 	xray::resources::user_data_variant const* data[] = { &temp_data, 0, &output_window_data };
 	
 	xray::const_buffer			temp_buffer( "", 1 );

@@ -17,7 +17,11 @@
 #include <cs/config.h>
 
 #ifndef CS_STATIC_LIBRARIES
-#	define CS_CORE_API	__declspec(dllexport)
+#	if CS_PLATFORM_WINDOWS
+#		define CS_CORE_API	__declspec(dllexport)
+#	else
+#		define CS_CORE_API	__attribute__((visibility("default")))
+#	endif
 #endif // #ifdef CS_STATIC_LIBRARIES
 
 #endif // #ifndef INTERNAL_H_INCLUDED

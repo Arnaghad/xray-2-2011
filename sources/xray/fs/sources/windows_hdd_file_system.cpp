@@ -132,20 +132,8 @@ file_size_type   windows_hdd_file_system::tell (pvoid const handle)
 
 void   windows_hdd_file_system::setvbuf (pvoid const handle, char * buffer, int mode, file_size_type size)
 {
-	int const os_handle					=	_open_osfhandle ( reinterpret_cast<intptr_t>(handle), 0);
-	if ( os_handle == -1 )
-	{
-		LOGI_ERROR							("windows_hdd_file_system", "_open_osfhandle: failed");
-		return;
-	}
-
-	FILE * fp							=	_fdopen(os_handle, "r+b");
-	if ( !fp )
-	{
-		LOGI_ERROR							("windows_hdd_file_system", "_fdopen: failed");
-		return;
-	}
-	::setvbuf								(fp, buffer, mode, (size_t)size);
+	// Direct Win32 HANDLE I/O does not use CRT FILE* buffering; _open_osfhandle would transfer handle ownership and leak.
+	XRAY_UNREFERENCED_PARAMETERS			(handle, buffer, mode, size);
 }
 
 void   windows_hdd_file_system::flush	(pvoid const handle)

@@ -7,12 +7,22 @@
 #ifndef CS_CORE_MACRO_PLATFORM_H_INCLUDED
 #define CS_CORE_MACRO_PLATFORM_H_INCLUDED
 
-#if !defined(_WIN64) || !(defined(__x86_64__) || defined(_M_X64))
-# error CS currently requires Windows x64
+#if defined(_WIN64) && (defined(__x86_64__) || defined(_M_X64))
+#	define CS_PLATFORM_WINDOWS		1
+#	define CS_PLATFORM_WINDOWS_64	1
+#	define CS_PLATFORM_LINUX		0
+#	define CS_PLATFORM_POSIX		0
+#	define CS_CDECL					__cdecl
+#elif defined(__linux__) && (defined(__x86_64__) || defined(__aarch64__))
+#	define CS_PLATFORM_WINDOWS		0
+#	define CS_PLATFORM_WINDOWS_64	0
+#	define CS_PLATFORM_LINUX		1
+#	define CS_PLATFORM_POSIX		1
+#	define CS_CDECL
+#else
+#	error CS currently requires Windows x64 or Linux x86_64/arm64
 #endif
 
-#define CS_PLATFORM_WINDOWS 1
-#define CS_PLATFORM_WINDOWS_64 1
 #define CS_LITTLE_ENDIAN 1
 #define CS_BIG_ENDIAN 0
 

@@ -1,9 +1,13 @@
 #pragma once
 #include <xray/engine/engine_user.h>
+#include <xray/engine/capture_control_bus.h>
+#include <xray/render/vulkan/platform_surface.h>
 #include <xray/render/facade/editor_renderer.h>
 #include <xray/render/facade/editor_runtime.h>
 #include <xray/engine/m8_control_protocol.h>
 #include <xray/engine/m9_performance_protocol.h>
+#include <xray/input_event_queue.h>
+#include <xray/input/mouse.h>
 #include <xray/particle/world.h>
 #include <xray/configs_checked_binary.h>
 #include <xray/configs_lua_config.h>
@@ -20,6 +24,7 @@
 #include <xray/render/vulkan/scene_resources.h>
 #include <xray/render/vulkan/terrain_resources.h>
 #include <xray/render/vulkan/model_resources.h>
+#include <xray/render/vulkan/sky_resources.h>
 #include <xray/render/facade/ui_renderer.h>
 #include <xray/render/facade/debug_renderer.h>
 #include <xray/animation/sources/skeleton_cook.h>
@@ -43,8 +48,12 @@
 #include <algorithm>
 #include <cstring>
 #include <cstdlib>
+#include <SDL3/SDL_scancode.h>
 
-namespace xray::render::control_level { namespace {
+namespace xray::render::control_level {
+enum class level_profile { control, test_range };
+
+namespace {
 using namespace xray;using namespace render;
 namespace checked=configs::checked;
 namespace protocol=xray::engine::m8_control;
@@ -66,7 +75,7 @@ class control_world final : public engine_user::world {
     bool stopping=false,ready=false,failed=false,enabled=true,decal_added=false;
     unsigned pending=0,ticks=0;
     unsigned generation=0;
-    bool const workflow,editor,output_workflow,sdk_capture,sdk_blank_scene;
+    bool const workflow,editor,output_workflow,sdk_capture,sdk_blank_scene,test_range;
     u64 sdk_revision=0;
     unsigned cancelled_preview_queries=0;
     bool actor_attached=false,terrain_attached=true,unloading=false,held_transaction=false,late_returned=false;
@@ -86,7 +95,7 @@ class control_world final : public engine_user::world {
     bool sdk_view_configured=false,sdk_view_dirty=false,sdk_freeze=false,sdk_frozen_camera=false,sdk_postprocess=true,sdk_ssao=false,sdk_distortion=false,sdk_fxaa=false;
     scene_ptr preview_scene;scene_view_ptr preview_view;render_output_window_ptr preview_output;
     render_model_instance_ptr preview_model,woodbox_model;
-    HWND preview_window=nullptr;
+    platform::native_surface_handle preview_window{};
     bool preview_loading=false,preview_closing=false,preview_close_queued=false;
     bool preview_main_paused=false;
     unsigned preview_main_redraws=0;
@@ -107,6 +116,22 @@ class control_world final : public engine_user::world {
     std::chrono::steady_clock::time_point editor_binding_deadline;
     struct placed_model {render_model_instance_ptr value;math::float4x4 transform;bool opaque,attached=true;};
     std::vector<placed_model> models;
+    struct range_target {
+        render_model_instance_ptr model;
+        math::float4x4 upright;
+        float half_width, height;
+        bool hit=false;
+    };
+    std::vector<range_target> range_targets;
+    std::vector<render_model_instance_ptr> range_held_models;
+    render_model_instance_ptr range_flash;
+    bool range_flash_attached=false;
+    static constexpr float range_flash_duration=.085f;
+    static constexpr float range_recoil_duration=.19f;
+    float range_shot_age=range_recoil_duration;
+    std::array<bool,4> range_movement{};
+    float range_yaw=math::pi,range_pitch=-.17f;
+    std::chrono::steady_clock::time_point range_last_tick{};
     std::vector<speedtree_instance_ptr> trees;
     std::vector<math::float4x4> tree_placements;
     particle::world_ptr particles;
@@ -155,6 +180,7 @@ class control_world final : public engine_user::world {
     }
     void create_blank_scene() {
         vulkan::scene_configuration config{};
+        if (test_range) config.features.m_create_terrain=true;
         resources::user_data_variant data,window;data.set(config);window.set(engine.get_render_window_handle());
         resources::user_data_variant const* users[]={&data,nullptr,&window};
         resources::creation_request requests[]={{"m8_game_scene",const_buffer("",1),resources::scene_class},
@@ -162,7 +188,286 @@ class control_world final : public engine_user::world {
         resources::query_create_resources(requests,3,callback([this](resources::queries_result& q) {
             target=dynamic_cast<base_scene*>(q[0].get_unmanaged_resource().c_ptr());view=dynamic_cast<base_scene_view*>(q[1].get_unmanaged_resource().c_ptr());
             output=dynamic_cast<base_output_window*>(q[2].get_unmanaged_resource().c_ptr());require(target && view && output,"Scene resources missing");
+            if (test_range) load_test_range();
         }),allocator,users,nullptr,assert_on_fail_false);
+    }
+    void place_range_model(pcstr asset,math::float3 position,float yaw=0,float half_width=0,float height=0) {
+        auto transform=math::create_rotation_y(yaw)*math::create_translation(position);
+        query(asset,resources::static_render_model_instance_class,[this,transform,half_width,height](resources::queries_result& q) {
+            render_model_instance_ptr model=dynamic_cast<render_model_instance*>(q[0].get_unmanaged_resource().c_ptr());
+            require(bool(model),"Test range model missing");
+            scene().add_model(target,model,transform);
+            models.push_back({model,transform,true});
+            if (half_width>0) range_targets.push_back({model,transform,half_width,height});
+        });
+    }
+    void load_test_range() {
+        vulkan::texture_configuration sky_texture{};
+        sky_texture.srgb=true;
+        sky_texture.source_cube=true;
+        sky_texture.source_dimension=3;
+        resources::user_data_variant texture_data;
+        texture_data.set(sky_texture);
+        query("resources/textures/test/range_sky.tga",resources::texture_class,[this](resources::queries_result& q) {
+            vulkan::sky_material_configuration sky{};
+            sky.texture=q[0].get_unmanaged_resource();
+            sky.intensity=4.0f;
+            resources::user_data_variant material_data;
+            material_data.set(sky);
+            resources::user_data_variant const* user=&material_data;
+            resources::creation_request request("test_range_sky",const_buffer("",1),resources::material_class);
+            resources::query_create_resources(&request,1,callback([this](resources::queries_result& materials_result) {
+                auto sky_material=materials_result[0].get_unmanaged_resource();
+                scene().set_sky_material(target,sky_material);
+                materials.push_back(sky_material);
+            },"test range sky"),allocator,&user,nullptr,assert_on_fail_false);
+        },&texture_data);
+
+        for (pcstr path : {"resources/models/item/weapon/ak74/ak74_4tir1.model/render",
+                          "resources/models/test_range/sleeves.model/render"}) {
+            query(path,resources::static_render_model_instance_class,[this](resources::queries_result& q) {
+                render_model_instance_ptr model=dynamic_cast<render_model_instance*>(q[0].get_unmanaged_resource().c_ptr());
+                require(bool(model),"Missing first-person model");
+                range_held_models.push_back(model);
+            });
+        }
+        query("resources/models/test_range/shot_flash.model/render",resources::static_render_model_instance_class,
+            [this](resources::queries_result& q) {
+                range_flash=dynamic_cast<render_model_instance*>(q[0].get_unmanaged_resource().c_ptr());
+                require(bool(range_flash),"Missing test range muzzle flash model");
+            });
+
+        constexpr pcstr terrain_root="resources/projects/bar_shooting_gallery";
+        resources::user_data_variant data;
+        data.set(terrain_cook_user_data{target,terrain_root,terrain_memory_profile::standard_256_mib});
+        query(std::string(terrain_root)+"/terrain/0_0.terr",resources::terrain_model_class,[this](resources::queries_result& q) {
+            terrain_model_ptr model=dynamic_cast<terrain_model_instance*>(q[0].get_unmanaged_resource().c_ptr());
+            require(model && model->m_render_model,"Test range terrain missing");
+            scene().terrain_add_cell(target,model->m_render_model);
+            terrain.push_back(model);
+        },&data);
+
+        constexpr pcstr color="resources/models/props/shooting_gallery/target_color.model/render";
+        constexpr pcstr paper="resources/models/props/shooting_gallery/target_bw.model/render";
+        constexpr pcstr can="resources/models/props/shooting_gallery/canister_yellow.model/render";
+        constexpr pcstr concrete="resources/models/generic/construction/concrete_block_simple.model/render";
+        constexpr pcstr box="resources/models/props/box/woodbox_mil.model/render";
+        constexpr pcstr barrel="resources/models/props/barrel/barrel_metal03_radiation.model/render";
+        for (float z=-8; z>=-28; z-=2.05f) {
+            place_range_model(concrete,{26.65f,.02f,z});
+            place_range_model(concrete,{37.35f,.02f,z});
+        }
+        for (float x=27.8f;x<37.1f;x+=2.03f) {
+            place_range_model(concrete,{x,.02f,-28.3f},math::pi_d2);
+            place_range_model(concrete,{x,.74f,-28.3f},math::pi_d2);
+        }
+        place_range_model(barrel,{27.45f,.02f,-8.8f});
+        place_range_model(barrel,{36.55f,.02f,-8.8f});
+
+        place_range_model(box,{32,.02f,-11});
+        place_range_model(color,{32,.49f,-11},0,.33f,.675f);
+        place_range_model(can,{30.05f,.02f,-12},0,.09f,.465f);
+        place_range_model(can,{33.95f,.02f,-12},0,.09f,.465f);
+        for (float x:{29.8f,34.2f}) {
+            place_range_model(box,{x,.02f,-17});
+            place_range_model(box,{x,.49f,-17});
+            place_range_model(paper,{x,.96f,-17},math::pi,.4f,.80f);
+        }
+        for (float x:{28.1f,32.f,35.9f}) {
+            place_range_model(concrete,{x,.02f,-24},math::pi_d2);
+            place_range_model(concrete,{x,.74f,-24},math::pi_d2);
+            place_range_model(color,{x,1.47f,-24},0,.33f,.675f);
+        }
+    }
+    void start_test_range() {
+        require(terrain.size()==1 && range_targets.size()==8 && range_held_models.size()==2 && range_flash,"Incomplete test range");
+        camera.c.xyz()={32,1.72f,-5.6f};
+        range_yaw=math::pi;range_pitch=-.165f;range_shot_age=range_recoil_duration;
+        if (xray::engine::capture_control_bus::has_flag(engine.get_render_window_handle(),xray::engine::m9_performance::hold_property)) {
+            if (auto direction=std::getenv("XRAY_TEST_RANGE_BENCHMARK_VIEW");direction && !std::strcmp(direction,"sky"))
+                range_pitch=math::pi_d4;
+        }
+        range_movement.fill(false);
+        orient_range_camera();
+        range_last_tick=std::chrono::steady_clock::now();
+        fov=56;
+        for (auto const& model:range_held_models) {
+            auto transform=range_held_transform();
+            scene().add_model(target,model,transform);
+            models.push_back({model,transform,true});
+        }
+        lighting_environment environment{};
+        environment.ambient={.58f,.61f,.66f};
+        scene().set_lighting_environment(view,environment);
+        light_props light={};
+        light.type=light_type_parallel;
+        light.transform=math::create_rotation_x(.8f)*math::create_rotation_y(math::pi-.42f);
+        light.intensity=1.35f;
+        light.range=90;
+        light.color=0xffffe6cb;
+        light.diffuse_influence_factor=light.specular_influence_factor=1;
+        light.does_cast_shadows=true;
+        light.sun_shadow_map_size=512;
+        light.num_sun_cascades=3;
+        scene().add_light(target,1,light);
+        scene().set_postprocess_settings(view,base_settings);
+        scene().set_view_mode(view,lit_view_mode);
+        ready=true;
+        std::cerr<<"Test range ready: targets="<<range_targets.size()<<" props="<<models.size()<<" held=2\n";
+    }
+    void orient_range_camera() {
+        float horizontal=std::cos(range_pitch);
+        camera.k.xyz()={std::sin(range_yaw)*horizontal,std::sin(range_pitch),std::cos(range_yaw)*horizontal};
+        camera.i.xyz()={std::cos(range_yaw),0,-std::sin(range_yaw)};
+        camera.j.xyz()=math::cross_product(camera.k.xyz(),camera.i.xyz());
+    }
+    math::float4x4 range_held_transform() const {
+        constexpr float attack=.025f;
+        float rise=std::min(range_shot_age/attack,1.f);
+        float recovery=1.f-std::clamp((range_shot_age-attack)/(range_recoil_duration-attack),0.f,1.f);
+        float kick=rise*recovery*recovery;
+        return math::create_rotation_x(-.075f*kick)*
+            math::create_translation(math::float3(.19f,-.22f,.47f-.058f*kick))*camera;
+    }
+    void update_range_viewmodel() {
+        auto held=range_held_transform();
+        for (auto const& model:range_held_models) scene().update_model(target,model,held);
+        if (range_shot_age<range_flash_duration) {
+            float scale=1.15f-.65f*(range_shot_age/range_flash_duration);
+            // Local center of the muzzle on ak74_4tir1.
+            auto flash=math::create_scale(math::float3(scale,scale,scale))*
+                math::create_translation(math::float3(0,.042f,.605f))*held;
+            if (range_flash_attached) scene().update_model(target,range_flash,flash);
+            else scene().add_model(target,range_flash,flash);
+            range_flash_attached=true;
+        } else if (range_flash_attached) {
+            scene().remove_model(target,range_flash);
+            range_flash_attached=false;
+        }
+    }
+    void move_range_player(float strafe,float forward,float seconds) {
+        float length=std::hypot(strafe,forward);
+        if (!length) return;
+        auto direction=camera.i.xyz()*strafe+math::float3(std::sin(range_yaw),0,std::cos(range_yaw))*forward;
+        auto destination=camera.c.xyz()+direction*(3.4f*seconds/length);
+        camera.c.x=std::clamp(destination.x,27.6f,36.4f);
+        camera.c.z=std::clamp(destination.z,-9.f,-3.4f);
+    }
+    bool fire_at_range() {
+        range_shot_age=0;
+        auto eye=camera.c.xyz();
+        auto direction=camera.k.xyz();
+        if (std::abs(direction.z)<.0001f) return false;
+        range_target* selected=nullptr;
+        float closest=far_plane;
+        for (auto& candidate:range_targets) {
+            auto center=candidate.upright.c.xyz();
+            float distance=(center.z-eye.z)/direction.z;
+            auto contact=eye+direction*distance;
+            if (!candidate.hit && distance>near_plane && distance<closest &&
+                std::abs(contact.x-center.x)<=candidate.half_width && contact.y>=center.y && contact.y<=center.y+candidate.height) {
+                closest=distance;
+                selected=&candidate;
+            }
+        }
+        if (!selected) return false;
+        selected->hit=true;
+        scene().update_model(target,selected->model,math::create_rotation_x(-math::pi_d2)*selected->upright);
+        return true;
+    }
+    void reset_range_targets() {
+        for (auto& item:range_targets) if (item.hit) {
+            item.hit=false;
+            scene().update_model(target,item.model,item.upright);
+        }
+    }
+    void update_test_range() {
+        auto window=engine.get_render_window_handle();
+        if (xray::engine::capture_control_bus::has_flag(window,"XRAY_VULKAN_TEST_CAPTURE")) {
+            if (xray::engine::capture_control_bus::has_flag(window,xray::engine::m9_performance::hold_property)) return;
+            if (ticks==15) {
+                require(fire_at_range(),"Test range capture target did not register");
+                range_shot_age=.025f;
+                update_range_viewmodel();
+            }
+            if (ticks) return;
+            auto start=camera;
+            move_range_player(1,1,.25f);
+            require(camera.c.x<start.c.x && camera.c.z<start.c.z,"Test range movement did not move the player");
+            float pitch=range_pitch;range_pitch=.55f;orient_range_camera();
+            require(!fire_at_range(),"Test range miss registered as a hit");
+            range_pitch=pitch;camera=start;
+            require(fire_at_range(),"Test range center target did not register");
+            require(std::count_if(range_targets.begin(),range_targets.end(),[](auto const& item){return item.hit;})==1,"Test range hit count differs");
+            reset_range_targets();
+            require(std::none_of(range_targets.begin(),range_targets.end(),[](auto const& item){return item.hit;}),"Test range reset did not restore targets");
+            update_range_viewmodel();
+            require(range_flash_attached,"Test range shot did not attach the flash");
+            auto neutral=range_held_transform().c.xyz();
+            range_shot_age=.025f;
+            update_range_viewmodel();
+            require(range_flash_attached && (range_held_transform().c.xyz()-neutral).length()>.04f,"Test range recoil did not move the weapon");
+            range_shot_age=range_recoil_duration;
+            update_range_viewmodel();
+            require(!range_flash_attached && (range_held_transform().c.xyz()-neutral).length()<.001f,"Test range shot effect did not clear");
+            std::cerr<<"Test range smoke: movement, aim, miss, hit and reset passed\n";
+            std::cerr<<"Test range smoke: flash and recoil appeared and cleared\n";
+            return;
+        }
+        auto now=std::chrono::steady_clock::now();
+        float elapsed=std::chrono::duration<float>(now-range_last_tick).count();
+        float seconds=std::clamp(elapsed,0.f,.05f);
+        range_last_tick=now;
+        range_shot_age=std::min(range_recoil_duration,range_shot_age+elapsed);
+        input::normalized_input_event event;
+        constexpr std::array movement_keys={SDL_SCANCODE_W,SDL_SCANCODE_S,SDL_SCANCODE_A,SDL_SCANCODE_D};
+        while (input::pop_normalized_input_event(event)) {
+            if (event.kind==input::normalized_event_kind::focus_lost) range_movement.fill(false);
+            if (event.kind==input::normalized_event_kind::key_down || event.kind==input::normalized_event_kind::key_up) {
+                for (size_t i=0;i<movement_keys.size();++i)
+                    if (event.code==movement_keys[i]) range_movement[i]=event.kind==input::normalized_event_kind::key_down;
+            }
+            if (event.kind==input::normalized_event_kind::key_down) {
+                if (event.code==SDL_SCANCODE_ESCAPE) {
+                    std::cerr<<"Test range exit: Escape\n";
+                    engine.exit(0);
+                    return;
+                }
+                if (event.code==SDL_SCANCODE_R) reset_range_targets();
+            }
+            if (event.kind==input::normalized_event_kind::mouse_motion) {
+                range_yaw=std::remainder(range_yaw+event.x*.0022f,math::pi_x2);
+                range_pitch=std::clamp(range_pitch-event.y*.0022f,-1.47f,1.47f);
+                orient_range_camera();
+            }
+            if (event.kind==input::normalized_event_kind::mouse_button_down && event.code==input::mouse_button_left)
+                fire_at_range();
+        }
+        move_range_player(float(range_movement[3])-float(range_movement[2]),
+                          float(range_movement[0])-float(range_movement[1]),seconds);
+        update_range_viewmodel();
+    }
+    void draw_range_score() {
+        float x=18;
+        for (auto const& item:range_targets) {
+            u32 color=item.hit ? 0xff5dd6a7 : 0xffeab35e;
+            ui::vertex marker[]={{x,28,0,color,0,1},{x,18,0,color,0,0},
+                {x+18,28,0,color,1,1},{x+18,18,0,color,1,0}};
+            api.game_renderer().ui().draw_vertices(view,marker,0,2);
+            x+=24;
+        }
+        auto size=main_projection_size;
+        auto rectangle=[this](float left,float top,float right,float bottom,u32 color) {
+            ui::vertex vertices[]={{left,bottom,0,color,0,1},{left,top,0,color,0,0},
+                {right,bottom,0,color,1,1},{right,top,0,color,1,0}};
+            api.game_renderer().ui().draw_vertices(view,vertices,0,2);
+        };
+        float cx=std::floor(size.x*.5f),cy=std::floor(size.y*.5f);
+        auto stroke=[&](float l,float t,float r,float b) {
+            rectangle(cx+l-1,cy+t-1,cx+r+1,cy+b+1,0xff181b1e);
+            rectangle(cx+l,cy+t,cx+r,cy+b,0xfff5f8fc);
+        };
+        stroke(-13,-1,-4,1);stroke(4,-1,13,1);stroke(-1,-13,1,-4);stroke(-1,4,1,13);
     }
     void read_project(resources::queries_result& result) {
         resources::pinned_ptr_const<u8> bytes(result[0].get_managed_resource());
@@ -269,6 +574,7 @@ class control_world final : public engine_user::world {
         weight_lexeme a(buffer,.35f,instant),b(buffer,.65f,instant);player->set_target_and_tick(first*a+second*b,0);
     }
     void start() {
+        if (test_range) {start_test_range();return;}
         if (sdk_blank_scene) {
             lighting_environment environment{};
             environment.ambient = { 0.35f, 0.35f, 0.38f };
@@ -349,6 +655,7 @@ class control_world final : public engine_user::world {
             }
         }
         scene().set_projection_matrix(view,p);
+        if (test_range) draw_range_score();
         if(editor_overlay) {
             ui::vertex vertices[]={ui::vertex(16,52,0,0xff4080c0,0,1),ui::vertex(16,16,0,0xff4080c0,0,0),
                 ui::vertex(160,52,0,0xff4080c0,1,1),ui::vertex(160,16,0,0xff4080c0,1,0)};
@@ -363,12 +670,13 @@ class control_world final : public engine_user::world {
     }
     void render_preview() {
         if(!preview_model || preview_closing || preview_loading)return;
-        RECT bounds{};require(GetClientRect(preview_window,&bounds),"Preview HWND disappeared before GPU drain");
-        if(bounds.right<=0 || bounds.bottom<=0)return;
+        u32 bounds_w=0, bounds_h=0;
+        require(vulkan::surface_adapter::query_surface_extent(preview_window,bounds_w,bounds_h),"Preview surface disappeared before GPU drain");
+        if(!bounds_w || !bounds_h)return;
         math::float3 eye(1.8f,1.6f,-2.5f),at(0,.5f,0);
         auto forward=math::normalize(at-eye),right=math::normalize(math::cross_product(math::float3(0,1,0),forward));
         auto camera=math::float4x4().identity();camera.i.xyz()=right;camera.j.xyz()=math::cross_product(forward,right);camera.k.xyz()=forward;camera.c.xyz()=eye;
-        auto projection=math::float4x4().identity();projection.e00=1/std::tan(math::pi/6)/(float(bounds.right)/bounds.bottom);projection.e11=1/std::tan(math::pi/6);
+        auto projection=math::float4x4().identity();projection.e00=1/std::tan(math::pi/6)/(float(bounds_w)/bounds_h);projection.e11=1/std::tan(math::pi/6);
         projection.e22=64.f/(64.f-.1f);projection.e23=1;projection.e32=-.1f*64.f/(64.f-.1f);projection.e33=0;
         scene().set_view_matrix(preview_view,math::invert4x3(camera));scene().set_projection_matrix(preview_view,projection);
         api.editor_renderer().draw_scene(preview_scene,preview_view,preview_output,{{0,0},{1,1}});
@@ -378,7 +686,7 @@ class control_world final : public engine_user::world {
     }
     void publish(unsigned frame,protocol::shot shot) {
         require(!awaiting,"Overlapping capture requests");awaiting=protocol::token(frame,shot);
-        require(SetPropA(engine.get_render_window_handle(),protocol::request_property,reinterpret_cast<HANDLE>(awaiting)),"Cannot publish workflow frame");
+        require(xray::engine::capture_control_bus::set_token(engine.get_render_window_handle(),protocol::request_property,awaiting),"Cannot publish workflow frame");
         std::cerr<<"M8 workflow submit: shot="<<protocol::name(shot)<<" generation="<<generation<<" actor_time_ms="<<(shot==protocol::shot::actor_transition?625:240)<<" "<<owner_label()<<owner<<'\n';
     }
     void controls(protocol::shot shot,bool pause_particles=true) {
@@ -426,7 +734,7 @@ class control_world final : public engine_user::world {
     void workflow_tick(unsigned frame) {
         using s=protocol::shot;
         if (awaiting) {
-            if (reinterpret_cast<uintptr_t>(GetPropA(engine.get_render_window_handle(),protocol::ack_property))!=awaiting)return;
+            if (xray::engine::capture_control_bus::get_token(engine.get_render_window_handle(),protocol::ack_property)!=awaiting)return;
             awaiting=0;
             if(current_shot==s::camera_restored) {
                 unload_registry=static_cast<vulkan::scene_resource*>(target.c_ptr())->owner;
@@ -474,8 +782,8 @@ class control_world final : public engine_user::world {
         controls(current_shot);render_frame(current_shot==s::actor_transition?625:240,inspection_camera(current_shot==s::camera_moved));publish(frame+1,current_shot);
     }
     void audit_legacy_config_apis() {
-        char flag[2]{};
-        if(GetEnvironmentVariableA("XRAY_M8_CAPABILITY_AUDIT",flag,2)!=1 || flag[0]!='1')return;
+        auto const flag = std::getenv("XRAY_M8_CAPABILITY_AUDIT");
+        if (!flag || std::strcmp(flag, "1") != 0) return;
         // Lua values require the real core VM/mutex. Keep these controls in the
         // native host instead of constructing a partially initialized CPU VM.
         auto config=configs::create_lua_config();
@@ -500,11 +808,11 @@ class control_world final : public engine_user::world {
         }
     }
 public:
-    control_world(engine_user::engine& e,render::world& r,memory::base_allocator& a,bool editor_channel=false,bool complete_workflow=false,bool outputs=false,bool sdk_diagnostic=false,bool blank_sdk_host=false):
-        engine(e),api(r),allocator(&a),workflow(complete_workflow),editor(editor_channel),output_workflow(outputs),sdk_capture(sdk_diagnostic),sdk_blank_scene(blank_sdk_host) {
+    control_world(engine_user::engine& e,render::world& r,memory::base_allocator& a,bool editor_channel=false,bool complete_workflow=false,bool outputs=false,bool sdk_diagnostic=false,bool blank_sdk_host=false,level_profile profile=level_profile::control):
+        engine(e),api(r),allocator(&a),workflow(complete_workflow),editor(editor_channel),output_workflow(outputs),sdk_capture(sdk_diagnostic),sdk_blank_scene(blank_sdk_host),test_range(profile==level_profile::test_range) {
         if(auto mode=std::getenv("XRAY_VULKAN_PERFORMANCE");mode && !std::strcmp(mode,"1"))
-            require(SetPropA(engine.get_render_window_handle(),xray::engine::m9_performance::hold_property,HANDLE(1)),"Cannot prepare performance content hold");
-        audit_legacy_config_apis();load("vulkan_m8_control",nullptr);
+            require(xray::engine::capture_control_bus::set_flag(engine.get_render_window_handle(),xray::engine::m9_performance::hold_property),"Cannot prepare performance content hold");
+        audit_legacy_config_apis();load(test_range ? "test_range" : "vulkan_m8_control",nullptr);
     }
     void prepare_ready() {
         try { if (target && !ready && !pending && !stopping && enabled) start(); }
@@ -564,8 +872,8 @@ public:
         auto* model=static_cast<vulkan::static_model_resource*>(preview_model.c_ptr());
         for(auto const& surface:model->data->surfaces)scene().set_model_visible(preview_model,fs_new::virtual_path_string(surface.name.c_str()),visible);
     }
-    void open_preview(HWND window) {
-        require(editor && editor_ready() && !workflow && !preview_window && IsWindow(window) && window!=engine.get_render_window_handle(),"Unavailable or duplicate model preview");
+    void open_preview(platform::native_surface_handle window) {
+        require(editor && editor_ready() && !workflow && !preview_window.valid() && vulkan::surface_adapter::is_surface_alive(window) && window!=engine.get_render_window_handle(),"Unavailable or duplicate model preview");
         preview_window=window;preview_loading=true;preview_closing=preview_close_queued=preview_releasing=false;
         resources::user_data_variant data,handle;data.set(vulkan::scene_configuration{});handle.set(window);
         resources::user_data_variant const* users[]={&data,nullptr,&handle};
@@ -587,22 +895,22 @@ public:
                 auto* main=dynamic_cast<vulkan::static_model_resource*>(woodbox_model.c_ptr());
                 require(model && main && model!=main && model->data==main->data,"Preview must have an independent instance sharing the woodbox asset");
                 scene().add_model(preview_scene,preview_model,math::float4x4().identity());scene().set_view_mode(preview_view,unlit_view_mode);
-                require(SetPropA(engine.get_render_window_handle(),protocol::preview_property,preview_window),"Cannot publish preview HWND");
+                require(xray::engine::capture_control_bus::set_surface(engine.get_render_window_handle(),protocol::preview_property,preview_window),"Cannot publish preview surface");
                 std::cerr<<"M8 model preview ready: woodbox_mil shared_asset=1 distinct_instance=1 size=640x480 editor_thread="<<owner<<'\n';
             },"woodbox preview instance"),allocator,&clone_user,nullptr,assert_on_fail_false);
         },"model preview scene/view/output"),allocator,users,nullptr,assert_on_fail_false);
     }
-    void close_preview(HWND window) {
-        require(editor && threading::current_thread_id()==owner && window && preview_window==window && !stopping,"Unknown or foreign preview close");
+    void close_preview(platform::native_surface_handle window) {
+        require(editor && threading::current_thread_id()==owner && window.valid() && preview_window==window && !stopping,"Unknown or foreign preview close");
         if(preview_closing)return;
-        preview_closing=true;RemovePropA(engine.get_render_window_handle(),protocol::preview_property);queue_preview_close();
+        preview_closing=true;xray::engine::capture_control_bus::remove(engine.get_render_window_handle(),protocol::preview_property);queue_preview_close();
     }
     bool collect_closed_preview() {
         require(threading::current_thread_id()==owner,"Foreign preview collector");
         if(!preview_closing || preview_loading || (preview_output && !static_cast<vulkan::output_resource*>(preview_output.c_ptr())->closed()))return false;
         if(!preview_releasing){preview_model=nullptr;preview_scene=nullptr;preview_view=nullptr;preview_output=nullptr;preview_releasing=true;}
         if(preview_registry && preview_registry->counts()!=std::array<size_t,3>{1,1,1})return false;
-        preview_registry.reset();preview_window=nullptr;preview_closing=preview_close_queued=preview_releasing=false;
+        preview_registry.reset();preview_window={};preview_closing=preview_close_queued=preview_releasing=false;
         std::cerr<<"M8 model preview closed: gpu_drained=1 editor_thread="<<owner<<'\n';return true;
     }
     unsigned next_editor_command() const {
@@ -656,13 +964,15 @@ public:
     }
     ~control_world() override {
         R_ASSERT(!pending && !held_transaction);resources::unregister_cook(resources::animation_class);resources::unregister_cook(resources::cubic_spline_skeleton_animation_class);resources::unregister_cook(resources::skeleton_class);
-        RemovePropA(engine.get_render_window_handle(),protocol::request_property);RemovePropA(engine.get_render_window_handle(),protocol::ack_property);
+        xray::engine::capture_control_bus::remove(engine.get_render_window_handle(),protocol::request_property);
+        xray::engine::capture_control_bus::remove(engine.get_render_window_handle(),protocol::ack_property);
     }
     void runtime_rendering(bool active) {sdk_runtime_suppressed=active;}
     void enable(bool value) override {enabled=value;}
     void tick(u32 current_frame) override {
         if(editor && sdk_runtime_suppressed){render_preview();api.editor_renderer().end_frame();return;}
         try {
+            if (test_range && !ready) input::clear_normalized_input_events();
             if (target && !ready && !pending && !stopping && enabled) start();
             if(editor_binding_pending) {
                 auto status=static_cast<vulkan::scene_resource*>(target.c_ptr())->owner->terrain_binding_status();
@@ -690,12 +1000,12 @@ public:
                 }
             }
             else if(workflow)workflow_tick(current_frame);
-            else if(GetPropA(engine.get_render_window_handle(),xray::engine::m9_performance::hold_property) && ready && enabled && ticks>=16) {
+            else if(xray::engine::capture_control_bus::has_flag(engine.get_render_window_handle(),xray::engine::m9_performance::hold_property) && ready && enabled && ticks>=16) {
                 if(!preview_main_paused) {
                     for(size_t i=0;i<emitters.size();++i)scene().update_particle_system_instance(target,emitters[i],emitter_placements[i],true,true);
                     preview_main_paused=true;
                 }
-                render_frame(240,inspection_camera());
+                render_frame(240,test_range ? camera : inspection_camera());
             }
             else if((output_workflow || sdk_capture) && ready && enabled && ticks>=16) {
                 if(!preview_main_paused) {
@@ -710,41 +1020,44 @@ public:
                     preview_main_paused=false;
                     std::cerr<<"M8 model preview main continued: held_phase="<<ticks<<" redraws="<<preview_main_redraws<<" editor_thread="<<owner<<'\n';
                 }
+                if (test_range) update_test_range();
                 render_frame(ticks++*16,camera);
                 // Capture the sixteenth content frame, independent of disk load
                 // duration or how far the logic producer runs ahead of render.
-                if (!output_workflow && !sdk_capture && ticks==16) require(SetPropA(engine.get_render_window_handle(),"XRAY_VULKAN_CONTROL_CAPTURE_FRAME",
-                    reinterpret_cast<HANDLE>(uintptr_t(current_frame)+1)),"Cannot publish capture frame");
+                if (!output_workflow && !sdk_capture && ticks==16) require(xray::engine::capture_control_bus::set_token(engine.get_render_window_handle(),"XRAY_VULKAN_CONTROL_CAPTURE_FRAME",
+                    uintptr_t(current_frame)+1),"Cannot publish capture frame");
             }
             render_preview();
         } catch (std::exception const& error) {fail(error);}
         if(editor)api.editor_renderer().end_frame();else api.game_renderer().end_frame();
     }
     void clear_resources() override {
-        stopping=true;ready=false;RemovePropA(engine.get_render_window_handle(),"XRAY_VULKAN_CONTROL_CAPTURE_FRAME");
-        RemovePropA(engine.get_render_window_handle(),xray::engine::m9_performance::hold_property);
-        RemovePropA(engine.get_render_window_handle(),protocol::preview_property);
+        stopping=true;ready=false;xray::engine::capture_control_bus::remove(engine.get_render_window_handle(),"XRAY_VULKAN_CONTROL_CAPTURE_FRAME");
+        xray::engine::capture_control_bus::remove(engine.get_render_window_handle(),xray::engine::m9_performance::hold_property);
+        xray::engine::capture_control_bus::remove(engine.get_render_window_handle(),protocol::preview_property);
         if(preview_output)queue_preview_close();
-        preview_model=nullptr;preview_scene=nullptr;preview_view=nullptr;preview_output=nullptr;preview_window=nullptr;preview_loading=false;
+        preview_model=nullptr;preview_scene=nullptr;preview_view=nullptr;preview_output=nullptr;preview_window={};preview_loading=false;
         preview_registry.reset();
         preview_main_paused=false;
         if (target) {
             for (auto const& emitter:emitters) scene().remove_particle_system_instance(target,emitter);
             for (auto const& tree:trees) scene().remove_speedtree_instance(target,tree,false);
             for (auto const& model:models) if(model.attached)scene().remove_model(target,model.value);
+            if (range_flash_attached) scene().remove_model(target,range_flash);
             if (actor && actor_attached) scene().remove_model(target,actor->m_render_model);
             if(terrain_attached)for (auto const& cell:terrain)if(!editor_isolated || cell==editor_cell)scene().terrain_remove_cell(target,cell->m_render_model);
             if (decal_added) scene().remove_decal(target,1);
         }
-        player.reset();clips={};actor=nullptr;woodbox_model=nullptr;emitters.clear();trees.clear();models.clear();terrain.clear();materials.clear();
+        player.reset();clips={};actor=nullptr;woodbox_model=nullptr;emitters.clear();trees.clear();range_targets.clear();range_held_models.clear();models.clear();terrain.clear();materials.clear();
+        range_flash=nullptr;range_flash_attached=false;
         terrain_origins.clear();editor_cell=nullptr;editor_layers.clear();editor_binding_pending=false;
         emitter_placements.clear();emitter_ids.clear();tree_placements.clear();decal_state.reset();particles=nullptr;target=nullptr;view=nullptr;output=nullptr;project.reset();decal_added=false;actor_attached=false;
     }
     void load(pcstr name,pcstr) override {
-        require(std::string(name)=="vulkan_m8_control" && !project && !pending && !failed,"Unsupported control-level load or callbacks still pending");
+        require(std::string(name)==(test_range ? "test_range" : "vulkan_m8_control") && !project && !pending && !failed,"Unsupported control-level load or callbacks still pending");
         stopping=false;ticks=0;++generation;sdk_revision=0;terrain_attached=true;unload_registry.reset();tree_translated=decal_translated=actor_transitioning=replay_loading=false;replay_ticks=0;
         editor_props_hidden=editor_props_moved=editor_overlay=editor_tail=editor_action_applied=editor_isolated=false;
-        if (sdk_blank_scene) { create_blank_scene(); return; }
+        if (sdk_blank_scene || test_range) { create_blank_scene(); return; }
         query("resources.converted/projects/vulkan_m8_control/render_scene",resources::raw_data_class,[this](resources::queries_result& q) {read_project(q);});
     }
     void unload(pcstr,bool) override {clear_resources();}

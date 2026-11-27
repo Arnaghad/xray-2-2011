@@ -39,8 +39,8 @@ public:
 						pcstr 		major_initiator,
 						verbosity	verbosity
 					);
-	void __cdecl	operator( )	( settings const& log_settings, pcstr format, ... );
-	void __cdecl	operator( )	( pcstr format, ... );
+	void XRAY_CDECL	operator( )	( settings const& log_settings, pcstr format, ... );
+	void XRAY_CDECL	operator( )	( pcstr format, ... );
 }; // class helper
 
 } // namespace logging

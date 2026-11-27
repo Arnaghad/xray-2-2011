@@ -6,7 +6,9 @@
 
 #include "pch.h"
 #include "memory_monitor.h"
-#include <new.h>
+#if XRAY_PLATFORM_WINDOWS
+#	include <new.h>
+#endif
 #include "memory_process_allocator.h"
 
 using xray::memory::process_allocator;

@@ -7,7 +7,6 @@
 #include "pch.h"
 #include <xray/managed_allocator.h>
 #include <xray/resources_query_result.h>
-#include <xray/os_include.h>
 #include <xray/vfs/virtual_file_system.h>
 #include <xray/fs/asynchronous_device_commands.h>
 #include "resources_device_manager.h"

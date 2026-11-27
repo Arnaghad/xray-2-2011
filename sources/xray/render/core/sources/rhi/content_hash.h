@@ -8,7 +8,14 @@
 #include <filesystem>
 #include <fstream>
 #include <string>
-#include <windows.h>
+#include <thread>
+#if defined(_WIN32)
+#	include <windows.h>
+#else
+#	include <limits.h>
+#	include <sstream>
+#	include <unistd.h>
+#endif
 
 namespace xray { namespace render { namespace rhi { namespace cache_util {
 
@@ -175,6 +182,7 @@ inline std::filesystem::path resolve_sdk_user_data_dir() {
     if (char const* disable = std::getenv("XRAY_SDK_DISABLE_COOKED_CACHE"); disable && std::strcmp(disable, "1") == 0)
         return {};
 
+#if defined(_WIN32)
     if (wchar_t const* cmd = GetCommandLineW()) {
         std::wstring_view view(cmd);
         std::size_t i = 0;
@@ -214,6 +222,35 @@ inline std::filesystem::path resolve_sdk_user_data_dir() {
         if (std::filesystem::is_regular_file(pkg_root / L"settings" / L"sdk-runtime.json", ec))
             return (pkg_root / L"user-data").lexically_normal();
     }
+#else
+    if (std::ifstream cmdline("/proc/self/cmdline", std::ios::binary); cmdline) {
+        std::string raw((std::istreambuf_iterator<char>(cmdline)), std::istreambuf_iterator<char>());
+        std::size_t pos = 0;
+        static constexpr char prefix[] = "-user_data_path=";
+        constexpr std::size_t plen = sizeof(prefix) - 1;
+        while (pos < raw.size()) {
+            std::size_t end = raw.find('\0', pos);
+            if (end == std::string::npos) end = raw.size();
+            std::string_view token(raw.data() + pos, end - pos);
+            if (token.size() > plen && strncasecmp(token.data(), prefix, plen) == 0)
+                return std::filesystem::path(token.substr(plen)).lexically_normal();
+            pos = end + 1;
+        }
+    }
+
+    if (char const* env = std::getenv("XRAY_SDK_USER_DATA"); env && *env)
+        return std::filesystem::path(env).lexically_normal();
+
+    char executable[PATH_MAX] = {};
+    ssize_t const length = ::readlink("/proc/self/exe", executable, sizeof(executable) - 1);
+    if (length > 0) {
+        executable[length] = '\0';
+        std::error_code ec;
+        auto const pkg_root = std::filesystem::path(executable).parent_path().parent_path();
+        if (std::filesystem::is_regular_file(pkg_root / "settings" / "sdk-runtime.json", ec))
+            return (pkg_root / "user-data").lexically_normal();
+    }
+#endif
     return {};
 }
 
@@ -223,8 +260,15 @@ inline bool atomic_write_file(std::filesystem::path const& target, void const* d
     std::error_code ec;
     if (target.has_parent_path())
         std::filesystem::create_directories(target.parent_path(), ec);
+#if defined(_WIN32)
     auto const tmp = std::filesystem::path(
         target.wstring() + L"." + std::to_wstring(GetCurrentProcessId()) + L"." + std::to_wstring(GetCurrentThreadId()) + L".tmp");
+#else
+    std::ostringstream tid_ss;
+    tid_ss << std::this_thread::get_id();
+    auto const tmp = std::filesystem::path(
+        target.string() + "." + std::to_string(::getpid()) + "." + tid_ss.str() + ".tmp");
+#endif
     {
         std::ofstream out(tmp, std::ios::binary | std::ios::trunc);
         if (!out)

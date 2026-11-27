@@ -76,8 +76,10 @@ void vulkan_backend::record_capture(VkCommandBuffer cmd) {
     post_copy.sType = VK_STRUCTURE_TYPE_DEPENDENCY_INFO;
     post_copy.bufferMemoryBarrierCount = 1;
     post_copy.pBufferMemoryBarriers = &host;
-    post_copy.imageMemoryBarrierCount = 1;
-    post_copy.pImageMemoryBarriers = &to_present;
+    if (!m_output->is_offscreen) {
+        post_copy.imageMemoryBarrierCount = 1;
+        post_copy.pImageMemoryBarriers = &to_present;
+    }
     vkCmdPipelineBarrier2(cmd, &post_copy);
 }
 vulkan_backend::captured_frame vulkan_backend::capture_frame() {

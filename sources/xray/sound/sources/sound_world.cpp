@@ -44,37 +44,13 @@ enum
 	precalculation_time_for_propagators_in_msec			= 10,
 };
 
-#if 1
-static void role_to_string ( XAUDIO2_DEVICE_ROLE const role, fixed_string2048& dest )
-{
-	if ( role == NotDefaultDevice )
-		dest += "NotDefaultDevice ";
-	else
-	{
-		if ( role & DefaultConsoleDevice )
-			dest += "DefaultConsoleDevice ";
-
-		if ( role & DefaultMultimediaDevice )
-			dest += "DefaultMultimediaDevice ";
-
-		if ( role & DefaultCommunicationsDevice )
-			dest += "DefaultCommunicationsDevice ";
-
-		if ( role & DefaultGameDevice )
-			dest += "DefaultGameDevice ";
-
-		if ( role & GlobalDefaultDevice )
-			dest += "GlobalDefaultDevice ";
-	}
-}
-#endif // #if 1
-
 sound_world::sound_world	(
 		xray::sound::engine& engine,
 		base_allocator_type& logic_allocator,
 		base_allocator_type* const editor_allocator
 	) :
 	m_engine					( engine ),
+	m_audio_backend				( 0 ),
 	m_logic_world_user			( 0 ),
 	m_editor_world_user			( 0 ),
 	m_last_current_time_in_ms	( 0 ),
@@ -82,7 +58,6 @@ sound_world::sound_world	(
 	m_is_destroying				( false ),
 	m_L_wintop					( 50.0f ),
 	m_L_min						( 50.0f ),
-	m_master_voice				( 0 ),
 	m_is_audio_device_exist		( false ),
 	m_panning_lut				( 0 ),
 	m_calc_type					( 0 ),
@@ -124,9 +99,7 @@ sound_world::sound_world	(
 	if ( s_speed_of_sound.is_set_as_number( &speed_of_sound_in_m_per_sec ) )
 		m_speed_of_sound					= m_speed_of_sound / 1000.0f;
 
-	CoInitializeEx								( 0, COINIT_APARTMENTTHREADED );
-
-	m_is_audio_device_exist						= initialize_xaudio	( );
+	m_is_audio_device_exist						= initialize_audio_backend	( );
 
 	pool_parametrs params;
 	if ( m_is_audio_device_exist )
@@ -198,48 +171,24 @@ sound_world::sound_world	(
 	m_timer.start					( );
 }
 
-bool sound_world::initialize_xaudio				( )
+bool sound_world::initialize_audio_backend		( )
 {
-	LOG_INFO									( "Sound initialization (XAudio2 2.9)..." );
-	m_xaudio									= nullptr;
-	m_master_voice								= nullptr;
-	u32 creation_flags = 0;
+	bool debug_audio = false;
 #ifndef MASTER_GOLD
-	if ( s_debug_audio )
-		creation_flags	|= XAUDIO2_DEBUG_ENGINE;
+	debug_audio = s_debug_audio;
 #endif
-
-	HRESULT res					= XAudio2Create( &m_xaudio, creation_flags, XAUDIO2_DEFAULT_PROCESSOR );
-	if ( FAILED( res ) && creation_flags != 0 )
-	{
-		LOG_WARNING				( "XAudio2 debug layer unavailable (hr=0x%08x), retrying standard XAudio2 2.9 engine", res );
-		m_xaudio				= nullptr;
-		res						= XAudio2Create( &m_xaudio, 0, XAUDIO2_DEFAULT_PROCESSOR );
-	}
-
-	if ( FAILED( res ) || !m_xaudio )
-	{
-		LOG_ERROR				( "Sound initialization FAILED. Can not create XAudio2 interface. %d", res );
-		m_xaudio				= nullptr;
+	m_audio_backend = create_audio_backend();
+	if ( !m_audio_backend ) {
+		LOG_ERROR( "Sound initialization FAILED. Unable to allocate audio backend." );
 		return false;
 	}
-
-	res							= m_xaudio->CreateMasteringVoice( 
-										&m_master_voice, 
-										XAUDIO2_DEFAULT_CHANNELS,
-										XAUDIO2_DEFAULT_SAMPLERATE, 
-										0, 
-										nullptr, 
-										nullptr 
-										);
-	if ( FAILED( res ) || !m_master_voice )
-	{
-		LOG_ERROR				( "Sound initialization FAILED. Can not create XAudio2 mastering voice. %d", res );
-		m_master_voice			= nullptr;
-		m_xaudio->Release		( );
-		m_xaudio				= nullptr;
+	LOG_INFO( "Sound initialization (%s)...", m_audio_backend->backend_name() );
+	if ( !m_audio_backend->initialize( debug_audio ) ) {
+		LOG_ERROR( "Sound initialization FAILED (%s).", m_audio_backend->backend_name() );
+		destroy_audio_backend( m_audio_backend );
 		return false;
 	}
+	LOG_INFO( "Audio backend active: %s (%u Hz)", m_audio_backend->backend_name(), m_audio_backend->master_sample_rate() );
 	return true;
 }
 
@@ -263,16 +212,7 @@ sound_world::~sound_world		( )
 	R_ASSERT					( m_voices_to_delete.empty( ) );
 	DELETE						( m_voice_factory );
 	DELETE						( m_sound_buffer_factory );
-#if 1
-	if ( m_master_voice ) {
-		m_master_voice->DestroyVoice( );
-		m_master_voice			= nullptr;
-	}
-	if ( m_xaudio ) {
-		m_xaudio->Release		( );
-		m_xaudio				= nullptr;
-	}
-#endif // #if 1
+	destroy_audio_backend		( m_audio_backend );
 
 	sound_order* order			= m_xaudio_callback_orders.pop_null_node();
 	XRAY_DELETE_IMPL			( memory::g_mt_allocator, order );
@@ -292,14 +232,7 @@ sound_world::~sound_world		( )
 
 channels_type sound_world::master_channel_type ( ) const
 {
-	XAUDIO2_VOICE_DETAILS voice_details;
-	m_master_voice->GetVoiceDetails( &voice_details );
-	switch ( voice_details.InputChannels )
-	{
-	case 1:		return mono;
-	case 2:		return stereo;
-	default:	NODEFAULT( return channels_type_count );
-	}
+	return m_audio_backend ? m_audio_backend->master_channel_type() : stereo;
 }
 
 struct erase_unaudible_predicate
@@ -342,28 +275,17 @@ void sound_world::tick			( )
 //	threading::yield			( 1000 );
 }
 
-IXAudio2SubmixVoice* sound_world::create_submix_voice	( ) const
+i_audio_submix* sound_world::create_submix_voice	( ) const
 {
-	if ( m_is_audio_device_exist )
-	{
-		XAUDIO2_VOICE_DETAILS voice_details;
-
-		m_master_voice->GetVoiceDetails( &voice_details );
-
-		IXAudio2SubmixVoice* submix_voice;
-		HRESULT res			= m_xaudio->CreateSubmixVoice( &submix_voice, voice_details.InputChannels, voice_details.InputSampleRate ); 
-		ASSERT				( !FAILED( res ) );
-		res					= submix_voice->SetOutputVoices( nullptr );
-		ASSERT				( !FAILED( res ) );
-		return submix_voice;
-	}
+	if ( m_is_audio_device_exist && m_audio_backend )
+		return m_audio_backend->create_submix();
 	return 0;
 }
 
-void sound_world::free_submix_voice	( IXAudio2SubmixVoice* voice ) const
+void sound_world::free_submix_voice	( i_audio_submix* voice ) const
 {
-	if ( voice )
-		voice->DestroyVoice		( );
+	if ( voice && m_audio_backend )
+		m_audio_backend->destroy_submix( voice );
 }
 
 void sound_world::hdr_audio_test	( u32 time_delta_in_msec )
@@ -419,7 +341,7 @@ void sound_world::hdr_audio_test	( u32 time_delta_in_msec )
 
 }
 
-voice_bridge* sound_world::get_voice ( voice_callback_handler* callback_handler, IXAudio2SubmixVoice* submix_voice, channels_type type, u32 sample_rate  )
+voice_bridge* sound_world::get_voice ( voice_callback_handler* callback_handler, i_audio_submix* submix_voice, channels_type type, u32 sample_rate )
 {
 	voice_bridge* voice		= m_voice_factory->new_voice	( callback_handler, type, sample_rate );
 	voice->set_output_voice	( submix_voice );

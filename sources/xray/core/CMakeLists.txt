@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.25)
 
 # Collect all source files
-set(CORE_SOURCES
+set(CORE_COMMON_SOURCES
     sources/buffer_string.cpp
     sources/build_extensions.cpp
     sources/command_line.cpp
@@ -19,15 +19,12 @@ set(CORE_SOURCES
     sources/console_command_processor.cpp
     sources/core_debug_engine.cpp
     sources/core_entry_point.cpp
-    sources/core_entry_point_win.cpp
-    sources/core_entry_point_win_shared.cpp
     sources/core_library_linkage.cpp
     sources/debug_platform.cpp
-    sources/delayhlp.cpp
     sources/fs_file_system.cpp
+    sources/fs_file_system_init.cpp
     sources/fs_file_system_impl_disk_ops.cpp
     sources/fs_file_system_impl_mount_disk.cpp
-    sources/fs_file_system_impl_mount_disk_win.cpp
     sources/fs_file_system_impl_nodes.cpp
     sources/fs_file_system_impl_replication.cpp
     sources/fs_file_system_impl_saving_db.cpp
@@ -36,8 +33,6 @@ set(CORE_SOURCES
     sources/fs_file_system_impl_utils.cpp
     sources/fs_file_system_impl_watcher.cpp
     sources/fs_file_system_nodes_impl.cpp
-    sources/fs_file_system_win.cpp
-    sources/fs_folder_watcher_win.cpp
     sources/fs_helper.cpp
     sources/fs_impl_finding_async_no_pin.cpp
     sources/fs_impl_finding_async_pin.cpp
@@ -53,16 +48,12 @@ set(CORE_SOURCES
     sources/fs_impl_saving_info_tree.cpp
     sources/fs_impl_saving_node.cpp
     sources/fs_path.cpp
-    sources/fs_path_win.cpp
     sources/fs_sub_fat_cook.cpp
     sources/fs_sub_fat_resource.cpp
     sources/fs_utils.cpp
     sources/fs_utils_no_watcher.cpp
     sources/fs_utils_path.cpp
     sources/fs_utils_watcher.cpp
-    sources/fs_utils_win.cpp
-    sources/fs_utils_win_shared.cpp
-    sources/fs_watcher_win.cpp
     sources/game_resman.cpp
     sources/game_resman_free.cpp
     sources/game_resman_interface.cpp
@@ -98,7 +89,6 @@ set(CORE_SOURCES
     sources/math_float4x4.cpp
     sources/math_frustum.cpp
     sources/math_functions.cpp
-    sources/math_functions_win.cpp
     sources/math_obb.cpp
     sources/math_permutations.cpp
     sources/math_quaternion.cpp
@@ -108,7 +98,6 @@ set(CORE_SOURCES
     sources/memory_base_allocator.cpp
     sources/memory_chunk_reader.cpp
     sources/memory_crt_allocator.cpp
-    sources/memory_crt_allocator_win.cpp
     sources/memory_doug_lea_allocator.cpp
     sources/memory_doug_lea_mt_allocator.cpp
     sources/memory_guard.cpp
@@ -122,13 +111,10 @@ set(CORE_SOURCES
     sources/memory_stack_allocator.cpp
     sources/memory_stack_arena_allocator.cpp
     sources/memory_stream.cpp
-    sources/memory_video_win.cpp
-    sources/memory_win.cpp
+    sources/memory_video.cpp
     sources/memory_writer.cpp
     sources/os_functions.cpp
-    sources/os_functions_win.cpp
     sources/pch.cpp
-    sources/platform_extensions_win.cpp
     sources/profiler.cpp
     sources/resources_allocator.cpp
     sources/resources_command.cpp
@@ -136,7 +122,6 @@ set(CORE_SOURCES
     sources/resources_cook_classes.cpp
     sources/resources_device_manager.cpp
     sources/resources_device_manager_thread.cpp
-    sources/resources_device_manager_thread_win.cpp
     sources/resources_fs.cpp
     sources/resources_fs_impl.cpp
     sources/resources_fs_iterator.cpp
@@ -205,20 +190,63 @@ set(CORE_SOURCES
     sources/text_tree_item.cpp
     sources/threading_active_object.cpp
     sources/threading_event.cpp
-    sources/threading_event_win.cpp
     sources/threading_functions.cpp
-    sources/threading_functions_win.cpp
-    sources/threading_functions_win_shared.cpp
     sources/threading_mutex.cpp
-    sources/threading_mutex_win.cpp
     sources/threading_reader_writer_lock.cpp
     sources/threading_test.cpp
-    sources/timing_functions_win.cpp
     sources/unmanaged_allocation_cook.cpp
     sources/vfs_sub_fat_cook.cpp
     sources/vfs_sub_fat_resource.cpp
     sources/virtual_alloc.cpp
 )
+
+set(CORE_WIN_SOURCES
+    sources/core_entry_point_win.cpp
+    sources/core_entry_point_win_shared.cpp
+    sources/delayhlp.cpp
+    sources/fs_file_system_impl_mount_disk_win.cpp
+    sources/fs_folder_watcher_win.cpp
+    sources/fs_path_win.cpp
+    sources/fs_utils_win.cpp
+    sources/fs_utils_win_shared.cpp
+    sources/fs_watcher_win.cpp
+    sources/math_functions_win.cpp
+    sources/memory_crt_allocator_win.cpp
+    sources/memory_win.cpp
+    sources/os_functions_win.cpp
+    sources/os_platform_win.cpp
+    sources/platform_extensions_win.cpp
+    sources/resources_device_manager_thread_win.cpp
+    sources/threading_event_win.cpp
+    sources/threading_functions_win.cpp
+    sources/threading_functions_win_shared.cpp
+    sources/threading_mutex_win.cpp
+    sources/timing_functions_win.cpp
+)
+
+set(CORE_LINUX_SOURCES
+    sources/core_entry_point_posix.cpp
+    sources/fs_file_system_impl_mount_disk_posix.cpp
+    sources/fs_path_posix.cpp
+    sources/fs_utils_posix.cpp
+    sources/fs_watcher_multi.cpp
+    sources/math_functions_posix.cpp
+    sources/memory_crt_allocator_posix.cpp
+    sources/memory_posix.cpp
+    sources/os_functions_posix.cpp
+    sources/os_platform_posix.cpp
+    sources/threading_event_posix.cpp
+    sources/threading_functions_posix.cpp
+    sources/threading_mutex_posix.cpp
+    sources/timing_functions_posix.cpp
+)
+
+set(CORE_SOURCES ${CORE_COMMON_SOURCES})
+if(WIN32)
+    list(APPEND CORE_SOURCES ${CORE_WIN_SOURCES})
+elseif(UNIX)
+    list(APPEND CORE_SOURCES ${CORE_LINUX_SOURCES})
+endif()
 
 
 
@@ -249,7 +277,12 @@ target_include_directories(xray_core PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../../..
 target_link_libraries(xray_core PRIVATE "$<LINK_LIBRARY:WHOLE_ARCHIVE,xray_debug>" xray_logging)
 target_link_libraries(xray_core PRIVATE cs_script cs_core xray_fs xray_vfs)
 target_link_libraries(xray_core PUBLIC sol2::sol2 Boost::headers Boost::filesystem Boost::system Boost::thread)
-target_link_libraries(xray_core PRIVATE lua mimalloc winmm shlwapi)
+target_link_libraries(xray_core PRIVATE lua mimalloc)
+if(WIN32)
+    target_link_libraries(xray_core PRIVATE winmm shlwapi)
+elseif(UNIX)
+    target_link_libraries(xray_core PRIVATE pthread ${CMAKE_DL_LIBS})
+endif()
 
 # Preprocessor definitions
 target_compile_definitions(xray_core PRIVATE XRAY_CORE_BUILDING XRAY_LOGGING_BUILDING XRAY_DEBUG_BUILDING)

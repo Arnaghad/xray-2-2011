@@ -3,7 +3,10 @@
 #include <cstring>
 #include <mutex>
 #include <xray/macro_extensions.h>
-#include <xray/os_include.h>
+#include <xray/os_platform.h>
+#if XRAY_PLATFORM_WINDOWS
+#	include <xray/os_include.h>
+#endif
 #include "vulkan_diagnostics.h"
 
 namespace xray { namespace render { namespace vulkan {
@@ -31,8 +34,10 @@ void diagnostic(char const* level, char const* format, ...) {
     // Smoke bootstrap runs before the core logging world exists.
     std::fprintf(stderr, "[Vulkan %s] %s\n", level, message);
     std::fflush(stderr);
+#if XRAY_PLATFORM_WINDOWS
     OutputDebugStringA(message);
     OutputDebugStringA("\n");
+#endif
     if (std::strcmp(level, "error") == 0) {
         std::lock_guard<std::mutex> lock(s_mutex);
         std::snprintf(s_snapshot.last_error, sizeof(s_snapshot.last_error), "%s", message);

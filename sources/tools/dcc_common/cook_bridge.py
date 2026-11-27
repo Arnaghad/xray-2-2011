@@ -15,8 +15,8 @@ from .logical_names import make_logical_name
 
 def _exe_names() -> tuple[str, ...]:
     if sys.platform.startswith("win"):
-        return ("xray_asset_cook_cli.exe", "xray_asset_cook_cli", "xray_maya_cook_cli.exe", "xray_maya_cook_cli")
-    return ("xray_asset_cook_cli", "xray_asset_cook_cli.exe", "xray_maya_cook_cli", "xray_maya_cook_cli.exe")
+        return ("xray_asset_cook_cli.exe", "xray_maya_cook_cli.exe")
+    return ("xray_asset_cook_cli", "xray_maya_cook_cli")
 
 
 def _repo_root() -> Path:
@@ -59,9 +59,21 @@ def find_cook_cli(explicit_path: str | Path | None = None) -> Path:
         if val:
             search_dirs.extend([Path(val) / "bin", Path(val) / "binaries", Path(val)])
 
+    preset_dirs = (
+        [
+            repo / "build/presets/windows-x64-release/binaries",
+            repo / "build/presets/windows-x64-debug/binaries",
+        ]
+        if sys.platform.startswith("win")
+        else [
+            repo / "build/presets/linux-x64-release/binaries",
+            repo / "build/presets/linux-x64-debug/binaries",
+        ]
+    )
     search_dirs.extend(
         [
             repo / "build/maya-port/standalone-cook",
+            *preset_dirs,
             repo / "build/sdk-native-20261108-release/binaries",
             repo / "build/sdk-native-20261108-debug/binaries",
         ]

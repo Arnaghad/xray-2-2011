@@ -281,7 +281,8 @@ void skeleton_model_cook::translate_query(resources::query_result_for_cook& quer
                     try {
                         if (!m_owner->accepting()) throw std::runtime_error("Skeleton model cook session is closed");
                         if (!children.is_successful()) { query.finish_query(result_error); return; }
-                        auto* skeleton=dynamic_cast<animation::skeleton*>(children[0].get_unmanaged_resource().c_ptr());
+                        auto* skel_res=children[0].get_unmanaged_resource().c_ptr();
+                        auto* skeleton=(skel_res && skel_res->get_class_id()==resources::skeleton_class) ? static_cast<animation::skeleton*>(skel_res) : nullptr;
                         auto* model=dynamic_cast<static_model_resource*>(children[1].get_unmanaged_resource().c_ptr());
                         if (!skeleton || !model || model->owner!=m_owner) throw std::runtime_error("Foreign skeletal model dependency");
                         auto const& names=model->data->bone_names;

@@ -13,13 +13,13 @@ namespace sound {
 
 voice_factory::voice_factory( u8* buffer, u32 buffer_size, sound_world const& world, pool_parametrs const& params ) :
 	m_pool_params				( params ),
-	m_min_frequency_ratio		( XAUDIO2_MIN_FREQ_RATIO ),
-	m_max_frequency_ratio		( XAUDIO2_DEFAULT_FREQ_RATIO ),
+	m_min_frequency_ratio		( world.audio_backend()->min_frequency_ratio() ),
+	m_max_frequency_ratio		( world.audio_backend()->max_frequency_ratio() ),
 	m_voices_allocator			( buffer, buffer_size )
 {
 
 	voice_bridge::creation_parametrs	voice_params;
-	voice_params.xaudio_engine			= world.xaudio_engine( );
+	voice_params.audio_backend			= world.audio_backend( );
 	voice_params.master_channels_type	= world.master_channel_type( );
 	voice_params.type					= mono;
 	voice_params.max_frequency_ratio	= m_max_frequency_ratio;

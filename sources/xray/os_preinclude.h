@@ -8,6 +8,11 @@
 #define XRAY_OS_PREINCLUDE_H_INCLUDED
 
 #include <xray/macro_extensions.h>
+
+#if !XRAY_PLATFORM_WINDOWS
+#	error "<xray/os_preinclude.h> is Windows-only"
+#endif
+
 #include <xray/os_extensions.h>
 
 #	include <crtdefs.h>	// for ptrdiff_t

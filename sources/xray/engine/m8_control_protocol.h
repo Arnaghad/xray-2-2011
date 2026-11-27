@@ -3,7 +3,7 @@
 #include <cstdint>
 
 namespace xray { namespace engine { namespace m8_control {
-// One atomic HWND property publishes both frame and shot. ACK returns that
+// One atomic control-bus token publishes both frame and shot. ACK returns that
 // exact token after readback; logic never publishes a second outstanding shot.
 inline constexpr char request_property[]="XRAY_M8_CAPTURE_REQUEST";
 inline constexpr char ack_property[]="XRAY_M8_CAPTURE_ACK";

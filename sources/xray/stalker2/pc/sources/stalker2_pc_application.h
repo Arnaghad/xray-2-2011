@@ -8,12 +8,21 @@
 #define STARTER2_PC_APPLICATION_H_INCLUDED
 
 #include <xray/stalker2/game_module_proxy.h>
+#include <memory>
+#include <string>
 
 namespace stalker2 {
+
+struct i_splash_screen {
+	virtual			~i_splash_screen( ) = default;
+	virtual void	show			( pcstr command_line ) = 0;
+	virtual void	close			( ) = 0;
+};
 
 class application {
 public:
 			void		initialize		( );
+			void		initialize		( pcstr command_line );
 			void		execute			( );
 			void		finalize		( );
 	inline	u32			get_exit_code	( ) const { return m_exit_code; }
@@ -23,7 +32,8 @@ private:
 			void		postinitialize	( );
 
 private:
-	HWND				m_splash_screen;
+	std::unique_ptr<i_splash_screen>	m_splash_screen;
+	std::string							m_command_line;
 
 private:
 	game_module_proxy	m_game_proxy;

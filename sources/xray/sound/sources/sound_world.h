@@ -18,9 +18,7 @@
 #include "sound_instance_proxy_internal.h"
 #include "sound_object_commands.h"
 #include "console_commands.h"
-
-struct IXAudio2Voice;
-struct IXAudio2MasteringVoice;
+#include "audio_backend.h"
 
 namespace xray {
 
@@ -104,17 +102,16 @@ public:
 	inline	u32		get_last_time					( ) const { return m_last_current_time_in_ms; }
 	inline	bool	is_destroying					( ) const { return m_is_destroying; }
 
-			IXAudio2*		xaudio_engine			( ) const	{ return m_xaudio; }
-	IXAudio2MasteringVoice*	xaudio_master_voice		( ) const	{ return m_master_voice; }
-			channels_type	master_channel_type		( ) const;
-	IXAudio2SubmixVoice*	create_submix_voice		( ) const;
-			void			free_submix_voice		( IXAudio2SubmixVoice* voice ) const;
+			i_audio_backend*	audio_backend			( ) const	{ return m_audio_backend; }
+			channels_type		master_channel_type		( ) const;
+			i_audio_submix*		create_submix_voice		( ) const;
+			void				free_submix_voice		( i_audio_submix* voice ) const;
 
 	inline	panning_lut_ptr	get_panning_lut			( ) const { return m_panning_lut; }
 
 	inline	bool			is_audio_device_exist	( ) const	{ return m_is_audio_device_exist; }
 
-			voice_bridge*	get_voice				( voice_callback_handler* callback_handler, IXAudio2SubmixVoice* submix_voice, channels_type type, u32 sample_rate  );
+			voice_bridge*	get_voice				( voice_callback_handler* callback_handler, i_audio_submix* submix_voice, channels_type type, u32 sample_rate );
 			void			free_voice				( voice_bridge* voice );
 			sound_buffer*	get_sound_buffer		( encoded_sound_ptr const& encoded_sound, u32 pcm_offset, u32& next_pcm_offset );
 			sound_buffer*	get_no_cahceable_sound_buffer( encoded_sound_ptr const& encoded_sound, u32 pcm_offset, u32& next_pcm_offset );
@@ -207,7 +204,7 @@ private:
 		}
 	}
 
-			bool	initialize_xaudio				( );
+			bool	initialize_audio_backend		( );
 			void	try_delete_stoping_voices		( );
 
 private:
@@ -229,10 +226,7 @@ private:
 	voice_factory*					m_voice_factory;
 
 	engine&							m_engine;
-	// xaudio2
-	IXAudio2*						m_xaudio;
-	IXAudio2MasteringVoice*			m_master_voice;
-//	X3DAUDIO_HANDLE					X3DInstance;	
+	i_audio_backend*				m_audio_backend;
 	sound_buffer_factory*			m_sound_buffer_factory;
 
 	panning_lut_ptr					m_panning_lut;

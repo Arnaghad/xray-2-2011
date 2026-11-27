@@ -13,10 +13,10 @@ rhi_device& rhi_device::ref() {
 	return instance;
 }
 
-bool rhi_device::initialize(std::unique_ptr<rhi_backend> backend, HWND hwnd) {
+bool rhi_device::initialize(std::unique_ptr<rhi_backend> backend, platform::native_surface_handle surface) {
 	if (m_backend || !backend) return false;
 	try {
-		if (!backend->initialize(hwnd)) {
+		if (!backend->initialize(surface)) {
 			backend->shutdown();
 			return false;
 		}

@@ -22,7 +22,7 @@
 
 namespace cs {
 
-inline int	vsnprintf	( pstr const destination, u32 const destination_size, u32 const max_count, pcstr const format, va_list const args )
+inline int	vsnprintf	( pstr const destination, u32 const destination_size, u32 const max_count, pcstr const format, va_list args )
 {
 #ifdef _MSC_VER
 	return				_vsnprintf_s( destination, destination_size, max_count, format, args );
@@ -32,12 +32,12 @@ inline int	vsnprintf	( pstr const destination, u32 const destination_size, u32 c
 }
 
 template <int Size>
-inline int	vsnprintf	( char (&destination)[Size], u32 const max_count, pcstr const format, va_list const args )
+inline int	vsnprintf	( char (&destination)[Size], u32 const max_count, pcstr const format, va_list args )
 {
 	return				vsnprintf( &destination[0], Size, max_count, format, args );
 }
 
-inline int	vsprintf	( pstr const destination, u32 const destination_size, pcstr const format, va_list const args )
+inline int	vsprintf	( pstr const destination, u32 const destination_size, pcstr const format, va_list args )
 {
 #ifdef _MSC_VER
 	return				vsprintf_s( destination, destination_size, format, args );

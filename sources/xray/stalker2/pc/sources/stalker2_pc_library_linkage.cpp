@@ -12,7 +12,9 @@
 #include <xray/engine/library_linkage.h>
 #include <xray/engine/library_dependencies.h>
 
-#pragma comment(lib, "x3daudio.lib")
+#if XRAY_PLATFORM_WINDOWS
+#	pragma comment(lib, "x3daudio.lib")
+#endif
 #include <ode/library_linkage.h>
 #include <xray/render/engine/library_linkage.h>
 #include <xray/render/core/library_linkage.h>

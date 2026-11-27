@@ -1,7 +1,8 @@
 #include "test_check.hpp"
 
+#include <xray/os_raii.h>
 #include <xray/os_raii_win.h>
-#include <fastdelegate/fastdelegate.h>
+#include <fastdelegate/FastDelegate.h>
 
 #include <algorithm>
 #include <cstdint>
@@ -173,6 +174,7 @@ void free_callback(int x) {
     static_callback_sum += x;
 }
 
+#if XRAY_PLATFORM_WINDOWS
 void test_unique_handle() {
     xray::os::unique_handle empty_handle;
     XRAY_TEST_CHECK(!empty_handle.valid());
@@ -249,6 +251,16 @@ void test_com_ptr() {
     }
     XRAY_TEST_CHECK(destroyed);
 }
+#endif // #if XRAY_PLATFORM_WINDOWS
+
+void test_scoped_cleanup() {
+    bool cleaned = false;
+    {
+        auto guard = xray::os::make_scoped_cleanup([&cleaned]() { cleaned = true; });
+        XRAY_TEST_CHECK(!cleaned);
+    }
+    XRAY_TEST_CHECK(cleaned);
+}
 
 void test_fastdelegate_lifecycle_and_order() {
     std::vector<int> log;
@@ -313,8 +325,11 @@ void test_fastdelegate_lifecycle_and_order() {
 } // namespace
 
 int main() {
+#if XRAY_PLATFORM_WINDOWS
     test_unique_handle();
     test_com_ptr();
+#endif
+    test_scoped_cleanup();
     test_fastdelegate_lifecycle_and_order();
     std::cout << "PASS: xray_callback_and_raii_contract\n";
     return 0;

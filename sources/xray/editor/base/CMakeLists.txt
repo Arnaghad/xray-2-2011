@@ -2,8 +2,20 @@
 project(xray_editor_base)
 
 find_program(XRAY_DOTNET_EXECUTABLE dotnet REQUIRED)
-get_filename_component(XRAY_DOTNET_ROOT "${XRAY_DOTNET_EXECUTABLE}" DIRECTORY)
-set(XRAY_DOTNET_ROOT "${XRAY_DOTNET_ROOT}" CACHE PATH "System x64 .NET installation used by the editor")
+file(REAL_PATH "${XRAY_DOTNET_EXECUTABLE}" _xray_dotnet_real_exe)
+get_filename_component(_xray_dotnet_detected_root "${_xray_dotnet_real_exe}" DIRECTORY)
+if(NOT EXISTS "${_xray_dotnet_detected_root}/host/fxr")
+    foreach(_xray_dotnet_candidate IN ITEMS "$ENV{DOTNET_ROOT}" "/usr/lib64/dotnet" "/usr/share/dotnet")
+        if(_xray_dotnet_candidate AND EXISTS "${_xray_dotnet_candidate}/host/fxr")
+            set(_xray_dotnet_detected_root "${_xray_dotnet_candidate}")
+            break()
+        endif()
+    endforeach()
+endif()
+if(DEFINED XRAY_DOTNET_ROOT AND XRAY_DOTNET_ROOT AND NOT EXISTS "${XRAY_DOTNET_ROOT}/host/fxr")
+    unset(XRAY_DOTNET_ROOT CACHE)
+endif()
+set(XRAY_DOTNET_ROOT "${_xray_dotnet_detected_root}" CACHE PATH "System x64 .NET installation used by the editor")
 set(XRAY_MANAGED_EDITOR_DIR "${CMAKE_BINARY_DIR}/editor-managed")
 file(MAKE_DIRECTORY "${XRAY_MANAGED_EDITOR_DIR}")
 configure_file(EditorHost.csproj.in "${XRAY_MANAGED_EDITOR_DIR}/EditorHost.csproj" @ONLY)
@@ -37,7 +49,7 @@ add_custom_command(
         --configuration "${CMAKE_BUILD_TYPE}" --output "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}"
         --artifacts-path "${XRAY_MANAGED_EDITOR_DIR}/artifacts"
         --configfile "${XRAY_MANAGED_EDITOR_DIR}/NuGet.Config" --nologo
-    DEPENDS Bridge.cs EditorWorld.cs EditorWorld.Sdk.cs SdkProperties.cs SdkNativeResources.cs SdkRenderOptions.cs SdkDccResources.cs SdkDccWindow.cs WindowIde.Dcc.cs SdkModelSources.cs SdkModelPhysics.cs SdkAnimationPreview.cs SdkAnimationViewerEditor.cs SdkAnimationCollectionEditor.cs SdkAnimationSetup.cs SdkAnimationGroups.cs SdkAnimationPlacement.cs WindowIde.Animation.cs SdkModelEditor.cs WindowIde.Models.cs SdkScene.cs SdkViewport.cs SdkGizmo.cs ProjectViewportGizmos.cs ViewportNavigation.cs ProjectViewportEditing.cs SdkDockLayout.cs
+    DEPENDS Bridge.cs PlatformWindowService.cs EditorWorld.cs EditorWorld.Sdk.cs SdkProperties.cs SdkNativeResources.cs SdkRenderOptions.cs SdkDccResources.cs SdkDccWindow.cs WindowIde.Dcc.cs SdkModelSources.cs SdkModelPhysics.cs SdkAnimationPreview.cs SdkAnimationViewerEditor.cs SdkAnimationCollectionEditor.cs SdkAnimationSetup.cs SdkAnimationGroups.cs SdkAnimationPlacement.cs WindowIde.Animation.cs SdkModelEditor.cs WindowIde.Models.cs SdkScene.cs SdkViewport.cs SdkGizmo.cs ProjectViewportGizmos.cs ViewportNavigation.cs ProjectViewportEditing.cs SdkDockLayout.cs
         AvaloniaPreviewWindow.cs AvaloniaIdeBridge.cs SdkOutputs.cs SdkSelection.cs SdkAdvancedGizmo.cs SdkResourceReload.cs ProjectViewportOutputs.cs Action.cs ActionContinuous.cs ActionShortcut.cs ActionsLayer.cs SdkRuntime.cs
         InputKeysHolder.cs InputEngine.cs
         SdkSound.cs WindowIde.Sound.cs SdkParticle.cs WindowIde.Particle.cs WindowIde.Dialog.cs SdkScripting.cs WindowIde.Scripting.cs SdkNavigation.cs WindowIde.Navigation.cs SdkMaterialSources.cs SdkMaterialEditor.cs WindowIde.Materials.cs SdkAssetSources.cs SdkTextureEditor.cs WindowIde.Assets.cs ObjectsLibrary.cs SdkResourcePipeline.cs SdkResourceBrowser.cs ProjectBrowserDialog.cs
@@ -132,6 +144,10 @@ target_link_libraries(xray_editor_base PRIVATE
     xray_physics
 )
 
+target_compile_definitions(xray_editor_base PRIVATE XRAY_EDITOR_BASE_BUILDING)
+
 if(MSVC)
     set_target_properties(xray_editor_base PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
+elseif(WIN32)
+    target_link_options(xray_editor_base PRIVATE -Wl,--export-all-symbols)
 endif()

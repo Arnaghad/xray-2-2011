@@ -5,10 +5,10 @@
              Background="{x:Static themes:SdkWorkspaceTheme.Canvas}">
     <DockPanel LastChildFill="True">
         <Border DockPanel.Dock="Top"
-                Background="{x:Static themes:SdkWorkspaceTheme.Chrome}"
+                Background="#1D222B"
                 BorderBrush="{x:Static themes:SdkWorkspaceTheme.Divider}"
                 BorderThickness="0,0,0,1"
-                Padding="4,2">
+                Padding="6,3">
             <WrapPanel x:Name="m_toolbar_panel"
                        Orientation="Horizontal" />
         </Border>
